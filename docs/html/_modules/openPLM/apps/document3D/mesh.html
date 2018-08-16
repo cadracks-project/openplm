@@ -1,0 +1,323 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.document3D.mesh &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/document3D/mesh.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.document3D.mesh</h1><div class="highlight"><pre>
+<span class="c">##Copyright 2010 Thomas Paviot (tpaviot@gmail.com)</span>
+<span class="c">##</span>
+<span class="c">##This file is part of pythonOCC.</span>
+<span class="c">##</span>
+<span class="c">##pythonOCC is free software: you can redistribute it and/or modify</span>
+<span class="c">##it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c">##the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">##(at your option) any later version.</span>
+<span class="c">##</span>
+<span class="c">##pythonOCC is distributed in the hope that it will be useful,</span>
+<span class="c">##but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">##MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the</span>
+<span class="c">##GNU Lesser General Public License for more details.</span>
+<span class="c">##</span>
+<span class="c">##You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c">##along with pythonOCC. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">kjbuckets</span> <span class="kn">import</span>  <span class="n">kjDict</span>
+
+<span class="kn">from</span> <span class="nn">OCC.Utils.Topology</span> <span class="kn">import</span> <span class="n">Topo</span>
+<span class="kn">from</span> <span class="nn">OCC.TopAbs</span> <span class="kn">import</span> <span class="n">TopAbs_REVERSED</span>
+<span class="kn">from</span> <span class="nn">OCC.Bnd</span> <span class="kn">import</span> <span class="n">Bnd_Box</span>
+<span class="kn">from</span> <span class="nn">OCC.BRepBndLib</span> <span class="kn">import</span> <span class="n">BRepBndLib_Add</span>
+<span class="kn">from</span> <span class="nn">OCC.gp</span> <span class="kn">import</span> <span class="n">gp_Vec</span><span class="p">,</span> <span class="n">gp_Pnt</span>
+<span class="kn">from</span> <span class="nn">OCC.BRepMesh</span> <span class="kn">import</span> <span class="n">BRepMesh_Mesh</span>
+<span class="kn">from</span> <span class="nn">OCC.BRep</span> <span class="kn">import</span> <span class="n">BRep_Tool_Triangulation</span>
+<span class="kn">from</span> <span class="nn">OCC.TopLoc</span> <span class="kn">import</span> <span class="n">TopLoc_Location</span>
+<span class="kn">from</span> <span class="nn">OCC.Poly</span> <span class="kn">import</span> <span class="n">Poly_Connect</span>
+<span class="kn">from</span> <span class="nn">OCC.StdPrs</span> <span class="kn">import</span> <span class="n">StdPrs_ToolShadedShape_Normal</span>
+<span class="kn">from</span> <span class="nn">OCC.TColgp</span> <span class="kn">import</span> <span class="n">TColgp_Array1OfDir</span>
+
+
+<span class="n">triangle_fmt</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot; smooth_triangle {</span>
+<span class="s">        &lt;</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">&gt;, &lt;</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">&gt;,</span>
+<span class="s">        &lt;</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">&gt;, &lt;</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">&gt;,</span>
+<span class="s">        &lt;</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">&gt;, &lt;</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">&gt;</span>
+<span class="s">      }</span>
+<span class="s">    &quot;&quot;&quot;</span>
+<span class="n">vertice_fmt</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.vertices.push(new THREE.Vector3(</span><span class="si">%.4f</span><span class="s">,</span><span class="si">%.4f</span><span class="s">,</span><span class="si">%.4f</span><span class="s">));</span><span class="se">\n</span><span class="s">&quot;</span>
+<span class="n">face_fmt</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.faces.push( new THREE.Face3( </span><span class="si">%i</span><span class="s">, </span><span class="si">%i</span><span class="s">, </span><span class="si">%i</span><span class="s">, [ new THREE.Vector3( </span><span class="si">%.4f</span><span class="s">, </span><span class="si">%.4f</span><span class="s">, </span><span class="si">%.4f</span><span class="s"> ), new THREE.Vector3( </span><span class="si">%.4f</span><span class="s">, </span><span class="si">%.4f</span><span class="s">, </span><span class="si">%.4f</span><span class="s"> ), new THREE.Vector3( </span><span class="si">%.4f</span><span class="s">, </span><span class="si">%.4f</span><span class="s">, </span><span class="si">%.4f</span><span class="s"> ) ]  ) );</span><span class="se">\n</span><span class="s">&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">get_mesh_precision</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">quality_factor</span><span class="p">):</span>
+    <span class="n">bbox</span> <span class="o">=</span> <span class="n">Bnd_Box</span><span class="p">()</span>
+    <span class="n">BRepBndLib_Add</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">bbox</span><span class="p">)</span>
+    <span class="n">x_min</span><span class="p">,</span><span class="n">y_min</span><span class="p">,</span><span class="n">z_min</span><span class="p">,</span><span class="n">x_max</span><span class="p">,</span><span class="n">y_max</span><span class="p">,</span><span class="n">z_max</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
+    <span class="n">diagonal_length</span> <span class="o">=</span> <span class="n">gp_Vec</span><span class="p">(</span><span class="n">gp_Pnt</span><span class="p">(</span><span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">z_min</span><span class="p">),</span>
+                             <span class="n">gp_Pnt</span><span class="p">(</span><span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">z_max</span><span class="p">))</span><span class="o">.</span><span class="n">Magnitude</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">diagonal_length</span> <span class="o">/</span> <span class="mf">20.</span><span class="p">)</span> <span class="o">/</span> <span class="n">quality_factor</span>
+
+
+<div class="viewcode-block" id="GeometryWriter"><a class="viewcode-back" href="../../../../devel/applications/document3D/mesh.html#openPLM.apps.document3D.mesh.GeometryWriter">[docs]</a><span class="k">class</span> <span class="nc">GeometryWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Tool to convert an OpenCascade shape into a javascript file.</span>
+
+<span class="sd">    :model attributes:</span>
+
+<span class="sd">    .. attribute:: shape</span>
+
+<span class="sd">        :class:`.SimpleShape` that contains the geometry</span>
+
+<span class="sd">    .. attribute:: quality_factor</span>
+
+<span class="sd">        quality of applied to the geometry</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">quality_factor</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topo_shape</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_precision</span> <span class="o">=</span> <span class="n">get_mesh_precision</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topo_shape</span><span class="p">,</span> <span class="n">quality_factor</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">triangle_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">_triangle_is_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span><span class="n">P2</span><span class="p">,</span><span class="n">P3</span><span class="p">):</span>
+
+        <span class="n">V1</span> <span class="o">=</span> <span class="n">gp_Vec</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span><span class="n">P2</span><span class="p">)</span>
+        <span class="n">V2</span> <span class="o">=</span> <span class="n">gp_Vec</span><span class="p">(</span><span class="n">P2</span><span class="p">,</span><span class="n">P3</span><span class="p">)</span>
+        <span class="n">V3</span> <span class="o">=</span> <span class="n">gp_Vec</span><span class="p">(</span><span class="n">P3</span><span class="p">,</span><span class="n">P1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">V1</span><span class="o">.</span><span class="n">SquareMagnitude</span><span class="p">()</span><span class="o">&gt;</span><span class="mf">1e-10</span> <span class="ow">and</span> <span class="n">V2</span><span class="o">.</span><span class="n">SquareMagnitude</span><span class="p">()</span><span class="o">&gt;</span><span class="mf">1e-10</span> <span class="ow">and</span> <span class="n">V3</span><span class="o">.</span><span class="n">SquareMagnitude</span><span class="p">()</span><span class="o">&gt;</span><span class="mf">1e-10</span><span class="p">:</span>
+            <span class="n">V1</span><span class="o">.</span><span class="n">Cross</span><span class="p">(</span><span class="n">V2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">V1</span><span class="o">.</span><span class="n">SquareMagnitude</span><span class="p">()</span><span class="o">&gt;</span><span class="mf">1e-10</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+<div class="viewcode-block" id="GeometryWriter.write_geometries"><a class="viewcode-back" href="../../../../devel/applications/document3D/mesh.html#openPLM.apps.document3D.mesh.GeometryWriter.write_geometries">[docs]</a>    <span class="k">def</span> <span class="nf">write_geometries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">pov_filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write the geometry to *filename* (javascript) * and *pov_filename* (POVRay)</span>
+<span class="sd">        *identifier* is the name of the generated variable describing the whole geometry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">opacity</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+
+        <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;//Computation for : </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="n">shape</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;var </span><span class="si">%s</span><span class="s"> = new THREE.Geometry();</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="n">identifier</span><span class="p">)</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;var material_for</span><span class="si">%s</span><span class="s"> = new THREE.MeshBasicMaterial({opacity:</span><span class="si">%s</span><span class="s">,shading:THREE.SmoothShading});</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span><span class="n">opacity</span><span class="p">))</span>
+
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">pov_filename</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pov_file</span><span class="p">:</span>
+                <span class="n">pov_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">                #declare m</span><span class="si">%s</span><span class="s"> = mesh {</span>
+<span class="s">                    &quot;&quot;&quot;</span> <span class="o">%</span> <span class="n">identifier</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="p">:</span>
+                    <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;material_for</span><span class="si">%s</span><span class="s">.color.setRGB(</span><span class="si">%f</span><span class="s">,</span><span class="si">%f</span><span class="s">,</span><span class="si">%f</span><span class="s">);</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span><span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">Red</span><span class="p">(),</span><span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">Green</span><span class="p">(),</span><span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">Blue</span><span class="p">()))</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_write_faces</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">pov_file</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="p">:</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">Red</span><span class="p">(),</span> <span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">Green</span><span class="p">(),</span> <span class="n">shape</span><span class="o">.</span><span class="n">color</span><span class="o">.</span><span class="n">Blue</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+                <span class="n">pov_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">            };</span>
+
+<span class="s">            #declare t</span><span class="si">%s</span><span class="s"> = texture {</span>
+<span class="s">                pigment {</span>
+<span class="s">                    color &lt;</span><span class="si">%f</span><span class="s">,</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, 0.9&gt;</span>
+<span class="s">                }</span>
+<span class="s">                finish {ambient 0.1</span>
+<span class="s">                    diffuse 0.9</span>
+<span class="s">                    phong 1}</span>
+<span class="s">              }</span>
+<span class="s">            &quot;&quot;&quot;</span> <span class="o">%</span> <span class="p">((</span><span class="n">identifier</span><span class="p">,</span> <span class="p">)</span> <span class="o">+</span> <span class="n">color</span><span class="p">))</span>
+</div>
+    <span class="k">def</span> <span class="nf">_write_faces</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">pov_file</span><span class="p">,</span> <span class="n">identifier</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Triangulates all faces and writes them to *output* (javascript) and *pov_file* (POVRay).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">BRepMesh_Mesh</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topo_shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_precision</span><span class="p">)</span>
+
+        <span class="n">_points</span> <span class="o">=</span> <span class="n">kjDict</span><span class="p">()</span>
+
+        <span class="n">faces_iterator</span> <span class="o">=</span> <span class="n">Topo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">topo_shape</span><span class="p">)</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
+        <span class="n">index</span><span class="o">=</span><span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">F</span> <span class="ow">in</span> <span class="n">faces_iterator</span><span class="p">:</span>
+            <span class="n">face_location</span> <span class="o">=</span> <span class="n">TopLoc_Location</span><span class="p">()</span>
+            <span class="n">triangulation</span> <span class="o">=</span> <span class="n">BRep_Tool_Triangulation</span><span class="p">(</span><span class="n">F</span><span class="p">,</span><span class="n">face_location</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">triangulation</span><span class="o">.</span><span class="n">IsNull</span><span class="p">()</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="n">facing</span> <span class="o">=</span> <span class="n">triangulation</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+                <span class="n">tab</span> <span class="o">=</span> <span class="n">facing</span><span class="o">.</span><span class="n">Nodes</span><span class="p">()</span>
+                <span class="n">tri</span> <span class="o">=</span> <span class="n">facing</span><span class="o">.</span><span class="n">Triangles</span><span class="p">()</span>
+                <span class="n">the_normal</span> <span class="o">=</span> <span class="n">TColgp_Array1OfDir</span><span class="p">(</span><span class="n">tab</span><span class="o">.</span><span class="n">Lower</span><span class="p">(),</span> <span class="n">tab</span><span class="o">.</span><span class="n">Upper</span><span class="p">())</span>
+                <span class="n">StdPrs_ToolShadedShape_Normal</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">Poly_Connect</span><span class="p">(</span><span class="n">facing</span><span class="o">.</span><span class="n">GetHandle</span><span class="p">()),</span> <span class="n">the_normal</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">facing</span><span class="o">.</span><span class="n">NbTriangles</span><span class="p">()</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+
+                    <span class="n">trian</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">F</span><span class="o">.</span><span class="n">Orientation</span><span class="p">()</span> <span class="o">==</span> <span class="n">TopAbs_REVERSED</span><span class="p">:</span>
+                        <span class="n">index1</span><span class="p">,</span> <span class="n">index3</span><span class="p">,</span> <span class="n">index2</span> <span class="o">=</span> <span class="n">trian</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">index1</span><span class="p">,</span> <span class="n">index2</span><span class="p">,</span> <span class="n">index3</span> <span class="o">=</span> <span class="n">trian</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
+
+                    <span class="n">P1</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">index1</span><span class="p">)</span><span class="o">.</span><span class="n">Transformed</span><span class="p">(</span><span class="n">face_location</span><span class="o">.</span><span class="n">Transformation</span><span class="p">())</span>
+                    <span class="n">P2</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">index2</span><span class="p">)</span><span class="o">.</span><span class="n">Transformed</span><span class="p">(</span><span class="n">face_location</span><span class="o">.</span><span class="n">Transformation</span><span class="p">())</span>
+                    <span class="n">P3</span> <span class="o">=</span> <span class="n">tab</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">index3</span><span class="p">)</span><span class="o">.</span><span class="n">Transformed</span><span class="p">(</span><span class="n">face_location</span><span class="o">.</span><span class="n">Transformation</span><span class="p">())</span>
+                    <span class="n">p1_coord</span> <span class="o">=</span> <span class="n">P1</span><span class="o">.</span><span class="n">XYZ</span><span class="p">()</span><span class="o">.</span><span class="n">Coord</span><span class="p">()</span>
+                    <span class="n">p2_coord</span> <span class="o">=</span> <span class="n">P2</span><span class="o">.</span><span class="n">XYZ</span><span class="p">()</span><span class="o">.</span><span class="n">Coord</span><span class="p">()</span>
+                    <span class="n">p3_coord</span> <span class="o">=</span> <span class="n">P3</span><span class="o">.</span><span class="n">XYZ</span><span class="p">()</span><span class="o">.</span><span class="n">Coord</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triangle_is_valid</span><span class="p">(</span><span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">P3</span><span class="p">):</span>
+                        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="p">(</span><span class="n">p1_coord</span><span class="p">,</span> <span class="n">p2_coord</span><span class="p">,</span> <span class="n">p3_coord</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">_points</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
+                                <span class="n">_points</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
+                                <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">vertice_fmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">point</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                                <span class="n">index</span><span class="o">+=</span><span class="mi">1</span>
+
+                        <span class="n">n1</span> <span class="o">=</span> <span class="n">the_normal</span><span class="p">(</span><span class="n">index1</span><span class="p">)</span>
+                        <span class="n">n2</span> <span class="o">=</span> <span class="n">the_normal</span><span class="p">(</span><span class="n">index2</span><span class="p">)</span>
+                        <span class="n">n3</span> <span class="o">=</span> <span class="n">the_normal</span><span class="p">(</span><span class="n">index2</span><span class="p">)</span>
+                        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">face_fmt</span> <span class="o">%</span>
+                                <span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">_points</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">p1_coord</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                                            <span class="n">_points</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">p2_coord</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                                            <span class="n">_points</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">p3_coord</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span>
+                                            <span class="n">n1</span><span class="o">.</span><span class="n">X</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">Y</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span>
+                                            <span class="n">n2</span><span class="o">.</span><span class="n">X</span><span class="p">(),</span> <span class="n">n2</span><span class="o">.</span><span class="n">Y</span><span class="p">(),</span> <span class="n">n2</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span>
+                                            <span class="n">n3</span><span class="o">.</span><span class="n">X</span><span class="p">(),</span> <span class="n">n3</span><span class="o">.</span><span class="n">Y</span><span class="p">(),</span> <span class="n">n3</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span>
+                                    <span class="p">))</span>
+                        <span class="n">pov_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">triangle_fmt</span> <span class="o">%</span> <span class="p">(</span>
+                            <span class="n">p1_coord</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p1_coord</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p1_coord</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="n">n1</span><span class="o">.</span><span class="n">X</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">Y</span><span class="p">(),</span> <span class="n">n1</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span>
+                            <span class="n">p2_coord</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p2_coord</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p2_coord</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="n">n2</span><span class="o">.</span><span class="n">X</span><span class="p">(),</span> <span class="n">n2</span><span class="o">.</span><span class="n">Y</span><span class="p">(),</span> <span class="n">n2</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span>
+                            <span class="n">p3_coord</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p3_coord</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p3_coord</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+                            <span class="n">n3</span><span class="o">.</span><span class="n">X</span><span class="p">(),</span> <span class="n">n3</span><span class="o">.</span><span class="n">Y</span><span class="p">(),</span> <span class="n">n3</span><span class="o">.</span><span class="n">Z</span><span class="p">(),</span>
+                            <span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">triangle_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

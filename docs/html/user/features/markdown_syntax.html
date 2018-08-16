@@ -1,0 +1,445 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Wiki (Markdown) syntax &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="3. Features" href="../features.html" />
+    <link rel="next" title="4. Navigate" href="navigate.html" />
+    <link rel="prev" title="2. Create" href="create.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="navigate.html" title="4. Navigate"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="create.html" title="2. Create"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../features.html" accesskey="U">3. Features</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Wiki (Markdown) syntax</a><ul>
+<li><a class="reference internal" href="#introduction">3.1. Introduction</a></li>
+<li><a class="reference internal" href="#headers">3.2. Headers</a><ul>
+<li><a class="reference internal" href="#table-of-contents">3.2.1. Table of contents</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#lists">3.3. Lists</a><ul>
+<li><a class="reference internal" href="#ordered-lists">3.3.1. Ordered lists</a></li>
+<li><a class="reference internal" href="#unordered-lists">3.3.2. Unordered lists</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#quotes">3.4. Quotes</a></li>
+<li><a class="reference internal" href="#hyperlinks">3.5. Hyperlinks</a></li>
+<li><a class="reference internal" href="#inline-markup">3.6. Inline markup</a></li>
+<li><a class="reference internal" href="#images">3.7. Images</a></li>
+<li><a class="reference internal" href="#tables">3.8. Tables</a></li>
+<li><a class="reference internal" href="#code">3.9. Code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="create.html"
+                        title="previous chapter">2. Create</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="navigate.html"
+                        title="next chapter">4. Navigate</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/user/features/markdown_syntax.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/features/markdown_syntax.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="wiki-markdown-syntax">
+<span id="user-richtext"></span><h1>3. Wiki (Markdown) syntax<a class="headerlink" href="#wiki-markdown-syntax" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>3.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://daringfireball.net/projects/markdown/syntax">http://daringfireball.net/projects/markdown/syntax</a></p>
+</div>
+<div class="section" id="headers">
+<h2>3.2. Headers<a class="headerlink" href="#headers" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text"><div class="highlight"><pre># Main title (H1) #
+
+## Second level (H2) ##
+
+### Third level (H3) ###
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-text"><div class="highlight"><pre># Main title (H1)
+
+## Second level (H2)
+
+### Third level (H3)
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-text"><div class="highlight"><pre>Main title
+===========
+
+Subtitle
+-----------
+</pre></div>
+</div>
+<div class="section" id="table-of-contents">
+<h3>3.2.1. Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text"><div class="highlight"><pre>[TOC]
+</pre></div>
+</div>
+<p>renders a table of contents.</p>
+</div>
+</div>
+<div class="section" id="lists">
+<h2>3.3. Lists<a class="headerlink" href="#lists" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ordered-lists">
+<h3>3.3.1. Ordered lists<a class="headerlink" href="#ordered-lists" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text"><div class="highlight"><pre>1. item 1
+2. item 2
+3. item 3
+</pre></div>
+</div>
+<p>renders as:</p>
+<div class="syntax-example container">
+<ol class="arabic simple">
+<li>item 1</li>
+<li>item 2</li>
+<li>item 3</li>
+</ol>
+</div>
+<p>Sub items must be indented with 4 spaces:</p>
+<div class="highlight-text"><div class="highlight"><pre>1. item 1
+   1. sub item 1
+   2. sub item 2
+2. item 2
+3. item 3
+</pre></div>
+</div>
+<p>renders as:</p>
+<div class="syntax-example container">
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>item 1</dt>
+<dd><ol class="first last arabic simple">
+<li>sub item 1</li>
+<li>sub item 2</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">item 2</p>
+</li>
+<li><p class="first">item 3</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="unordered-lists">
+<h3>3.3.2. Unordered lists<a class="headerlink" href="#unordered-lists" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-text"><div class="highlight"><pre>+ Pinkie pie
++ Twilight Sparkle
++ Rainbow Dash
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-text"><div class="highlight"><pre>- Pinkie pie
+- Twilight Sparkle
+- Rainbow Dash
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-text"><div class="highlight"><pre>* Pinkie pie
+* Twilight Sparkle
+* Rainbow Dash
+</pre></div>
+</div>
+<p>render as:</p>
+<div class="syntax-example container">
+<ul class="simple">
+<li>Pinkie pie</li>
+<li>Twilight Sparkle</li>
+<li>Rainbow Dash</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="quotes">
+<h2>3.4. Quotes<a class="headerlink" href="#quotes" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text"><div class="highlight"><pre>Quote:
+
+&gt; A quote starts with a &gt;
+&gt; This sentence is in the first paragraph
+&gt;
+&gt; Paragraphs are separated by a new line
+</pre></div>
+</div>
+<p>renders as:</p>
+<div class="syntax-example container">
+<p>Quote:</p>
+<blockquote>
+<div><p>A quote starts with a &gt;
+This sentence is in the first paragraph</p>
+<p>Paragraphs are separated by a new line</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="hyperlinks">
+<h2>3.5. Hyperlinks<a class="headerlink" href="#hyperlinks" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text"><div class="highlight"><pre>A link to &lt;http://example.com&gt;
+</pre></div>
+</div>
+<p>renders as:</p>
+<div class="syntax-example container">
+A link to <a class="reference external" href="http://example.com">http://example.com</a></div>
+<div class="highlight-text"><div class="highlight"><pre>This is [an example](http://example.com/) inline link.
+</pre></div>
+</div>
+<p>renders as:</p>
+<div class="syntax-example container">
+This is <a class="reference external" href="http://example.com/">an example</a> inline link.</div>
+<p>Additions to the Markdown syntax:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">[</span><em><span class="pre">type</span></em><span class="pre">/</span><em><span class="pre">reference</span></em><span class="pre">/</span><em><span class="pre">revision</span></em><span class="pre">]</span></tt></td>
+<td>link to a part or document</td>
+</tr>
+<tr class="row-even"><td><tt class="samp docutils literal"><span class="pre">part:&quot;</span><em><span class="pre">name</span></em><span class="pre">&quot;</span></tt> or <tt class="samp docutils literal"><span class="pre">part:</span><em><span class="pre">name</span></em></tt></td>
+<td>link to the most recent part named <em>name</em></td>
+</tr>
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">doc:&quot;</span><em><span class="pre">name</span></em><span class="pre">&quot;</span></tt> or <tt class="samp docutils literal"><span class="pre">doc:</span><em><span class="pre">name</span></em></tt></td>
+<td>link to the most recent document named <em>name</em></td>
+</tr>
+<tr class="row-even"><td><tt class="samp docutils literal"><span class="pre">&lt;&lt;</span></tt></td>
+<td>link to the previous revision of the current object</td>
+</tr>
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">&gt;&gt;</span></tt></td>
+<td>link to the next revision of the current object</td>
+</tr>
+<tr class="row-even"><td><tt class="samp docutils literal"><span class="pre">&#64;</span><em><span class="pre">username</span></em></tt></td>
+<td>link to a user page</td>
+</tr>
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">group:</span><em><span class="pre">name</span></em></tt></td>
+<td>link to a group</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="inline-markup">
+<h2>3.6. Inline markup<a class="headerlink" href="#inline-markup" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="54%" />
+<col width="46%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">*emphasize*</span></tt></td>
+<td><em>emphasize</em></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">_emphasize_</span></tt></td>
+<td><em>emphasize</em></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">**emphasize</span> <span class="pre">strongly**</span></tt></td>
+<td><strong>emphasize strongly</strong></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">__emphasize</span> <span class="pre">strongly__</span></tt></td>
+<td><strong>emphasize strongly</strong></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">`code`</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">code</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="images">
+<h2>3.7. Images<a class="headerlink" href="#images" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text"><div class="highlight"><pre>![Alt text](http://example.com/img.jpg)
+</pre></div>
+</div>
+</div>
+<div class="section" id="tables">
+<h2>3.8. Tables<a class="headerlink" href="#tables" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text"><div class="highlight"><pre>First Header  | Second Header
+------------- | -------------
+Content Cell  | Content Cell
+Content Cell  | Content Cell
+</pre></div>
+</div>
+<p>renders as:</p>
+<div class="syntax-example container">
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">First Header</th>
+<th class="head">Second Header</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+<tr class="row-odd"><td>Content Cell</td>
+<td>Content Cell</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="code">
+<h2>3.9. Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-text"><div class="highlight"><pre>*code*:
+
+    Code examples must be indented with 4 spaces
+
+      **not strong**
+
+
+     indentations
+     and line breaks are preserved
+</pre></div>
+</div>
+<p>renders as:</p>
+<div class="syntax-example container">
+<p><em>code</em>:</p>
+<div class="highlight-text"><div class="highlight"><pre>Code examples must be indented with 4 spaces
+
+  **not strong**
+
+
+ indentations
+ and line breaks are preserved
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="navigate.html" title="4. Navigate"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="create.html" title="2. Create"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../features.html" >3. Features</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

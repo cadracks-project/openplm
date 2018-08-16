@@ -1,0 +1,198 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.thumbnailers.jfifthumbnailer &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/thumbnailers/jfifthumbnailer.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.thumbnailers.jfifthumbnailer</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. versionadded:: 1.1</span>
+
+<span class="sd">This module adds an optimist thumbnailer for some files which contain</span>
+<span class="sd">a JPEG thumbnails.</span>
+
+<span class="sd">This formats are:</span>
+
+<span class="sd">    * CATIA file (CATPart, CATProduct, CATDrawing)</span>
+<span class="sd">    * Pro Engineer file (prt, asm)</span>
+
+
+<span class="sd">How it works</span>
+<span class="sd">=============</span>
+
+<span class="sd">Some files may contain a thumbnail. This thumbnail is</span>
+<span class="sd">stored somewhere in the file as a JPEG image.</span>
+<span class="sd">So the idea is to try to find a JPEG image in the original</span>
+<span class="sd">file and hope it is a valid image (and the thumbnail).</span>
+
+<span class="sd">All JPEG file starts with a magic number (``0xFFD8``).</span>
+<span class="sd">This thumbnailer locates this magic number and tries to read</span>
+<span class="sd">the image with PIL. If it succeeds, it assumes it is the thumbnail.</span>
+<span class="sd">If it fails, it tries to find another magic number and retries.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">import</span> <span class="nn">Image</span>
+
+<span class="kn">from</span> <span class="nn">base</span> <span class="kn">import</span> <span class="n">ThumbnailersManager</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">SeekedFile</span>
+
+
+<div class="viewcode-block" id="jfif_thumbnailer"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_jfif.html#plmapp.thumbnailers.jfifthumbnailer.jfif_thumbnailer">[docs]</a><span class="k">def</span> <span class="nf">jfif_thumbnailer</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">original_filename</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Thumbnailer for files which contain a JPEG thumbnail.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># the file must be opened in binary mode</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">cad</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">seek</span><span class="p">():</span>
+            <span class="s">&quot; Seek to the possible start of a JPEG file&quot;</span>
+            <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="o">=</span> <span class="n">cad</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">cad</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">c1</span> <span class="o">+</span> <span class="n">c2</span> <span class="o">!=</span> <span class="s">&#39;</span><span class="se">\xff\xd8</span><span class="s">&#39;</span><span class="p">:</span>
+                <span class="n">c1</span> <span class="o">=</span> <span class="n">c2</span>
+                <span class="n">c2</span> <span class="o">=</span> <span class="n">cad</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">c2</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+                    <span class="c"># end of file, raises an exception so that the thumbnailer fails</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">()</span>
+            <span class="n">cad</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+            <span class="n">seek</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span> 
+                <span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">SeekedFile</span><span class="p">(</span><span class="n">cad</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="c"># not a JPEG, goes forward and looks up for another</span>
+                <span class="c"># magic number</span>
+                <span class="n">cad</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># looks good, save the image</span>
+                <span class="n">im</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">(</span><span class="n">ThumbnailersManager</span><span class="o">.</span><span class="n">THUMBNAIL_SIZE</span><span class="p">,</span> <span class="n">Image</span><span class="o">.</span><span class="n">ANTIALIAS</span><span class="p">)</span>
+                <span class="n">im</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">output_path</span><span class="p">)</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</div>
+<span class="n">CATIA_FILES</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;catpart&quot;</span><span class="p">,</span> <span class="s">&quot;catproduct&quot;</span><span class="p">,</span> <span class="s">&quot;catdrawing&quot;</span><span class="p">)</span>
+<span class="n">PRO_ENGINEER_FILES</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;asm&quot;</span><span class="p">,</span> <span class="s">&quot;prt&quot;</span><span class="p">)</span>
+<span class="n">FILES</span> <span class="o">=</span> <span class="n">CATIA_FILES</span> <span class="o">+</span> <span class="n">PRO_ENGINEER_FILES</span>
+<span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">FILES</span><span class="p">:</span>
+    <span class="n">ThumbnailersManager</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="s">&quot;.&quot;</span> <span class="o">+</span> <span class="n">ext</span><span class="p">,</span> <span class="n">jfif_thumbnailer</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

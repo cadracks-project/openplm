@@ -1,0 +1,1047 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.views.main &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/views/main.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.views.main</h1><div class="highlight"><pre>
+<span class="c">#-!- coding:utf-8 -!-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains all &quot;html&quot; views, i.e. views that renders an HTML page</span>
+<span class="sd">from a standard (not ajax) HTTP request.</span>
+<span class="sd">Ajax views are in :mod:`.ajax` and API views are in :mod:`.api`</span>
+
+<span class="sd">Most of the views are decorated with :func:`.handle_errors` and</span>
+<span class="sd">render HTML with the django template engine.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">django.contrib.admin</span> <span class="kn">import</span> <span class="n">DateFieldListFilter</span>
+<span class="kn">from</span> <span class="nn">django.contrib.admin.options</span> <span class="kn">import</span> <span class="n">IncorrectLookupParameters</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.views</span> <span class="kn">import</span> <span class="n">redirect_to_login</span>
+<span class="kn">from</span> <span class="nn">django.contrib.comments.views.comments</span> <span class="kn">import</span> <span class="n">post_comment</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.db.models.fields</span> <span class="kn">import</span> <span class="n">FieldDoesNotExist</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">Http404</span><span class="p">,</span>
+                        <span class="n">HttpResponsePermanentRedirect</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.utils.encoding</span> <span class="kn">import</span> <span class="n">iri_to_uri</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.utils.decorators</span> <span class="kn">import</span> <span class="n">method_decorator</span>
+<span class="kn">from</span> <span class="nn">django.views.i18n</span> <span class="kn">import</span> <span class="n">set_language</span> <span class="k">as</span> <span class="n">dj_set_language</span>
+<span class="kn">from</span> <span class="nn">django.forms.util</span> <span class="kn">import</span> <span class="n">from_current_timezone</span>
+
+<span class="kn">from</span> <span class="nn">haystack.views</span> <span class="kn">import</span> <span class="n">SearchView</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.csvimport</span> <span class="kn">as</span> <span class="nn">csvimport</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">as</span> <span class="nn">forms</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="p">(</span><span class="n">init_ctx</span><span class="p">,</span> <span class="n">get_obj</span><span class="p">,</span>
+    <span class="n">get_obj_by_id</span><span class="p">,</span> <span class="n">handle_errors</span><span class="p">,</span> <span class="n">get_generic_data</span><span class="p">,</span> <span class="n">get_navigate_data</span><span class="p">,</span>
+    <span class="n">get_creation_view</span><span class="p">,</span> <span class="n">secure_required</span><span class="p">,</span> <span class="n">get_pagination</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">get_controller</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">ControllerError</span><span class="p">,</span> <span class="n">PermissionError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">filename_to_name</span><span class="p">,</span> <span class="n">r2r</span>
+
+
+<div class="viewcode-block" id="set_language"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.set_language">[docs]</a><span class="k">def</span> <span class="nf">set_language</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A wrapper arround :func:`django.views.i18n.set_language` that</span>
+<span class="sd">    stores the language in the user profile.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">dj_set_language</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">():</span>
+        <span class="n">language</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;django_language&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">language</span><span class="p">:</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">language</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="comment_post_wrapper"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.comment_post_wrapper">[docs]</a><span class="k">def</span> <span class="nf">comment_post_wrapper</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="c"># from http://thejaswi.info/tech/blog/2008/11/20/part-2-django-comments-authenticated-users/</span>
+    <span class="c"># Clean the request to prevent form spoofing</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="ow">and</span> \
+                <span class="n">user</span><span class="o">.</span><span class="n">email</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&#39;email&#39;</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;You registered user...trying to spoof a form...eh?&quot;</span><span class="p">)</span>
+        <span class="n">resp</span> <span class="o">=</span> <span class="n">post_comment</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;Your comment was posted.&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">resp</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;You anonymous cheater...trying to spoof a form?&quot;</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">restricted_access</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="viewcode-block" id="display_home_page"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.display_home_page">[docs]</a><span class="k">def</span> <span class="nf">display_home_page</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Home page view.</span>
+
+<span class="sd">    :url: :samp:`/home/`</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`home.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``pending_invitations_owner``</span>
+<span class="sd">        QuerySet of pending invitations to groups owned by the user</span>
+
+<span class="sd">    ``pending_invitations_guest``</span>
+<span class="sd">        QuerySet of pending invitations to groups that the user can joined</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;User&quot;</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;object_menu&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+        <span class="c"># always empty if restricted -&gt; do not hit the database</span>
+        <span class="n">pending_invitations_owner</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">invitation_inv_owner</span><span class="o">.</span> \
+                <span class="nb">filter</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;group__name&quot;</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">select_related</span><span class="p">(</span><span class="s">&quot;guest&quot;</span><span class="p">,</span> <span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="s">&quot;group&quot;</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;pending_invitations_owner&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pending_invitations_owner</span>
+        <span class="n">pending_invitations_guest</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">invitation_inv_guest</span><span class="o">.</span> \
+                <span class="nb">filter</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;group__name&quot;</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">select_related</span><span class="p">(</span><span class="s">&quot;guest&quot;</span><span class="p">,</span> <span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="s">&quot;group&quot;</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;pending_invitations_guest&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pending_invitations_guest</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;display_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;home.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="render_attributes"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.render_attributes">[docs]</a><span class="k">def</span> <span class="nf">render_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;HIDE_EMAILS&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">):</span>
+            <span class="n">attrs</span> <span class="o">=</span> <span class="p">(</span><span class="n">attr</span> <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attrs</span> <span class="k">if</span> <span class="n">attr</span> <span class="o">!=</span> <span class="s">&quot;email&quot;</span><span class="p">)</span>
+    <span class="n">object_attributes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">meta</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_meta</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_verbose_name</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+        <span class="n">richtext</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+            <span class="n">richtext</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s">&quot;richtext&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">FieldDoesNotExist</span><span class="p">:</span>
+            <span class="n">richtext</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">object_attributes</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">item</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">),</span> <span class="n">richtext</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">object_attributes</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">restricted_access</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="viewcode-block" id="display_object_attributes"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.display_object_attributes">[docs]</a><span class="k">def</span> <span class="nf">display_object_attributes</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attributes view of the given object.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/attributes/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`attribute.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``object_attributes``</span>
+<span class="sd">        list of tuples(verbose attribute name, value)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">object_attributes</span> <span class="o">=</span> <span class="n">render_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;is_contributor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;attributes&#39;</span><span class="p">,</span>
+                <span class="s">&#39;object_attributes&#39;</span> <span class="p">:</span> <span class="n">object_attributes</span><span class="p">})</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span><span class="p">:</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;attach&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;attach_doc&quot;</span><span class="p">)</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;link_creation_action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s">doc-cad/add/&quot;</span> <span class="o">%</span> <span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span>
+        <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_document</span><span class="p">:</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;attach&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;attach_part&quot;</span><span class="p">)</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;link_creation_action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s">parts/add/&quot;</span> <span class="o">%</span> <span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;attributes.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">restricted_access</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="viewcode-block" id="display_object"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.display_object">[docs]</a><span class="k">def</span> <span class="nf">display_object</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generic object view.</span>
+
+<span class="sd">    Permanently redirects to the attribute page of the given object if it</span>
+<span class="sd">    is a part, a user or a group and to the files page if it is a document.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;User&#39;</span><span class="p">,</span> <span class="s">&#39;Group&#39;</span><span class="p">):</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s">u&quot;/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/attributes/&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj_type</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">obj_type</span><span class="p">]</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="s">&quot;files&quot;</span> <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">model_cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Document</span><span class="p">)</span> <span class="k">else</span> <span class="s">&quot;attributes&quot;</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s">u&quot;/object/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">page</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponsePermanentRedirect</span><span class="p">(</span><span class="n">iri_to_uri</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+
+</div>
+<span class="n">ITEMS_PER_HISTORY</span> <span class="o">=</span> <span class="mi">50</span>
+
+<div class="viewcode-block" id="redirect_history"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.redirect_history">[docs]</a><span class="k">def</span> <span class="nf">redirect_history</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">hid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Redirects to the history page that contains the history item</span>
+<span class="sd">    numbered *hid*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">GroupHistory</span><span class="p">,</span>
+         <span class="s">&quot;user&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">UserHistory</span><span class="p">,</span>
+         <span class="s">&quot;object&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">History</span><span class="p">,}[</span><span class="nb">type</span><span class="p">]</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">hid</span><span class="p">))</span>
+    <span class="n">date_page</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">date</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="n">H</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="n">h</span><span class="o">.</span><span class="n">plmobject</span><span class="p">,</span> <span class="n">date__gte</span><span class="o">=</span><span class="n">h</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">items</span> <span class="o">//</span> <span class="n">ITEMS_PER_HISTORY</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s">history/?date_history_begin=</span><span class="si">%s</span><span class="s">&amp;number_days=30#</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">,</span> <span class="n">date_page</span><span class="p">,</span> <span class="n">hid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_object_history"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.display_object_history">[docs]</a><span class="k">def</span> <span class="nf">display_object_history</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">obj_revi</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">timeline</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="s">&quot;history.html&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    History view.</span>
+
+<span class="sd">    This view displays a history of the selected object and its revisions.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/history/`</span>
+<span class="sd">    :url: :samp:`/user/{username}/history/`</span>
+<span class="sd">    :url: :samp:`/group/{group_name}/history/`</span>
+<span class="sd">    :url: :samp:`/timeline/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`history.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``object_history``</span>
+<span class="sd">        list of :class:`.AbstractHistory`</span>
+
+<span class="sd">    ``show_revisions``</span>
+<span class="sd">        True if the template should show the revision of each history row</span>
+
+<span class="sd">    ``show_identifiers``</span>
+<span class="sd">        True if the template should show the type, reference and revision</span>
+<span class="sd">        of each history row</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="n">form_date</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">HistoryDateForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="k">else</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">form_date</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">date_begin</span> <span class="o">=</span> <span class="n">form_date</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;date_history_begin&quot;</span><span class="p">]</span>
+        <span class="n">number_days</span> <span class="o">=</span> <span class="n">form_date</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;number_days&quot;</span><span class="p">]</span>
+        <span class="n">done_by</span> <span class="o">=</span> <span class="n">form_date</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;done_by&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">done_by</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="s">&#39;date_history_begin&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;date_history_begin&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">10</span> <span class="p">:</span>
+                <span class="n">date_begin</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;date_history_begin&#39;</span><span class="p">]</span>
+                <span class="n">date_begin</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">date_begin</span><span class="p">[:</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">date_begin</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">7</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">date_begin</span><span class="p">[</span><span class="mi">8</span><span class="p">:</span><span class="mi">10</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">date_begin</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="n">date_begin</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
+        <span class="n">number_days</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">date_begin</span> <span class="o">=</span> <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">date_begin</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">date_begin</span> <span class="o">&gt;</span>  <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()):</span>
+        <span class="n">date_begin</span> <span class="o">=</span> <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">())</span>
+    <span class="n">date_end</span> <span class="o">=</span> <span class="n">date_begin</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">number_days</span><span class="p">))</span>
+    <span class="n">date_end</span> <span class="o">=</span> <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">date_end</span><span class="p">)</span>
+
+
+    <span class="k">if</span> <span class="n">timeline</span><span class="p">:</span>
+        <span class="c"># global timeline: shows objects owned by the company and readable objects</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;timeline&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;object_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Timeline&quot;</span><span class="p">)</span>
+
+        <span class="n">form_object</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">HistoryObjectForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="k">else</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form_object</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">display_part</span> <span class="o">=</span> <span class="n">form_object</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;part&quot;</span><span class="p">]</span>
+            <span class="n">display_document</span> <span class="o">=</span> <span class="n">form_object</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;document&quot;</span><span class="p">]</span>
+            <span class="n">display_group</span> <span class="o">=</span> <span class="n">form_object</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">display_part</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">display_document</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">display_group</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">list_display</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;display_document&quot;</span><span class="p">:</span> <span class="n">display_document</span><span class="p">,</span> <span class="s">&quot;display_part&quot;</span><span class="p">:</span> <span class="n">display_part</span><span class="p">,</span> <span class="s">&quot;display_group&quot;</span> <span class="p">:</span> <span class="n">display_group</span><span class="p">}</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">timeline_histories</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">date_begin</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">date_end</span><span class="p">,</span> <span class="n">done_by</span><span class="p">,</span> <span class="n">list_display</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;form_object&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form_object</span>
+
+        <span class="k">if</span> <span class="n">display_document</span><span class="p">:</span>
+            <span class="n">display_document</span> <span class="o">=</span> <span class="s">&#39;on&#39;</span>
+        <span class="k">if</span> <span class="n">display_part</span><span class="p">:</span>
+            <span class="n">display_part</span> <span class="o">=</span> <span class="s">&#39;on&#39;</span>
+        <span class="k">if</span> <span class="n">display_group</span><span class="p">:</span>
+            <span class="n">display_group</span> <span class="o">=</span> <span class="s">&#39;on&#39;</span>
+
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;display_document&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_document</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;display_part&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_part</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;display_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">display_group</span>
+
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">histories</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date__gte</span> <span class="o">=</span> <span class="n">date_end</span><span class="p">,</span> <span class="n">date__lt</span> <span class="o">=</span> <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">date_begin</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">done_by</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">username</span><span class="o">=</span> <span class="n">done_by</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__username</span> <span class="o">=</span> <span class="n">done_by</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">history</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;This user doesn&#39;t exist&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">):</span>
+            <span class="c"># display history of all revisions</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;show_revisions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;show_revisions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">history</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;plmobject&quot;</span><span class="p">,</span> <span class="s">&quot;user__profile&quot;</span><span class="p">)</span>
+
+
+
+    <span class="n">date_after</span> <span class="o">=</span> <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">date_begin</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">date_after</span> <span class="o">&lt;</span> <span class="n">from_current_timezone</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()):</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;date_after&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">date_begin</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="n">number_days</span> <span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;date_before&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="n">date_begin</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span> <span class="o">=</span> <span class="n">number_days</span> <span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+        <span class="s">&#39;form_date&#39;</span><span class="p">:</span> <span class="n">form_date</span><span class="p">,</span>
+        <span class="s">&#39;date_begin_period&#39;</span> <span class="p">:</span> <span class="n">date_begin</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+        <span class="s">&#39;date_end_period&#39;</span><span class="p">:</span><span class="n">date_end</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">&#39;</span><span class="p">),</span>
+        <span class="s">&quot;number_days&quot;</span> <span class="p">:</span> <span class="n">number_days</span><span class="p">,</span>
+        <span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;history&#39;</span><span class="p">,</span>
+        <span class="s">&#39;object_history&#39;</span> <span class="p">:</span> <span class="n">history</span><span class="p">,</span>
+        <span class="s">&#39;show_identifiers&#39;</span> <span class="p">:</span> <span class="n">timeline</span>
+        <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="create_object"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.create_object">[docs]</a><span class="k">def</span> <span class="nf">create_object</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">from_registered_view</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">creation_form</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to create a :class:`.PLMObject` or a :class:`.GroupInfo`.</span>
+
+<span class="sd">    :url: ``/object/create/``</span>
+
+<span class="sd">    Requests (POST and GET) must contain a ``type`` variable that validates a</span>
+<span class="sd">    :class:`.TypeForm`.</span>
+
+<span class="sd">    POST requests must validate the creation form, fields depend on the</span>
+<span class="sd">    given type. If the creation form is valid, an object is created and</span>
+<span class="sd">    in case of success, this view redirects to the created object.</span>
+
+<span class="sd">    Requests may contain a ``__next__`` variable. A successful creation will</span>
+<span class="sd">    redirect to this URL. Some special strings are replaced:</span>
+
+<span class="sd">        * ``##type##`` with the created object&#39;s type</span>
+<span class="sd">        * ``##ref##`` with the created object&#39;s reference</span>
+<span class="sd">        * ``##rev##`` with the created object&#39;s reference</span>
+
+<span class="sd">    Requests may also contain other special variables (at most one of</span>
+<span class="sd">    them):</span>
+
+<span class="sd">        ``related_doc``</span>
+<span class="sd">            Id of a document. The created part will be attached to this</span>
+<span class="sd">            document. Object&#39;s type is restricted to part types.</span>
+<span class="sd">            Two context variables (``related_doc`` and ``related``)</span>
+<span class="sd">            are set to the document controller.</span>
+
+<span class="sd">        ``related_part``</span>
+<span class="sd">            Id of a part. The created document will be attached to this</span>
+<span class="sd">            part. Object&#39;s type is restricted to document types.</span>
+<span class="sd">            Two context variables (``related_part`` and ``related``)</span>
+<span class="sd">            are set to the part controller.</span>
+
+<span class="sd">        ``related_parent``</span>
+<span class="sd">            Id of a part. Object&#39;s type is restricted to part types.</span>
+<span class="sd">            Two context variables (``related_parent`` and ``related``)</span>
+<span class="sd">            are set to the part controller.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        If *from_registered_view* is False, this view delegates its</span>
+<span class="sd">        treatment to a registered view that handles creation of</span>
+<span class="sd">        objects of the given type.</span>
+<span class="sd">        (see :func:`.get_creation_view` and :func:`.register_creation_view`)</span>
+
+<span class="sd">    :param from_registered_view: True if this function is called by another</span>
+<span class="sd">         creation view</span>
+<span class="sd">    :param creation_form: a creation form that will be used instead of the</span>
+<span class="sd">         default one</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`create.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``creation_form``</span>
+
+<span class="sd">    ``creation_type_form``</span>
+<span class="sd">        :class:`.TypeForm` to select the type of the created object</span>
+
+<span class="sd">    ``object_type``</span>
+<span class="sd">        type of the created object</span>
+
+<span class="sd">    ``next``</span>
+<span class="sd">        value of the ``__next__`` request variable if given</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">Form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">TypeForm</span>
+    <span class="c"># it is possible that the created object must be attached to a part</span>
+    <span class="c"># or a document</span>
+    <span class="c"># related_doc and related_part should be a plmobject id</span>
+    <span class="c"># If the related_doc/part is not a doc/part, we let python raise</span>
+    <span class="c"># an AttributeError, since a user should not play with the URL</span>
+    <span class="c"># and openPLM must be smart enough to produce valid URLs</span>
+    <span class="n">attach</span> <span class="o">=</span> <span class="n">related</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="s">&quot;related_doc&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">:</span>
+        <span class="n">Form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">PartTypeForm</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">[</span><span class="s">&quot;related_doc&quot;</span><span class="p">]),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">attach</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">attach_to_part</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;related_doc&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">[</span><span class="s">&quot;related_doc&quot;</span><span class="p">]</span>
+        <span class="n">related</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;related&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc</span>
+    <span class="k">elif</span> <span class="s">&quot;related_part&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">:</span>
+        <span class="n">Form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DocumentTypeForm</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">[</span><span class="s">&quot;related_part&quot;</span><span class="p">]),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">attach</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">attach_to_document</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;related_part&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">[</span><span class="s">&quot;related_part&quot;</span><span class="p">]</span>
+        <span class="n">related</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;related&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">part</span>
+    <span class="k">elif</span> <span class="s">&quot;related_parent&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">:</span>
+        <span class="n">Form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">PartTypeForm</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">[</span><span class="s">&quot;related_parent&quot;</span><span class="p">]),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;related_parent&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">[</span><span class="s">&quot;related_parent&quot;</span><span class="p">]</span>
+        <span class="n">related</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;related&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parent</span>
+    <span class="k">if</span> <span class="s">&quot;pfiles&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">:</span>
+        <span class="n">Form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">Document2TypeForm</span>
+
+    <span class="k">if</span> <span class="s">&quot;__next__&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">:</span>
+        <span class="n">redirect_to</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">[</span><span class="s">&quot;__next__&quot;</span><span class="p">]</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;next&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">redirect_to</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># will redirect to the created object</span>
+        <span class="n">redirect_to</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">type_form</span> <span class="o">=</span> <span class="n">Form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">REQUEST</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">type_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">type_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_users_and_plmobjects</span><span class="p">()[</span><span class="n">type_</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">from_registered_view</span><span class="p">:</span>
+            <span class="n">view</span> <span class="o">=</span> <span class="n">get_creation_view</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># view has been registered to create an object of type &#39;cls&#39;</span>
+                <span class="k">return</span> <span class="n">view</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;creation_type_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_form</span>
+        <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;create.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span> <span class="ow">and</span> <span class="n">creation_form</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">creation_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">related</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">creation_form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">related</span><span class="o">.</span><span class="n">group</span>
+            <span class="n">creation_form</span><span class="o">.</span><span class="n">initial</span><span class="p">[</span><span class="s">&quot;lifecycle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">related</span><span class="o">.</span><span class="n">lifecycle</span>
+        <span class="k">if</span> <span class="s">&quot;pfiles&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+            <span class="n">pfiles</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">&quot;pfiles&quot;</span><span class="p">)</span>
+            <span class="n">creation_form</span><span class="o">.</span><span class="n">initial</span><span class="p">[</span><span class="s">&quot;pfiles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pfiles</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">filename_to_name</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">pfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                <span class="n">creation_form</span><span class="o">.</span><span class="n">initial</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">pass</span>
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">creation_form</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">creation_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">creation_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">ctrl_cls</span> <span class="o">=</span> <span class="n">get_controller</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
+            <span class="n">ctrl</span> <span class="o">=</span> <span class="n">ctrl_cls</span><span class="o">.</span><span class="n">create_from_form</span><span class="p">(</span><span class="n">creation_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;The </span><span class="si">%(Object_type)s</span><span class="s"> has been created&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Object_type</span> <span class="o">=</span> <span class="n">type_</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attach</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">attach</span><span class="p">(</span><span class="n">ctrl</span><span class="p">)</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;The </span><span class="si">%(Object_type)s</span><span class="s"> has been attached&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">Object_type</span> <span class="o">=</span> <span class="n">type_</span><span class="p">)</span>
+                    <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="n">ControllerError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="c"># crtl cannot be attached (maybe the state of the</span>
+                    <span class="c"># related object as changed)</span>
+                    <span class="c"># alerting the user using the messages framework since</span>
+                    <span class="c"># the response is redirected</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;Error: </span><span class="si">%(details)s</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                    <span class="n">messages</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+                    <span class="c"># redirecting to the ctrl page that lists its attached</span>
+                    <span class="c"># objects</span>
+                    <span class="k">if</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">is_document</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">ctrl</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;parts/&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">ctrl</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;doc-cad/&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">redirect_to</span><span class="p">:</span>
+                <span class="n">redirect_to</span> <span class="o">=</span> <span class="n">redirect_to</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;##ref##&quot;</span><span class="p">,</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+                <span class="n">redirect_to</span> <span class="o">=</span> <span class="n">redirect_to</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;##rev##&quot;</span><span class="p">,</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">revision</span><span class="p">)</span>
+                <span class="n">redirect_to</span> <span class="o">=</span> <span class="n">redirect_to</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;##type##&quot;</span><span class="p">,</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">redirect_to</span> <span class="ow">or</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;creation_form&#39;</span> <span class="p">:</span> <span class="n">creation_form</span><span class="p">,</span>
+        <span class="s">&#39;object_type&#39;</span> <span class="p">:</span> <span class="n">type_</span><span class="p">,</span>
+        <span class="s">&#39;creation_type_form&#39;</span> <span class="p">:</span> <span class="n">type_form</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;create.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../attributes/&quot;</span><span class="p">,</span> <span class="n">restricted_access</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="viewcode-block" id="modify_object"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.modify_object">[docs]</a><span class="k">def</span> <span class="nf">modify_object</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage html page for the modification of the selected object.</span>
+<span class="sd">    It computes a context dictionary based on</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">obj_type</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">modification_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_modification_form</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">modification_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">update_from_form</span><span class="p">(</span><span class="n">modification_form</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;attributes/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">modification_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_modification_form</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;modification_form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">modification_form</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;edit.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="navigate"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.navigate">[docs]</a><span class="k">def</span> <span class="nf">navigate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage html page which displays a graphical picture the different links</span>
+<span class="sd">    between :class:`~django.contrib.auth.models.User` and  :class:`.models.PLMObject`.</span>
+<span class="sd">    This function uses Graphviz (http://graphviz.org/).</span>
+<span class="sd">    Some filters let user defines which type of links he/she wants to display.</span>
+<span class="sd">    It computes a context dictionary based on</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_navigate_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;edges&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">ctx</span><span class="p">[</span><span class="s">&quot;edges&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;navigate.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../..&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="import_csv_init"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.import_csv_init">[docs]</a><span class="k">def</span> <span class="nf">import_csv_init</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s">&quot;csv&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage page to import a csv file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You are not a contributor.&quot;</span><span class="p">)</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">csv_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CSVForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">csv_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="s">&quot;file&quot;</span><span class="p">]</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="s">&quot;openplmcsv&quot;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">chunks</span><span class="p">():</span>
+                <span class="n">tmp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">tmp</span><span class="o">.</span><span class="n">name</span><span class="p">)[</span><span class="mi">1</span><span class="p">][</span><span class="nb">len</span><span class="p">(</span><span class="n">prefix</span><span class="p">):]</span>
+            <span class="n">tmp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="n">csv_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;encoding&quot;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;/import/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
+                                        <span class="n">encoding</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">csv_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CSVForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;csv_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">csv_form</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;step&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;import/csv.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../..&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="import_csv_apply"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.import_csv_apply">[docs]</a><span class="k">def</span> <span class="nf">import_csv_apply</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View that display a preview of an uploaded csv file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You are not a contributor.&quot;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;encoding_error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;io_error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">Importer</span> <span class="o">=</span> <span class="n">csvimport</span><span class="o">.</span><span class="n">IMPORTERS</span><span class="p">[</span><span class="n">target</span><span class="p">]</span>
+    <span class="n">Formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_headers_formset</span><span class="p">(</span><span class="n">Importer</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span>
+                            <span class="s">&quot;openplmcsv&quot;</span> <span class="o">+</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+            <span class="n">importer</span> <span class="o">=</span> <span class="n">Importer</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+            <span class="n">preview</span> <span class="o">=</span> <span class="n">importer</span><span class="o">.</span><span class="n">get_preview</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="n">headers_formset</span> <span class="o">=</span> <span class="n">Formset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">headers_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                <span class="n">headers</span> <span class="o">=</span> <span class="n">headers_formset</span><span class="o">.</span><span class="n">headers</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">csv_file</span><span class="p">:</span>
+                        <span class="n">importer</span> <span class="o">=</span> <span class="n">Importer</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">encoding</span><span class="p">)</span>
+                        <span class="n">importer</span><span class="o">.</span><span class="n">import_csv</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">csvimport</span><span class="o">.</span><span class="n">CSVImportError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;errors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">exc</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;/import/done/&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">initial</span> <span class="o">=</span> <span class="p">[{</span><span class="s">&quot;header&quot;</span><span class="p">:</span> <span class="n">header</span><span class="p">}</span> <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="n">preview</span><span class="o">.</span><span class="n">guessed_headers</span><span class="p">]</span>
+            <span class="n">headers_formset</span> <span class="o">=</span> <span class="n">Formset</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s">&quot;preview&quot;</span> <span class="p">:</span>  <span class="n">preview</span><span class="p">,</span>
+            <span class="s">&quot;preview_data&quot;</span> <span class="p">:</span> <span class="n">itertools</span><span class="o">.</span><span class="n">izip</span><span class="p">((</span><span class="n">f</span><span class="p">[</span><span class="s">&quot;header&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">headers_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">),</span>
+                <span class="n">preview</span><span class="o">.</span><span class="n">headers</span><span class="p">,</span> <span class="o">*</span><span class="n">preview</span><span class="o">.</span><span class="n">rows</span><span class="p">),</span>
+            <span class="s">&quot;headers_formset&quot;</span> <span class="p">:</span> <span class="n">headers_formset</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="k">except</span> <span class="ne">UnicodeError</span><span class="p">:</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;encoding_error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">IOError</span><span class="p">,</span> <span class="n">csv</span><span class="o">.</span><span class="n">Error</span><span class="p">):</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;io_error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;has_critical_error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;io_error&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;encoding_error&quot;</span><span class="p">]</span> \
+            <span class="ow">or</span> <span class="s">&quot;errors&quot;</span> <span class="ow">in</span> <span class="n">ctx</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;csv_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CSVForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;encoding&quot;</span> <span class="p">:</span> <span class="n">encoding</span><span class="p">})</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;step&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;target&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">target</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;import/csv.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="import_csv_done"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.import_csv_done">[docs]</a><span class="k">def</span> <span class="nf">import_csv_done</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;import/done.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="OpenPLMSearchView"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.OpenPLMSearchView">[docs]</a><span class="k">class</span> <span class="nc">OpenPLMSearchView</span><span class="p">(</span><span class="n">SearchView</span><span class="p">):</span>
+
+<div class="viewcode-block" id="OpenPLMSearchView.extra_context"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.OpenPLMSearchView.extra_context">[docs]</a>    <span class="k">def</span> <span class="nf">extra_context</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">extra</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">OpenPLMSearchView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">extra_context</span><span class="p">()</span>
+        <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;object_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Search&quot;</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;suggestion&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">suggestion</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;extra_types&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">__name__</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">IObject</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="nb">type</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">):</span>
+                <span class="n">main_cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span> <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="p">)</span> <span class="k">else</span> <span class="n">models</span><span class="o">.</span><span class="n">Document</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;subtypes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_subclasses</span><span class="p">(</span><span class="n">main_cls</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="n">extra</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">extra</span>
+</div>
+<div class="viewcode-block" id="OpenPLMSearchView.get_query"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.OpenPLMSearchView.get_query">[docs]</a>    <span class="k">def</span> <span class="nf">get_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">OpenPLMSearchView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_query</span><span class="p">()</span> <span class="ow">or</span> <span class="s">&quot;*&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;search_query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">query</span>
+        <span class="k">return</span> <span class="n">query</span>
+</div>
+<div class="viewcode-block" id="OpenPLMSearchView.get_results"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.OpenPLMSearchView.get_results">[docs]</a>    <span class="k">def</span> <span class="nf">get_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">OpenPLMSearchView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_results</span><span class="p">()</span>
+        <span class="c"># update request.session so that the left panel displays</span>
+        <span class="c"># the same results</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">suggestion</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">spelling_suggestion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_query</span><span class="p">())</span>
+        <span class="n">session</span><span class="p">[</span><span class="s">&quot;results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[:</span><span class="mi">30</span><span class="p">]</span>
+        <span class="n">session</span><span class="p">[</span><span class="s">&quot;search_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+        <span class="n">session</span><span class="p">[</span><span class="s">&quot;search_official&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;search_official&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="kn">from</span> <span class="nn">haystack</span> <span class="kn">import</span> <span class="n">site</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;results&quot;</span><span class="p">):</span>
+            <span class="n">r</span><span class="o">.</span><span class="n">searchsite</span> <span class="o">=</span> <span class="n">site</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">results</span>
+</div>
+    <span class="nd">@method_decorator</span><span class="p">(</span><span class="n">handle_errors</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">OpenPLMSearchView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="SimpleDateFilter"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.SimpleDateFilter">[docs]</a><span class="k">class</span> <span class="nc">SimpleDateFilter</span><span class="p">(</span><span class="n">DateFieldListFilter</span><span class="p">):</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="s">&quot;snippets/time_filter.html&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">field_path</span><span class="p">):</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">param</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">field_path</span><span class="p">,</span> <span class="n">field</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">field_path2</span> <span class="o">=</span> <span class="n">field_path</span>
+        <span class="n">mfield</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SimpleDateFilter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">mfield</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span>
+            <span class="n">params</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+<div class="viewcode-block" id="SimpleDateFilter.filters"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.SimpleDateFilter.filters">[docs]</a>    <span class="k">def</span> <span class="nf">filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">param_dict</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">):</span>
+            <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field_path2</span> <span class="o">+</span> <span class="s">&quot;__gte&quot;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">field_path2</span> <span class="o">+</span> <span class="s">&quot;__lt&quot;</span><span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">param</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_dict</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">param</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">field_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">field_path2</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="n">selected</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_params</span> <span class="o">==</span> <span class="n">param_dict</span> <span class="ow">or</span>
+                <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date_params</span><span class="o">.</span><span class="n">itervalues</span><span class="p">())))</span>
+            <span class="k">if</span> <span class="n">selected</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">display</span> <span class="o">=</span> <span class="n">title</span>
+            <span class="k">yield</span> <span class="p">{</span>
+                <span class="s">&#39;selected&#39;</span><span class="p">:</span> <span class="n">selected</span><span class="p">,</span>
+                <span class="s">&#39;param_dict&#39;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+                <span class="s">&#39;display&#39;</span><span class="p">:</span> <span class="n">title</span><span class="p">,</span>
+            <span class="p">}</span>
+</div>
+<div class="viewcode-block" id="SimpleDateFilter.queryset"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.SimpleDateFilter.queryset">[docs]</a>    <span class="k">def</span> <span class="nf">queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">queryset</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">SimpleDateFilter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">queryset</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">queryset</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">IncorrectLookupParameters</span><span class="p">:</span>
+            <span class="c"># wrong query manually entered, ignore it</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">queryset</span>
+
+</div></div>
+<span class="nd">@secure_required</span>
+<div class="viewcode-block" id="browse"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.browse">[docs]</a><span class="k">def</span> <span class="nf">browse</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;object&quot;</span><span class="p">):</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">()</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+        <span class="c"># only authenticated users can see all groups and users</span>
+        <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">plmtypes</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;object&quot;</span><span class="p">,</span> <span class="s">&quot;part&quot;</span><span class="p">,</span> <span class="s">&quot;topassembly&quot;</span><span class="p">,</span> <span class="s">&quot;document&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">type2manager</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;object&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span>
+                <span class="s">&quot;part&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span>
+                <span class="s">&quot;topassembly&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="o">.</span><span class="n">top_assemblies</span><span class="p">,</span>
+                <span class="s">&quot;document&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span>
+                <span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">GroupInfo</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span>
+                <span class="s">&quot;user&quot;</span> <span class="p">:</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;profile&quot;</span><span class="p">),</span>
+            <span class="p">}</span>
+            <span class="n">manager</span> <span class="o">=</span> <span class="n">type2manager</span><span class="p">[</span><span class="nb">type</span><span class="p">]</span>
+            <span class="n">main_cls</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">model</span>
+            <span class="n">stype</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;stype&quot;</span><span class="p">)</span>
+            <span class="n">plmobjects</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;plmobjects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">type</span> <span class="ow">in</span> <span class="n">plmtypes</span>
+            <span class="k">if</span> <span class="n">plmobjects</span> <span class="ow">and</span> <span class="n">stype</span> <span class="ow">and</span> <span class="n">stype</span> <span class="o">!=</span> <span class="s">&quot;Object&quot;</span><span class="p">:</span>
+                <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">stype</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">main_cls</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">Http404</span>
+                <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;topassembly&quot;</span><span class="p">:</span>
+                    <span class="n">manager</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">top_assemblies</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">manager</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">objects</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">stype</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;stype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stype</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Http404</span>
+        <span class="n">object_list</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+        <span class="c"># this is only relevant for authenticated users</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">,</span> <span class="s">&quot;all&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">plmobjects</span><span class="p">:</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;subtypes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_subclasses</span><span class="p">(</span><span class="n">main_cls</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;object&quot;</span><span class="p">:</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;subtypes&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">,</span> <span class="s">&quot;Object&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">state</span> <span class="o">!=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_cancelled_state</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">exclude_cancelled</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="s">&quot;official&quot;</span><span class="p">:</span>
+                <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">officials</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">==</span> <span class="s">&quot;published&quot;</span><span class="p">:</span>
+                <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">published</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">state</span> <span class="o">!=</span> <span class="s">&quot;all&quot;</span><span class="p">:</span>
+                <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">)</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;states&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="c"># date filters</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">model</span>
+        <span class="n">ctime</span> <span class="o">=</span> <span class="s">&quot;date_joined&quot;</span> <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;user&quot;</span> <span class="k">else</span> <span class="s">&quot;ctime&quot;</span>
+        <span class="n">ctime_filter</span> <span class="o">=</span> <span class="n">SimpleDateFilter</span><span class="p">(</span><span class="n">ctime</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="s">&quot;ctime&quot;</span><span class="p">)</span>
+        <span class="n">object_list</span> <span class="o">=</span> <span class="n">ctime_filter</span><span class="o">.</span><span class="n">queryset</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">object_list</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;time_filters&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">ctime_filter</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">plmobjects</span><span class="p">:</span>
+            <span class="n">mtime_filter</span> <span class="o">=</span> <span class="n">SimpleDateFilter</span><span class="p">(</span><span class="s">&quot;mtime&quot;</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="s">&quot;mtime&quot;</span><span class="p">)</span>
+            <span class="n">object_list</span> <span class="o">=</span> <span class="n">mtime_filter</span><span class="o">.</span><span class="n">queryset</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">object_list</span><span class="p">)</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;time_filters&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mtime_filter</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">manager</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;object&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span>
+                <span class="s">&quot;part&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span>
+                <span class="s">&quot;topassembly&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="o">.</span><span class="n">top_assemblies</span><span class="p">,</span>
+                <span class="s">&quot;document&quot;</span> <span class="p">:</span> <span class="n">models</span><span class="o">.</span><span class="n">Document</span><span class="o">.</span><span class="n">objects</span><span class="p">,</span>
+            <span class="p">}[</span><span class="nb">type</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Http404</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">init_ctx</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s">&#39;is_readable&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;is_contributor&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;plmobjects&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;restricted&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="s">&#39;object_menu&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+            <span class="s">&#39;navigation_history&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+        <span class="p">})</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="n">published</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">():</span>
+            <span class="n">readable</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">plmobjectuserlink_user</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">)</span>
+            <span class="n">query</span> <span class="o">|=</span> <span class="n">Q</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">readable</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;plmobject_id&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="n">object_list</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">exclude_cancelled</span><span class="p">()</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_pagination</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">object_list</span><span class="p">,</span> <span class="nb">type</span><span class="p">))</span>
+    <span class="n">extra_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">__name__</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">IObject</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()]</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&quot;object_type&quot;</span> <span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Browse&quot;</span><span class="p">),</span>
+        <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="nb">type</span><span class="p">,</span>
+        <span class="s">&quot;extra_types&quot;</span> <span class="p">:</span> <span class="n">extra_types</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;browse.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@secure_required</span>
+<div class="viewcode-block" id="public"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.public">[docs]</a><span class="k">def</span> <span class="nf">public</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="s">&quot;public.html&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.1</span>
+
+<span class="sd">    Public view of the given object, this view is accessible to anonymous</span>
+<span class="sd">    users. The object must be a published part or document.</span>
+
+<span class="sd">    Redirects to the login page if the object is not published and the user</span>
+<span class="sd">    is not authenticated.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/public/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`public.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``obj``</span>
+<span class="sd">        the controller</span>
+
+<span class="sd">    ``object_attributes``</span>
+<span class="sd">        list of tuples(verbose attribute name, value)</span>
+
+<span class="sd">    ``revisions``</span>
+<span class="sd">        list of published related revisions</span>
+
+<span class="sd">    ``attached``</span>
+<span class="sd">        list of published attached documents and parts</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># do not call get_generic_data to avoid the overhead due</span>
+    <span class="c"># to a possible search and the update of the navigation history</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">is_part</span> <span class="ow">or</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_document</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">published</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">redirect_to_login</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">get_full_path</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">published</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_restricted_readable</span><span class="p">(</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">init_ctx</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">object_attributes</span> <span class="o">=</span> <span class="n">render_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">published_attributes</span><span class="p">)</span>
+    <span class="n">object_attributes</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_verbose_name</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">),</span> <span class="n">obj</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">():</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">published</span>
+        <span class="n">is_contributor</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">is_contributor</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span>
+        <span class="n">readable</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">plmobjectuserlink_user</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;plmobject_id&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">published</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">readable</span>
+
+    <span class="n">revisions</span> <span class="o">=</span> <span class="p">[</span><span class="n">rev</span> <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_all_revisions</span><span class="p">()</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">rev</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span><span class="p">:</span>
+        <span class="n">attached</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">document</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_attached_documents</span><span class="p">()</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">document</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">attached</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">part</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_attached_parts</span><span class="p">()</span> <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">part</span><span class="p">)]</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;is_readable&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;is_contributor&#39;</span><span class="p">:</span> <span class="n">is_contributor</span><span class="p">,</span>
+        <span class="c"># disable the menu and the navigation_history</span>
+        <span class="s">&#39;object_menu&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+        <span class="s">&#39;navigation_history&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+        <span class="s">&#39;obj&#39;</span> <span class="p">:</span> <span class="n">obj</span><span class="p">,</span>
+        <span class="s">&#39;object_attributes&#39;</span><span class="p">:</span> <span class="n">object_attributes</span><span class="p">,</span>
+        <span class="s">&#39;revisions&#39;</span> <span class="p">:</span> <span class="n">revisions</span><span class="p">,</span>
+        <span class="s">&#39;attached&#39;</span> <span class="p">:</span> <span class="n">attached</span><span class="p">,</span>
+    <span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="async_search"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.main.async_search">[docs]</a><span class="k">def</span> <span class="nf">async_search</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform search_request asynchronously&quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span><span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&quot;navigate&quot;</span><span class="p">]</span><span class="o">==</span><span class="s">&quot;true&quot;</span> <span class="p">:</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;navigate_bool&quot;</span><span class="p">]</span><span class="o">=</span><span class="bp">True</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;render_search.html&quot;</span><span class="p">,</span><span class="n">ctx</span><span class="p">,</span><span class="n">request</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

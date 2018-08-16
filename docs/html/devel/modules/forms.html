@@ -1,0 +1,1250 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.9. forms — Forms used by openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.10. lifecycle — Utilities to manipulate lifecycle" href="lifecycle.html" />
+    <link rel="prev" title="5.8. filters – Rendering of text written in a wiki syntax" href="filters.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="5.10. lifecycle — Utilities to manipulate lifecycle"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="filters.html" title="5.8. filters – Rendering of text written in a wiki syntax"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="filters.html"
+                        title="previous chapter">5.8. filters &#8211; Rendering of text written in a wiki syntax</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lifecycle.html"
+                        title="next chapter">5.10. <tt class="docutils literal"><span class="pre">lifecycle</span></tt> &#8212; Utilities to manipulate lifecycle</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/forms.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/forms.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.forms">
+<span id="forms-forms-used-by-openplm"></span><h1>5.9. <tt class="xref py py-mod docutils literal"><span class="pre">forms</span></tt> &#8212; Forms used by openPLM<a class="headerlink" href="#module-plmapp.forms" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="plmapp.forms.enhance_fields">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">enhance_fields</tt><big>(</big><em>form</em>, <em>cls</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#enhance_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.enhance_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces textinputs field of <em>form</em> with auto complete fields.</p>
+<p>Replaces textareas&#8217; widgets with widgets user defined widgets
+(<tt class="xref std std-setting docutils literal"><span class="pre">RICHTEXT_WIDGET_CLASS</span></tt> setting).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>form</strong> &#8211; a <tt class="xref py py-class docutils literal"><span class="pre">Form</span></tt> instance or class</li>
+<li><strong>cls</strong> &#8211; class of the source that provides suggested values</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_initial_creation_data">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_initial_creation_data</tt><big>(</big><em>user</em>, <em>cls</em>, <em>start=0</em>, <em>inbulk_cache=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_initial_creation_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_initial_creation_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns initial data to create a new object (from <a class="reference internal" href="#plmapp.forms.get_creation_form" title="plmapp.forms.get_creation_form"><tt class="xref py py-func docutils literal"><span class="pre">get_creation_form()</span></tt></a>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> &#8211; user who will create the object</li>
+<li><strong>cls</strong> &#8211; class of the created object</li>
+<li><strong>start</strong> &#8211; used to generate the reference,  see <a class="reference internal" href="references.html#plmapp.references.get_new_reference" title="plmapp.references.get_new_reference"><tt class="xref py py-func docutils literal"><span class="pre">get_new_reference()</span></tt></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.CreationForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">CreationForm</tt><big>(</big><em>user</em>, <em>start</em>, <em>inbulk_cache</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#CreationForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.CreationForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<p>Base class of forms used to create an object (Part, Document, Group...)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> &#8211; User who creates the object</li>
+<li><strong>start</strong> &#8211; an offset useful when several forms are displayed at the
+same time so that all forms have a valid, unique reference</li>
+<li><strong>inbulk_cache</strong> &#8211; a dictionary to store cached data, like valid groups</li>
+<li><strong>args</strong> &#8211; extra arguments passed to <tt class="xref py py-class docutils literal"><span class="pre">ModelFrom</span></tt> constructor</li>
+<li><strong>kwargs</strong> &#8211; extra kwargs arguments passed to <tt class="xref py py-class docutils literal"><span class="pre">ModelForm</span></tt> constructor</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="plmapp.forms.CreationForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#plmapp.forms.CreationForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.CreationForm.declared_fields">
+<tt class="descname">declared_fields</tt><em class="property"> = {}</em><a class="headerlink" href="#plmapp.forms.CreationForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.CreationForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.CreationForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.PLMObjectCreationForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">PLMObjectCreationForm</tt><big>(</big><em>user</em>, <em>start</em>, <em>inbulk_cache</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PLMObjectCreationForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PLMObjectCreationForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="method">
+<dt id="plmapp.forms.PLMObjectCreationForm.clean_reference">
+<tt class="descname">clean_reference</tt><big>(</big><big>)</big><a class="headerlink" href="#plmapp.forms.PLMObjectCreationForm.clean_reference" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.PLMObjectCreationForm.clean_revision">
+<tt class="descname">clean_revision</tt><big>(</big><big>)</big><a class="headerlink" href="#plmapp.forms.PLMObjectCreationForm.clean_revision" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.PLMObjectCreationForm.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PLMObjectCreationForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PLMObjectCreationForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.PLMObjectCreationForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'auto': &lt;django.forms.fields.BooleanField object at 0x81efc90&gt;}</em><a class="headerlink" href="#plmapp.forms.PLMObjectCreationForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.PLMObjectCreationForm.declared_fields">
+<tt class="descname">declared_fields</tt><em class="property"> = {'auto': &lt;django.forms.fields.BooleanField object at 0x81efc90&gt;}</em><a class="headerlink" href="#plmapp.forms.PLMObjectCreationForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.PLMObjectCreationForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.PLMObjectCreationForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.PrivateFileChoiceField">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">PrivateFileChoiceField</tt><big>(</big><em>queryset</em>, <em>cache_choices=False</em>, <em>required=True</em>, <em>widget=None</em>, <em>label=None</em>, <em>initial=None</em>, <em>help_text=None</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PrivateFileChoiceField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PrivateFileChoiceField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelMultipleChoiceField</span></tt></p>
+<dl class="method">
+<dt id="plmapp.forms.PrivateFileChoiceField.label_from_instance">
+<tt class="descname">label_from_instance</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PrivateFileChoiceField.label_from_instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PrivateFileChoiceField.label_from_instance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.Document2CreationForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">Document2CreationForm</tt><big>(</big><em>user</em>, <em>start</em>, <em>inbulk_cache</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#Document2CreationForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.Document2CreationForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.PLMObjectCreationForm" title="plmapp.forms.PLMObjectCreationForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.PLMObjectCreationForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.Document2CreationForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'auto': &lt;django.forms.fields.BooleanField object at 0x81efc90&gt;, 'pfiles': &lt;plmapp.forms.PrivateFileChoiceField object at 0x81ef810&gt;}</em><a class="headerlink" href="#plmapp.forms.Document2CreationForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.Document2CreationForm.declared_fields">
+<tt class="descname">declared_fields</tt><em class="property"> = {'auto': &lt;django.forms.fields.BooleanField object at 0x81efc90&gt;, 'pfiles': &lt;plmapp.forms.PrivateFileChoiceField object at 0x81ef810&gt;}</em><a class="headerlink" href="#plmapp.forms.Document2CreationForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.Document2CreationForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.Document2CreationForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_creation_form">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_creation_form</tt><big>(</big><em>user</em>, <em>cls=&lt;class 'openPLM.plmapp.models.plmobject.PLMObject'&gt;</em>, <em>data=None</em>, <em>start=0</em>, <em>inbulk_cache=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_creation_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_creation_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a creation form suitable to create an object
+of type <em>cls</em>.</p>
+<p>The returned form can be used, if it is valid, with the function
+<tt class="xref py py-meth docutils literal"><span class="pre">create_from_form()</span></tt>
+to create a <tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt> and its associated
+<tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt>.</p>
+<p>If <em>data</em> is provided, it will be used to fill the form.</p>
+<p><em>start</em> is used if <em>data</em> is <tt class="docutils literal"><span class="pre">None</span></tt>, it&#8217;s usefull if you need to show
+several initial creation forms at once and you want different references.</p>
+<p><em>inbulk_cache</em> may be a dictionary to cache lifecycles, groups and other
+values. It is useful if a page renders several creation forms bound to the same
+user</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_modification_form">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_modification_form</tt><big>(</big><em>cls=&lt;class 'openPLM.plmapp.models.plmobject.PLMObject'&gt;</em>, <em>data=None</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_modification_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_modification_form" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.group_types">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">group_types</tt><big>(</big><em>types</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#group_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.group_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.type_field">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">type_field</tt><big>(</big><em>choices</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#type_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.type_field" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.TypeForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">TypeForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#TypeForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.TypeForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.TypeForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.TypedChoiceField object at 0x81ef550&gt;}</em><a class="headerlink" href="#plmapp.forms.TypeForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.TypeForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.TypeForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.PartTypeForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">PartTypeForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PartTypeForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PartTypeForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.PartTypeForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.TypedChoiceField object at 0x481de10&gt;}</em><a class="headerlink" href="#plmapp.forms.PartTypeForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.PartTypeForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.PartTypeForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.DocumentTypeForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">DocumentTypeForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#DocumentTypeForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.DocumentTypeForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.DocumentTypeForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.TypedChoiceField object at 0x481dad0&gt;}</em><a class="headerlink" href="#plmapp.forms.DocumentTypeForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DocumentTypeForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.DocumentTypeForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.Document2TypeForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">Document2TypeForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#Document2TypeForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.Document2TypeForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.Document2TypeForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.TypedChoiceField object at 0x481d290&gt;}</em><a class="headerlink" href="#plmapp.forms.Document2TypeForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.Document2TypeForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.Document2TypeForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SimpleSearchForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">SimpleSearchForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SimpleSearchForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SimpleSearchForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">haystack.forms.SearchForm</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.SimpleSearchForm.LIST">
+<tt class="descname">LIST</tt><em class="property"> = [('Document', [('Document', 'Document')]), ('Part', [('Part', 'Part')]), ('Group', [('Group', 'Group')]), ('User', [('User', 'User')])]</em><a class="headerlink" href="#plmapp.forms.SimpleSearchForm.LIST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.SimpleSearchForm.search">
+<tt class="descname">search</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SimpleSearchForm.search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SimpleSearchForm.search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SimpleSearchForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'q': &lt;django.forms.fields.CharField object at 0x481d210&gt;, 'type': &lt;django.forms.fields.TypedChoiceField object at 0x481d850&gt;, 'search_official': &lt;django.forms.fields.BooleanField object at 0x481dc10&gt;}</em><a class="headerlink" href="#plmapp.forms.SimpleSearchForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SimpleSearchForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.SimpleSearchForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.PLMObjectForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">PLMObjectForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PLMObjectForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PLMObjectForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<p>A form that identifies a <tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt>.</p>
+<dl class="method">
+<dt id="plmapp.forms.PLMObjectForm.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PLMObjectForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PLMObjectForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.PLMObjectForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.CharField object at 0x481d950&gt;, 'reference': &lt;django.forms.fields.CharField object at 0x481d610&gt;, 'revision': &lt;django.forms.fields.CharField object at 0x481da90&gt;}</em><a class="headerlink" href="#plmapp.forms.PLMObjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.PLMObjectForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.PLMObjectForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.AddChildForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">AddChildForm</tt><big>(</big><em>parent</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#AddChildForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.AddChildForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.PLMObjectForm" title="plmapp.forms.PLMObjectForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.PLMObjectForm</span></tt></a>, <a class="reference internal" href="#plmapp.forms.PartTypeForm" title="plmapp.forms.PartTypeForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.PartTypeForm</span></tt></a></p>
+<dl class="method">
+<dt id="plmapp.forms.AddChildForm.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#AddChildForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.AddChildForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.AddChildForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.TypedChoiceField object at 0x481de10&gt;, 'reference': &lt;django.forms.fields.CharField object at 0x481d610&gt;, 'revision': &lt;django.forms.fields.CharField object at 0x481da90&gt;, 'quantity': &lt;django.forms.fields.FloatField object at 0x481dcd0&gt;, 'order': &lt;django.forms.fields.IntegerField object at 0x8515190&gt;, 'unit': &lt;django.forms.fields.ChoiceField object at 0x8515d50&gt;}</em><a class="headerlink" href="#plmapp.forms.AddChildForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.AddChildForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.AddChildForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.DisplayChildrenForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">DisplayChildrenForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#DisplayChildrenForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.DisplayChildrenForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.DisplayChildrenForm.LEVELS">
+<tt class="descname">LEVELS</tt><em class="property"> = (('all', &lt;django.utils.functional.__proxy__ object at 0x8515a10&gt;), ('first', &lt;django.utils.functional.__proxy__ object at 0x8515890&gt;), ('last', &lt;django.utils.functional.__proxy__ object at 0x8515150&gt;))</em><a class="headerlink" href="#plmapp.forms.DisplayChildrenForm.LEVELS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DisplayChildrenForm.STATES">
+<tt class="descname">STATES</tt><em class="property"> = (('all', &lt;django.utils.functional.__proxy__ object at 0x85155d0&gt;), ('official', &lt;django.utils.functional.__proxy__ object at 0x8515790&gt;))</em><a class="headerlink" href="#plmapp.forms.DisplayChildrenForm.STATES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DisplayChildrenForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'level': &lt;django.forms.fields.ChoiceField object at 0x85158d0&gt;, 'date': &lt;django.forms.fields.SplitDateTimeField object at 0x8515650&gt;, 'state': &lt;django.forms.fields.ChoiceField object at 0xa3da0d0&gt;, 'show_alternates': &lt;django.forms.fields.BooleanField object at 0xa3da150&gt;, 'show_documents': &lt;django.forms.fields.BooleanField object at 0xa3da290&gt;}</em><a class="headerlink" href="#plmapp.forms.DisplayChildrenForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DisplayChildrenForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.DisplayChildrenForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.CompareBOMForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">CompareBOMForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#CompareBOMForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.CompareBOMForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.DisplayChildrenForm" title="plmapp.forms.DisplayChildrenForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.DisplayChildrenForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.CompareBOMForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'level': &lt;django.forms.fields.ChoiceField object at 0x85158d0&gt;, 'date': &lt;django.forms.fields.SplitDateTimeField object at 0xa3dab50&gt;, 'state': &lt;django.forms.fields.ChoiceField object at 0xa3da0d0&gt;, 'show_alternates': &lt;django.forms.fields.BooleanField object at 0xa3da150&gt;, 'show_documents': &lt;django.forms.fields.BooleanField object at 0xa3da290&gt;, 'date2': &lt;django.forms.fields.SplitDateTimeField object at 0xa3dac50&gt;, 'compact': &lt;django.forms.fields.BooleanField object at 0xa3da3d0&gt;}</em><a class="headerlink" href="#plmapp.forms.CompareBOMForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.CompareBOMForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.CompareBOMForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.ModifyChildForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">ModifyChildForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyChildForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyChildForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="plmapp.forms.ModifyChildForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyChildForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyChildForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.ModifyChildForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.ModifyChildForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyChildForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['order', 'quantity', 'unit', 'child', 'parent']</em><a class="headerlink" href="#plmapp.forms.ModifyChildForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.ModifyChildForm.clean">
+<tt class="descclassname">ModifyChildForm.</tt><tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyChildForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyChildForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyChildForm.base_fields">
+<tt class="descclassname">ModifyChildForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'order': &lt;django.forms.fields.IntegerField object at 0xa3da510&gt;, 'quantity': &lt;django.forms.fields.FloatField object at 0xa3dad50&gt;, 'unit': &lt;django.forms.fields.ChoiceField object at 0x82bbd50&gt;, 'child': &lt;django.forms.models.ModelChoiceField object at 0xa3da310&gt;, 'parent': &lt;django.forms.models.ModelChoiceField object at 0xa3da710&gt;, 'delete': &lt;django.forms.fields.BooleanField object at 0xa3daa50&gt;}</em><a class="headerlink" href="#plmapp.forms.ModifyChildForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyChildForm.declared_fields">
+<tt class="descclassname">ModifyChildForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'delete': &lt;django.forms.fields.BooleanField object at 0xa3daa50&gt;, 'parent': &lt;django.forms.models.ModelChoiceField object at 0xa3da710&gt;, 'child': &lt;django.forms.models.ModelChoiceField object at 0xa3da310&gt;, 'quantity': &lt;django.forms.fields.FloatField object at 0xa3dad50&gt;, 'order': &lt;django.forms.fields.IntegerField object at 0xa3da510&gt;, 'unit': &lt;django.forms.fields.ChoiceField object at 0x82bbd50&gt;}</em><a class="headerlink" href="#plmapp.forms.ModifyChildForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyChildForm.media">
+<tt class="descclassname">ModifyChildForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.ModifyChildForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.BaseChildrenFormSet">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">BaseChildrenFormSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#BaseChildrenFormSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.BaseChildrenFormSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/forms/modelforms/#django.forms.models.BaseModelFormSet" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.BaseModelFormSet</span></tt></a></p>
+<dl class="method">
+<dt id="plmapp.forms.BaseChildrenFormSet.add_fields">
+<tt class="descname">add_fields</tt><big>(</big><em>form</em>, <em>index</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#BaseChildrenFormSet.add_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.BaseChildrenFormSet.add_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_children_formset">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_children_formset</tt><big>(</big><em>controller</em>, <em>data=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_children_formset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_children_formset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.AddRevisionForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">AddRevisionForm</tt><big>(</big><em>ctrl</em>, <em>user</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#AddRevisionForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.AddRevisionForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="method">
+<dt id="plmapp.forms.AddRevisionForm.clean_revision">
+<tt class="descname">clean_revision</tt><big>(</big><big>)</big><a class="headerlink" href="#plmapp.forms.AddRevisionForm.clean_revision" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.AddRevisionForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'revision': &lt;django.forms.fields.CharField object at 0xa3da350&gt;, 'group': &lt;django.forms.models.ModelChoiceField object at 0x3b1d250&gt;}</em><a class="headerlink" href="#plmapp.forms.AddRevisionForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.AddRevisionForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.AddRevisionForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.RelPartForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">RelPartForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#RelPartForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.RelPartForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="plmapp.forms.RelPartForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#RelPartForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.RelPartForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.RelPartForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.RelPartForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">DocumentPartLink</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.RelPartForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['document', 'part']</em><a class="headerlink" href="#plmapp.forms.RelPartForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.RelPartForm.base_fields">
+<tt class="descclassname">RelPartForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'document': &lt;django.forms.models.ModelChoiceField object at 0x7df4410&gt;, 'part': &lt;django.forms.models.ModelChoiceField object at 0x7de8410&gt;}</em><a class="headerlink" href="#plmapp.forms.RelPartForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.RelPartForm.declared_fields">
+<tt class="descclassname">RelPartForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'document': &lt;django.forms.models.ModelChoiceField object at 0x7df4410&gt;, 'part': &lt;django.forms.models.ModelChoiceField object at 0x7de8410&gt;}</em><a class="headerlink" href="#plmapp.forms.RelPartForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.RelPartForm.media">
+<tt class="descclassname">RelPartForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.RelPartForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SelectPartForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">SelectPartForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SelectPartForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SelectPartForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="plmapp.forms.SelectPartForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#SelectPartForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SelectPartForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.SelectPartForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.SelectPartForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectPartForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['selected']</em><a class="headerlink" href="#plmapp.forms.SelectPartForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectPartForm.base_fields">
+<tt class="descclassname">SelectPartForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'selected': &lt;django.forms.fields.BooleanField object at 0x3b1d7d0&gt;}</em><a class="headerlink" href="#plmapp.forms.SelectPartForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectPartForm.declared_fields">
+<tt class="descclassname">SelectPartForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'selected': &lt;django.forms.fields.BooleanField object at 0x3b1d7d0&gt;}</em><a class="headerlink" href="#plmapp.forms.SelectPartForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectPartForm.media">
+<tt class="descclassname">SelectPartForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.SelectPartForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SelectDocumentForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">SelectDocumentForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SelectDocumentForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SelectDocumentForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.SelectDocumentForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'selected': &lt;django.forms.fields.BooleanField object at 0x82bb110&gt;, 'document': &lt;django.forms.models.ModelChoiceField object at 0x7de8ad0&gt;}</em><a class="headerlink" href="#plmapp.forms.SelectDocumentForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectDocumentForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.SelectDocumentForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SelectChildForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">SelectChildForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SelectChildForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SelectChildForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.SelectChildForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'selected': &lt;django.forms.fields.BooleanField object at 0x7de8510&gt;, 'link': &lt;django.forms.models.ModelChoiceField object at 0x81d3950&gt;}</em><a class="headerlink" href="#plmapp.forms.SelectChildForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectChildForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.SelectChildForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SelectParentForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">SelectParentForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SelectParentForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SelectParentForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.SelectChildForm" title="plmapp.forms.SelectChildForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.SelectChildForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.SelectParentForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'selected': &lt;django.forms.fields.BooleanField object at 0x7df9550&gt;, 'link': &lt;django.forms.models.ModelChoiceField object at 0x81d3950&gt;, 'new_parent': &lt;django.forms.models.ModelChoiceField object at 0x7df9210&gt;}</em><a class="headerlink" href="#plmapp.forms.SelectParentForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectParentForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.SelectParentForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.AddPartForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">AddPartForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#AddPartForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.AddPartForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.PLMObjectForm" title="plmapp.forms.PLMObjectForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.PLMObjectForm</span></tt></a>, <a class="reference internal" href="#plmapp.forms.PartTypeForm" title="plmapp.forms.PartTypeForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.PartTypeForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.AddPartForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.TypedChoiceField object at 0x481de10&gt;, 'reference': &lt;django.forms.fields.CharField object at 0x481d610&gt;, 'revision': &lt;django.forms.fields.CharField object at 0x481da90&gt;}</em><a class="headerlink" href="#plmapp.forms.AddPartForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.AddPartForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.AddPartForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.ModifyRelPartForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">ModifyRelPartForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyRelPartForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyRelPartForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.RelPartForm" title="plmapp.forms.RelPartForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.RelPartForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyRelPartForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'document': &lt;django.forms.models.ModelChoiceField object at 0x7df4410&gt;, 'part': &lt;django.forms.models.ModelChoiceField object at 0x7de8410&gt;, 'delete': &lt;django.forms.fields.BooleanField object at 0x7df9ad0&gt;}</em><a class="headerlink" href="#plmapp.forms.ModifyRelPartForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyRelPartForm.declared_fields">
+<tt class="descname">declared_fields</tt><em class="property"> = {'document': &lt;django.forms.models.ModelChoiceField object at 0x7df4410&gt;, 'part': &lt;django.forms.models.ModelChoiceField object at 0x7de8410&gt;, 'delete': &lt;django.forms.fields.BooleanField object at 0x7df9ad0&gt;}</em><a class="headerlink" href="#plmapp.forms.ModifyRelPartForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyRelPartForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.ModifyRelPartForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_rel_part_formset">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_rel_part_formset</tt><big>(</big><em>controller</em>, <em>data=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_rel_part_formset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_rel_part_formset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.AddFileForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">AddFileForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#AddFileForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.AddFileForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.AddFileForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'filename': &lt;django.forms.fields.FileField object at 0x8525510&gt;}</em><a class="headerlink" href="#plmapp.forms.AddFileForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.AddFileForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.AddFileForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.DeleteFileForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">DeleteFileForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#DeleteFileForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.DeleteFileForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="plmapp.forms.DeleteFileForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#DeleteFileForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.DeleteFileForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.DeleteFileForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.DeleteFileForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeleteFileForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['document']</em><a class="headerlink" href="#plmapp.forms.DeleteFileForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeleteFileForm.base_fields">
+<tt class="descclassname">DeleteFileForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'document': &lt;django.forms.models.ModelChoiceField object at 0x81f9490&gt;, 'delete': &lt;django.forms.fields.BooleanField object at 0x81f9d50&gt;}</em><a class="headerlink" href="#plmapp.forms.DeleteFileForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeleteFileForm.declared_fields">
+<tt class="descclassname">DeleteFileForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'delete': &lt;django.forms.fields.BooleanField object at 0x81f9d50&gt;, 'document': &lt;django.forms.models.ModelChoiceField object at 0x81f9490&gt;}</em><a class="headerlink" href="#plmapp.forms.DeleteFileForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeleteFileForm.media">
+<tt class="descclassname">DeleteFileForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.DeleteFileForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_file_formset">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_file_formset</tt><big>(</big><em>controller</em>, <em>data=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_file_formset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_file_formset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.DeletePrivateFileForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">DeletePrivateFileForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#DeletePrivateFileForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.DeletePrivateFileForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="plmapp.forms.DeletePrivateFileForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#DeletePrivateFileForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.DeletePrivateFileForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.DeletePrivateFileForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.DeletePrivateFileForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">PrivateFile</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeletePrivateFileForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['creator']</em><a class="headerlink" href="#plmapp.forms.DeletePrivateFileForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeletePrivateFileForm.base_fields">
+<tt class="descclassname">DeletePrivateFileForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'creator': &lt;django.forms.models.ModelChoiceField object at 0x8525250&gt;, 'delete': &lt;django.forms.fields.BooleanField object at 0x81f9fd0&gt;}</em><a class="headerlink" href="#plmapp.forms.DeletePrivateFileForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeletePrivateFileForm.declared_fields">
+<tt class="descclassname">DeletePrivateFileForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'delete': &lt;django.forms.fields.BooleanField object at 0x81f9fd0&gt;, 'creator': &lt;django.forms.models.ModelChoiceField object at 0x8525250&gt;}</em><a class="headerlink" href="#plmapp.forms.DeletePrivateFileForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DeletePrivateFileForm.media">
+<tt class="descclassname">DeletePrivateFileForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.DeletePrivateFileForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_private_file_formset">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_private_file_formset</tt><big>(</big><em>controller</em>, <em>data=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_private_file_formset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_private_file_formset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.AddDocCadForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">AddDocCadForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#AddDocCadForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.AddDocCadForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.PLMObjectForm" title="plmapp.forms.PLMObjectForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.PLMObjectForm</span></tt></a>, <a class="reference internal" href="#plmapp.forms.DocumentTypeForm" title="plmapp.forms.DocumentTypeForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.DocumentTypeForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.AddDocCadForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.TypedChoiceField object at 0x481dad0&gt;, 'reference': &lt;django.forms.fields.CharField object at 0x481d610&gt;, 'revision': &lt;django.forms.fields.CharField object at 0x481da90&gt;}</em><a class="headerlink" href="#plmapp.forms.AddDocCadForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.AddDocCadForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.AddDocCadForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.ModifyDocCadForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">ModifyDocCadForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyDocCadForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyDocCadForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="plmapp.forms.ModifyDocCadForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyDocCadForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyDocCadForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.ModifyDocCadForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.ModifyDocCadForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">DocumentPartLink</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyDocCadForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ['part', 'document']</em><a class="headerlink" href="#plmapp.forms.ModifyDocCadForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyDocCadForm.base_fields">
+<tt class="descclassname">ModifyDocCadForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'part': &lt;django.forms.models.ModelChoiceField object at 0x3b1d590&gt;, 'document': &lt;django.forms.models.ModelChoiceField object at 0x3c2fa90&gt;, 'delete': &lt;django.forms.fields.BooleanField object at 0x82bb0d0&gt;}</em><a class="headerlink" href="#plmapp.forms.ModifyDocCadForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyDocCadForm.declared_fields">
+<tt class="descclassname">ModifyDocCadForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'delete': &lt;django.forms.fields.BooleanField object at 0x82bb0d0&gt;, 'part': &lt;django.forms.models.ModelChoiceField object at 0x3b1d590&gt;, 'document': &lt;django.forms.models.ModelChoiceField object at 0x3c2fa90&gt;}</em><a class="headerlink" href="#plmapp.forms.ModifyDocCadForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyDocCadForm.media">
+<tt class="descclassname">ModifyDocCadForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.ModifyDocCadForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_doc_cad_formset">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_doc_cad_formset</tt><big>(</big><em>controller</em>, <em>data=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_doc_cad_formset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_doc_cad_formset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.NavigateFilterForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">NavigateFilterForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#NavigateFilterForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.NavigateFilterForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.NavigateFilterForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'only_search_results': &lt;django.forms.fields.BooleanField object at 0x3c2fb10&gt;, 'prog': &lt;django.forms.fields.ChoiceField object at 0x4e72c90&gt;, 'doc_parts': &lt;django.forms.fields.CharField object at 0x4e722d0&gt;, 'update': &lt;django.forms.fields.BooleanField object at 0x4e72110&gt;, 'date': &lt;django.forms.fields.DateField object at 0x4e721d0&gt;, 'time': &lt;django.forms.fields.TimeField object at 0x4e72d10&gt;}</em><a class="headerlink" href="#plmapp.forms.NavigateFilterForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.NavigateFilterForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.NavigateFilterForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.PartNavigateFilterForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">PartNavigateFilterForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#PartNavigateFilterForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.PartNavigateFilterForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.NavigateFilterForm" title="plmapp.forms.NavigateFilterForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.NavigateFilterForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.PartNavigateFilterForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'only_search_results': &lt;django.forms.fields.BooleanField object at 0x3c2fb10&gt;, 'prog': &lt;django.forms.fields.ChoiceField object at 0x4e72c90&gt;, 'doc_parts': &lt;django.forms.fields.CharField object at 0x4e722d0&gt;, 'update': &lt;django.forms.fields.BooleanField object at 0x4e72110&gt;, 'date': &lt;django.forms.fields.DateField object at 0x4e721d0&gt;, 'time': &lt;django.forms.fields.TimeField object at 0x4e72d10&gt;, 'child': &lt;django.forms.fields.BooleanField object at 0x4e727d0&gt;, 'parents': &lt;django.forms.fields.BooleanField object at 0x4e72fd0&gt;, 'doc': &lt;django.forms.fields.BooleanField object at 0x4e72590&gt;, 'owner': &lt;django.forms.fields.BooleanField object at 0x4e72310&gt;, 'signer': &lt;django.forms.fields.BooleanField object at 0x4e720d0&gt;, 'notified': &lt;django.forms.fields.BooleanField object at 0x4e72710&gt;}</em><a class="headerlink" href="#plmapp.forms.PartNavigateFilterForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.PartNavigateFilterForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.PartNavigateFilterForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.DocNavigateFilterForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">DocNavigateFilterForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#DocNavigateFilterForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.DocNavigateFilterForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.NavigateFilterForm" title="plmapp.forms.NavigateFilterForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.NavigateFilterForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.DocNavigateFilterForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'only_search_results': &lt;django.forms.fields.BooleanField object at 0x3c2fb10&gt;, 'prog': &lt;django.forms.fields.ChoiceField object at 0x4e72c90&gt;, 'doc_parts': &lt;django.forms.fields.CharField object at 0x4e722d0&gt;, 'update': &lt;django.forms.fields.BooleanField object at 0x4e72110&gt;, 'date': &lt;django.forms.fields.DateField object at 0x4e721d0&gt;, 'time': &lt;django.forms.fields.TimeField object at 0x4e72d10&gt;, 'part': &lt;django.forms.fields.BooleanField object at 0x4e72a50&gt;, 'owner': &lt;django.forms.fields.BooleanField object at 0x4e725d0&gt;, 'signer': &lt;django.forms.fields.BooleanField object at 0x4e72a10&gt;, 'notified': &lt;django.forms.fields.BooleanField object at 0x8286f90&gt;}</em><a class="headerlink" href="#plmapp.forms.DocNavigateFilterForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.DocNavigateFilterForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.DocNavigateFilterForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.UserNavigateFilterForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">UserNavigateFilterForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#UserNavigateFilterForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.UserNavigateFilterForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.NavigateFilterForm" title="plmapp.forms.NavigateFilterForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.NavigateFilterForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.UserNavigateFilterForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'only_search_results': &lt;django.forms.fields.BooleanField object at 0x3c2fb10&gt;, 'prog': &lt;django.forms.fields.ChoiceField object at 0x4e72c90&gt;, 'doc_parts': &lt;django.forms.fields.CharField object at 0x4e722d0&gt;, 'update': &lt;django.forms.fields.BooleanField object at 0x4e72110&gt;, 'date': &lt;django.forms.fields.DateField object at 0x4e721d0&gt;, 'time': &lt;django.forms.fields.TimeField object at 0x4e72d10&gt;, 'owned': &lt;django.forms.fields.BooleanField object at 0x8506850&gt;, 'to_sign': &lt;django.forms.fields.BooleanField object at 0x945c910&gt;, 'request_notification_from': &lt;django.forms.fields.BooleanField object at 0xa500390&gt;}</em><a class="headerlink" href="#plmapp.forms.UserNavigateFilterForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.UserNavigateFilterForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.UserNavigateFilterForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.GroupNavigateFilterForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">GroupNavigateFilterForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#GroupNavigateFilterForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.GroupNavigateFilterForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.NavigateFilterForm" title="plmapp.forms.NavigateFilterForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.NavigateFilterForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.GroupNavigateFilterForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'only_search_results': &lt;django.forms.fields.BooleanField object at 0x3c2fb10&gt;, 'prog': &lt;django.forms.fields.ChoiceField object at 0x4e72c90&gt;, 'doc_parts': &lt;django.forms.fields.CharField object at 0x4e722d0&gt;, 'update': &lt;django.forms.fields.BooleanField object at 0x4e72110&gt;, 'date': &lt;django.forms.fields.DateField object at 0x4e721d0&gt;, 'time': &lt;django.forms.fields.TimeField object at 0x4e72d10&gt;, 'owner': &lt;django.forms.fields.BooleanField object at 0x414d150&gt;, 'user': &lt;django.forms.fields.BooleanField object at 0x414d290&gt;, 'part': &lt;django.forms.fields.BooleanField object at 0x8483190&gt;, 'doc': &lt;django.forms.fields.BooleanField object at 0x7f5ff10&gt;}</em><a class="headerlink" href="#plmapp.forms.GroupNavigateFilterForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.GroupNavigateFilterForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.GroupNavigateFilterForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.ECRNavigateFilterForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">ECRNavigateFilterForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ECRNavigateFilterForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ECRNavigateFilterForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.forms.NavigateFilterForm" title="plmapp.forms.NavigateFilterForm"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.forms.NavigateFilterForm</span></tt></a></p>
+<dl class="attribute">
+<dt id="plmapp.forms.ECRNavigateFilterForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'only_search_results': &lt;django.forms.fields.BooleanField object at 0x3c2fb10&gt;, 'prog': &lt;django.forms.fields.ChoiceField object at 0x4e72c90&gt;, 'doc_parts': &lt;django.forms.fields.CharField object at 0x4e722d0&gt;, 'update': &lt;django.forms.fields.BooleanField object at 0x4e72110&gt;, 'date': &lt;django.forms.fields.DateField object at 0x4e721d0&gt;, 'time': &lt;django.forms.fields.TimeField object at 0x4e72d10&gt;, 'owner': &lt;django.forms.fields.BooleanField object at 0x40e3ed0&gt;, 'signer': &lt;django.forms.fields.BooleanField object at 0x3c2f790&gt;, 'part': &lt;django.forms.fields.BooleanField object at 0x3c2f690&gt;, 'doc': &lt;django.forms.fields.BooleanField object at 0x3c2f250&gt;}</em><a class="headerlink" href="#plmapp.forms.ECRNavigateFilterForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ECRNavigateFilterForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.ECRNavigateFilterForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_navigate_form">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_navigate_form</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_navigate_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_navigate_form" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.OpenPLMUserChangeForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">OpenPLMUserChangeForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em>, <em>instance=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#OpenPLMUserChangeForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="class">
+<dt id="plmapp.forms.OpenPLMUserChangeForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#OpenPLMUserChangeForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.OpenPLMUserChangeForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.OpenPLMUserChangeForm.Meta.exclude">
+<tt class="descname">exclude</tt><em class="property"> = ('username', 'is_staff', 'is_active', 'is_superuser', 'last_login', 'date_joined', 'groups', 'user_permissions', 'password')</em><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm.Meta.exclude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.OpenPLMUserChangeForm.clean_avatar">
+<tt class="descclassname">OpenPLMUserChangeForm.</tt><tt class="descname">clean_avatar</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#OpenPLMUserChangeForm.clean_avatar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm.clean_avatar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.OpenPLMUserChangeForm.base_fields">
+<tt class="descclassname">OpenPLMUserChangeForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'first_name': &lt;django.forms.fields.CharField object at 0x8525210&gt;, 'last_name': &lt;django.forms.fields.CharField object at 0x7dcb7d0&gt;, 'email': &lt;django.forms.fields.EmailField object at 0x814b350&gt;, 'avatar': &lt;django.forms.fields.ImageField object at 0x3c2f1d0&gt;}</em><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.OpenPLMUserChangeForm.declared_fields">
+<tt class="descclassname">OpenPLMUserChangeForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'avatar': &lt;django.forms.fields.ImageField object at 0x3c2f1d0&gt;}</em><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.OpenPLMUserChangeForm.media">
+<tt class="descclassname">OpenPLMUserChangeForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.OpenPLMUserChangeForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SelectUserForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">SelectUserForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SelectUserForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SelectUserForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="method">
+<dt id="plmapp.forms.SelectUserForm.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SelectUserForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SelectUserForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectUserForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'type': &lt;django.forms.fields.CharField object at 0x814ba10&gt;, 'username': &lt;django.forms.fields.CharField object at 0x814bb10&gt;}</em><a class="headerlink" href="#plmapp.forms.SelectUserForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SelectUserForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.SelectUserForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.ModifyUserForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">ModifyUserForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyUserForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyUserForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyUserForm.user_data">
+<tt class="descname">user_data</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#ModifyUserForm.user_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ModifyUserForm.user_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyUserForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'delete': &lt;django.forms.fields.BooleanField object at 0x814b0d0&gt;, 'user': &lt;django.forms.models.ModelChoiceField object at 0x7de2f50&gt;, 'group': &lt;django.forms.models.ModelChoiceField object at 0x848ff90&gt;}</em><a class="headerlink" href="#plmapp.forms.ModifyUserForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ModifyUserForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.ModifyUserForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_user_formset">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_user_formset</tt><big>(</big><em>controller</em>, <em>data=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_user_formset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_user_formset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SponsorForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">SponsorForm</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SponsorForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SponsorForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.models.ModelForm</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.SponsorForm.ROLES">
+<tt class="descname">ROLES</tt><em class="property"> = (('contributor', &lt;django.utils.functional.__proxy__ object at 0x982e950&gt;), ('reader', &lt;django.utils.functional.__proxy__ object at 0x982e490&gt;), ('restricted', &lt;django.utils.functional.__proxy__ object at 0x982e6d0&gt;))</em><a class="headerlink" href="#plmapp.forms.SponsorForm.ROLES" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.SponsorForm.Meta">
+<em class="property">class </em><tt class="descname">Meta</tt><a class="reference internal" href="../../_modules/plmapp/forms.html#SponsorForm.Meta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SponsorForm.Meta" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.forms.SponsorForm.Meta.model">
+<tt class="descname">model</tt><a class="headerlink" href="#plmapp.forms.SponsorForm.Meta.model" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SponsorForm.Meta.fields">
+<tt class="descname">fields</tt><em class="property"> = ('username', 'first_name', 'last_name', 'email', 'role', 'groups')</em><a class="headerlink" href="#plmapp.forms.SponsorForm.Meta.fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.SponsorForm.clean_email">
+<tt class="descclassname">SponsorForm.</tt><tt class="descname">clean_email</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SponsorForm.clean_email"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SponsorForm.clean_email" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.SponsorForm.clean_role">
+<tt class="descclassname">SponsorForm.</tt><tt class="descname">clean_role</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SponsorForm.clean_role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SponsorForm.clean_role" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.forms.SponsorForm.clean">
+<tt class="descclassname">SponsorForm.</tt><tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#SponsorForm.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.SponsorForm.clean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SponsorForm.base_fields">
+<tt class="descclassname">SponsorForm.</tt><tt class="descname">base_fields</tt><em class="property"> = {'username': &lt;django.forms.fields.CharField object at 0x8ec1e90&gt;, 'first_name': &lt;django.forms.fields.CharField object at 0x8ec1090&gt;, 'last_name': &lt;django.forms.fields.CharField object at 0xa3fc050&gt;, 'email': &lt;django.forms.fields.EmailField object at 0x7e20510&gt;, 'role': &lt;django.forms.fields.TypedChoiceField object at 0x8ec1a10&gt;, 'groups': &lt;django.forms.models.ModelMultipleChoiceField object at 0x8ec1990&gt;, 'sponsor': &lt;django.forms.models.ModelChoiceField object at 0x8ec1e10&gt;, 'warned': &lt;django.forms.fields.BooleanField object at 0x8ec1d90&gt;, 'language': &lt;django.forms.fields.TypedChoiceField object at 0x8ec14d0&gt;}</em><a class="headerlink" href="#plmapp.forms.SponsorForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SponsorForm.declared_fields">
+<tt class="descclassname">SponsorForm.</tt><tt class="descname">declared_fields</tt><em class="property"> = {'sponsor': &lt;django.forms.models.ModelChoiceField object at 0x8ec1e10&gt;, 'warned': &lt;django.forms.fields.BooleanField object at 0x8ec1d90&gt;, 'role': &lt;django.forms.fields.TypedChoiceField object at 0x8ec1a10&gt;, 'language': &lt;django.forms.fields.TypedChoiceField object at 0x8ec14d0&gt;}</em><a class="headerlink" href="#plmapp.forms.SponsorForm.declared_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.SponsorForm.media">
+<tt class="descclassname">SponsorForm.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.SponsorForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.InvitationForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">InvitationForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#InvitationForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.InvitationForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.InvitationForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'invitation': &lt;django.forms.models.ModelChoiceField object at 0x7e20e10&gt;}</em><a class="headerlink" href="#plmapp.forms.InvitationForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.InvitationForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.InvitationForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.CSVForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">CSVForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#CSVForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.CSVForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.CSVForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'file': &lt;django.forms.fields.FileField object at 0x849c8d0&gt;, 'encoding': &lt;django.forms.fields.TypedChoiceField object at 0x849cd50&gt;}</em><a class="headerlink" href="#plmapp.forms.CSVForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.CSVForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.CSVForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.forms.get_headers_formset">
+<tt class="descclassname">plmapp.forms.</tt><tt class="descname">get_headers_formset</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#get_headers_formset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.get_headers_formset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.ConfirmPasswordForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">ConfirmPasswordForm</tt><big>(</big><em>user</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ConfirmPasswordForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ConfirmPasswordForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<p>A form that checks the user has entered his password.</p>
+<dl class="method">
+<dt id="plmapp.forms.ConfirmPasswordForm.clean_password">
+<tt class="descname">clean_password</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#ConfirmPasswordForm.clean_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.ConfirmPasswordForm.clean_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validates that the password field is correct.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ConfirmPasswordForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'password': &lt;django.forms.fields.CharField object at 0x852a250&gt;}</em><a class="headerlink" href="#plmapp.forms.ConfirmPasswordForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.ConfirmPasswordForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.ConfirmPasswordForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.HistoryObjectForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">HistoryObjectForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#HistoryObjectForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.HistoryObjectForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<p>A Form asking the user the information he wants displayed in the history</p>
+<dl class="attribute">
+<dt id="plmapp.forms.HistoryObjectForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'document': &lt;django.forms.fields.BooleanField object at 0x852a490&gt;, 'part': &lt;django.forms.fields.BooleanField object at 0x852aed0&gt;, 'group': &lt;django.forms.fields.BooleanField object at 0x852a090&gt;}</em><a class="headerlink" href="#plmapp.forms.HistoryObjectForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.HistoryObjectForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.HistoryObjectForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.forms.HistoryDateForm">
+<em class="property">class </em><tt class="descclassname">plmapp.forms.</tt><tt class="descname">HistoryDateForm</tt><big>(</big><em>data=None</em>, <em>files=None</em>, <em>auto_id=u'id_%s'</em>, <em>prefix=None</em>, <em>initial=None</em>, <em>error_class=&lt;class 'django.forms.util.ErrorList'&gt;</em>, <em>label_suffix=u':'</em>, <em>empty_permitted=False</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/forms.html#HistoryDateForm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.forms.HistoryDateForm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.forms.Form</span></tt></p>
+<dl class="attribute">
+<dt id="plmapp.forms.HistoryDateForm.base_fields">
+<tt class="descname">base_fields</tt><em class="property"> = {'date_history_begin': &lt;django.forms.fields.DateTimeField object at 0x4e72810&gt;, 'number_days': &lt;django.forms.fields.IntegerField object at 0x852ac90&gt;, 'done_by': &lt;django.forms.fields.CharField object at 0x852a790&gt;}</em><a class="headerlink" href="#plmapp.forms.HistoryDateForm.base_fields" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.forms.HistoryDateForm.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.forms.HistoryDateForm.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="5.10. lifecycle — Utilities to manipulate lifecycle"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="filters.html" title="5.8. filters – Rendering of text written in a wiki syntax"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

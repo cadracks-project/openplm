@@ -1,0 +1,1218 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. http_api — HTTP-API &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="5. Modules (openPLM.plmapp package)" href="modules.html" />
+    <link rel="prev" title="3. Cookbook" href="cookbook.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="5. Modules (openPLM.plmapp package)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="cookbook.html" title="3. Cookbook"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. <tt class="docutils literal"><span class="pre">http_api</span></tt> &#8212; HTTP-API</a><ul>
+<li><a class="reference internal" href="#how-to-make-a-query">4.1. How to make a query</a></li>
+<li><a class="reference internal" href="#returned-value">4.2. Returned value</a></li>
+<li><a class="reference internal" href="#authentication">4.3. Authentication</a></li>
+<li><a class="reference internal" href="#object-fields">4.4. Object fields</a></li>
+<li><a class="reference internal" href="#query-fields">4.5. Query fields</a><ul>
+<li><a class="reference internal" href="#available-types">4.5.1. Available types</a></li>
+<li><a class="reference internal" href="#optional-fields">4.5.2. Optional fields</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#file-fields">4.6. File fields</a></li>
+<li><a class="reference internal" href="#list-of-available-queries">4.7. List of available queries</a><ul>
+<li><a class="reference internal" href="#general-queries">4.7.1. General queries</a></li>
+<li><a class="reference internal" href="#part-queries">4.7.2. Part queries</a></li>
+<li><a class="reference internal" href="#document-queries">4.7.3. Document queries</a><ul>
+<li><a class="reference internal" href="#document-file-queries">4.7.3.1. Document file queries</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="cookbook.html"
+                        title="previous chapter">3. Cookbook</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="modules.html"
+                        title="next chapter">5. Modules (<tt class="docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/http-api.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/http-api.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-http_api"></span><div class="section" id="http-api-http-api">
+<h1>4. <a class="reference internal" href="#module-http_api" title="http_api"><tt class="xref py py-mod docutils literal"><span class="pre">http_api</span></tt></a> &#8212; HTTP-API<a class="headerlink" href="#http-api-http-api" title="Permalink to this headline">¶</a></h1>
+<p>This document describes how to communicate with an OpenPLM server to build a
+plugin.</p>
+<div class="section" id="how-to-make-a-query">
+<h2>4.1. How to make a query<a class="headerlink" href="#how-to-make-a-query" title="Permalink to this headline">¶</a></h2>
+<p>You just have to make a POST or GET request to the server. All valid urls
+are described above.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You must set the user-agent to &#8216;openplm&#8217;, this is to prevent a CSRF attack.
+If an user click on a link related to the api, he will receive a 403
+forbidden response. Moreover, a XMLHttpRequest object can not set the
+user agent if the script was launched from another domain.</p>
+</div>
+</div>
+<div class="section" id="returned-value">
+<h2>4.2. Returned value<a class="headerlink" href="#returned-value" title="Permalink to this headline">¶</a></h2>
+<p>Results are returned in a JSON format. Each result contains at least two fields:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>api_version</dt>
+<dd>the api version (current : <strong>1.1</strong>)</dd>
+<dt>result</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">&quot;ok&quot;</span></tt> if no error occurred (i.e. the query was valid and succeed)</li>
+<li><tt class="docutils literal"><span class="pre">&quot;error&quot;</span></tt> if an error occurred</li>
+</ul>
+</dd>
+</dl>
+</div></blockquote>
+<p>For example, a minimal result would be:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="o">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="s2">&quot;api_version&quot;</span><span class="o">:</span> <span class="s2">&quot;1.1&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>If an error occurred, an extra field is add:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>error</dt>
+<dd>a short description of the error</dd>
+</dl>
+</div></blockquote>
+<p>For example, a result could be:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span><span class="s2">&quot;result&quot;</span><span class="o">:</span> <span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="s2">&quot;api_version&quot;</span><span class="o">:</span> <span class="s2">&quot;1.1&quot;</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="o">:</span> <span class="s2">&quot;Oups an error occured&quot;</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="authentication">
+<h2>4.3. Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>Several queries require an authenticated user.</p>
+<p>The authentication is based on Django module <tt class="docutils literal"><span class="pre">auth</span></tt>, so you need to make
+query with a cookies support.</p>
+<p>To authenticated, see <a class="reference internal" href="#http_api.login" title="http_api.login"><tt class="xref py py-func docutils literal"><span class="pre">login()</span></tt></a>.</p>
+</div>
+<div class="section" id="object-fields">
+<span id="http-api-object"></span><h2>4.4. Object fields<a class="headerlink" href="#object-fields" title="Permalink to this headline">¶</a></h2>
+<p>Some queries return a field which describes an object.</p>
+<p>The fields are:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="72%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>id</td>
+<td>id of the object</td>
+</tr>
+<tr class="row-odd"><td>type</td>
+<td>type of the object</td>
+</tr>
+<tr class="row-even"><td>reference</td>
+<td>reference of the object</td>
+</tr>
+<tr class="row-odd"><td>revision</td>
+<td>revision of the object</td>
+</tr>
+<tr class="row-even"><td>name</td>
+<td>name of the object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="query-fields">
+<span id="http-api-fields"></span><h2>4.5. Query fields<a class="headerlink" href="#query-fields" title="Permalink to this headline">¶</a></h2>
+<p>Some queries return a description of an object field, this description contains
+the following fields:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>name</td>
+<td>name of the field.
+Examples: <tt class="docutils literal"><span class="pre">&quot;type&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;reference&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;wheels&quot;</span></tt></td>
+</tr>
+<tr class="row-odd"><td>label</td>
+<td>verbose name more comprehensible for an user.
+Example: <tt class="docutils literal"><span class="pre">&quot;Number</span> <span class="pre">of</span> <span class="pre">wheels&quot;</span></tt></td>
+</tr>
+<tr class="row-even"><td>type</td>
+<td>type of the field, the avalaible types are described above</td>
+</tr>
+<tr class="row-odd"><td>initial</td>
+<td>initial (default) value for the field, may be <cite>None</cite>.</td>
+</tr>
+<tr class="row-even"><td>others fields</td>
+<td>see above</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<div class="section" id="available-types">
+<span id="http-api-types"></span><h3>4.5.1. Available types<a class="headerlink" href="#available-types" title="Permalink to this headline">¶</a></h3>
+<p>The available types are:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">&quot;int&quot;</span></tt></td>
+<td>an integer (positive or negative)</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">&quot;float&quot;</span></tt></td>
+<td>a float (positive or negative)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">&quot;decimal&quot;</span></tt></td>
+<td>a number with a restrictive format</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">&quot;boolean&quot;</span></tt></td>
+<td>a boolean (<cite>True</cite> or <cite>False</cite>)</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">&quot;text&quot;</span></tt></td>
+<td>a string</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">&quot;choice&quot;</span></tt></td>
+<td>a type to choose among several values</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>If the type is <tt class="docutils literal"><span class="pre">&quot;choice&quot;</span></tt>, another field, called <tt class="docutils literal"><span class="pre">&quot;choices&quot;</span></tt> is given. It
+contains a list of tuple (<em>short_value</em>, <em>long_value</em>) where <em>short_value</em> is
+the value for the server and <em>long_value</em> is the value for the user.</p>
+</div>
+<div class="section" id="optional-fields">
+<h3>4.5.2. Optional fields<a class="headerlink" href="#optional-fields" title="Permalink to this headline">¶</a></h3>
+<p>Some other fields may be given:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="25%" />
+<col width="58%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Associated types</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>min_value</td>
+<td><tt class="docutils literal"><span class="pre">&quot;int&quot;</span></tt>,
+<tt class="docutils literal"><span class="pre">&quot;float&quot;</span></tt>,
+<tt class="docutils literal"><span class="pre">&quot;decimale</span></tt></td>
+<td>minimal value accepted by the field</td>
+</tr>
+<tr class="row-odd"><td>max_value</td>
+<td><tt class="docutils literal"><span class="pre">&quot;int&quot;</span></tt>,
+<tt class="docutils literal"><span class="pre">&quot;float&quot;</span></tt>,
+<tt class="docutils literal"><span class="pre">&quot;decimale</span></tt></td>
+<td>maximal value accepted by the field</td>
+</tr>
+<tr class="row-even"><td>min_length</td>
+<td><tt class="docutils literal"><span class="pre">&quot;text&quot;</span></tt>,</td>
+<td>minimal length of the field</td>
+</tr>
+<tr class="row-odd"><td>max_length</td>
+<td><tt class="docutils literal"><span class="pre">&quot;text&quot;</span></tt>,</td>
+<td>maximal length of the field</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="file-fields">
+<span id="http-api-file"></span><h2>4.6. File fields<a class="headerlink" href="#file-fields" title="Permalink to this headline">¶</a></h2>
+<p>Some queries return information about a file.</p>
+<p>The fields are:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>id</td>
+<td>id of the file</td>
+</tr>
+<tr class="row-odd"><td>filename</td>
+<td>name of the file (with its extension)</td>
+</tr>
+<tr class="row-even"><td>size</td>
+<td>size of the file in bytes</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="list-of-available-queries">
+<h2>4.7. List of available queries<a class="headerlink" href="#list-of-available-queries" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="general-queries">
+<h3>4.7.1. General queries<a class="headerlink" href="#general-queries" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="http_api.login">
+<tt class="descclassname">http_api.</tt><tt class="descname">login</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to authenticate an user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/login/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">POST</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">no</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.api_login" title="plmapp.views.api.api_login"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.api_login()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>username</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/string.html#module-string" title="(in Python v2.6)"><em>string</em></a>) &#8211; the username of the user</li>
+<li><strong>password</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/string.html#module-string" title="(in Python v2.6)"><em>string</em></a>) &#8211; the password of the user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first docutils">
+<dt>username</dt>
+<dd><p class="first last">the username passed in the POST query</p>
+</dd>
+<dt>first_name</dt>
+<dd><p class="first last">the user&#8217;s first name</p>
+</dd>
+<dt>last_name</dt>
+<dd><p class="first last">the user&#8217;s last name</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Fail if:</th><td class="field-body"><p class="first last">user does not exist or user is inactive</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.testlogin">
+<tt class="descclassname">http_api.</tt><tt class="descname">testlogin</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.testlogin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to test if an user is authenticated.</p>
+<p>This query does not take any parameters and does not return any specific
+fields. If the user is authenticated, <em>result</em> would be set to <tt class="docutils literal"><span class="pre">&quot;ok&quot;</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/testlogin/</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">GET</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">no</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.test_login" title="plmapp.views.api.test_login"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.test_login()</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.types">
+<tt class="descclassname">http_api.</tt><tt class="descname">types</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to get all the subtypes of <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> managed by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/types/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_all_types" title="plmapp.views.api.get_all_types"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_all_types()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>types</dt>
+<dd><p class="first last">list of all types (string) sorted alphabetically
+(without <tt class="docutils literal"><span class="pre">&quot;plmobject&quot;</span></tt>)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#http_api.parts" title="http_api.parts"><tt class="xref py py-func docutils literal"><span class="pre">parts()</span></tt></a> and <a class="reference internal" href="#http_api.docs" title="http_api.docs"><tt class="xref py py-func docutils literal"><span class="pre">docs()</span></tt></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.parts">
+<tt class="descclassname">http_api.</tt><tt class="descname">parts</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to get all the types of <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> managed by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/parts/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_all_parts" title="plmapp.views.api.get_all_parts"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_all_parts()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>types</dt>
+<dd><p class="first last">list of all types (string) sorted alphabetically</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.docs">
+<tt class="descclassname">http_api.</tt><tt class="descname">docs</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to get all the types of <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> managed by the server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/docs/</span></tt> or <tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/documents/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_all_docs" title="plmapp.views.api.get_all_docs"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_all_docs()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>types</dt>
+<dd><p class="first last">list of all types (string) sorted alphabetically</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.search">
+<tt class="descclassname">http_api.</tt><tt class="descname">search</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.search" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to perform a search on the objects stored on the server</p>
+<p>Possible values for <em>editable_only</em> are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>true</em> (the default) to return only editable objects</li>
+<li><em>false</em> to return all objects</li>
+</ul>
+</div></blockquote>
+<p>Possible values for <em>with_file_only</em> are:</p>
+<blockquote>
+<div><ul class="simple">
+<li><em>true</em> (the default) to return only documents with at least one file</li>
+<li><em>false</em> to return all documents</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/search/[</span><em><span class="pre">editable_only</span></em><span class="pre">/[</span><em><span class="pre">with_file_only</span></em><span class="pre">/]]</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.search" title="plmapp.views.api.search"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.search()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Get params:</th><td class="field-body"><dl class="first docutils">
+<dt>type</dt>
+<dd><p class="first last">(required) a valid type (see <a class="reference internal" href="#http_api.types" title="http_api.types"><tt class="xref py py-func docutils literal"><span class="pre">types()</span></tt></a> to get a list of types)</p>
+</dd>
+<dt>others params</dt>
+<dd><p class="first last">see <a class="reference internal" href="#http_api.search_fields" title="http_api.search_fields"><tt class="xref py py-func docutils literal"><span class="pre">search_fields()</span></tt></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>objects</dt>
+<dd><p class="first last">list of all objects matching the query, see <a class="reference internal" href="#http-api-object"><em>Object fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.create">
+<tt class="descclassname">http_api.</tt><tt class="descname">create</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to create an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/create/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">POST</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.create" title="plmapp.views.api.create"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.create()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Post params:</th><td class="field-body"><dl class="first docutils">
+<dt>type</dt>
+<dd><p class="first last">(required) a valid type (see <a class="reference internal" href="#http_api.types" title="http_api.types"><tt class="xref py py-func docutils literal"><span class="pre">types()</span></tt></a> to get a list of types)</p>
+</dd>
+<dt>others params</dt>
+<dd><p class="first last">see <a class="reference internal" href="#http_api.creation_fields" title="http_api.creation_fields"><tt class="xref py py-func docutils literal"><span class="pre">creation_fields()</span></tt></a></p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>object</dt>
+<dd><p class="first last">the object which has been created, see <a class="reference internal" href="#http-api-object"><em>Object fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.search_fields">
+<tt class="descclassname">http_api.</tt><tt class="descname">search_fields</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.search_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to get available fields to perform a search</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/search_fields/</span><em><span class="pre">typename</span></em><span class="pre">/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_search_fields" title="plmapp.views.api.get_search_fields"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_search_fields()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>fields</dt>
+<dd><p class="first last">the list of fields available to perform a search on the objects
+of type <em>typename</em>, see <a class="reference internal" href="#http-api-fields"><em>Query fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.creation_fields">
+<tt class="descclassname">http_api.</tt><tt class="descname">creation_fields</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.creation_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Query used to fields need to create an object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/creation_fields/</span><em><span class="pre">typename</span></em><span class="pre">/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_creation_fields" title="plmapp.views.api.get_creation_fields"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_creation_fields()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>fields</dt>
+<dd><p class="first last">the list of fields need to create an object of type <em>typename</em>, see
+<a class="reference internal" href="#http-api-fields"><em>Query fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.get">
+<tt class="descclassname">http_api.</tt><tt class="descname">get</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.get" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns description of an object (part or document) identified by its id.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/get/</span><em><span class="pre">object_id</span></em><span class="pre">/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_object" title="plmapp.views.api.get_object"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_object()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>object</dt>
+<dd><p class="first last">dictionary describing the object, see <a class="reference internal" href="#http-api-object"><em>Object fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="part-queries">
+<h3>4.7.2. Part queries<a class="headerlink" href="#part-queries" title="Permalink to this headline">¶</a></h3>
+<p>In the following queries, <em>part_id</em> is a the id (an integer) of a
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></p>
+<dl class="function">
+<dt id="http_api.attached_documents">
+<tt class="descclassname">http_api.</tt><tt class="descname">attached_documents</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.attached_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns the list of attached parts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">part_id</span></em><span class="pre">/attached_documents/</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">GET</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_attached_documents" title="plmapp.views.api.get_attached_documents"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_attached_documents()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">parts, a list of dictionaries describing attached documents</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="document-queries">
+<h3>4.7.3. Document queries<a class="headerlink" href="#document-queries" title="Permalink to this headline">¶</a></h3>
+<p>In the following queries, <em>doc_id</em> is a the id (an integer) of a
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a></p>
+<dl class="function">
+<dt id="http_api.files">
+<tt class="descclassname">http_api.</tt><tt class="descname">files</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of files associated to the document.
+If <em>all/</em> is given, all files are returned, otherwise, only unlocked files
+are returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/files/[all/]</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_files" title="plmapp.views.api.get_files"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_files()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>files</dt>
+<dd><p class="first last">the list of files of the document, see <a class="reference internal" href="#http-api-file"><em>File fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.revise">
+<tt class="descclassname">http_api.</tt><tt class="descname">revise</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.revise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a new revision of the document</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/revise/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">POST</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.revise" title="plmapp.views.api.revise"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.revise()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Post params:</th><td class="field-body"><dl class="first docutils">
+<dt>revision</dt>
+<dd><p class="first last">new revision of the document</p>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>doc</dt>
+<dd><p class="first last">the new document, see <a class="reference internal" href="#http-api-object"><em>Object fields</em></a></p>
+</dd>
+<dt>files</dt>
+<dd><p class="first last">the list of files of the new document, see <a class="reference internal" href="#http-api-file"><em>File fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.next_revision">
+<tt class="descclassname">http_api.</tt><tt class="descname">next_revision</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.next_revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a possible new revision for the document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/next_revision/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.next_revision" title="plmapp.views.api.next_revision"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.next_revision()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>revision</dt>
+<dd><p class="first last">the new revision (may be an empty string)</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.is_revisable">
+<tt class="descclassname">http_api.</tt><tt class="descname">is_revisable</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.is_revisable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the document can be revised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/is_revisable/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.is_revisable" title="plmapp.views.api.is_revisable"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.is_revisable()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>revisable</dt>
+<dd><p class="first last">boolean, True if the document can be revised.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.attach_to_part">
+<tt class="descclassname">http_api.</tt><tt class="descname">attach_to_part</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.attach_to_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links the document with the part identified by <em>part_id</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/attach_to_part/</span><em><span class="pre">part_id</span></em><span class="pre">/</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">GET</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.attach_to_part" title="plmapp.views.api.attach_to_part"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.attach_to_part()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.add_file">
+<tt class="descclassname">http_api.</tt><tt class="descname">add_file</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.add_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a file to the document, the request must have the attribute
+<tt class="docutils literal"><span class="pre">enctype=&quot;multipart/form-data&quot;</span></tt>.</p>
+<p>If the url ends with <tt class="docutils literal"><span class="pre">thumbnail/</span></tt> a thumbnail will be generated
+by openPLM.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/add_file/[thumbnail/]</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">POST</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.add_file" title="plmapp.views.api.add_file"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.add_file()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Post param:</th><td class="field-body"><p class="first">filename</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>doc_file</dt>
+<dd><p class="first last">the file that has been had, see <a class="reference internal" href="#http-api-file"><em>File fields</em></a>.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.attached_parts">
+<tt class="descclassname">http_api.</tt><tt class="descname">attached_parts</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.attached_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns the list of attached parts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/attached_parts/</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">GET</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.get_attached_parts" title="plmapp.views.api.get_attached_parts"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.get_attached_parts()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">parts, a list of dictionaries describing attached parts</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<div class="section" id="document-file-queries">
+<h4>4.7.3.1. Document file queries<a class="headerlink" href="#document-file-queries" title="Permalink to this headline">¶</a></h4>
+<p>In the following queries, <em>df_id</em> is the id (an integer) of a
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>.</p>
+<dl class="function">
+<dt id="http_api.is_locked">
+<tt class="descclassname">http_api.</tt><tt class="descname">is_locked</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.is_locked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the file is locked.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><p class="first"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/is_locked/</span><em><span class="pre">df_id</span></em><span class="pre">/</span></tt></p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body"><p class="first">GET</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body"><p class="first">yes</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><p class="first"><a class="reference internal" href="modules/views.html#plmapp.views.api.is_locked" title="plmapp.views.api.is_locked"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.is_locked()</span></tt></a></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first last docutils">
+<dt>locked</dt>
+<dd><p class="first last">boolean, True if the file is locked.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.lock">
+<tt class="descclassname">http_api.</tt><tt class="descname">lock</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locks the file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/lock/</span><em><span class="pre">df_id</span></em><span class="pre">/</span></tt> or
+<tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/checkout/</span><em><span class="pre">df_id</span></em><span class="pre">/</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">GET</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.check_out" title="plmapp.views.api.check_out"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.check_out()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.unlock">
+<tt class="descclassname">http_api.</tt><tt class="descname">unlock</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlocks the file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/unlock/</span><em><span class="pre">df_id</span></em><span class="pre">/</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">GET</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.unlock" title="plmapp.views.api.unlock"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.unlock()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.checkin">
+<tt class="descclassname">http_api.</tt><tt class="descname">checkin</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.checkin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates (checks-in) the file, the request must have the attribute
+<tt class="docutils literal"><span class="pre">enctype=&quot;multipart/form-data&quot;</span></tt>.</p>
+<p>If the url ends with <tt class="docutils literal"><span class="pre">thumbnail/</span></tt> a thumbnail will be generated
+by openPLM.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/checkin/</span><em><span class="pre">df_id</span></em><span class="pre">/[thumbnail/]</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">POST</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.check_in" title="plmapp.views.api.check_in"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.check_in()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Post param:</th><td class="field-body">filename</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.add_thumbnail">
+<tt class="descclassname">http_api.</tt><tt class="descname">add_thumbnail</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.add_thumbnail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a thumbnail to the file, the request must have the attribute
+<tt class="docutils literal"><span class="pre">enctype=&quot;multipart/form-data&quot;</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/object/</span><em><span class="pre">doc_id</span></em><span class="pre">/add_thumbnail/</span><em><span class="pre">df_id</span></em><span class="pre">/</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">POST</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.add_thumbnail" title="plmapp.views.api.add_thumbnail"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.add_thumbnail()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Post param:</th><td class="field-body">filename</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="http_api.lock_files">
+<tt class="descclassname">http_api.</tt><tt class="descname">lock_files</tt><big>(</big><big>)</big><a class="headerlink" href="#http_api.lock_files" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Locks several files in one transactional block.</p>
+<p>Files are set by a POST parameter, <tt class="docutils literal"><span class="pre">files</span></tt> which must be a json list
+of ids of <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> to be locked.</p>
+<p>If one file can not be locked, no files are locked.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><em><span class="pre">server</span></em><span class="pre">/api/lock_files</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Type :</th><td class="field-body">POST</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Login required:</th><td class="field-body">yes</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Implemented by:</th><td class="field-body"><a class="reference internal" href="modules/views.html#plmapp.views.api.lock_files" title="plmapp.views.api.lock_files"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.views.api.lock_files()</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Post param:</th><td class="field-body">files, a list of ids of document files</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Returned fields:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules.html" title="5. Modules (openPLM.plmapp package)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="cookbook.html" title="3. Cookbook"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

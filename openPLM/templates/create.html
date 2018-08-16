@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+<!-- Manage html display in the Content div which correspond to the "attributes" menu -->
+{% block css %}
+    <link rel="stylesheet" href="{{STATIC_URL}}css/showLoading.css" type="text/css" media="screen" charset="utf-8" />
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.showLoading.min.js"></script>
+
+    <script type="text/javascript" src="{{STATIC_URL}}js/create.js"></script>
+{% endblock %}
+
+{% block extrahead %}
+    {{ creation_form.media }}
+{% endblock %}
+
+{% block content %}
+    {% if is_contributor %}
+        <div>
+        <h3 class="hplm">{% trans "OBJECT CREATION:" %}</h3>
+            <form id="creation_form" method="post" action="." >{% csrf_token %}	
+                {# hidden fields from a "create an attach" button #}
+                {% if next %}
+                    <input type="hidden" name="__next__" value="{{next}}"/>
+                {% endif %}
+                {% if related_doc %}
+                    <input type="hidden" name="related_doc" value="{{related_doc}}"/>
+                {% endif %}
+                {% if related_part %}
+                    <input type="hidden" name="related_part" value="{{related_part}}"/>
+                {% endif %}
+                {% if related_parent %}
+                    <input type="hidden" name="related_parent" value="{{related_parent}}"/>
+                {% endif %}
+
+                <table class="Content">
+                    <col width="20%" />
+                    <col width="80%" />
+                    <tbody>
+                        <tr class="Content">
+                            <th class="Content">{% trans "Type" %}</th>
+                            <td>{{ creation_type_form.visible_fields.0 }}
+                                {{ creation_type_form.errors.type }}
+                            </td>
+                            
+                        </tr>
+                        {{ creation_form }}
+                    </tbody>
+                </table>
+                <div style="width:100%; text-align:center; padding:0.5em;">
+                    {% if related %}
+                        {# inform that the object will be attached #}
+                        <p>
+                        {% if related_doc %}
+                            {% blocktrans with related.type as related_type and related.reference as related_reference and related.revision as related_revision and related.name as related_name %} 
+This part will be attached to the document {{related_type}} // {{ related_reference }} // {{ related_revision }} // {{ related_name }}.
+    {% endblocktrans %}
+                        {% else %}
+                            {% if related_part %}
+                                {% blocktrans with related.type as related_type and related.reference as related_reference and related.revision as related_revision and related.name as related_name %} 
+This document will be attached to the part {{related_type}} // {{ related_reference }} // {{ related_revision }} // {{ related_name }}.
+                                {% endblocktrans %}
+                            {% else %}
+                                {% blocktrans with related.type as related_type and related.reference as related_reference and related.revision as related_revision and related.name as related_name %} 
+This part will be added to the part {{related_type}} // {{ related_reference }} // {{ related_revision }} // {{ related_name }}.
+                                {% endblocktrans %}
+
+                    {% endif %}
+
+                        {% endif %}
+                        </p>
+                    {% endif %}
+                    <input type="submit" class="tb-btn tb-btn-large tb-btn-success" value="{% trans "CREATE" %}" />
+                </div>
+            </form>
+        </div>
+        <div>
+        <h3 class="hplm">{% trans "Other creation tools:" %}</h3>
+            <ul>
+                <li>
+                <a href="/import/csv/" >
+                    {% trans "Import several parts or documents from CSV file." %}
+                </a>
+                </li>
+                <li>
+                <a href="/import/bom/">
+                    {% trans "Import a BOM from a CSV file." %}</a>
+                </li>
+                <li>
+                <a href="/user/{{user.username|urlencode }}/delegation/sponsor/">
+                    {% trans "Sponsor a new user" %}</a>
+                </li>
+                <li>
+                <a href="/import/users/">
+                    {% trans "Sponsor several users from a CSV file." %}
+                </a>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <p>{% trans "You can not create an object since you are not a contributor."%}</p>
+    {% endif %}
+{% endblock %}
+
+

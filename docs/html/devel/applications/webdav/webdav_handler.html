@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.6.4. webdav.webdav_handler — Handler of webdav request &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.6. webdav – WebDAV" href="index.html" />
+    <link rel="next" title="7. Documenting OpenPLM" href="../../documentation.html" />
+    <link rel="prev" title="6.6.3. webdav.views — views for webdav" href="views.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../documentation.html" title="7. Documenting OpenPLM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="views.html" title="6.6.3. webdav.views — views for webdav"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.6. webdav &#8211; WebDAV</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="views.html"
+                        title="previous chapter">6.6.3. <tt class="docutils literal docutils literal docutils literal"><span class="pre">webdav.views</span></tt> &#8212; views for webdav</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../documentation.html"
+                        title="next chapter">7. Documenting OpenPLM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/webdav/webdav_handler.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/webdav/webdav_handler.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-openPLM.apps.webdav.webdav_handler">
+<span id="webdav-webdav-handler-handler-of-webdav-request"></span><h1>6.6.4. <tt class="xref py py-mod docutils literal"><span class="pre">webdav.webdav_handler</span></tt> &#8212; Handler of webdav request<a class="headerlink" href="#module-openPLM.apps.webdav.webdav_handler" title="Permalink to this headline">¶</a></h1>
+<p>openPLM.webdav application
+Copyright 2012 LinObject</p>
+<p>Modified version of webdav/webdav_handler.py from:
+django-webdav is a small WebDAV implementation for Django.
+Copyright 2012 Peter Gebauer</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<dl class="exception">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandlerException">
+<em class="property">exception </em><tt class="descclassname">openPLM.apps.webdav.webdav_handler.</tt><tt class="descname">WebDavHandlerException</tt><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandlerException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandlerException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.webdav.webdav_handler.</tt><tt class="descname">WebDavHandler</tt><big>(</big><em>resource_path</em>, <em>backend</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.get_final_path_part">
+<tt class="descname">get_final_path_part</tt><big>(</big><em>localpath</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.get_final_path_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_final_path_part" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.get_supported_methods">
+<tt class="descname">get_supported_methods</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.get_supported_methods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_supported_methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.parse_if_header">
+<tt class="descname">parse_if_header</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.parse_if_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.parse_if_header" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.get_matching_token">
+<tt class="descname">get_matching_token</tt><big>(</big><em>request</em>, <em>path</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.get_matching_token"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_matching_token" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_method">
+<tt class="descname">handle_method</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_method"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_method" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_options">
+<tt class="descname">handle_options</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.get_200_response">
+<tt class="descname">get_200_response</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.get_200_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_200_response" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_propfind">
+<tt class="descname">handle_propfind</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_propfind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_propfind" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_proppatch">
+<tt class="descname">handle_proppatch</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_proppatch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_proppatch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_mkcol">
+<tt class="descname">handle_mkcol</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_mkcol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_mkcol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_get">
+<tt class="descname">handle_get</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_head">
+<tt class="descname">handle_head</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_head"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_head" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_delete">
+<tt class="descname">handle_delete</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_delete" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_put">
+<tt class="descname">handle_put</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_put" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_copy">
+<tt class="descname">handle_copy</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_copy" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_move">
+<tt class="descname">handle_move</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_move" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_lock">
+<tt class="descname">handle_lock</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_lock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_unlock">
+<tt class="descname">handle_unlock</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/webdav_handler.html#WebDavHandler.handle_unlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_unlock" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../documentation.html" title="7. Documenting OpenPLM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="views.html" title="6.6.3. webdav.views — views for webdav"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.6. webdav &#8211; WebDAV</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

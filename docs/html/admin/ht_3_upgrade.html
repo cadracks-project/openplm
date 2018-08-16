@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3. How to upgrade an installation of OpenPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="1. How to install OpenPLM" href="how-tos.html" />
+    <link rel="next" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0" href="upgrade/upgrade-2.0.html" />
+    <link rel="prev" title="1.2. How to install openPLM server (development version)" href="ht_2_install_server.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="upgrade/upgrade-2.0.html" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ht_2_install_server.html" title="1.2. How to install openPLM server (development version)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="how-tos.html" accesskey="U">1. How to install OpenPLM</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3. How to upgrade an installation of OpenPLM</a><ul>
+<li><a class="reference internal" href="#stopping-the-server">1.3.2. Stopping the server</a></li>
+<li><a class="reference internal" href="#backups">1.3.3. Backups</a><ul>
+<li><a class="reference internal" href="#database">1.3.3.1. Database</a></li>
+<li><a class="reference internal" href="#code">1.3.3.2. Code</a></li>
+<li><a class="reference internal" href="#files">1.3.3.3. Files</a></li>
+<li><a class="reference internal" href="#thumbnails-and-3d-files">1.3.3.4. Thumbnails and 3D files</a></li>
+<li><a class="reference internal" href="#search-indexes">1.3.3.5. Search indexes</a></li>
+<li><a class="reference internal" href="#restoring-a-backup">1.3.3.6. Restoring a backup</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#updating-the-code">1.3.4. Updating the code</a><ul>
+<li><a class="reference internal" href="#development-version-svn">1.3.4.1. Development version (svn)</a></li>
+<li><a class="reference internal" href="#stable-version-tarball">1.3.4.2. Stable version (tarball)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#new-settings">1.3.5. New settings</a></li>
+<li><a class="reference internal" href="#migrating-the-database">1.3.6. Migrating the database</a></li>
+<li><a class="reference internal" href="#translations">1.3.7. Translations</a></li>
+<li><a class="reference internal" href="#id1">1.3.8. Search indexes</a><ul>
+<li><a class="reference internal" href="#determining-if-you-should-rebuild-the-index">1.3.8.1. Determining if you should rebuild the index</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#collecting-static-files">1.3.9. Collecting static files</a></li>
+<li><a class="reference internal" href="#file-permissions">1.3.10. File permissions</a></li>
+<li><a class="reference internal" href="#enabling-new-applications">1.3.11. Enabling new applications</a></li>
+<li><a class="reference internal" href="#other-actions">1.3.12. Other actions</a><ul>
+<li><a class="reference internal" href="#openplm-1-2">1.3.12.1. OpenPLM 1.2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#starting-the-server">1.3.13. Starting the server</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ht_2_install_server.html"
+                        title="previous chapter">1.2. How to install openPLM server (development version)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="upgrade/upgrade-2.0.html"
+                        title="next chapter">10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/ht_3_upgrade.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/ht_3_upgrade.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-upgrade-an-installation-of-openplm">
+<span id="admin-upgrade"></span><h1>1.3. How to upgrade an installation of OpenPLM<a class="headerlink" href="#how-to-upgrade-an-installation-of-openplm" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Before upgrading your installation, read the whole document and
+be sure to have reliable backups.</p>
+</div>
+<p>You should also read the following instructions:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="upgrade/upgrade-2.0.html">10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0</a><ul class="simple">
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="stopping-the-server">
+<h2>1.3.2. Stopping the server<a class="headerlink" href="#stopping-the-server" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">service</span> <span class="pre">apache2</span> <span class="pre">stop</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">service</span> <span class="pre">celeryd</span> <span class="pre">stop</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="backups">
+<h2>1.3.3. Backups<a class="headerlink" href="#backups" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="database">
+<h3>1.3.3.1. Database<a class="headerlink" href="#database" title="Permalink to this headline">¶</a></h3>
+<p>See your database documentation:</p>
+<blockquote>
+<div><ul class="simple">
+<li>PostgreSQL: <a class="reference external" href="http://www.postgresql.org/docs/9.2/static/backup.html">http://www.postgresql.org/docs/9.2/static/backup.html</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="code">
+<h3>1.3.3.2. Code<a class="headerlink" href="#code" title="Permalink to this headline">¶</a></h3>
+<p>Backups are mostly useless if you do not have the code that was running.</p>
+<p>Copy the content of <tt class="samp docutils literal"><em><span class="pre">/path/to/openPLM/</span></em></tt> (directory containing the <tt class="file docutils literal"><span class="pre">settings.py</span></tt> file).
+You should also copy your apache configuration and your celery files
+(<tt class="docutils literal"><span class="pre">/etc/init.d/celetyd</span></tt> and <tt class="docutils literal"><span class="pre">/etc/default/celeryd</span></tt>).</p>
+</div>
+<div class="section" id="files">
+<h3>1.3.3.3. Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h3>
+<p>Copy <tt class="docutils literal"><span class="pre">/var/openPLM/docs</span></tt>.</p>
+</div>
+<div class="section" id="thumbnails-and-3d-files">
+<h3>1.3.3.4. Thumbnails and 3D files<a class="headerlink" href="#thumbnails-and-3d-files" title="Permalink to this headline">¶</a></h3>
+<p>Copy <tt class="samp docutils literal"><em><span class="pre">/path/to/openPLM</span></em><span class="pre">/media/thumbnails</span></tt> and <tt class="samp docutils literal"><em><span class="pre">/path/to/openPLM</span></em><span class="pre">/media/public</span></tt>.</p>
+<p>If <cite>document3D</cite> application is installed, copy <tt class="samp docutils literal"><em><span class="pre">/path/to/openPLM</span></em><span class="pre">/media/3D</span></tt>.</p>
+</div>
+<div class="section" id="search-indexes">
+<h3>1.3.3.5. Search indexes<a class="headerlink" href="#search-indexes" title="Permalink to this headline">¶</a></h3>
+<p>You can also copy <tt class="docutils literal"><span class="pre">/var/openPLM/xapian_index</span></tt>, it is easy to rebuild the index
+but it can take a few minutes.</p>
+</div>
+<div class="section" id="restoring-a-backup">
+<h3>1.3.3.6. Restoring a backup<a class="headerlink" href="#restoring-a-backup" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>Stop apache and celery</li>
+<li>Restore all files</li>
+<li>Restore the database</li>
+<li>Restore the code</li>
+<li>Restore search indexes or rebuild them</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="updating-the-code">
+<h2>1.3.4. Updating the code<a class="headerlink" href="#updating-the-code" title="Permalink to this headline">¶</a></h2>
+<p>You should remove old <tt class="docutils literal"><span class="pre">.pyc</span></tt> files:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">find</span> <span class="pre">path/to/openPLM</span> <span class="pre">-name</span> <span class="pre">'*.pyc'</span> <span class="pre">-delete</span></tt></li>
+</ul>
+</div></blockquote>
+<div class="section" id="development-version-svn">
+<h3>1.3.4.1. Development version (svn)<a class="headerlink" href="#development-version-svn" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Backup your files, code, <strong>settings.py</strong>, thumbnails...</li>
+<li>Check your own modification: <tt class="docutils literal"><span class="pre">svn</span> <span class="pre">up</span></tt> and <tt class="docutils literal"><span class="pre">svn</span> <span class="pre">diff</span></tt></li>
+<li>Run <tt class="docutils literal"><span class="pre">svn</span> <span class="pre">up</span></tt></li>
+<li>Restore your own settings (svn should have gracefully updated the
+settings.py file)</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="stable-version-tarball">
+<h3>1.3.4.2. Stable version (tarball)<a class="headerlink" href="#stable-version-tarball" title="Permalink to this headline">¶</a></h3>
+<p>Here, openPLM is installed in <tt class="docutils literal"><span class="pre">/var/django</span></tt>.</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Backup your files, code, <strong>settings.py</strong>, thumbnails...</p>
+</li>
+<li><p class="first">Extract the tarball in a temporary directory.
+For example: <tt class="docutils literal"><span class="pre">tar</span> <span class="pre">xzf</span> <span class="pre">openplm-XYZ.tgz</span> <span class="pre">-C</span> <span class="pre">.</span> <span class="pre">/tmp</span></tt></p>
+</li>
+<li><p class="first">Copy the files:
+<tt class="docutils literal"><span class="pre">cp</span> <span class="pre">-rp</span> <span class="pre">/tmp/openplm/openPLM</span> <span class="pre">/var/django</span></tt>,
+<tt class="docutils literal"><span class="pre">/var/django</span></tt> is the directory containing your <tt class="docutils literal"><span class="pre">openPLM</span></tt> directory</p>
+</li>
+<li><p class="first">Restore your <tt class="file docutils literal"><span class="pre">settings.py</span></tt> file:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cp</span> <span class="pre">/var/django/openPLM/settings.py</span> <span class="pre">/var/django/openPLM/settings.py.orig</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">cp</span> <span class="pre">backups/settings.py</span> <span class="pre">/var/django/openPLM</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Fix the python path in apache <tt class="docutils literal"><span class="pre">*.wsgi</span></tt> files:
+<tt class="docutils literal"><span class="pre">sed</span> <span class="pre">-in</span> <span class="pre">'s#\(/var/django/\)openPLM/trunk/#\1#'</span> <span class="pre">apache/*.wsgi</span></tt></p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="new-settings">
+<h2>1.3.5. New settings<a class="headerlink" href="#new-settings" title="Permalink to this headline">¶</a></h2>
+<p>It is possible that a new version comes with new settings.
+Generally, new settings are optional and their default values
+do not changes the behavior of a previous installation.
+New settings may better fit your needs.
+You can easily determinate new settings:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">development version:</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">diff</span> <span class="pre">/path/to/backup/settings.py</span> <span class="pre">/path/to/settings.py</span></tt>
+(svn should have merged your settings and the original settings)</p>
+</div></blockquote>
+</li>
+<li><p class="first">tarball:</p>
+<blockquote>
+<div><p><tt class="docutils literal"><span class="pre">diff</span> <span class="pre">-u</span> <span class="pre">/var/django/openPLM/settings.py</span> <span class="pre">/var/django/openPLM/settings.py.orig</span></tt></p>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="migrating-the-database">
+<h2>1.3.6. Migrating the database<a class="headerlink" href="#migrating-the-database" title="Permalink to this headline">¶</a></h2>
+<p>One simple command:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">migrate</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="translations">
+<h2>1.3.7. Translations<a class="headerlink" href="#translations" title="Permalink to this headline">¶</a></h2>
+<p>Not required if you update using the tarball:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">make</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./bin/translate_all.sh</span> <span class="pre">compile</span> <span class="pre">all</span></tt></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="id1">
+<h2>1.3.8. Search indexes<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Not really required but some functionalities may run faster.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">rebuild_index</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">-R</span> <span class="pre">/var/openPLM</span></tt></li>
+</ol>
+</div></blockquote>
+<div class="section" id="determining-if-you-should-rebuild-the-index">
+<h3>1.3.8.1. Determining if you should rebuild the index<a class="headerlink" href="#determining-if-you-should-rebuild-the-index" title="Permalink to this headline">¶</a></h3>
+<p>Rebuilding search indexes can take several minutes depending
+on the number of indexed parts, documents and files.
+You can try to rebuild indexes and if it takes too much time
+you can safely restore your backed up indexes.</p>
+<p>Version 1.2:</p>
+<blockquote>
+<div><ul class="simple">
+<li>group attribute is indexed and it is now possible to query
+documents by their group (<tt class="docutils literal"><span class="pre">group=a_group_name</span></tt>).
+Previously, a query like <tt class="docutils literal"><span class="pre">a_group_name</span></tt> matched the
+right documents but <tt class="docutils literal"><span class="pre">group=a_group_name</span></tt> would returned an
+empty result set.</li>
+<li>OpenPLM 1.2 tests if a search result is readable by the
+current user. If search indexes are not rebuilt, each search
+will hit the database and take a little more time.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="collecting-static-files">
+<h2>1.3.9. Collecting static files<a class="headerlink" href="#collecting-static-files" title="Permalink to this headline">¶</a></h2>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.0.</span></p>
+<p>Not required if you update using the tarball:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">collectstatic</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="file-permissions">
+<h2>1.3.10. File permissions<a class="headerlink" href="#file-permissions" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">-R</span> <span class="pre">/var/openPLM</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">-R</span> <span class="pre">/var/django/openPLM/trunk/openPLM/media/thumbnails</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">-R</span> <span class="pre">/var/django/openPLM/trunk/openPLM/media/public/thumbnails</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">-R</span> <span class="pre">/var/django/openPLM/trunk/openPLM/media/3D</span></tt> if <tt class="docutils literal"><span class="pre">document3D</span></tt> is installed</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="enabling-new-applications">
+<h2>1.3.11. Enabling new applications<a class="headerlink" href="#enabling-new-applications" title="Permalink to this headline">¶</a></h2>
+<p>A new version of OpenPLM often comes with new optional applications.
+You can enable them according to your needs.</p>
+</div>
+<div class="section" id="other-actions">
+<h2>1.3.12. Other actions<a class="headerlink" href="#other-actions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="openplm-1-2">
+<h3>1.3.12.1. OpenPLM 1.2<a class="headerlink" href="#openplm-1-2" title="Permalink to this headline">¶</a></h3>
+<p>You can load more optional lifecycles:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">loaddata</span> <span class="pre">extra_lifecycles</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="starting-the-server">
+<h2>1.3.13. Starting the server<a class="headerlink" href="#starting-the-server" title="Permalink to this headline">¶</a></h2>
+<p><tt class="docutils literal"><span class="pre">service</span> <span class="pre">celeryd</span> <span class="pre">start</span></tt></p>
+<p><tt class="docutils literal"><span class="pre">service</span> <span class="pre">apache2</span> <span class="pre">start</span></tt></p>
+<p>Now you can test and complain if something does not work ;-)</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="upgrade/upgrade-2.0.html" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ht_2_install_server.html" title="1.2. How to install openPLM server (development version)"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="how-tos.html" >1. How to install OpenPLM</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.3. document3D – Step and 3D documents &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="3. Applications" href="../../applications.html" />
+    <link rel="next" title="3.4. ecr - Engineering Change Requests" href="../ecr/index.html" />
+    <link rel="prev" title="3.2. calendrier – Calendar views" href="../calendrier/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../ecr/index.html" title="3.4. ecr - Engineering Change Requests"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../calendrier/index.html" title="3.2. calendrier – Calendar views"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" accesskey="U">3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.3. document3D &#8211; Step and 3D documents</a><ul>
+<li><a class="reference internal" href="#dependencies">3.3.1. Dependencies</a></li>
+<li><a class="reference internal" href="#settings-py">3.3.2. settings.py</a></li>
+<li><a class="reference internal" href="#collecting-static-files">3.3.3. Collecting static files</a></li>
+<li><a class="reference internal" href="#synchronize-the-database">3.3.4. Synchronize the database</a></li>
+<li><a class="reference internal" href="#testing">3.3.5. Testing</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../calendrier/index.html"
+                        title="previous chapter">3.2. calendrier &#8211; Calendar views</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../ecr/index.html"
+                        title="next chapter">3.4. ecr - Engineering Change Requests</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/admin/applications/document3D/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/applications/document3D/index.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="document3d-step-and-3d-documents">
+<h1>3.3. document3D &#8211; Step and 3D documents<a class="headerlink" href="#document3d-step-and-3d-documents" title="Permalink to this headline">¶</a></h1>
+<p>This application adds a <strong>Document3D</strong> document which can display
+a STEP file in the browser via <a class="reference external" href="http://www.khronos.org/webgl/">WebGL</a>. It also adds the ability to
+decompose a STEP file into several parts and documents and
+to recompose an up-to-date STEP file.</p>
+<div class="section" id="dependencies">
+<h2>3.3.1. Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>This application depends on <a class="reference external" href="http://www.pythonocc.org/">pythonOCC</a>. It has been
+tested with the version 0.5.</p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 1.1.</span></p>
+<p>It also depends on <a class="reference external" href="http://www.povray.org/">POV-Ray</a> to generate thumbnails of
+STEP file. It has been tested with the version 3.6.1.</p>
+</div>
+<div class="section" id="settings-py">
+<h2>3.3.2. settings.py<a class="headerlink" href="#settings-py" title="Permalink to this headline">¶</a></h2>
+<p>To enable the <em>document3D</em> application, it must be enabled in the settings file: add
+<tt class="docutils literal"><span class="pre">'openPLM.apps.document3D'</span></tt> to the list of installed applications
+(<a class="reference internal" href="../../upgrade/upgrade-2.0.html#INSTALLED_APPS" title="INSTALLED_APPS"><tt class="xref py py-const docutils literal"><span class="pre">INSTALLED_APPS</span></tt></a>).</p>
+<p>You must also create a directory in media:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">mkdir</span> <span class="pre">media/3D/</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">media/3D</span></tt></li>
+</ul>
+</div></blockquote>
+<p>and edit your apache configuration file to add the following lines:</p>
+<div class="highlight-apache"><div class="highlight"><pre><span class="c"># WSGIScriptAlias ...</span>
+<span class="nt">&lt;Location</span> <span class="s">/media/3D</span><span class="nt">&gt;</span>
+    <span class="nb">WSGIAccessScript</span> <span class="sx">/var/django/openPLM/trunk/openPLM/apache/access.wsgi</span>
+<span class="nt">&lt;/Location&gt;</span>
+<span class="c"># alias media/ ...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="collecting-static-files">
+<h2>3.3.3. Collecting static files<a class="headerlink" href="#collecting-static-files" title="Permalink to this headline">¶</a></h2>
+<p>Run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">collectstatic</span></tt>.</p>
+</div>
+<div class="section" id="synchronize-the-database">
+<h2>3.3.4. Synchronize the database<a class="headerlink" href="#synchronize-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">migate</span> <span class="pre">document3D</span> <span class="pre">&amp;&amp;</span> <span class="pre">./manage.py</span> <span class="pre">update_index</span> <span class="pre">document3D</span></tt>.
+Then restart celery and apache.</p>
+</div>
+<div class="section" id="testing">
+<h2>3.3.5. Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>To test this application, create a new Document3D and add a STEP file (a
+sample file <tt class="file docutils literal"><span class="pre">document3D/data_test/test.stp</span></tt> is available).
+After a moment, a 3D view will be available via the 3D tab. Your step
+file should appear if your browser supports WebGL.</p>
+<p>If it does not work, you should check celery&#8217;s log (in <tt class="file docutils literal"><span class="pre">/var/log/celery/</span></tt>)
+to see if an error happened. A valid conversion should output a line like this one
+<tt class="docutils literal"><span class="pre">[2012-03-12</span> <span class="pre">14:46:48,089:</span> <span class="pre">INFO/MainProcess]</span> <span class="pre">Task</span> <span class="pre">openPLM.apps.document3D.models.handle_step_file[9f732451-1b43-497c-8b89-f726db861941]</span> <span class="pre">succeeded</span> <span class="pre">in</span> <span class="pre">27.816108942s:</span> <span class="pre">True</span></tt>.</p>
+<p>If the 3D view is ok, you can also try to decompose the STEP file:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Attach the document to a draft part with an empty BOM</li>
+<li>Go to the &#8220;BOM-CHILD&#8221; page of the part</li>
+<li>A message explaining that the part can be decomposed should appear,
+click on &#8220;Yes&#8221;</li>
+<li>Fill the form and click on the &#8220;create&#8221; button.</li>
+<li>If it&#8217;s ok, you part should have a complete BOM. Each child part has
+a Document3D attached and each Document3D should be viewable via its 3D tab.</li>
+<li>Now, the original STEP file is bound to the BOM, so if a child STEP file is updated,
+or a BOM link is deleted, the STEP file is updated.</li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can check whether your browser supports or not WebGL <a class="reference external" href="http://get.webgl.org">here</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../ecr/index.html" title="3.4. ecr - Engineering Change Requests"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../calendrier/index.html" title="3.2. calendrier – Calendar views"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

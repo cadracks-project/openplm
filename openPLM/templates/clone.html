@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+<!-- Manage html display in the Content div which correspond to the "attributes" menu -->
+{% block css %}
+    <link rel="stylesheet" href="{{STATIC_URL}}css/showLoading.css" type="text/css" media="screen" charset="utf-8" />
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.showLoading.min.js"></script>
+
+    <script type="text/javascript" src="{{STATIC_URL}}js/create.js"></script>
+{% endblock %}
+
+{% block content %}
+    {% if obj.is_cloneable %}
+        <div>
+        <h3 class="hplm">{% trans "OBJECT CLONING:" %}</h3>
+            <form id="creation_form" method="post" action="." >{% csrf_token %}	
+                <table class="Content">
+                    <col width="20%" />
+                    <col width="80%" />
+                    <tbody>
+                        {{ creation_form }}
+                    </tbody>
+                </table>
+                {% if is_linked %}
+                <div style="padding:0.5em">
+                <h3 class="hplm">{% trans "Links" %}</h3>
+                {% if obj.is_part %}
+                    {% include 'parts/clone.html' %}
+                {% else %}
+                    {% include 'documents/clone.html' %}
+                {% endif %}
+                </div>
+                {% else %}
+                <div style="padding:0.5em; text-align:center;">
+                {% if obj.is_part %}
+                    {% trans "No object ( part and document ) is related to this part." %}
+                {% else %}
+                    {% trans "No part is attached to this document." %}
+                {% endif %}
+                </div>
+                {% endif %}
+                <div style="width:100%; text-align:center; padding:0.5em;">
+                    <input type="submit" class="tb-btn" value="{% trans "CLONE" %}" />
+                </div>
+            </form>
+        </div>
+        
+    {% else %}
+        <p>{% trans "You can not clone this object since you are not a contributor."%}</p>
+    {% endif %}
+{% endblock %}
+
+

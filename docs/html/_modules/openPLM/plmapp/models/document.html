@@ -1,0 +1,494 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.plmapp.models.document &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="openPLM.plmapp.models" href="../models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" accesskey="U">openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/plmapp/models/document.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.plmapp.models.document</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.core.files.storage</span> <span class="kn">import</span> <span class="n">FileSystemStorage</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_noop</span>
+<span class="kn">from</span> <span class="nn">django.utils.functional</span> <span class="kn">import</span> <span class="n">memoize</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.files.formats</span> <span class="kn">import</span> <span class="n">native_to_standards</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">memoize_noarg</span>
+
+
+<span class="kn">from</span> <span class="nn">.plmobject</span> <span class="kn">import</span> <span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">get_all_subclasses</span><span class="p">,</span>
+        <span class="n">get_all_subclasses_with_level</span><span class="p">)</span>
+
+<span class="c"># document stuff</span>
+<span class="k">class</span> <span class="nc">DocumentStorage</span><span class="p">(</span><span class="n">FileSystemStorage</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentStorage"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.DocumentStorage">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    File system storage which stores files with a specific name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">get_available_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentStorage.get_available_name"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.DocumentStorage.get_available_name">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a path for a file *name*, the path always refers to a file</span>
+<span class="sd">        which does not already exist.</span>
+
+<span class="sd">        The path is computed as follow:</span>
+<span class="sd">            #. a directory which name is the last extension of *name*.</span>
+<span class="sd">               For example, it is :file:`.gz` if *name* is :file:`.a.tar.gz`.</span>
+<span class="sd">               If *name* does not have an extension, the directory is</span>
+<span class="sd">               :file:`.no_ext/`.</span>
+<span class="sd">            #. a file name with 4 parts:</span>
+<span class="sd">                #. the md5 sum of *name*</span>
+<span class="sd">                #. a dash separator: ``-``</span>
+<span class="sd">                #. a random part with 7 characters in ``[a-z0-9]``</span>
+<span class="sd">                #. the extension, like :file:`.gz`</span>
+
+<span class="sd">            For example, if *name* is :file:`.my_file.tar.gz`,</span>
+<span class="sd">            a possible output is:</span>
+
+<span class="sd">                :file:`.gz/c7bfe8d00ea6e7138215ebfafff187af-jj6789g.gz`</span>
+
+<span class="sd">            If *name* is :file:`.my_file`, a possible output is:</span>
+
+<span class="sd">                :file:`.no_ext/59c211e8fc0f14b21c78c87eafe1ab72-dhh5555`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">rand</span><span class="p">():</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+                <span class="n">r</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">r</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+        <span class="n">ext2</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s">&quot;no_ext&quot;</span>
+        <span class="n">md5</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+        <span class="n">md5</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+        <span class="n">md5_value</span> <span class="o">=</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;-</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ext2</span><span class="p">,</span> <span class="n">md5_value</span> <span class="o">%</span> <span class="n">rand</span><span class="p">())</span>
+        <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">path</span><span class="p">)):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ext2</span><span class="p">,</span> <span class="n">md5_value</span> <span class="o">%</span> <span class="n">rand</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">path</span>
+
+
+<span class="c">#: :class:`.DocumentStorage` instance which stores files in :const:`.settings.DOCUMENTS_DIR`</span>
+<span class="n">docfs</span> <span class="o">=</span> <span class="n">DocumentStorage</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">DOCUMENTS_DIR</span><span class="p">)</span></div></div>
+<span class="c">#: :class:`.FileSystemStorage` instance which stores thumbnails in :const:`.settings.THUMBNAILS_DIR`</span>
+<span class="n">thumbnailfs</span> <span class="o">=</span> <span class="n">FileSystemStorage</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">THUMBNAILS_DIR</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">THUMBNAILS_URL</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">DocumentFile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentFile"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.DocumentFile">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionchanged:: 1.2</span>
+<span class="sd">        New attributes: :attr:`.ctime`, :attr:`.end_time`, :attr:`.deleted`,</span>
+<span class="sd">        :attr:`.revision`, :attr:`.previous_revision`, :attr:`.last_revision`</span>
+
+<span class="sd">    Model which stores informations of a file bounded to a :class:`.Document`</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: filename</span>
+
+<span class="sd">            original filename</span>
+<span class="sd">        .. attribute:: file</span>
+
+<span class="sd">            file stored in :obj:`.docfs`</span>
+<span class="sd">        .. attribute:: size</span>
+
+<span class="sd">            size of the file in Byte</span>
+<span class="sd">        .. attribute:: locked</span>
+
+<span class="sd">            True if the file is locked</span>
+<span class="sd">        .. attribute:: locker</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who locked the file,</span>
+<span class="sd">            None, if the file is not locked</span>
+<span class="sd">        .. attribute:: document</span>
+
+<span class="sd">            :class:`.Document` bounded to the file (required)</span>
+<span class="sd">        .. attribute:: ctime</span>
+
+<span class="sd">            date of creation of the document file</span>
+<span class="sd">        .. attribute:: end_time</span>
+
+<span class="sd">            date of creation of the next revision or None if it is</span>
+<span class="sd">            the last revision</span>
+<span class="sd">        .. attribute:: revision</span>
+
+<span class="sd">            revision number (starts at 1)</span>
+<span class="sd">        .. attribute:: previous_revision</span>
+
+<span class="sd">            :class:`.DocumentFile` or None if it&#39;s the first revision</span>
+<span class="sd">        .. attribute:: last_revision</span>
+
+<span class="sd">            foreign key to the last revision (:class:`.DocumentFile`)</span>
+<span class="sd">            or None it it&#39;is the last_revision</span>
+<span class="sd">        .. attribute:: deleted</span>
+
+<span class="sd">            True if the file has been physically removed</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">docfs</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">()</span>
+    <span class="n">thumbnail</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ImageField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">thumbnailfs</span><span class="p">,</span>
+                                 <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">locked</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">locker</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                               <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">document</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;Document&#39;</span><span class="p">)</span>
+    <span class="n">deprecated</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">ctime</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">deleted</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">revision</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">previous_revision</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">OneToOneField</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span>
+            <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;next_revision&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">last_revision</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="s">&#39;self&#39;</span><span class="p">,</span>
+            <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;older_files&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">native_related</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentFile.native_related"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.DocumentFile.native_related">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the native DocumentFile related to this DocumentFile</span>
+<span class="sd">        if :const:`.settings.ENABLE_NATIVE_FILE_MANAGEMENT` is True.</span>
+
+<span class="sd">        Returns False if there are no native DocumentFile related.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;ENABLE_NATIVE_FILE_MANAGEMENT&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">doc_files</span> <span class="o">=</span> <span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">document__id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">document_id</span><span class="p">)</span>\
+                    <span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">doc_files</span><span class="p">:</span>
+                <span class="n">native</span><span class="p">,</span> <span class="n">native_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">native</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">native_to_standards</span><span class="p">[</span><span class="n">native_ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()]:</span>
+                    <span class="k">return</span> <span class="n">doc</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">checkout_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="DocumentFile.checkout_valid"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.DocumentFile.checkout_valid">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns False if DocumentFile has a native related *locked* file</span>
+<span class="sd">        and :const:`.settings.ENABLE_NATIVE_FILE_MANAGEMENT` is True.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;ENABLE_NATIVE_FILE_MANAGEMENT&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">doc_files</span> <span class="o">=</span> <span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">document__id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">document_id</span><span class="p">,</span> <span class="n">locked</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>\
+                    <span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;filename&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">doc_files</span><span class="p">:</span>
+                <span class="n">native</span><span class="p">,</span> <span class="n">native_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">native</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">native_to_standards</span><span class="p">[</span><span class="n">native_ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()]:</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+        <span class="k">return</span> <span class="s">u&quot;DocumentFile&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">PrivateFile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span></div>
+<div class="viewcode-block" id="PrivateFile"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.PrivateFile">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.2</span>
+
+<span class="sd">    Model which stores informations of a private file only readable by its</span>
+<span class="sd">    creator.</span>
+
+<span class="sd">    There are no revision, locker, deleted or similar attributes.</span>
+<span class="sd">    A private file is not shared, and it is temporary. It is created to</span>
+<span class="sd">    store a file before a document creation.</span>
+
+<span class="sd">    Private files are created when a user uploads files and *then* creates</span>
+<span class="sd">    a document containing these files.</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: filename</span>
+
+<span class="sd">            original filename</span>
+<span class="sd">        .. attribute:: file</span>
+
+<span class="sd">            file stored in :obj:`.docfs`</span>
+<span class="sd">        .. attribute:: size</span>
+
+<span class="sd">            size of the file in Byte</span>
+<span class="sd">        .. attribute:: creator</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who created the file,</span>
+<span class="sd">        .. attribute:: ctime</span>
+<span class="sd">            date of creation of the file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="n">docfs</span><span class="p">)</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">()</span>
+    <span class="n">creator</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;files&quot;</span><span class="p">)</span>
+    <span class="n">ctime</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;PrivateFile&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">creator</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Document</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">):</span></div>
+<div class="viewcode-block" id="Document"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.Document">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Model for documents</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="n">ACCEPT_FILES</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Document.files"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.Document.files">[docs]</a>        <span class="s">&quot;Queryset of all non deprecated :class:`.DocumentFile` linked to self&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">documentfile_set</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">deprecated_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Document.deprecated_files"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.Document.deprecated_files">[docs]</a>        <span class="s">&quot;Queryset of all deprecated :class:`.DocumentFile` linked to self&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">documentfile_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_content_and_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span></div>
+        <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">),</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="k">def</span> <span class="nf">is_promotable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Document.is_promotable"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.Document.is_promotable">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if the object is promotable. A document is promotable</span>
+<span class="sd">        if there is a next state in its lifecycle and if it has at least</span>
+<span class="sd">        one file and if none of its files are locked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_promotable</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_promotion_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;This document has no files.&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">locked</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_promotion_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Some files are locked.&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">menu_items</span><span class="p">)</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;files&quot;</span><span class="p">))</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;parts&quot;</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">items</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_part</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_creation_score</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">files</span><span class="p">):</span>
+<div class="viewcode-block" id="Document.get_creation_score"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.Document.get_creation_score">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 2.0</span>
+
+<span class="sd">        Returns a score (an integer) computed from *files*.</span>
+<span class="sd">        *files* is a list of :class:`PrivateFile` uploaded by a user</span>
+<span class="sd">        who wants to create a document with all files.</span>
+
+<span class="sd">        The class which returns the highest score is chosen has the</span>
+<span class="sd">        default type after an upload.</span>
+
+<span class="sd">        The default implementation returns 10 if the current class is *Document*</span>
+<span class="sd">        and 0 otherwise.</span>
+
+<span class="sd">        For example, :class:`~Document3D` returns 50 if a CAD file has been</span>
+<span class="sd">        uploaded. Document3D is so preferred when a STEP file is uploaded.</span>
+
+<span class="sd">        .. seealso::</span>
+<span class="sd">            :func:`get_best_document_type`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cls</span> <span class="o">==</span> <span class="n">Document</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">10</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="nd">@memoize_noarg</span></div></div>
+<span class="k">def</span> <span class="nf">get_all_documents</span><span class="p">():</span>
+<div class="viewcode-block" id="get_all_documents"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.get_all_documents">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dict&lt;doc_name, doc_class&gt; of all available :class:`.Document` classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">get_all_subtype_documents</span><span class="p">(</span><span class="n">subtype</span><span class="p">):</span></div>
+<div class="viewcode-block" id="get_all_subtype_documents"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.get_all_subtype_documents">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dict&lt;doc_name, doc_class&gt; of all available **subtype** classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">subtype</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">get_all_documents_with_level</span><span class="p">(</span><span class="n">only_accept_files</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span></div>
+    <span class="n">lst</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">level</span><span class="o">=</span><span class="s">&quot;=&gt;&quot;</span>
+    <span class="n">get_all_subclasses_with_level</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+    <span class="n">classes</span> <span class="o">=</span> <span class="n">get_all_documents</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">only_accept_files</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[(</span><span class="n">n</span><span class="p">,</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">classes</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">ACCEPT_FILES</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">lst</span>
+
+<span class="n">get_all_documents_with_level</span> <span class="o">=</span> <span class="n">memoize</span><span class="p">(</span><span class="n">get_all_documents_with_level</span><span class="p">,</span> <span class="p">{},</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_best_document_type</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+<div class="viewcode-block" id="get_best_document_type"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.document.get_best_document_type">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 2.0</span>
+
+<span class="sd">    Returns the document type (str) which returns the highest</span>
+<span class="sd">    creation score for the uploaded files (list of :class:`PrivateFile`).</span>
+
+<span class="sd">    .. seealso::</span>
+<span class="sd">        :meth:`Document.get_creation_score`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="s">&quot;Document&quot;</span>
+    <span class="n">max_score</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">get_all_documents</span><span class="p">()</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">get_creation_score</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">max_score</span><span class="p">:</span>
+            <span class="n">max_score</span> <span class="o">=</span> <span class="n">score</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">dtype</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" >openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,221 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.4. exceptions — Exceptions &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.5. fileformats — Simple module to test if a file is a CAD file" href="fileformats.html" />
+    <link rel="prev" title="5.3.1. decomposers.base — Base classes for decomposers" href="decomposers/decomposers_base.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="fileformats.html" title="5.5. fileformats — Simple module to test if a file is a CAD file"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="decomposers/decomposers_base.html" title="5.3.1. decomposers.base — Base classes for decomposers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="decomposers/decomposers_base.html"
+                        title="previous chapter">5.3.1. <tt class="docutils literal docutils literal docutils literal"><span class="pre">decomposers.base</span></tt> &#8212; Base classes for decomposers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="fileformats.html"
+                        title="next chapter">5.5. <tt class="docutils literal"><span class="pre">fileformats</span></tt> &#8212; Simple module to test if a file is a CAD file</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/exceptions.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/exceptions.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.exceptions">
+<span id="exceptions-exceptions"></span><h1>5.4. <a class="reference external" href="http://docs.python.org/2.6/library/exceptions.html#module-exceptions" title="(in Python v2.6)"><tt class="xref py py-mod docutils literal"><span class="pre">exceptions</span></tt></a> &#8212; Exceptions<a class="headerlink" href="#module-plmapp.exceptions" title="Permalink to this headline">¶</a></h1>
+<p>This modules contains exceptions that may be raised by a controller
+<a class="reference internal" href="controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> and <a class="reference internal" href="controllers/controllers_user.html#plmapp.controllers.user.UserController" title="plmapp.controllers.user.UserController"><tt class="xref py py-class docutils literal"><span class="pre">UserController</span></tt></a>.</p>
+<p>All exceptions defined here derive from <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-exc docutils literal"><span class="pre">ControllerError</span></tt></a>
+(except of course <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-exc docutils literal"><span class="pre">ControllerError</span></tt></a>)</p>
+<dl class="exception">
+<dt id="plmapp.exceptions.ControllerError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">ControllerError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#ControllerError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.ControllerError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.StandardError</span></tt></p>
+<p>Base class of exceptions raised by a
+<tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt>.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plmapp.exceptions.RevisionError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">RevisionError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#RevisionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.RevisionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.exceptions.ControllerError</span></tt></a></p>
+<p>Exception raised when <tt class="xref py py-meth docutils literal"><span class="pre">revise()</span></tt> is called but
+making a revision is not allowed.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plmapp.exceptions.LockError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">LockError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#LockError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.LockError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.exceptions.ControllerError</span></tt></a></p>
+<p>Exception raised when <tt class="xref py py-meth docutils literal"><span class="pre">lock()</span></tt> is called but the document
+is already locked.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plmapp.exceptions.UnlockError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">UnlockError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#UnlockError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.UnlockError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.exceptions.ControllerError</span></tt></a></p>
+<p>Exception raised when <tt class="xref py py-meth docutils literal"><span class="pre">unlock()</span></tt> is called but the document
+is unlocked or the user is not allowed to unlock the document.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plmapp.exceptions.AddFileError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">AddFileError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#AddFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.AddFileError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.exceptions.ControllerError</span></tt></a></p>
+<p>Exception raised when an error occurs while adding a file to a document</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plmapp.exceptions.DeleteFileError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">DeleteFileError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#DeleteFileError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.DeleteFileError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.exceptions.ControllerError</span></tt></a></p>
+<p>Exception raised when an error occurs while deleting a file from a document</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plmapp.exceptions.PermissionError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">PermissionError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#PermissionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.PermissionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.exceptions.ControllerError</span></tt></a></p>
+<p>Exception raised when a user attempt to made an unauthorized action</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="plmapp.exceptions.PromotionError">
+<em class="property">exception </em><tt class="descclassname">plmapp.exceptions.</tt><tt class="descname">PromotionError</tt><a class="reference internal" href="../../_modules/plmapp/exceptions.html#PromotionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.exceptions.PromotionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.exceptions.ControllerError" title="plmapp.exceptions.ControllerError"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.exceptions.ControllerError</span></tt></a></p>
+<p>Exception raised when a user attempt to promote a non-promotable object</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="fileformats.html" title="5.5. fileformats — Simple module to test if a file is a CAD file"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="decomposers/decomposers_base.html" title="5.3.1. decomposers.base — Base classes for decomposers"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

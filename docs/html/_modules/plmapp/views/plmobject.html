@@ -1,0 +1,1080 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.views.plmobject &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/views/plmobject.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.views.plmobject</h1><div class="highlight"><pre>
+<span class="c">#-!- coding:utf-8 -!-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">mimetypes</span> <span class="kn">import</span> <span class="n">guess_type</span>
+
+<span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">HiddenInput</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">Http404</span><span class="p">,</span>
+    <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">StreamingHttpResponse</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">as</span> <span class="nn">forms</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils.archive</span> <span class="kn">import</span> <span class="n">generate_archive</span><span class="p">,</span> <span class="n">ARCHIVE_FORMATS</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_obj</span><span class="p">,</span> <span class="n">get_obj_from_form</span><span class="p">,</span>
+    <span class="n">handle_errors</span><span class="p">,</span> <span class="n">get_generic_data</span><span class="p">,</span> <span class="n">get_id_card_data</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">ControllerError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">level_to_sign_str</span><span class="p">,</span> <span class="n">get_next_revision</span><span class="p">,</span> <span class="n">r2r</span>
+
+
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">restricted_access</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="viewcode-block" id="redirect_from_name"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.redirect_from_name">[docs]</a><span class="k">def</span> <span class="nf">redirect_from_name</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;part&quot;</span><span class="p">:</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;doc&quot;</span><span class="p">:</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Document</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="s">&quot;type not found&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-ctime&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;No object has the name </span><span class="si">%(name)s</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_object_lifecycle"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.display_object_lifecycle">[docs]</a><span class="k">def</span> <span class="nf">display_object_lifecycle</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Lifecycle data of the given object (a part or a document).</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/lifecycle/[apply/]`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    POST requests must have a &quot;demote&quot;, &quot;promote&quot;, &quot;publish&quot; or &quot;unpublish&quot;</span>
+<span class="sd">    key and must validate the :class:`.ConfirmPasswordForm` form.</span>
+<span class="sd">    If the form is valid, the object is promoted, demoted, published, unpublished</span>
+<span class="sd">    according to the request.</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`lifecycle.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``action``</span>
+<span class="sd">        Only for unsuccessful POST requests.</span>
+<span class="sd">        Name of the action (&quot;demote&quot; or &quot;promote&quot;) that the user tries to do.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;lifecycle_cancelled.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">password_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ConfirmPasswordForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="p">((</span><span class="s">&quot;demote&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">demote</span><span class="p">),</span> <span class="p">(</span><span class="s">&quot;promote&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">approve_promotion</span><span class="p">),</span>
+                   <span class="p">(</span><span class="s">&quot;discard&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">discard_approvals</span><span class="p">),</span>
+                   <span class="p">(</span><span class="s">&quot;publish&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">publish</span><span class="p">),</span> <span class="p">(</span><span class="s">&quot;unpublish&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">unpublish</span><span class="p">),</span>
+                   <span class="p">(</span><span class="s">&quot;cancel&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">safe_cancel</span><span class="p">),</span>
+                  <span class="p">)</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span><span class="p">:</span>
+            <span class="n">actions</span> <span class="o">+=</span> <span class="p">((</span><span class="s">&quot;promote_assembly&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">promote_assembly</span><span class="p">),)</span>
+        <span class="k">if</span> <span class="n">password_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">action_name</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">action_name</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                    <span class="n">method</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="s">&#39;cancel&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                        <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;The </span><span class="si">%(object_type)s</span><span class="s"> has been successfully cancelled.&quot;</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">object_type</span><span class="o">=</span><span class="n">obj_type</span><span class="p">))</span>
+                        <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="s">&#39;promote&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                        <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;The </span><span class="si">%(object_type)s</span><span class="s"> has been successfully promoted.&quot;</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">object_type</span><span class="o">=</span><span class="n">obj_type</span><span class="p">))</span>
+                        <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+                    <span class="k">break</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;..&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">action_name</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">action_name</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">action_name</span>
+                <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">password_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">ConfirmPasswordForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;password_form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">password_form</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;in_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_management_data</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">))</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_lifecycle_data</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;lifecycle.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_lifecycle_data"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.get_lifecycle_data">[docs]</a><span class="k">def</span> <span class="nf">get_lifecycle_data</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dictionary containing lifecycle data of *obj*.</span>
+
+<span class="sd">    **Dictionary content**</span>
+
+<span class="sd">    ``object_lifecycle``</span>
+<span class="sd">        List of tuples (state name, *boolean*, signer role). The boolean is</span>
+<span class="sd">        True if the state name equals to the current state. The signer role</span>
+<span class="sd">        is a dict {&quot;role&quot; : name of the role, &quot;user__username&quot; : name of the</span>
+<span class="sd">        signer}</span>
+
+<span class="sd">    ``is_signer``</span>
+<span class="sd">        True if the current user has the permission to promote this object</span>
+
+<span class="sd">    ``is_signer_dm``</span>
+<span class="sd">        True if the current user has the permission to demote this object</span>
+
+<span class="sd">    ``signers_data``</span>
+<span class="sd">        List of tuple (signer, nb_signer). The signer is a dict which contains</span>
+<span class="sd">        management data for the signer and indicates wether a signer exists or not.</span>
+
+<span class="sd">    ``password_form``</span>
+<span class="sd">        A form to ask the user password</span>
+
+<span class="sd">    ``cancelled_revisions``</span>
+<span class="sd">        List of plmobjects that will be cancelled if the object is promoted</span>
+
+<span class="sd">    ``deprecated_revisions``</span>
+<span class="sd">        List of plmobjects that will be deprecated if the object is promoted</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">object_lifecycle</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">roles</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;ctime&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">):</span>
+        <span class="n">roles</span><span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+    <span class="n">lcs</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lcs</span><span class="p">):</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">roles</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="p">[])</span>
+        <span class="n">object_lifecycle</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">st</span><span class="p">,</span> <span class="n">st</span> <span class="o">==</span> <span class="n">state</span><span class="p">,</span> <span class="n">links</span><span class="p">))</span>
+    <span class="n">is_signer</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_current_sign_level</span><span class="p">(),</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="n">is_promotable</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_promotable</span><span class="p">()</span>
+    <span class="n">can_approve</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">can_approve_promotion</span><span class="p">()</span>
+    <span class="n">is_signer_dm</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_previous_sign_level</span><span class="p">(),</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">can_edit_signer</span><span class="p">():</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;can_edit_signer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;can_edit_signer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;approvers&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_approvers</span><span class="p">())</span>
+
+    <span class="c"># warning if a previous revision will be cancelled/deprecated</span>
+    <span class="n">cancelled</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">deprecated</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">previous_alternates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">alternates</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_alternates</span><span class="p">()</span> <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span> <span class="k">else</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">is_signer</span> <span class="ow">and</span> <span class="n">can_approve</span> <span class="ow">and</span> <span class="n">lcs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">state</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">lcs</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">==</span> <span class="n">obj</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">official_state</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">revisions</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_previous_revisions</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="n">revisions</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">rev</span><span class="o">.</span><span class="n">is_official</span><span class="p">:</span>
+                    <span class="n">deprecated</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rev</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">rev</span><span class="o">.</span><span class="n">is_draft</span> <span class="ow">or</span> <span class="n">rev</span><span class="o">.</span><span class="n">is_proposed</span><span class="p">:</span>
+                    <span class="n">cancelled</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rev</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">alternates</span> <span class="ow">and</span> <span class="n">revisions</span><span class="p">:</span>
+                <span class="n">previous_alternates</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)(</span><span class="n">revisions</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">part</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">get_alternates</span><span class="p">()</span>
+
+    <span class="c"># promote assembly</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span> <span class="ow">and</span> <span class="n">can_approve</span> <span class="ow">and</span> <span class="n">is_signer</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_promotable</span><span class="p">:</span>
+        <span class="n">promote_assembly</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">is_draft</span> <span class="ow">or</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_proposed</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">parentchildlink_parent</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="c"># TODO: more restrictions</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">promote_assembly</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;cancelled_revisions&#39;</span> <span class="p">:</span> <span class="n">cancelled</span><span class="p">,</span>
+        <span class="s">&#39;deprecated_revisions&#39;</span> <span class="p">:</span> <span class="n">deprecated</span><span class="p">,</span>
+        <span class="s">&#39;alternates&#39;</span> <span class="p">:</span> <span class="n">alternates</span><span class="p">,</span>
+        <span class="s">&#39;previous_alternates&#39;</span> <span class="p">:</span> <span class="n">previous_alternates</span><span class="p">,</span>
+        <span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;lifecycle&#39;</span><span class="p">,</span>
+        <span class="s">&#39;object_lifecycle&#39;</span> <span class="p">:</span> <span class="n">object_lifecycle</span><span class="p">,</span>
+        <span class="s">&#39;is_signer&#39;</span> <span class="p">:</span> <span class="n">is_signer</span><span class="p">,</span>
+        <span class="s">&#39;is_signer_dm&#39;</span> <span class="p">:</span> <span class="n">is_signer_dm</span><span class="p">,</span>
+        <span class="s">&#39;is_promotable&#39;</span> <span class="p">:</span> <span class="n">is_promotable</span><span class="p">,</span>
+        <span class="s">&#39;can_approve&#39;</span> <span class="p">:</span> <span class="n">can_approve</span><span class="p">,</span>
+        <span class="s">&#39;can_cancel&#39;</span> <span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">can_cancel</span><span class="p">(),</span>
+        <span class="s">&#39;promote_assembly&#39;</span> <span class="p">:</span> <span class="n">promote_assembly</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">ctx</span>
+
+</div>
+<div class="viewcode-block" id="get_management_data"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.get_management_data">[docs]</a><span class="k">def</span> <span class="nf">get_management_data</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dictionary containing management data for *obj*.</span>
+
+<span class="sd">    :param user: User who runs the request</span>
+
+<span class="sd">    **Dictionary content**</span>
+
+<span class="sd">    ``notified_list``</span>
+<span class="sd">        List of notification :class:`.PLMObjectUserLink` related to *obj*</span>
+
+<span class="sd">    ``owner_list``</span>
+<span class="sd">        List of owner :class:`.PLMObjectUserLink` related to *obj*</span>
+
+<span class="sd">    ``reader_list``</span>
+<span class="sd">        List of restricted reader :class:`.PLMObjectUserLink` related to *obj*</span>
+
+<span class="sd">    If *user* does not own *obj*:</span>
+
+<span class="sd">        ``is_notified``</span>
+<span class="sd">            True if *user* receives notifications when *obj* changes</span>
+
+<span class="sd">        ``remove_notify_link``</span>
+<span class="sd">            (set if *is_notified* is True)</span>
+<span class="sd">            Notification :class:`.PLMObjectUserLink` between *obj* and *user*</span>
+
+<span class="sd">        ``can_notify``</span>
+<span class="sd">            True if *user* can ask to receive notifications when *obj* changes</span>
+
+<span class="sd">        ``notify_self_form``</span>
+<span class="sd">            (set if *can_notify* is True)</span>
+<span class="sd">            form to notify *user*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="c"># evaluates now PLMObjectLinks to make one sql query</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_NOTIFIED</span> <span class="ow">and</span> <span class="n">l</span><span class="o">.</span><span class="n">user</span> <span class="o">==</span> <span class="n">user</span><span class="p">]</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;is_notified&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">link</span><span class="p">:</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;remove_notify_link&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">link</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="n">initial</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="s">&quot;User&quot;</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+                <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectUserForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;username&quot;</span><span class="p">):</span>
+                    <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">HiddenInput</span><span class="p">()</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;notify_self_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;can_notify&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;can_notify&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;notified_list&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_NOTIFIED</span><span class="p">],</span>
+        <span class="s">&#39;owner_list&#39;</span> <span class="p">:[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">],</span>
+        <span class="s">&#39;reader_list&#39;</span> <span class="p">:[</span><span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">links</span> <span class="k">if</span> <span class="n">l</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">],</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">ctx</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_object_revisions"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.display_object_revisions">[docs]</a><span class="k">def</span> <span class="nf">display_object_revisions</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View that displays the revisions of the given object (a part or</span>
+<span class="sd">    a document) and shows a form to make a new revision.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/revisions/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    This view returns the result of :func:`revise_document`</span>
+<span class="sd">    if the object is a document and the result of :func:`revise_part`</span>
+<span class="sd">    if the object is a part.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">add_form</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_revisable</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+            <span class="n">add_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddRevisionForm</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">initial</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;revision&quot;</span><span class="p">:</span> <span class="n">get_next_revision</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">revision</span><span class="p">)</span> <span class="p">}</span>
+            <span class="n">add_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddRevisionForm</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;add_revision_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_form</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_document</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">revise_document</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">revise_part</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="revise_document"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.revise_document">[docs]</a><span class="k">def</span> <span class="nf">revise_document</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to revise a document.</span>
+
+<span class="sd">    :param obj: displayed document</span>
+<span class="sd">    :type obj: :class:`.DocumentController`</span>
+<span class="sd">    :param ctx: initial context</span>
+<span class="sd">    :type ctx: dict</span>
+<span class="sd">    :param request: riven request</span>
+
+<span class="sd">    This view can create a new revision of the document, it required</span>
+<span class="sd">    the following POST parameters:</span>
+
+<span class="sd">    :post params:</span>
+<span class="sd">        revision</span>
+<span class="sd">            new revision of the document</span>
+<span class="sd">        a valid :class:`.SelectPartFormset`</span>
+<span class="sd">            Only required if *confirmation* is True, see below.</span>
+
+
+<span class="sd">    A revised document may be attached to some parts.</span>
+<span class="sd">    These parts are given by :meth:`.DocumentController.get_suggested_parts`.</span>
+<span class="sd">    If there is at least one suggested part, a confirmation of which</span>
+<span class="sd">    parts will be attached to the new document is required.</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`documents/revisions.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``confirmation``</span>
+<span class="sd">        True if a confirmation is required to revise the document.</span>
+
+<span class="sd">    ``revisions``</span>
+<span class="sd">        list of revisions of the document</span>
+
+<span class="sd">    ``add_revision_form``</span>
+<span class="sd">        form to revise the document. Only set if the document is revisable.</span>
+
+<span class="sd">    ``part_formset``</span>
+<span class="sd">        a :class:`.SelectPartFormset` of parts that the new revision</span>
+<span class="sd">        may be attached to. Only set if *confirmation* is True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">confirmation</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">add_form</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;add_revision_form&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">add_form</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_suggested_parts</span><span class="p">()</span>
+        <span class="n">confirmation</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">selected_parts</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="n">confirmation</span><span class="p">:</span>
+                <span class="n">part_formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectPartFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;part_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">part_formset</span>
+                <span class="k">if</span> <span class="n">part_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">part_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                        <span class="n">part</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">instance</span>
+                        <span class="k">if</span> <span class="n">part</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+                            <span class="c"># invalid data</span>
+                            <span class="c"># a user should not be able to go here if he</span>
+                            <span class="c"># does not write by hand its post request</span>
+                            <span class="c"># so we do not need to generate an error message</span>
+                            <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                            <span class="k">break</span>
+                        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;selected&quot;</span><span class="p">]:</span>
+                            <span class="n">selected_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="n">add_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">valid_forms</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">revise</span><span class="p">(</span><span class="n">add_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;revision&quot;</span><span class="p">],</span> <span class="n">selected_parts</span><span class="p">,</span>
+                        <span class="n">group</span><span class="o">=</span><span class="n">add_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">confirmation</span><span class="p">:</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;part_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectPartFormset</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">parts</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;confirmation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">confirmation</span>
+    <span class="n">revisions</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_all_revisions</span><span class="p">()</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_id_card_data</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">revisions</span><span class="p">]))</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;revisions&#39;</span><span class="p">,</span>
+                <span class="s">&#39;revisions&#39;</span> <span class="p">:</span> <span class="n">revisions</span><span class="p">,</span>
+                <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;documents/revisions.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="revise_part"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.revise_part">[docs]</a><span class="k">def</span> <span class="nf">revise_part</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; View to revise a part.</span>
+
+<span class="sd">    :param obj: displayed part</span>
+<span class="sd">    :type obj: :class:`.PartController`</span>
+<span class="sd">    :param ctx: initial context</span>
+<span class="sd">    :type ctx: dict</span>
+<span class="sd">    :param request: riven request</span>
+
+<span class="sd">    This view can create a new revision of the part, it required</span>
+<span class="sd">    the following POST parameters:</span>
+
+<span class="sd">    :post params:</span>
+<span class="sd">        revision</span>
+<span class="sd">            new revision of the part</span>
+<span class="sd">        a valid :class:`.SelectParentFormset`</span>
+<span class="sd">            Only required if *confirmation* is True, see below.</span>
+<span class="sd">        a valid :class:`.SelectDocumentFormset`</span>
+<span class="sd">            Only required if *confirmation* is True, see below.</span>
+<span class="sd">        a valid :class:`.SelectParentFormset`</span>
+<span class="sd">            Only required if *confirmation* is True, see below.</span>
+
+<span class="sd">    A revised part may be attached to some documents.</span>
+<span class="sd">    These documents are given by :meth:`.PartController.get_suggested_documents`.</span>
+<span class="sd">    A revised part may also have some children from the original revision.</span>
+<span class="sd">    A revised part may also replace some parts inside a parent BOM.</span>
+<span class="sd">    These parents are given by :meth:`.PartController.get_suggested_parents`.</span>
+
+<span class="sd">    If there is at least one suggested object, a confirmation is required.</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/revisions.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``confirmation``</span>
+<span class="sd">        True if a confirmation is required to revise the part.</span>
+
+<span class="sd">    ``revisions``</span>
+<span class="sd">        list of revisions of the part</span>
+
+<span class="sd">    ``add_revision_form``</span>
+<span class="sd">        form to revise the part. Only set if the document is revisable.</span>
+
+<span class="sd">    ``doc_formset``</span>
+<span class="sd">        a :class:`.SelectDocmentFormset` of documents that the new revision</span>
+<span class="sd">        may be attached to. Only set if *confirmation* is True.</span>
+
+<span class="sd">    ``children_formset``</span>
+<span class="sd">        a :class:`.SelectChildFormset` of parts that the new revision</span>
+<span class="sd">        will be composed of. Only set if *confirmation* is True.</span>
+
+<span class="sd">    ``parents_formset``</span>
+<span class="sd">        a :class:`.SelectParentFormset` of parts that the new revision</span>
+<span class="sd">        will be added to, it will replace the previous revisions</span>
+<span class="sd">        in the parent&#39;s BOM.</span>
+<span class="sd">        Only set if *confirmation* is True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">confirmation</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">add_form</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;add_revision_form&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">add_form</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">link</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">parents</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_suggested_parents</span><span class="p">()</span>
+        <span class="n">documents</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_suggested_documents</span><span class="p">()</span>
+        <span class="n">confirmation</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">children</span> <span class="ow">or</span> <span class="n">parents</span> <span class="ow">or</span> <span class="n">documents</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">selected_children</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">selected_parents</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">selected_documents</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">confirmation</span><span class="p">:</span>
+                <span class="c"># children</span>
+                <span class="n">children_formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectChildFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                        <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">)</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;children_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">children_formset</span>
+                <span class="k">if</span> <span class="n">children_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                    <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">children_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                        <span class="n">link</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;link&quot;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">link</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+                            <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                            <span class="k">break</span>
+                        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;selected&quot;</span><span class="p">]:</span>
+                            <span class="n">selected_children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="n">valid_forms</span><span class="p">:</span>
+                    <span class="c"># documents</span>
+                    <span class="n">doc_formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectDocumentFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                            <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;documents&quot;</span><span class="p">)</span>
+                    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;doc_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_formset</span>
+                    <span class="k">if</span> <span class="n">doc_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">doc_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                            <span class="n">doc</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;document&quot;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="n">doc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+                                <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                                <span class="k">break</span>
+                            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;selected&quot;</span><span class="p">]:</span>
+                                <span class="n">selected_documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="n">valid_forms</span><span class="p">:</span>
+                    <span class="c"># parents</span>
+                    <span class="n">parents_formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectParentFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                            <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;parents&quot;</span><span class="p">)</span>
+                    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;parents_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">parents_formset</span>
+                    <span class="k">if</span> <span class="n">parents_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                        <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">parents_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                            <span class="n">parent</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;new_parent&quot;</span><span class="p">]</span>
+                            <span class="n">link</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;link&quot;</span><span class="p">]</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">parent</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+                                <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                                <span class="k">break</span>
+                            <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;selected&quot;</span><span class="p">]:</span>
+                                <span class="n">selected_parents</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">link</span><span class="p">,</span> <span class="n">parent</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="n">add_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">valid_forms</span><span class="p">:</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">revise</span><span class="p">(</span><span class="n">add_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;revision&quot;</span><span class="p">],</span> <span class="n">selected_children</span><span class="p">,</span>
+                        <span class="n">selected_documents</span><span class="p">,</span> <span class="n">selected_parents</span><span class="p">,</span>
+                        <span class="n">group</span><span class="o">=</span><span class="n">add_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">])</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">confirmation</span><span class="p">:</span>
+                <span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">link</span><span class="p">)</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">children</span><span class="p">]</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;children_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectChildFormset</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">,</span>
+                        <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+                <span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;doc_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectDocumentFormset</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;documents&quot;</span><span class="p">,</span>
+                        <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+                <span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">new_parent</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">]</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;parents_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectParentFormset</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;parents&quot;</span><span class="p">,</span>
+                        <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;confirmation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">confirmation</span>
+    <span class="n">revisions</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_all_revisions</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;revisions&#39;</span><span class="p">,</span>
+                <span class="s">&#39;revisions&#39;</span> <span class="p">:</span> <span class="n">revisions</span><span class="p">,</span>
+                <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/revisions.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../../../lifecycle/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="replace_management"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.replace_management">[docs]</a><span class="k">def</span> <span class="nf">replace_management</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">link_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to replace a manager (owner, signer, reader...) by another one.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/management/replace/{link_id}/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    :param link_id: id of the :class:`.PLMObjectUserLink` being replaced</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`management_replace.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``replace_manager_form``</span>
+<span class="sd">        a form to select the new manager (a user)</span>
+
+<span class="sd">    ``link_creation``</span>
+<span class="sd">        Set to True</span>
+
+<span class="sd">    ``role``</span>
+<span class="sd">        role of the link being replace</span>
+
+<span class="sd">    ``attach``</span>
+<span class="sd">        set to (*obj*, :samp:`&quot;add_{role}&quot;`)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">link_id</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">replace_manager_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectUserForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">replace_manager_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">replace_manager_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;User&quot;</span><span class="p">:</span>
+                <span class="n">user_obj</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">replace_manager_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SIGN</span><span class="p">):</span>
+                    <span class="n">obj</span><span class="o">.</span><span class="n">replace_signer</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">user_obj</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">obj</span><span class="o">.</span><span class="n">set_role</span><span class="p">(</span><span class="n">user_obj</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_NOTIFIED</span><span class="p">:</span>
+                        <span class="n">obj</span><span class="o">.</span><span class="n">remove_notified</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">:</span>
+                        <span class="n">obj</span><span class="o">.</span><span class="n">remove_reader</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;../../../lifecycle/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">replace_manager_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectUserForm</span><span class="p">()</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;lifecycle&#39;</span><span class="p">,</span>
+                <span class="s">&#39;replace_manager_form&#39;</span><span class="p">:</span> <span class="n">replace_manager_form</span><span class="p">,</span>
+                <span class="s">&#39;link_creation&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="s">&#39;role&#39;</span> <span class="p">:</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="p">,</span>
+                <span class="s">&#39;attach&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;add_&quot;</span> <span class="o">+</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;management_replace.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../../lifecycle/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="add_management"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.add_management">[docs]</a><span class="k">def</span> <span class="nf">add_management</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">reader</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to add a manager (notified user or restricted reader).</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/management/add/`</span>
+
+<span class="sd">    or</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/management/add-reader/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    :param reader: True to add a restricted reader instead of a notified user</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`management_replace.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``replace_manager_form``</span>
+<span class="sd">        a form to select the new manager (a user)</span>
+
+<span class="sd">    ``link_creation``</span>
+<span class="sd">        Set to True</span>
+
+<span class="sd">    ``role``</span>
+<span class="sd">        role of the new user (:const:`.ROLE_NOTIFIED` or :const:`.ROLE_READER`)</span>
+
+<span class="sd">    ``attach``</span>
+<span class="sd">        set to (*obj*, :samp:`&quot;add_{role}&quot;`)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">role</span> <span class="o">=</span>  <span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span> <span class="k">if</span> <span class="n">reader</span> <span class="k">else</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_NOTIFIED</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="n">level_to_sign_str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">level</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">add_management_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectUserForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_management_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">add_management_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;User&quot;</span><span class="p">:</span>
+                <span class="n">user_obj</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">add_management_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">set_role</span><span class="p">(</span><span class="n">user_obj</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;Role </span><span class="si">%(add_role)s</span><span class="s"> granted.&quot;</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">add_role</span><span class="o">=</span><span class="n">role</span><span class="p">))</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;../../lifecycle/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">add_management_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectUserForm</span><span class="p">()</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;lifecycle&#39;</span><span class="p">,</span>
+                <span class="s">&#39;replace_manager_form&#39;</span><span class="p">:</span> <span class="n">add_management_form</span><span class="p">,</span>
+                <span class="s">&#39;link_creation&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="s">&#39;role&#39;</span> <span class="p">:</span> <span class="n">role</span><span class="p">,</span>
+                <span class="s">&quot;attach&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;add_&quot;</span> <span class="o">+</span> <span class="n">role</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;management_replace.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="delete_management"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.delete_management">[docs]</a><span class="k">def</span> <span class="nf">delete_management</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">reader</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to remove a notified user or a restricted user.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/management/delete/`</span>
+
+<span class="sd">    The request must be a POST request containing the key ``link_id``.</span>
+<span class="sd">    It should be the id of one of the :class:`.PLMObjectUserLink` related to</span>
+<span class="sd">    the object.</span>
+<span class="sd">    The role of this link must be :const:`.ROLE_NOTIFIED` or :class:`.ROLE_READER`.</span>
+
+<span class="sd">    Redirects to :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/management/lifecycle/`</span>
+<span class="sd">    in case of a success.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">link_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&quot;link_id&quot;</span><span class="p">])</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">link_id</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">remove_user</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;The user you have selected has been successfully deleted.&quot;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">,</span> <span class="n">ControllerError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;../../lifecycle/&quot;</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="download_archive"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.download_archive">[docs]</a><span class="k">def</span> <span class="nf">download_archive</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to download all files from a document/part.</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">check_readable</span><span class="p">()</span>
+
+    <span class="n">d_o_u</span> <span class="o">=</span> <span class="s">&quot;document__owner__username&quot;</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_document</span><span class="p">:</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="n">d_o_u</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span> <span class="ow">and</span> <span class="s">&quot;cad&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_cad_files</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_part</span><span class="p">:</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_attached_documents</span><span class="p">()</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">document</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">)</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="n">d_o_u</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+
+    <span class="n">archive_format</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;format&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">archive_format</span> <span class="ow">in</span> <span class="n">ARCHIVE_FORMATS</span><span class="p">:</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">archive_format</span><span class="p">)</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="n">guess_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content_type</span><span class="p">:</span>
+            <span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;application/octet-stream&#39;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">generate_archive</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">archive_format</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">StreamingHttpResponse</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;attachment; filename=&quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="n">response</span>
+    <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../attributes/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="clone"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.clone">[docs]</a><span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span><span class="n">creation_form</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage html page to display the cloning form of the selected object</span>
+<span class="sd">    (part or document) or clone it.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/clone/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`clone.html`</span>
+
+<span class="sd">    :param creation_form: the creation form that will be used to clone the object</span>
+
+<span class="sd">    If the object is a part :</span>
+
+<span class="sd">    :post params:</span>
+<span class="sd">        a valid :class:`.SelectDocumentFormset`</span>
+<span class="sd">            Only required if *is_linked* is True, see below.</span>
+<span class="sd">        a valid :class:`.SelectChildFormset`</span>
+<span class="sd">            Only required if *is_linked* is True, see below.</span>
+
+<span class="sd">    A cloned part may be attached to some documents.</span>
+<span class="sd">    These documents are given by :meth:`.PartController.get_suggested_documents`.</span>
+<span class="sd">    A cloned part may also have some children from the original revision.</span>
+
+
+<span class="sd">    If the object is a document :</span>
+
+<span class="sd">    :post params:</span>
+<span class="sd">        a valid :class:`.SelectPartFormset`</span>
+<span class="sd">            Only required if *is_linked* is True, see below.</span>
+
+<span class="sd">    A cloned document may be attached to some parts, given by :meth:`.DocumentController.get_suggested_parts`.</span>
+
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``is_linked``</span>
+<span class="sd">        True if the object is linked (attached) to other object , at least one.</span>
+
+<span class="sd">    ``creation_form``</span>
+<span class="sd">        form to clone the object. Fields in this form are set according to the current object.</span>
+
+<span class="sd">    ``doc_formset``</span>
+<span class="sd">        a :class:`.SelectDocmentFormset` of documents that the new object, if it is a part,</span>
+<span class="sd">        may be attached to. Only set if *is_linked* is True.</span>
+
+<span class="sd">    ``children_formset``</span>
+<span class="sd">        a :class:`.SelectChildFormset` of parts that the new object, if it is a part,</span>
+<span class="sd">        may be linked with. Only set if *is_linked* is True.</span>
+
+<span class="sd">    ``parts_formset``</span>
+<span class="sd">        a :class:`.SelectPartFormset` of parts that the new object, if it is a document,</span>
+<span class="sd">        may be attached to. Only set if *is_linked* is True.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="n">obj</span><span class="o">.</span><span class="n">check_clone</span><span class="p">()</span>
+    <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_users_and_plmobjects</span><span class="p">()[</span><span class="n">obj_type</span><span class="p">]</span>
+    <span class="n">is_linked</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="p">):</span>
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">link</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span>
+        <span class="n">documents</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_suggested_documents</span><span class="p">()</span>
+        <span class="n">is_linked</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;is_linked&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">children</span> <span class="ow">or</span> <span class="n">documents</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_suggested_parts</span><span class="p">()</span>
+        <span class="n">is_linked</span> <span class="o">=</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;is_linked&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span>
+
+    <span class="n">formsets</span> <span class="o">=</span><span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;GET&#39;</span><span class="p">:</span>
+        <span class="c"># generate and fill the creation form</span>
+        <span class="n">not_auto_cloned_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;reference&#39;</span><span class="p">,</span><span class="s">&#39;revision&#39;</span><span class="p">,</span> <span class="s">&#39;group&#39;</span><span class="p">,</span><span class="s">&#39;lifecycle&#39;</span><span class="p">,</span>
+                <span class="s">&#39;auto&#39;</span><span class="p">,</span> <span class="s">&#39;pfiles&#39;</span><span class="p">]</span>
+        <span class="n">creation_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">)):</span>
+            <span class="n">creation_form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">id</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">:</span>
+            <span class="n">creation_form</span><span class="o">.</span><span class="n">initial</span><span class="p">[</span><span class="s">&quot;lifecycle&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">lifecycle</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">creation_form</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">not_auto_cloned_fields</span><span class="p">:</span>
+                <span class="n">creation_form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">f</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+        <span class="c"># generate the links form</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_linked</span><span class="p">:</span>
+            <span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">link</span><span class="p">)</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">children</span><span class="p">]</span>
+            <span class="n">formsets</span><span class="p">[</span><span class="s">&quot;children_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectChildFormset</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">,</span>
+                <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+            <span class="n">initial</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]</span>
+            <span class="n">formsets</span><span class="p">[</span><span class="s">&quot;doc_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectDocumentFormset</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;documents&quot;</span><span class="p">,</span>
+                <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Document</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_linked</span> <span class="p">:</span>
+                <span class="n">formsets</span><span class="p">[</span><span class="s">&quot;part_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectPartFormset</span><span class="p">(</span><span class="n">queryset</span><span class="o">=</span><span class="n">parts</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_linked</span><span class="p">:</span>
+            <span class="n">formsets</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s">&quot;children_formset&quot;</span><span class="p">:</span><span class="n">forms</span><span class="o">.</span><span class="n">SelectChildFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                    <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">),</span>
+                <span class="s">&quot;doc_formset&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectDocumentFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                    <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;documents&quot;</span><span class="p">),</span>
+            <span class="p">})</span>
+        <span class="k">elif</span> <span class="n">is_linked</span><span class="p">:</span>
+            <span class="n">formsets</span><span class="p">[</span><span class="s">&quot;part_formset&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">SelectPartFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">creation_form</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">creation_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">creation_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">is_linked</span> <span class="p">:</span>
+                <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="p">):</span>
+                    <span class="n">valid_forms</span><span class="p">,</span> <span class="n">selected_children</span><span class="p">,</span> <span class="n">selected_documents</span> <span class="o">=</span> <span class="n">clone_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">documents</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">valid_forms</span> <span class="p">:</span>
+                        <span class="n">new_ctrl</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">creation_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">selected_children</span><span class="p">,</span> <span class="n">selected_documents</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">new_ctrl</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="p">:</span>
+                        <span class="n">formsets</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                            <span class="s">&quot;children_formset&quot;</span><span class="p">:</span><span class="n">forms</span><span class="o">.</span><span class="n">SelectChildFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                                <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">),</span>
+                            <span class="s">&quot;doc_formset&quot;</span><span class="p">:</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectDocumentFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                                <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;document&quot;</span><span class="p">),</span>
+                        <span class="p">})</span>
+                <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Document</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_linked</span><span class="p">:</span>
+                    <span class="n">valid_forms</span><span class="p">,</span> <span class="n">selected_parts</span> <span class="o">=</span> <span class="n">clone_document</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">parts</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">valid_forms</span><span class="p">:</span>
+                        <span class="n">new_ctrl</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">creation_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">selected_parts</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">new_ctrl</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">)</span>
+                    <span class="k">else</span> <span class="p">:</span>
+                        <span class="n">formsets</span><span class="p">[</span><span class="s">&quot;part_formset&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">SelectPartFormset</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="p">):</span>
+                    <span class="n">new_ctrl</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">creation_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">new_ctrl</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">creation_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">new_ctrl</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;creation_form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">creation_form</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">formsets</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;clone.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="clone_part"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.clone_part">[docs]</a><span class="k">def</span> <span class="nf">clone_part</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">children</span><span class="p">,</span> <span class="n">documents</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyze the formsets in data to return list of selected children and documents.</span>
+
+<span class="sd">    :param user: user who is cloning the part</span>
+<span class="sd">    :param data: posted data (see post params in :func:`.clone`)</span>
+<span class="sd">    :param children: list of children linked to the originial part</span>
+<span class="sd">    :param documents: list of documents attached to the original part</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        valid_forms</span>
+<span class="sd">            True if all formsets are valid</span>
+<span class="sd">        selected_children</span>
+<span class="sd">            list of children to add to the new part</span>
+<span class="sd">        selected_documents</span>
+<span class="sd">            list of documents to attach to the new part</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">selected_children</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">selected_documents</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">children</span> <span class="p">:</span>
+        <span class="c"># children</span>
+        <span class="n">children_formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectChildFormset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;children&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">children_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">children_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;link&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">link</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+                    <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="s">&#39;link&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;It&#39;s not a valid child.&quot;</span><span class="p">)]</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;selected&quot;</span><span class="p">]:</span>
+                    <span class="n">selected_children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">valid_forms</span> <span class="ow">and</span> <span class="n">documents</span> <span class="p">:</span>
+        <span class="c"># documents</span>
+        <span class="n">doc_formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectDocumentFormset</span><span class="p">(</span><span class="n">data</span><span class="p">,</span>
+            <span class="n">prefix</span><span class="o">=</span><span class="s">&quot;documents&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">doc_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                <span class="n">doc</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;document&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">doc</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">:</span>
+                    <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="p">[</span><span class="s">&#39;document&#39;</span><span class="p">]</span><span class="o">=</span><span class="p">[</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;It&#39;s not a valid document.&quot;</span><span class="p">)]</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;selected&quot;</span><span class="p">]:</span>
+                    <span class="n">selected_documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="n">valid_forms</span><span class="p">,</span> <span class="n">selected_children</span><span class="p">,</span> <span class="n">selected_documents</span>
+
+</div>
+<div class="viewcode-block" id="clone_document"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.plmobject.clone_document">[docs]</a><span class="k">def</span> <span class="nf">clone_document</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyze the formsets in data to return list of selected parts.</span>
+
+<span class="sd">    :param user: user who is cloning the document</span>
+<span class="sd">    :param data: posted data (see post params in :func:`.clone`)</span>
+<span class="sd">    :param parts: list of parts attached to the original document</span>
+
+<span class="sd">    :return:</span>
+<span class="sd">        valid_forms</span>
+<span class="sd">            True if all formsets are valid</span>
+<span class="sd">        selected_parts</span>
+<span class="sd">            list of parts to attach to the new document</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">valid_forms</span><span class="o">=</span> <span class="bp">True</span>
+    <span class="n">selected_parts</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">parts</span><span class="p">:</span>
+        <span class="n">part_formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectPartFormset</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">part_formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">part_formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                <span class="n">part</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">instance</span>
+                <span class="k">if</span> <span class="n">part</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+                    <span class="c"># invalid data</span>
+                    <span class="c"># a user should not be able to go here if he</span>
+                    <span class="c"># does not write by hand its post request</span>
+                    <span class="c"># so we do not need to generate an error message</span>
+                    <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">append_</span><span class="p">(</span><span class="s">&quot;It&#39;s not a valid part.&quot;</span><span class="p">)</span>
+                    <span class="k">break</span>
+                <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;selected&quot;</span><span class="p">]:</span>
+                    <span class="n">selected_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">valid_forms</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">return</span> <span class="n">valid_forms</span><span class="p">,</span> <span class="n">selected_parts</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

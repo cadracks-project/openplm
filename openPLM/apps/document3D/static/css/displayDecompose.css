@@ -1,0 +1,81 @@
+table.Content tr td{
+    vertical-align: middle;
+}
+table.Content tr.assembly td.assembly_level{
+    height: 40px;
+    background-color: #6496AB;
+    vertical-align: middle;
+    font-size: 155%;
+    font-weight: bold;
+}
+
+table.Content tr.part td {
+    background-color: #ccc;
+    color: #000;
+}
+
+table.Content tr td.errors {
+    background-color: #F03838;
+    color: #000;
+}
+
+tr.extra_errors td {
+    padding: 0.5em;
+}
+
+.toggle_extra_attributes_button span {
+    width: 1em;
+}
+ 
+table.Content th.cell_label {
+    width: 15em;
+}
+
+table.Content tr.assembly td.assembly_name{
+    height: 30px;
+    vertical-align: middle;
+    font-size: 115%;
+    font-weight:600;
+}
+
+td.assembly_name span.display_name {
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto;
+    display:block; min-width:36px; 
+    text-indent: 16px;
+    padding-left:4px;
+    margin-left:6px;
+    color:black;
+    text-align:left;
+}
+
+.display_name:before, .display_level:before {
+    content: " ▸ "; 
+    font-size: 1.4em;
+}
+
+td.open .display_name:before, td.open .display_level:before {
+    content: " ▾ ";
+    font-size: 1.4em;
+}
+
+td.assembly_level span.display_level {
+    cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto;
+    display:block; min-width:36px; 
+    text-indent: 16px;
+    padding-left:4px;
+    margin-left:6px;
+    text-align:left;
+    color: #eee;
+    text-shadow: 1px 1px #000000;
+}
+
+table.Content input[type=text] {
+    width: 95%;
+}
+input[id$=-revision] {
+    max-width: 4em;
+}

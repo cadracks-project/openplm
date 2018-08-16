@@ -1,0 +1,2116 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.12. models — models for openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.13. navigate — Tools to generate navigation’s graph" href="navigate.html" />
+    <link rel="prev" title="5.11. mail — Tools to send mails" href="mail.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="navigate.html" title="5.13. navigate — Tools to generate navigation’s graph"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="mail.html" title="5.11. mail — Tools to send mails"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5.12. <tt class="docutils literal"><span class="pre">models</span></tt> &#8212; models for openPLM</a><ul>
+<li><a class="reference internal" href="#introduction">5.12.1. Introduction</a></li>
+<li><a class="reference internal" href="#inheritance-diagrams">5.12.2. Inheritance diagrams</a><ul>
+<li><a class="reference internal" href="#users-and-groups">5.12.2.1. Users and groups</a></li>
+<li><a class="reference internal" href="#lifecycles">5.12.2.2. Lifecycles</a></li>
+<li><a class="reference internal" href="#plmobjects">5.12.2.3. PLMObjects</a></li>
+<li><a class="reference internal" href="#histories">5.12.2.4. Histories</a></li>
+<li><a class="reference internal" href="#links">5.12.2.5. Links</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#classes-and-functions">5.12.3. Classes and functions</a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.user">5.12.4. <tt class="docutils literal"><span class="pre">models.user</span></tt></a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.group">5.12.5. <tt class="docutils literal"><span class="pre">models.group</span></tt></a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.lifecycle">5.12.6. <tt class="docutils literal"><span class="pre">models.lifecycle</span></tt></a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.plmobject">5.12.7. <tt class="docutils literal"><span class="pre">models.plmobject</span></tt></a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.part">5.12.8. <tt class="docutils literal"><span class="pre">models.part</span></tt></a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.document">5.12.9. <tt class="docutils literal"><span class="pre">models.document</span></tt></a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.history">5.12.10. <tt class="docutils literal"><span class="pre">models.history</span></tt></a></li>
+<li><a class="reference internal" href="#module-openPLM.plmapp.models.link">5.12.11. <tt class="docutils literal"><span class="pre">models.link</span></tt></a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="mail.html"
+                        title="previous chapter">5.11. <tt class="docutils literal docutils literal docutils literal"><span class="pre">mail</span></tt> &#8212; Tools to send mails</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="navigate.html"
+                        title="next chapter">5.13. <tt class="docutils literal"><span class="pre">navigate</span></tt> &#8212; Tools to generate navigation&#8217;s graph</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/models.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/models.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-openPLM.plmapp.models">
+<span id="models-models-for-openplm"></span><h1>5.12. <tt class="xref py py-mod docutils literal"><span class="pre">models</span></tt> &#8212; models for openPLM<a class="headerlink" href="#module-openPLM.plmapp.models" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>5.12.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Models for openPLM</p>
+<p>This module contains openPLM&#8217;s main models.</p>
+<dl class="docutils">
+<dt>There are 5 kinds of models:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>User and group related:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#openPLM.plmapp.models.user.UserProfile" title="openPLM.plmapp.models.user.UserProfile"><tt class="xref py py-class docutils literal"><span class="pre">UserProfile</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.group.GroupInfo" title="openPLM.plmapp.models.group.GroupInfo"><tt class="xref py py-class docutils literal"><span class="pre">GroupInfo</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.group.Invitation" title="openPLM.plmapp.models.group.Invitation"><tt class="xref py py-class docutils literal"><span class="pre">Invitation</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Lifecycle related models:</dt>
+<dd><ul class="first last">
+<li><p class="first"><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a></p>
+</li>
+<li><p class="first"><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a></p>
+</li>
+<li><p class="first"><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.LifecycleStates" title="openPLM.plmapp.models.lifecycle.LifecycleStates"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleStates</span></tt></a></p>
+</li>
+<li><dl class="first docutils">
+<dt>there are some functions that may be useful:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.get_default_lifecycle" title="openPLM.plmapp.models.lifecycle.get_default_lifecycle"><tt class="xref py py-func docutils literal"><span class="pre">get_default_lifecycle()</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.get_default_state" title="openPLM.plmapp.models.lifecycle.get_default_state"><tt class="xref py py-func docutils literal"><span class="pre">get_default_state()</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>History models:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#openPLM.plmapp.models.history.AbstractHistory" title="openPLM.plmapp.models.history.AbstractHistory"><tt class="xref py py-class docutils literal"><span class="pre">AbstractHistory</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.history.History" title="openPLM.plmapp.models.history.History"><tt class="xref py py-class docutils literal"><span class="pre">History</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.history.UserHistory" title="openPLM.plmapp.models.history.UserHistory"><tt class="xref py py-class docutils literal"><span class="pre">UserHistory</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.history.GroupHistory" title="openPLM.plmapp.models.history.GroupHistory"><tt class="xref py py-class docutils literal"><span class="pre">GroupHistory</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.history.StateHistory" title="openPLM.plmapp.models.history.StateHistory"><tt class="xref py py-class docutils literal"><span class="pre">history.StateHistory</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>PLMObject models:</dt>
+<dd><ul class="first last">
+<li><p class="first"><a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> is the base class</p>
+</li>
+<li><p class="first"><a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></p>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> and related classes:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#openPLM.plmapp.models.document.DocumentStorage" title="openPLM.plmapp.models.document.DocumentStorage"><tt class="xref py py-class docutils literal"><span class="pre">DocumentStorage</span></tt></a> (see also <a class="reference internal" href="#openPLM.plmapp.models.document.docfs" title="openPLM.plmapp.models.document.docfs"><tt class="xref py py-obj docutils literal"><span class="pre">docfs</span></tt></a>)</li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.document.PrivateFile" title="openPLM.plmapp.models.document.PrivateFile"><tt class="xref py py-class docutils literal"><span class="pre">PrivateFile</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>functions:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#openPLM.plmapp.models.plmobject.get_all_plmobjects" title="openPLM.plmapp.models.plmobject.get_all_plmobjects"><tt class="xref py py-func docutils literal"><span class="pre">get_all_plmobjects()</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.part.get_all_parts" title="openPLM.plmapp.models.part.get_all_parts"><tt class="xref py py-func docutils literal"><span class="pre">part.get_all_parts()</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.document.get_all_documents" title="openPLM.plmapp.models.document.get_all_documents"><tt class="xref py py-func docutils literal"><span class="pre">get_all_documents()</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.import_models" title="openPLM.plmapp.models.import_models"><tt class="xref py py-func docutils literal"><span class="pre">import_models()</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><a class="reference internal" href="#openPLM.plmapp.models.link.Link" title="openPLM.plmapp.models.link.Link"><tt class="xref py py-class docutils literal"><span class="pre">link.Link</span></tt></a> models:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#openPLM.plmapp.models.link.RevisionLink" title="openPLM.plmapp.models.link.RevisionLink"><tt class="xref py py-class docutils literal"><span class="pre">RevisionLink</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.link.DocumentPartLink" title="openPLM.plmapp.models.link.DocumentPartLink"><tt class="xref py py-class docutils literal"><span class="pre">DocumentPartLink</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.link.DelegationLink" title="openPLM.plmapp.models.link.DelegationLink"><tt class="xref py py-class docutils literal"><span class="pre">DelegationLink</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.link.PLMObjectUserLink" title="openPLM.plmapp.models.link.PLMObjectUserLink"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectUserLink</span></tt></a></li>
+<li><a class="reference internal" href="#openPLM.plmapp.models.link.AlternatePartSet" title="openPLM.plmapp.models.link.AlternatePartSet"><tt class="xref py py-class docutils literal"><span class="pre">AlternatePartSet</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="inheritance-diagrams">
+<h2>5.12.2. Inheritance diagrams<a class="headerlink" href="#inheritance-diagrams" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="users-and-groups">
+<h3>5.12.2.1. Users and groups<a class="headerlink" href="#users-and-groups" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+<img src="../../_images/inheritance-f6f0871adf8c6f68b59dc36b612f1dee8761adad.png" alt="Inheritance diagram of openPLM.plmapp.models.user, openPLM.plmapp.models.group" usemap="#inheritance12f4689d78" class="inheritance"/>
+<map id="inheritance12f4689d78" name="inheritance12f4689d78">
+<area shape="rect" id="node4" href="#openPLM.plmapp.models.group.Invitation" title="Invitation" alt="" coords="345,5,425,33"/>
+<area shape="rect" id="node15" href="#openPLM.plmapp.models.user.UserProfile" title="UserProfile" alt="" coords="340,106,431,134"/>
+<area shape="rect" id="node13" href="#openPLM.plmapp.models.group.GroupInfo" title="GroupInfo" alt="" coords="492,55,575,83"/>
+</map>
+</p>
+</div>
+<div class="section" id="lifecycles">
+<h3>5.12.2.2. Lifecycles<a class="headerlink" href="#lifecycles" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+<img src="../../_images/inheritance-4fdda108bb4e268efc03752ffe5f9f68531f9b2d.png" alt="Inheritance diagram of openPLM.plmapp.models.lifecycle" usemap="#inheritancebf961c041b" class="inheritance"/>
+<map id="inheritancebf961c041b" name="inheritancebf961c041b">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="Lifecycle" alt="" coords="279,5,353,33"/>
+<area shape="rect" id="node6" href="#openPLM.plmapp.models.lifecycle.LifecycleStates" title="LifecycleStates" alt="" coords="257,55,375,83"/>
+<area shape="rect" id="node8" href="#openPLM.plmapp.models.lifecycle.State" title="State" alt="" coords="280,106,352,134"/>
+</map>
+</p>
+</div>
+<div class="section" id="plmobjects">
+<h3>5.12.2.3. PLMObjects<a class="headerlink" href="#plmobjects" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+<img src="../../_images/inheritance-07481ca3ed06a5988473831a12eb8ca59785bc3e.png" alt="Inheritance diagram of openPLM.plmapp.models.plmobject, openPLM.plmapp.models.part, openPLM.plmapp.models.document" usemap="#inheritance716d133fab" class="inheritance"/>
+<map id="inheritance716d133fab" name="inheritance716d133fab">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet" title="PLMObjectQuerySet" alt="" coords="126,285,263,311"/>
+<area shape="rect" id="node31" href="#openPLM.plmapp.models.part.PartQuerySet" title="PartQuerySet" alt="" coords="325,285,423,311"/>
+<area shape="rect" id="node13" href="#openPLM.plmapp.models.part.AbstractPart" title="AbstractPart" alt="" coords="513,145,607,170"/>
+<area shape="rect" id="node23" href="#openPLM.plmapp.models.document.PrivateFile" title="PrivateFile" alt="" coords="335,145,414,170"/>
+<area shape="rect" id="node25" href="#openPLM.plmapp.models.document.DocumentFile" title="DocumentFile" alt="" coords="324,191,425,217"/>
+<area shape="rect" id="node27" href="#openPLM.plmapp.models.plmobject.AbstractPLMObject" title="AbstractPLMObject" alt="" coords="309,238,439,264"/>
+<area shape="rect" id="node7" href="#openPLM.plmapp.models.document.Document" title="Document" alt="" coords="681,226,762,252"/>
+<area shape="rect" id="node8" href="#openPLM.plmapp.models.plmobject.PLMObject" title="PLMObject" alt="" coords="519,226,601,252"/>
+<area shape="rect" id="node18" href="#openPLM.plmapp.models.part.Part" title="Part" alt="" coords="688,168,754,194"/>
+<area shape="rect" id="node10" href="#openPLM.plmapp.models.document.DocumentStorage" title="DocumentStorage" alt="" coords="310,51,438,77"/>
+<area shape="rect" id="node15" href="#openPLM.plmapp.models.plmobject.PLMObjectManager" title="PLMObjectManager" alt="" coords="128,4,261,30"/>
+<area shape="rect" id="node21" href="#openPLM.plmapp.models.part.PartManager" title="PartManager" alt="" coords="327,4,421,30"/>
+<area shape="rect" id="node29" href="#openPLM.plmapp.models.part.TopAssemblyManager" title="TopAssemblyManager" alt="" coords="486,4,634,30"/>
+</map>
+</p>
+</div>
+<div class="section" id="histories">
+<h3>5.12.2.4. Histories<a class="headerlink" href="#histories" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+<img src="../../_images/inheritance-1b1fbfb99106405fce8be73c9ea3f9e4fce02cbe.png" alt="Inheritance diagram of openPLM.plmapp.models.history" usemap="#inheritance452210514f" class="inheritance"/>
+<map id="inheritance452210514f" name="inheritance452210514f">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.history.GroupHistory" title="GroupHistory" alt="" coords="517,30,624,58"/>
+<area shape="rect" id="node2" href="#openPLM.plmapp.models.history.AbstractHistory" title="AbstractHistory" alt="" coords="348,81,468,109"/>
+<area shape="rect" id="node6" href="#openPLM.plmapp.models.history.History" title="History" alt="" coords="535,81,607,109"/>
+<area shape="rect" id="node11" href="#openPLM.plmapp.models.history.UserHistory" title="UserHistory" alt="" coords="523,131,619,159"/>
+<area shape="rect" id="node18" href="#openPLM.plmapp.models.history.StateHistory" title="StateHistory" alt="" coords="357,131,459,159"/>
+<area shape="rect" id="node16" href="#openPLM.plmapp.models.history.StateHistoryManager" title="StateHistoryManager" alt="" coords="139,55,296,83"/>
+<area shape="rect" id="node14" href="#openPLM.plmapp.models.history.StateHistoryQuerySet" title="StateHistoryQuerySet" alt="" coords="136,5,299,33"/>
+</map>
+</p>
+</div>
+<div class="section" id="links">
+<h3>5.12.2.5. Links<a class="headerlink" href="#links" title="Permalink to this headline">¶</a></h3>
+<p class="graphviz">
+<img src="../../_images/inheritance-8984f5ca0d655c6e46da392786ffbb17c8fe26ed.png" alt="Inheritance diagram of openPLM.plmapp.models.link" usemap="#inheritancec2ecd15f81" class="inheritance"/>
+<map id="inheritancec2ecd15f81" name="inheritancec2ecd15f81">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.link.AlternatePartSet" title="AlternatePartSet" alt="" coords="649,4,763,29"/>
+<area shape="rect" id="node4" href="#openPLM.plmapp.models.link.Link" title="Link" alt="" coords="302,162,366,187"/>
+<area shape="rect" id="node18" href="#openPLM.plmapp.models.link.DocumentPartLink" title="DocumentPartLink" alt="" coords="464,49,587,74"/>
+<area shape="rect" id="node22" href="#openPLM.plmapp.models.link.DelegationLink" title="DelegationLink" alt="" coords="474,95,577,119"/>
+<area shape="rect" id="node24" href="#openPLM.plmapp.models.link.ParentChildLink" title="ParentChildLink" alt="" coords="473,140,578,165"/>
+<area shape="rect" id="node26" href="#openPLM.plmapp.models.link.RevisionLink" title="RevisionLink" alt="" coords="481,185,569,210"/>
+<area shape="rect" id="node32" href="#openPLM.plmapp.models.link.PLMObjectUserLink" title="PLMObjectUserLink" alt="" coords="461,230,590,255"/>
+<area shape="rect" id="node34" href="#openPLM.plmapp.models.link.PromotionApproval" title="PromotionApproval" alt="" coords="461,275,590,300"/>
+<area shape="rect" id="node28" href="#openPLM.plmapp.models.link.ParentChildLinkExtension" title="ParentChildLinkExtension" alt="" coords="445,320,606,345"/>
+<area shape="rect" id="node36" href="#openPLM.plmapp.models.link.LinkQuerySet" title="LinkQuerySet" alt="" coords="125,207,220,232"/>
+<area shape="rect" id="node20" href="#openPLM.plmapp.models.link.LinkManager" title="LinkManager" alt="" coords="127,72,218,97"/>
+<area shape="rect" id="node30" href="#openPLM.plmapp.models.link.CurrentLinkManager" title="CurrentLinkManager" alt="" coords="267,72,401,97"/>
+</map>
+</p>
+</div>
+</div>
+<div class="section" id="classes-and-functions">
+<h2>5.12.3. Classes and functions<a class="headerlink" href="#classes-and-functions" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This module imports all the following functions and classes.</p>
+</div>
+<dl class="function">
+<dt id="openPLM.plmapp.models.import_models">
+<tt class="descclassname">openPLM.plmapp.models.</tt><tt class="descname">import_models</tt><big>(</big><em>force_reload=False</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models.html#import_models"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.import_models" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports recursively all modules in directory <em>plmapp/customized_models</em></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.user">
+<span id="models-user"></span><h2>5.12.4. <tt class="xref py py-mod docutils literal"><span class="pre">models.user</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.user" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openPLM.plmapp.models.user.UserProfile">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.user.</tt><tt class="descname">UserProfile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/user.html#UserProfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Profile for a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a></p>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.is_administrator">
+<tt class="descname">is_administrator</tt><em class="property"> = None</em><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.is_administrator" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if user is an administrator</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.is_contributor">
+<tt class="descname">is_contributor</tt><em class="property"> = None</em><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.is_contributor" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if user is a contributor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.can_publish">
+<tt class="descname">can_publish</tt><em class="property"> = None</em><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.can_publish" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1: </span>True if user can publish a plmobject</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.restricted">
+<tt class="descname">restricted</tt><em class="property"> = None</em><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.restricted" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1: </span>True if user has a restricted account</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.language">
+<tt class="descname">language</tt><em class="property"> = None</em><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.language" title="Permalink to this definition">¶</a></dt>
+<dd><p>language</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.is_viewer">
+<tt class="descname">is_viewer</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/user.html#UserProfile.is_viewer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.is_viewer" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if user is just a viewer, i.e: not an adminstrator and not a
+contributor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.rank">
+<tt class="descname">rank</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/user.html#UserProfile.rank"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.rank" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rank of the user: &#8220;administrator&#8221;, &#8220;contributor&#8221; or &#8220;viewer&#8221;</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.user.UserProfile.attributes">
+<tt class="descname">attributes</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/user.html#UserProfile.attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.user.UserProfile.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes to display in <cite>Attributes view</cite></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.user.add_profile">
+<tt class="descclassname">openPLM.plmapp.models.user.</tt><tt class="descname">add_profile</tt><big>(</big><em>sender</em>, <em>instance</em>, <em>created</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/user.html#add_profile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.user.add_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>function called when a user is created to add his profile</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.group">
+<span id="models-group"></span><h2>5.12.5. <tt class="xref py py-mod docutils literal"><span class="pre">models.group</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.group" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openPLM.plmapp.models.group.GroupInfo">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.group.</tt><tt class="descname">GroupInfo</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/group.html#GroupInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.group.GroupInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.contrib.auth.models.Group</span></tt></a></p>
+<p>Class that stores additional data on a <tt class="xref py py-class docutils literal"><span class="pre">Group</span></tt>.</p>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.group.GroupInfo.attributes">
+<tt class="descname">attributes</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/group.html#GroupInfo.attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.group.GroupInfo.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes to display in <cite>Attributes view</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.group.GroupInfo.menu_items">
+<tt class="descname">menu_items</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/group.html#GroupInfo.menu_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.group.GroupInfo.menu_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>menu items to choose a view</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.group.GroupInfo.get_creation_fields">
+<em class="property">classmethod </em><tt class="descname">get_creation_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/group.html#GroupInfo.get_creation_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.group.GroupInfo.get_creation_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns fields which should be displayed in a creation form.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.group.GroupInfo.get_modification_fields">
+<em class="property">classmethod </em><tt class="descname">get_modification_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/group.html#GroupInfo.get_modification_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.group.GroupInfo.get_modification_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns fields which should be displayed in a modification form</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.group.Invitation">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.group.</tt><tt class="descname">Invitation</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/group.html#Invitation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.group.Invitation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Invitation(group_id, owner_id, guest_id, state, ctime, validation_time, guest_asked, token)</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.lifecycle">
+<span id="models-lifecycle"></span><h2>5.12.6. <tt class="xref py py-mod docutils literal"><span class="pre">models.lifecycle</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.lifecycle" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openPLM.plmapp.models.lifecycle.State">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.lifecycle.</tt><tt class="descname">State</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#State"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.State" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>State : object which represents a state in a lifecycle</p>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.lifecycle.State.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.State.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>name of the state, must be unique</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.lifecycle.Lifecycle">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.lifecycle.</tt><tt class="descname">Lifecycle</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#Lifecycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Lifecycle : object which represents a lifecycle</p>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.lifecycle.Lifecycle.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.Lifecycle.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>name of the lifecycle, must be unique</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.lifecycle.Lifecycle.official_state">
+<tt class="descname">official_state</tt><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.Lifecycle.official_state" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>official</em> <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a> of the lifecycle</p>
+</dd></dl>
+
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">A Lifecycle is iterable and each iteration returns a string of
+the next state.</p>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="lifecycle.html#plmapp.lifecycle.LifecycleList" title="plmapp.lifecycle.LifecycleList"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleList</span></tt></a>
+A class that simplifies the usage of a LifeCycle</p>
+</div>
+<dl class="method">
+<dt id="openPLM.plmapp.models.lifecycle.Lifecycle.to_states_list">
+<tt class="descname">to_states_list</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#Lifecycle.to_states_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.Lifecycle.to_states_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a Lifecycle to a <a class="reference internal" href="lifecycle.html#plmapp.lifecycle.LifecycleList" title="plmapp.lifecycle.LifecycleList"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleList</span></tt></a> (a list of strings)</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.lifecycle.Lifecycle.from_lifecyclelist">
+<em class="property">classmethod </em><tt class="descname">from_lifecyclelist</tt><big>(</big><em>cycle</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#Lifecycle.from_lifecyclelist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.Lifecycle.from_lifecyclelist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a Lifecycle from <em>cycle</em>. The built object is save in the database.
+This function creates states which were not in the database</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cycle</strong> (<a class="reference internal" href="lifecycle.html#plmapp.lifecycle.LifecycleList" title="plmapp.lifecycle.LifecycleList"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleList</span></tt></a>) &#8211; the cycle used to build the <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.lifecycle.LifecycleStates">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.lifecycle.</tt><tt class="descname">LifecycleStates</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#LifecycleStates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.LifecycleStates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>A LifecycleStates links a <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a> and a <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a>.</p>
+<p>The link is made with a field <em>rank</em> to order the states.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.lifecycle.get_default_lifecycle">
+<tt class="descclassname">openPLM.plmapp.models.lifecycle.</tt><tt class="descname">get_default_lifecycle</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#get_default_lifecycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.get_default_lifecycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a> used when instanciate a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.lifecycle.get_cancelled_lifecycle">
+<tt class="descclassname">openPLM.plmapp.models.lifecycle.</tt><tt class="descname">get_cancelled_lifecycle</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#get_cancelled_lifecycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.get_cancelled_lifecycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the &#8220;cancelled&#8221; Lifecycle.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.lifecycle.get_cancelled_state">
+<tt class="descclassname">openPLM.plmapp.models.lifecycle.</tt><tt class="descname">get_cancelled_state</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#get_cancelled_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.get_cancelled_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the &#8220;cancelled&#8221; State.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.lifecycle.get_default_state">
+<tt class="descclassname">openPLM.plmapp.models.lifecycle.</tt><tt class="descname">get_default_state</tt><big>(</big><em>lifecycle=None</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/lifecycle.html#get_default_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.lifecycle.get_default_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the default <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a> used when instanciate a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.
+It&#8217;s the first state of the default lifecycle.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.plmobject">
+<span id="models-plmobject"></span><h2>5.12.7. <tt class="xref py py-mod docutils literal"><span class="pre">models.plmobject</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.plmobject" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="openPLM.plmapp.models.plmobject.cache_lifecycle_stuff">
+<tt class="descclassname">openPLM.plmapp.models.plmobject.</tt><tt class="descname">cache_lifecycle_stuff</tt><big>(</big><em>func</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#cache_lifecycle_stuff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.cache_lifecycle_stuff" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator that caches the result of <em>func</em>.</p>
+<p><em>func</em> must take one argument: a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> and
+its returned value should only depends on the state and the
+lifecycle of the given PLMObject (and not its type).</p>
+<p>The maximum cache size will be the number of
+<a class="reference internal" href="#openPLM.plmapp.models.lifecycle.LifecycleStates" title="openPLM.plmapp.models.lifecycle.LifecycleStates"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleStates</span></tt></a>. Each key of the cache is
+a tuple (state&#8217;s name, lifecycle&#8217;s name).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.plmobject.PLMObjectQuerySet">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.plmobject.</tt><tt class="descname">PLMObjectQuerySet</tt><big>(</big><em>model=None</em>, <em>query=None</em>, <em>using=None</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObjectQuerySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.db.models.query.QuerySet</span></tt></a></p>
+<p>A <tt class="xref py py-class docutils literal"><span class="pre">QuerySet</span></tt> with extra methods to filter results by their state.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObjectQuerySet.officials">
+<tt class="descname">officials</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObjectQuerySet.officials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet.officials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves only official <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObjectQuerySet.exclude_cancelled">
+<tt class="descname">exclude_cancelled</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObjectQuerySet.exclude_cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet.exclude_cancelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Excludes cancelled <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.plmobject.PLMObjectManager">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.plmobject.</tt><tt class="descname">PLMObjectManager</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObjectManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObjectManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.manager.Manager</span></tt></p>
+<p>Manager for <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.
+Uses a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet" title="openPLM.plmapp.models.plmobject.PLMObjectQuerySet"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectQuerySet</span></tt></a>.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObjectManager.officials">
+<tt class="descname">officials</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObjectManager.officials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObjectManager.officials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves only official <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObjectManager.exclude_cancelled">
+<tt class="descname">exclude_cancelled</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObjectManager.exclude_cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObjectManager.exclude_cancelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Excludes cancelled <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.plmobject.AbstractPLMObject">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.plmobject.</tt><tt class="descname">AbstractPLMObject</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#AbstractPLMObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.AbstractPLMObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Abstract model that redefines the <tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.objects</span></tt> manager.</p>
+<p>This model is abstract so that child classes inherits
+the manager.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.plmobject.</tt><tt class="descname">PLMObject</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.plmobject.AbstractPLMObject" title="openPLM.plmapp.models.plmobject.AbstractPLMObject"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.plmobject.AbstractPLMObject</span></tt></a></p>
+<p>Base class for <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> and <a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a>.</p>
+<p>A PLMObject is identified by a triplet reference/type/revision</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Key attributes:</th><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.reference">
+<tt class="descname">reference</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reference of the <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>, for example <tt class="docutils literal"><span class="pre">YLTG00</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.type">
+<tt class="descname">type</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type of the <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>, for example <tt class="docutils literal"><span class="pre">Game</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.revision">
+<tt class="descname">revision</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revision of the <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>, for example <tt class="docutils literal"><span class="pre">a</span></tt></p>
+</dd></dl>
+
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other attributes:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the product, for example <tt class="docutils literal"><span class="pre">Game</span> <span class="pre">of</span> <span class="pre">life</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.creator">
+<tt class="descname">creator</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.creator" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who created the <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">creator</tt></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who owns the <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.ctime">
+<tt class="descname">ctime</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.ctime" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of creation of the object (default value : current time)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.mtime">
+<tt class="descname">mtime</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.mtime" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of last modification of the object (automatically field at each save)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.lifecycle">
+<tt class="descname">lifecycle</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.lifecycle" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a> of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.state">
+<tt class="descname">state</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a> of the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.group">
+<tt class="descname">group</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.group" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.group.GroupInfo" title="openPLM.plmapp.models.group.GroupInfo"><tt class="xref py py-class docutils literal"><span class="pre">GroupInfo</span></tt></a> that owns the object</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.published">
+<tt class="descname">published</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.published" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>True if the object is published (accessible to anonymous user)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.reference_number">
+<tt class="descname">reference_number</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.reference_number" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>number found in the reference if it matches <tt class="docutils literal"><span class="pre">PART_|DOC_\d+</span></tt></p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.description">
+<tt class="descname">description</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.description" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 2.0.</span></p>
+<p>a short description of the object. This field is optional
+and is a richtext field.</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class is abstract, to create a PLMObject, see <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> and
+<a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a>.</p>
+</div>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 1.1: </span><a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.published" title="openPLM.plmapp.models.plmobject.PLMObject.published"><tt class="xref py py-attr docutils literal"><span class="pre">published</span></tt></a> and <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.reference_number" title="openPLM.plmapp.models.plmobject.PLMObject.reference_number"><tt class="xref py py-attr docutils literal"><span class="pre">reference_number</span></tt></a> added.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject._is_promotable">
+<tt class="descname">_is_promotable</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject._is_promotable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject._is_promotable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the object&#8217;s state is the last state of its lifecycle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_promotable">
+<tt class="descname">is_promotable</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_promotable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_promotable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if object is promotable</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method is abstract and raises <tt class="xref py py-exc docutils literal"><span class="pre">NotImplementedError</span></tt>.
+This method must be overriden.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject._get_promotion_errors">
+<tt class="descname">_get_promotion_errors</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject._get_promotion_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject._get_promotion_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an <tt class="xref py py-class docutils literal"><span class="pre">ErrorList</span></tt> of promotion errors.
+Calls <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.is_promotable" title="openPLM.plmapp.models.plmobject.PLMObject.is_promotable"><tt class="xref py py-meth docutils literal"><span class="pre">is_promotable()</span></tt></a> if it has not already been called.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.promotion_errors">
+<tt class="descname">promotion_errors</tt><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.promotion_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an <tt class="xref py py-class docutils literal"><span class="pre">ErrorList</span></tt> of promotion errors.
+Calls <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.is_promotable" title="openPLM.plmapp.models.plmobject.PLMObject.is_promotable"><tt class="xref py py-meth docutils literal"><span class="pre">is_promotable()</span></tt></a> if it has not already been called.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_cloneable">
+<tt class="descname">is_cloneable</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_cloneable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_cloneable" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Return true by default. This property may be overriden
+by custom Part or Document</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_editable">
+<tt class="descname">is_editable</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_editable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_editable" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the object is not in a non editable state</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_proposed">
+<tt class="descname">is_proposed</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_proposed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_proposed" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the object is in a state prior to the official state
+but not draft.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_cancelled">
+<tt class="descname">is_cancelled</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_cancelled"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_cancelled" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the object is cancelled.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_deprecated">
+<tt class="descname">is_deprecated</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_deprecated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_deprecated" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the object is deprecated.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_official">
+<tt class="descname">is_official</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_official"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_official" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if object is official.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_draft">
+<tt class="descname">is_draft</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_draft"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_draft" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the object is a draft.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.get_current_sign_level">
+<tt class="descname">get_current_sign_level</tt><big>(</big><em>plmobject</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.get_current_sign_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.get_current_sign_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current sign level that a user must have to promote this
+object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.get_previous_sign_level">
+<tt class="descname">get_previous_sign_level</tt><big>(</big><em>plmobject</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.get_previous_sign_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.get_previous_sign_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the current sign level that a user must have to demote this
+object.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_part">
+<tt class="descname">is_part</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the plmobject is a part.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.is_document">
+<tt class="descname">is_document</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.is_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.is_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the plmobject is a document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.attributes">
+<tt class="descname">attributes</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attributes to display in <cite>Attributes view</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.published_attributes">
+<tt class="descname">published_attributes</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.published_attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.published_attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Attributes that are visible to everyone if the object has been published.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.menu_items">
+<tt class="descname">menu_items</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.menu_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.menu_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Menu items to choose a view</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.excluded_creation_fields">
+<em class="property">classmethod </em><tt class="descname">excluded_creation_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.excluded_creation_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.excluded_creation_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns fields which should not be available in a creation form</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.get_creation_fields">
+<em class="property">classmethod </em><tt class="descname">get_creation_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.get_creation_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.get_creation_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns fields which should be displayed in a creation form.</p>
+<p>By default, it returns <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.attributes" title="openPLM.plmapp.models.plmobject.PLMObject.attributes"><tt class="xref py py-attr docutils literal"><span class="pre">attributes</span></tt></a> less attributes returned by
+<a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.excluded_creation_fields" title="openPLM.plmapp.models.plmobject.PLMObject.excluded_creation_fields"><tt class="xref py py-meth docutils literal"><span class="pre">excluded_creation_fields()</span></tt></a></p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.excluded_modification_fields">
+<em class="property">classmethod </em><tt class="descname">excluded_modification_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.excluded_modification_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.excluded_modification_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns fields which should not be available in a modification form</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.plmobject.PLMObject.get_modification_fields">
+<em class="property">classmethod </em><tt class="descname">get_modification_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#PLMObject.get_modification_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.PLMObject.get_modification_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns fields which should be displayed in a modification form</p>
+<p>By default, it returns <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.attributes" title="openPLM.plmapp.models.plmobject.PLMObject.attributes"><tt class="xref py py-attr docutils literal"><span class="pre">attributes</span></tt></a> less attributes returned by
+<a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject.excluded_modification_fields" title="openPLM.plmapp.models.plmobject.PLMObject.excluded_modification_fields"><tt class="xref py py-meth docutils literal"><span class="pre">excluded_modification_fields()</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.plmobject.get_all_plmobjects">
+<tt class="descclassname">openPLM.plmapp.models.plmobject.</tt><tt class="descname">get_all_plmobjects</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/plmobject.html#get_all_plmobjects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.plmobject.get_all_plmobjects" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict&lt;name, class&gt; of all available <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> subclasses</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.part">
+<span id="models-part"></span><h2>5.12.8. <tt class="xref py py-mod docutils literal"><span class="pre">models.part</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.part" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openPLM.plmapp.models.part.PartQuerySet">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.part.</tt><tt class="descname">PartQuerySet</tt><big>(</big><em>model=None</em>, <em>query=None</em>, <em>using=None</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#PartQuerySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.PartQuerySet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet" title="openPLM.plmapp.models.plmobject.PLMObjectQuerySet"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.plmobject.PLMObjectQuerySet</span></tt></a></p>
+<p>A <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet" title="openPLM.plmapp.models.plmobject.PLMObjectQuerySet"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectQuerySet</span></tt></a> with extra methods to annotate results
+with the number of children or parents.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.part.PartQuerySet.with_children_counts">
+<tt class="descname">with_children_counts</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#PartQuerySet.with_children_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.PartQuerySet.with_children_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotates results with the number of children (field <tt class="docutils literal"><span class="pre">num_children</span></tt>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.part.PartQuerySet.with_parents_counts">
+<tt class="descname">with_parents_counts</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#PartQuerySet.with_parents_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.PartQuerySet.with_parents_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Annotates results with the number of parents (field <tt class="docutils literal"><span class="pre">num_parents</span></tt>).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.part.PartManager">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.part.</tt><tt class="descname">PartManager</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#PartManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.PartManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObjectManager" title="openPLM.plmapp.models.plmobject.PLMObjectManager"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.plmobject.PLMObjectManager</span></tt></a></p>
+<p>Manager for <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>. Uses a <a class="reference internal" href="#openPLM.plmapp.models.part.PartQuerySet" title="openPLM.plmapp.models.part.PartQuerySet"><tt class="xref py py-class docutils literal"><span class="pre">PartQuerySet</span></tt></a>.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.part.PartManager.with_children_counts">
+<tt class="descname">with_children_counts</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#PartManager.with_children_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.PartManager.with_children_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().with_children_counts()</span></tt>.
+See <a class="reference internal" href="#openPLM.plmapp.models.part.PartQuerySet.with_children_counts" title="openPLM.plmapp.models.part.PartQuerySet.with_children_counts"><tt class="xref py py-meth docutils literal"><span class="pre">PartQuerySet.with_children_counts()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.part.PartManager.with_parents_counts">
+<tt class="descname">with_parents_counts</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#PartManager.with_parents_counts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.PartManager.with_parents_counts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().with_parents_counts()</span></tt>.
+See <a class="reference internal" href="#openPLM.plmapp.models.part.PartQuerySet.with_parents_counts" title="openPLM.plmapp.models.part.PartQuerySet.with_parents_counts"><tt class="xref py py-meth docutils literal"><span class="pre">PartQuerySet.with_parents_counts()</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.part.TopAssemblyManager">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.part.</tt><tt class="descname">TopAssemblyManager</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#TopAssemblyManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.TopAssemblyManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.part.PartManager" title="openPLM.plmapp.models.part.PartManager"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.part.PartManager</span></tt></a></p>
+<p>A <a class="reference internal" href="#openPLM.plmapp.models.part.PartManager" title="openPLM.plmapp.models.part.PartManager"><tt class="xref py py-class docutils literal"><span class="pre">PartManager</span></tt></a> that returns only top assemblies.
+A top assemblies is a part with at least one child and no parents.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.part.AbstractPart">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.part.</tt><tt class="descname">AbstractPart</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#AbstractPart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.AbstractPart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Abstract model that defines two managers:</p>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.part.AbstractPart.objects">
+<tt class="descname">objects</tt><a class="headerlink" href="#openPLM.plmapp.models.part.AbstractPart.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>default manager, a <a class="reference internal" href="#openPLM.plmapp.models.part.PartManager" title="openPLM.plmapp.models.part.PartManager"><tt class="xref py py-class docutils literal"><span class="pre">PartManager</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">top_assemblies:</tt></dt>
+<dd><p>a <a class="reference internal" href="#openPLM.plmapp.models.part.TopAssemblyManager" title="openPLM.plmapp.models.part.TopAssemblyManager"><tt class="xref py py-class docutils literal"><span class="pre">TopAssemblyManager</span></tt></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.part.Part">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.part.</tt><tt class="descname">Part</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#Part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.Part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.part.AbstractPart" title="openPLM.plmapp.models.part.AbstractPart"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.part.AbstractPart</span></tt></a>, <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.plmobject.PLMObject</span></tt></a></p>
+<p>Model for parts</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.part.Part.is_promotable">
+<tt class="descname">is_promotable</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#Part.is_promotable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.Part.is_promotable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the part is promotable.</p>
+<p>A part is promotable if:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">its state is not the last state of its lifecycle</p>
+</li>
+<li><p class="first">if the part is official.</p>
+</li>
+<li><p class="first">the part is draft or proposed and:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><dl class="first docutils">
+<dt>there is a next state in its lifecycle and if its children</dt>
+<dd><p class="first last">which have the same lifecycle are in a state as mature as
+the object&#8217;s state.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">if the part has no children, there is at least one official
+document attached to it.</p>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.part.get_all_parts">
+<tt class="descclassname">openPLM.plmapp.models.part.</tt><tt class="descname">get_all_parts</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/part.html#get_all_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.part.get_all_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict&lt;part_name, part_class&gt; of all available <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> classes</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.document">
+<span id="models-document"></span><h2>5.12.9. <tt class="xref py py-mod docutils literal"><span class="pre">models.document</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.document" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openPLM.plmapp.models.document.DocumentStorage">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">DocumentStorage</tt><big>(</big><em>location=None</em>, <em>base_url=None</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#DocumentStorage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentStorage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/storage/#django.core.files.storage.FileSystemStorage" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.core.files.storage.FileSystemStorage</span></tt></a></p>
+<p>File system storage which stores files with a specific name</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.document.DocumentStorage.get_available_name">
+<tt class="descname">get_available_name</tt><big>(</big><em>name</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#DocumentStorage.get_available_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentStorage.get_available_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a path for a file <em>name</em>, the path always refers to a file
+which does not already exist.</p>
+<dl class="docutils">
+<dt>The path is computed as follow:</dt>
+<dd><ol class="first arabic">
+<li><p class="first">a directory which name is the last extension of <em>name</em>.
+For example, it is <tt class="file docutils literal"><span class="pre">.gz</span></tt> if <em>name</em> is <tt class="file docutils literal"><span class="pre">.a.tar.gz</span></tt>.
+If <em>name</em> does not have an extension, the directory is
+<tt class="file docutils literal"><span class="pre">.no_ext/</span></tt>.</p>
+</li>
+<li><dl class="first docutils">
+<dt>a file name with 4 parts:</dt>
+<dd><ol class="first last arabic simple">
+<li>the md5 sum of <em>name</em></li>
+<li>a dash separator: <tt class="docutils literal"><span class="pre">-</span></tt></li>
+<li>a random part with 7 characters in <tt class="docutils literal"><span class="pre">[a-z0-9]</span></tt></li>
+<li>the extension, like <tt class="file docutils literal"><span class="pre">.gz</span></tt></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+<p>For example, if <em>name</em> is <tt class="file docutils literal"><span class="pre">.my_file.tar.gz</span></tt>,
+a possible output is:</p>
+<blockquote>
+<div><tt class="file docutils literal"><span class="pre">.gz/c7bfe8d00ea6e7138215ebfafff187af-jj6789g.gz</span></tt></div></blockquote>
+<p>If <em>name</em> is <tt class="file docutils literal"><span class="pre">.my_file</span></tt>, a possible output is:</p>
+<blockquote class="last">
+<div><tt class="file docutils literal"><span class="pre">.no_ext/59c211e8fc0f14b21c78c87eafe1ab72-dhh5555</span></tt></div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="openPLM.plmapp.models.document.docfs">
+<tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">docfs</tt><em class="property"> = &lt;openPLM.plmapp.models.document.DocumentStorage object at 0x4131c10&gt;</em><a class="headerlink" href="#openPLM.plmapp.models.document.docfs" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.document.DocumentStorage" title="openPLM.plmapp.models.document.DocumentStorage"><tt class="xref py py-class docutils literal"><span class="pre">DocumentStorage</span></tt></a> instance which stores files in <tt class="xref py py-const docutils literal"><span class="pre">settings.DOCUMENTS_DIR</span></tt></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="openPLM.plmapp.models.document.thumbnailfs">
+<tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">thumbnailfs</tt><em class="property"> = &lt;django.core.files.storage.FileSystemStorage object at 0x4131c90&gt;</em><a class="headerlink" href="#openPLM.plmapp.models.document.thumbnailfs" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-class docutils literal"><span class="pre">FileSystemStorage</span></tt> instance which stores thumbnails in <tt class="xref py py-const docutils literal"><span class="pre">settings.THUMBNAILS_DIR</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.document.DocumentFile">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">DocumentFile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#DocumentFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 1.2: </span>New attributes: <a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile.ctime" title="openPLM.plmapp.models.document.DocumentFile.ctime"><tt class="xref py py-attr docutils literal"><span class="pre">ctime</span></tt></a>, <a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile.end_time" title="openPLM.plmapp.models.document.DocumentFile.end_time"><tt class="xref py py-attr docutils literal"><span class="pre">end_time</span></tt></a>, <a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile.deleted" title="openPLM.plmapp.models.document.DocumentFile.deleted"><tt class="xref py py-attr docutils literal"><span class="pre">deleted</span></tt></a>,
+<a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile.revision" title="openPLM.plmapp.models.document.DocumentFile.revision"><tt class="xref py py-attr docutils literal"><span class="pre">revision</span></tt></a>, <a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile.previous_revision" title="openPLM.plmapp.models.document.DocumentFile.previous_revision"><tt class="xref py py-attr docutils literal"><span class="pre">previous_revision</span></tt></a>, <a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile.last_revision" title="openPLM.plmapp.models.document.DocumentFile.last_revision"><tt class="xref py py-attr docutils literal"><span class="pre">last_revision</span></tt></a></p>
+<p>Model which stores informations of a file bounded to a <a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.filename">
+<tt class="descname">filename</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>original filename</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.file">
+<tt class="descname">file</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>file stored in <a class="reference internal" href="#openPLM.plmapp.models.document.docfs" title="openPLM.plmapp.models.document.docfs"><tt class="xref py py-obj docutils literal"><span class="pre">docfs</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.size">
+<tt class="descname">size</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>size of the file in Byte</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.locked">
+<tt class="descname">locked</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.locked" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the file is locked</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.locker">
+<tt class="descname">locker</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.locker" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who locked the file,
+None, if the file is not locked</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.document">
+<tt class="descname">document</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.document" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> bounded to the file (required)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.ctime">
+<tt class="descname">ctime</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.ctime" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of creation of the document file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.end_time">
+<tt class="descname">end_time</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of creation of the next revision or None if it is
+the last revision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.revision">
+<tt class="descname">revision</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>revision number (starts at 1)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.previous_revision">
+<tt class="descname">previous_revision</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.previous_revision" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> or None if it&#8217;s the first revision</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.last_revision">
+<tt class="descname">last_revision</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.last_revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>foreign key to the last revision (<a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>)
+or None it it&#8217;is the last_revision</p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.deleted">
+<tt class="descname">deleted</tt><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.deleted" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the file has been physically removed</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.native_related">
+<tt class="descname">native_related</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#DocumentFile.native_related"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.native_related" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the native DocumentFile related to this DocumentFile
+if <tt class="xref py py-const docutils literal"><span class="pre">settings.ENABLE_NATIVE_FILE_MANAGEMENT</span></tt> is True.</p>
+<p>Returns False if there are no native DocumentFile related.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.DocumentFile.checkout_valid">
+<tt class="descname">checkout_valid</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#DocumentFile.checkout_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.DocumentFile.checkout_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns False if DocumentFile has a native related <em>locked</em> file
+and <tt class="xref py py-const docutils literal"><span class="pre">settings.ENABLE_NATIVE_FILE_MANAGEMENT</span></tt> is True.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.document.PrivateFile">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">PrivateFile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#PrivateFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.PrivateFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Model which stores informations of a private file only readable by its
+creator.</p>
+<p>There are no revision, locker, deleted or similar attributes.
+A private file is not shared, and it is temporary. It is created to
+store a file before a document creation.</p>
+<p>Private files are created when a user uploads files and <em>then</em> creates
+a document containing these files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.document.PrivateFile.filename">
+<tt class="descname">filename</tt><a class="headerlink" href="#openPLM.plmapp.models.document.PrivateFile.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>original filename</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.PrivateFile.file">
+<tt class="descname">file</tt><a class="headerlink" href="#openPLM.plmapp.models.document.PrivateFile.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>file stored in <a class="reference internal" href="#openPLM.plmapp.models.document.docfs" title="openPLM.plmapp.models.document.docfs"><tt class="xref py py-obj docutils literal"><span class="pre">docfs</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.PrivateFile.size">
+<tt class="descname">size</tt><a class="headerlink" href="#openPLM.plmapp.models.document.PrivateFile.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>size of the file in Byte</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.PrivateFile.creator">
+<tt class="descname">creator</tt><a class="headerlink" href="#openPLM.plmapp.models.document.PrivateFile.creator" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who created the file,</p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.document.PrivateFile.ctime">
+<tt class="descname">ctime</tt><a class="headerlink" href="#openPLM.plmapp.models.document.PrivateFile.ctime" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descname">date of creation of the file</tt></dt>
+<dd></dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.document.Document">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">Document</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.plmobject.PLMObject</span></tt></a></p>
+<p>Model for documents</p>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.Document.files">
+<tt class="descname">files</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#Document.files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.Document.files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queryset of all non deprecated <a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> linked to self</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.document.Document.deprecated_files">
+<tt class="descname">deprecated_files</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#Document.deprecated_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.Document.deprecated_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Queryset of all deprecated <a class="reference internal" href="#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> linked to self</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.document.Document.is_promotable">
+<tt class="descname">is_promotable</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#Document.is_promotable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.Document.is_promotable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the object is promotable. A document is promotable
+if there is a next state in its lifecycle and if it has at least
+one file and if none of its files are locked.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.document.Document.get_creation_score">
+<em class="property">classmethod </em><tt class="descname">get_creation_score</tt><big>(</big><em>files</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#Document.get_creation_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.Document.get_creation_score" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 2.0.</span></p>
+<p>Returns a score (an integer) computed from <em>files</em>.
+<em>files</em> is a list of <a class="reference internal" href="#openPLM.plmapp.models.document.PrivateFile" title="openPLM.plmapp.models.document.PrivateFile"><tt class="xref py py-class docutils literal"><span class="pre">PrivateFile</span></tt></a> uploaded by a user
+who wants to create a document with all files.</p>
+<p>The class which returns the highest score is chosen has the
+default type after an upload.</p>
+<p>The default implementation returns 10 if the current class is <em>Document</em>
+and 0 otherwise.</p>
+<p>For example, <tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt> returns 50 if a CAD file has been
+uploaded. Document3D is so preferred when a STEP file is uploaded.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#openPLM.plmapp.models.document.get_best_document_type" title="openPLM.plmapp.models.document.get_best_document_type"><tt class="xref py py-func docutils literal"><span class="pre">get_best_document_type()</span></tt></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.document.get_all_documents">
+<tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">get_all_documents</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#get_all_documents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.get_all_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict&lt;doc_name, doc_class&gt; of all available <a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> classes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.document.get_all_subtype_documents">
+<tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">get_all_subtype_documents</tt><big>(</big><em>subtype</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#get_all_subtype_documents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.get_all_subtype_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dict&lt;doc_name, doc_class&gt; of all available <strong>subtype</strong> classes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.document.get_best_document_type">
+<tt class="descclassname">openPLM.plmapp.models.document.</tt><tt class="descname">get_best_document_type</tt><big>(</big><em>files</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/document.html#get_best_document_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.document.get_best_document_type" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 2.0.</span></p>
+<p>Returns the document type (str) which returns the highest
+creation score for the uploaded files (list of <a class="reference internal" href="#openPLM.plmapp.models.document.PrivateFile" title="openPLM.plmapp.models.document.PrivateFile"><tt class="xref py py-class docutils literal"><span class="pre">PrivateFile</span></tt></a>).</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#openPLM.plmapp.models.document.Document.get_creation_score" title="openPLM.plmapp.models.document.Document.get_creation_score"><tt class="xref py py-meth docutils literal"><span class="pre">Document.get_creation_score()</span></tt></a></p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.history">
+<span id="models-history"></span><h2>5.12.10. <tt class="xref py py-mod docutils literal"><span class="pre">models.history</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.history" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openPLM.plmapp.models.history.AbstractHistory">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">AbstractHistory</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#AbstractHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.AbstractHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>History model.
+This model records all events related to <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.history.AbstractHistory.plmobject">
+<tt class="descname">plmobject</tt><a class="headerlink" href="#openPLM.plmapp.models.history.AbstractHistory.plmobject" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> of the event</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.AbstractHistory.action">
+<tt class="descname">action</tt><a class="headerlink" href="#openPLM.plmapp.models.history.AbstractHistory.action" title="Permalink to this definition">¶</a></dt>
+<dd><p>type of action (see <a class="reference internal" href="#openPLM.plmapp.models.history.AbstractHistory.ACTIONS" title="openPLM.plmapp.models.history.AbstractHistory.ACTIONS"><tt class="xref py py-attr docutils literal"><span class="pre">ACTIONS</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.AbstractHistory.details">
+<tt class="descname">details</tt><a class="headerlink" href="#openPLM.plmapp.models.history.AbstractHistory.details" title="Permalink to this definition">¶</a></dt>
+<dd><p>type of action (see <a class="reference internal" href="#openPLM.plmapp.models.history.AbstractHistory.ACTIONS" title="openPLM.plmapp.models.history.AbstractHistory.ACTIONS"><tt class="xref py py-attr docutils literal"><span class="pre">ACTIONS</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.AbstractHistory.date">
+<tt class="descname">date</tt><a class="headerlink" href="#openPLM.plmapp.models.history.AbstractHistory.date" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of the event</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.AbstractHistory.user">
+<tt class="descname">user</tt><a class="headerlink" href="#openPLM.plmapp.models.history.AbstractHistory.user" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who maded the event</p>
+</dd></dl>
+
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Class attribute:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.AbstractHistory.ACTIONS">
+<tt class="descname">ACTIONS</tt><em class="property"> = (('Create', 'Create'), ('Delete', 'Delete'), ('Modify', 'Modify'), ('Revise', 'Revise'), ('Promote', 'Promote'), ('Demote', 'Demote'), ('Cancel', 'Cancel'), ('Publish', 'Publish'), ('Unpublish', 'Unpublish'))</em><a class="headerlink" href="#openPLM.plmapp.models.history.AbstractHistory.ACTIONS" title="Permalink to this definition">¶</a></dt>
+<dd><p>some actions available in the admin interface</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.history.History">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">History</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#History"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.History" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.history.AbstractHistory" title="openPLM.plmapp.models.history.AbstractHistory"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.history.AbstractHistory</span></tt></a></p>
+<p>History(id, action, details, date, user_id, plmobject_id)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.history.UserHistory">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">UserHistory</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#UserHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.UserHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.history.AbstractHistory" title="openPLM.plmapp.models.history.AbstractHistory"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.history.AbstractHistory</span></tt></a></p>
+<p>UserHistory(id, action, details, date, user_id, plmobject_id)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.history.GroupHistory">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">GroupHistory</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#GroupHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.GroupHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.history.AbstractHistory" title="openPLM.plmapp.models.history.AbstractHistory"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.history.AbstractHistory</span></tt></a></p>
+<p>GroupHistory(id, action, details, date, user_id, plmobject_id)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.history.StateHistoryQuerySet">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">StateHistoryQuerySet</tt><big>(</big><em>model=None</em>, <em>query=None</em>, <em>using=None</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryQuerySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryQuerySet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.db.models.query.QuerySet</span></tt></a></p>
+<p>QuerySet with utility methods to filter <a class="reference internal" href="#openPLM.plmapp.models.history.StateHistory" title="openPLM.plmapp.models.history.StateHistory"><tt class="xref py py-class docutils literal"><span class="pre">StateHistory</span></tt></a> alive at a given time.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.history.StateHistoryQuerySet.now">
+<tt class="descname">now</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryQuerySet.now"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryQuerySet.now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters state histories: keeps only alive state histories (end_time is null).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.history.StateHistoryQuerySet.at">
+<tt class="descname">at</tt><big>(</big><em>time</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryQuerySet.at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryQuerySet.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters state histories: keeps alive state histories at time <em>time</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> &#8211; a <a class="reference external" href="http://docs.python.org/2.6/library/datetime.html#datetime.datetime" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">datetime</span></tt></a> or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.history.StateHistoryQuerySet.officials">
+<tt class="descname">officials</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryQuerySet.officials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryQuerySet.officials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters only official state histories.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.history.StateHistoryManager">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">StateHistoryManager</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.manager.Manager</span></tt></p>
+<p>state histories manager, returns a <a class="reference internal" href="#openPLM.plmapp.models.history.StateHistoryQuerySet" title="openPLM.plmapp.models.history.StateHistoryQuerySet"><tt class="xref py py-class docutils literal"><span class="pre">StateHistoryQuerySet</span></tt></a>.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.history.StateHistoryManager.now">
+<tt class="descname">now</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryManager.now"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryManager.now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().now()</span></tt>. See <a class="reference internal" href="#openPLM.plmapp.models.history.StateHistoryQuerySet.now" title="openPLM.plmapp.models.history.StateHistoryQuerySet.now"><tt class="xref py py-meth docutils literal"><span class="pre">StateHistoryQuerySet.now()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.history.StateHistoryManager.at">
+<tt class="descname">at</tt><big>(</big><em>time</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryManager.at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryManager.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().at(time)</span></tt>. See <a class="reference internal" href="#openPLM.plmapp.models.history.StateHistoryQuerySet.at" title="openPLM.plmapp.models.history.StateHistoryQuerySet.at"><tt class="xref py py-meth docutils literal"><span class="pre">StateHistoryQuerySet.at()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.history.StateHistoryManager.officials">
+<tt class="descname">officials</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistoryManager.officials"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistoryManager.officials" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().officials()</span></tt>. See <a class="reference internal" href="#openPLM.plmapp.models.history.StateHistoryQuerySet.officials" title="openPLM.plmapp.models.history.StateHistoryQuerySet.officials"><tt class="xref py py-meth docutils literal"><span class="pre">StateHistoryQuerySet.officials()</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.history.StateHistory">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">StateHistory</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#StateHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Models that tracks the promotions and demotions of a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.plmobject">
+<tt class="descname">plmobject</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.plmobject" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> that has been promoted/demoted.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.start_time">
+<tt class="descname">start_time</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.start_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of the promotion/demotion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.end_time">
+<tt class="descname">end_time</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of the next promotion/demotion, None if the promotion
+is the latest promotion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.state">
+<tt class="descname">state</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.state" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a> of <em>plmobject</em> at <em>t</em>, if <em>start_time</em> &lt;= t &lt; <em>end_time</em></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.lifecycle">
+<tt class="descname">lifecycle</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.lifecycle" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a> of <em>plmobject</em> at <em>t</em>, if <em>start_time</em> &lt;= t &lt; <em>end_time</em></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.state_category">
+<tt class="descname">state_category</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.state_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>state&#8217;s category of <em>plmobject</em> at <em>t</em>, if <em>start_time</em> &lt;= t &lt; <em>end_time</em>.
+This field is redundant with the tuple (state, lifecycle) but it allows
+fast queries to check if an object was official at a given time.
+This attribute is automatically set when the object is saved.</p>
+</dd></dl>
+
+<p>Valid state&#8217;s categories are:</p>
+<blockquote class="last">
+<div><dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.DRAFT">
+<tt class="descname">DRAFT</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.DRAFT" title="Permalink to this definition">¶</a></dt>
+<dd><p>set if <tt class="xref py py-meth docutils literal"><span class="pre">PLMObject.is_draft()</span></tt> returns True</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.PROPOSED">
+<tt class="descname">PROPOSED</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.PROPOSED" title="Permalink to this definition">¶</a></dt>
+<dd><p>set if <tt class="xref py py-meth docutils literal"><span class="pre">PLMObject.is_proposed()</span></tt> returns True</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.OFFICIAL">
+<tt class="descname">OFFICIAL</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.OFFICIAL" title="Permalink to this definition">¶</a></dt>
+<dd><p>set if <tt class="xref py py-meth docutils literal"><span class="pre">PLMObject.is_official()</span></tt> returns True</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.DEPRECATED">
+<tt class="descname">DEPRECATED</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.DEPRECATED" title="Permalink to this definition">¶</a></dt>
+<dd><p>set if <tt class="xref py py-meth docutils literal"><span class="pre">PLMObject.is_deprecated()</span></tt> returns True</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.history.StateHistory.CANCELLED">
+<tt class="descname">CANCELLED</tt><a class="headerlink" href="#openPLM.plmapp.models.history.StateHistory.CANCELLED" title="Permalink to this definition">¶</a></dt>
+<dd><p>set if <tt class="xref py py-meth docutils literal"><span class="pre">PLMObject.is_cancelled()</span></tt> returns True</p>
+</dd></dl>
+
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.history._save_comment_history">
+<tt class="descclassname">openPLM.plmapp.models.history.</tt><tt class="descname">_save_comment_history</tt><big>(</big><em>sender</em>, <em>comment</em>, <em>request</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/history.html#_save_comment_history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.history._save_comment_history" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save an history line when a comment is posted.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-openPLM.plmapp.models.link">
+<span id="models-link"></span><h2>5.12.11. <tt class="xref py py-mod docutils literal"><span class="pre">models.link</span></tt><a class="headerlink" href="#module-openPLM.plmapp.models.link" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.LinkQuerySet">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">LinkQuerySet</tt><big>(</big><em>model=None</em>, <em>query=None</em>, <em>using=None</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkQuerySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkQuerySet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.db.models.query.QuerySet</span></tt></a></p>
+<p>QuerySet with utility methods to filter links alive at a given time.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.LinkQuerySet.now">
+<tt class="descname">now</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkQuerySet.now"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkQuerySet.now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters links: keeps only alive links (end_time is null).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.LinkQuerySet.at">
+<tt class="descname">at</tt><big>(</big><em>time</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkQuerySet.at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkQuerySet.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Filters links: keeps alive links at time <em>time</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>time</strong> &#8211; a <a class="reference external" href="http://docs.python.org/2.6/library/datetime.html#datetime.datetime" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">datetime</span></tt></a> or None</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.LinkQuerySet.end">
+<tt class="descname">end</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkQuerySet.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkQuerySet.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ends all alive links: sets theur <tt class="xref py py-attr docutils literal"><span class="pre">end_time</span></tt> to the current time and saves them
+if there <tt class="xref py py-attr docutils literal"><span class="pre">end_time</span></tt> are not already set.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.LinkManager">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">LinkManager</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.manager.Manager</span></tt></p>
+<p>Links manager, returns a <a class="reference internal" href="#openPLM.plmapp.models.link.LinkQuerySet" title="openPLM.plmapp.models.link.LinkQuerySet"><tt class="xref py py-class docutils literal"><span class="pre">LinkQuerySet</span></tt></a>.</p>
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.LinkManager.now">
+<tt class="descname">now</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkManager.now"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkManager.now" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().now()</span></tt>. See <a class="reference internal" href="#openPLM.plmapp.models.link.LinkQuerySet.now" title="openPLM.plmapp.models.link.LinkQuerySet.now"><tt class="xref py py-meth docutils literal"><span class="pre">LinkQuerySet.now()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.LinkManager.at">
+<tt class="descname">at</tt><big>(</big><em>time</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkManager.at"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkManager.at" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().at(time)</span></tt>. See <a class="reference internal" href="#openPLM.plmapp.models.link.LinkQuerySet.at" title="openPLM.plmapp.models.link.LinkQuerySet.at"><tt class="xref py py-meth docutils literal"><span class="pre">LinkQuerySet.at()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.LinkManager.end">
+<tt class="descname">end</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#LinkManager.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.LinkManager.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shorcut for <tt class="docutils literal"><span class="pre">self.get_query_set().end()</span></tt>. See <a class="reference internal" href="#openPLM.plmapp.models.link.LinkQuerySet.end" title="openPLM.plmapp.models.link.LinkQuerySet.end"><tt class="xref py py-meth docutils literal"><span class="pre">LinkQuerySet.end()</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.CurrentLinkManager">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">CurrentLinkManager</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#CurrentLinkManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.CurrentLinkManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.link.LinkManager" title="openPLM.plmapp.models.link.LinkManager"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.LinkManager</span></tt></a></p>
+<p>Manager which returns alive links.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.Link">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">Link</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#Link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Abstract link base class.</p>
+<p>This class represents a link between two <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.Link.ctime">
+<tt class="descname">ctime</tt><a class="headerlink" href="#openPLM.plmapp.models.link.Link.ctime" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of creation of the link (automatically set)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.Link.end_time">
+<tt class="descname">end_time</tt><a class="headerlink" href="#openPLM.plmapp.models.link.Link.end_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>date of deletion of the link (default: None, the link is still active)</p>
+</dd></dl>
+
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Class attributes:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.Link.ACTION_NAME">
+<tt class="descname">ACTION_NAME</tt><a class="headerlink" href="#openPLM.plmapp.models.link.Link.ACTION_NAME" title="Permalink to this definition">¶</a></dt>
+<dd><p>an identifier used to set <tt class="xref py py-attr docutils literal"><span class="pre">History.action</span></tt> field</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.Link.objects">
+<tt class="descname">objects</tt><a class="headerlink" href="#openPLM.plmapp.models.link.Link.objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>default manager: instance of <a class="reference internal" href="#openPLM.plmapp.models.link.LinkManager" title="openPLM.plmapp.models.link.LinkManager"><tt class="xref py py-class docutils literal"><span class="pre">LinkManager</span></tt></a></p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.link.Link.current_objects">
+<tt class="descname">current_objects</tt><a class="headerlink" href="#openPLM.plmapp.models.link.Link.current_objects" title="Permalink to this definition">¶</a></dt>
+<dd><p>alternate manager (<a class="reference internal" href="#openPLM.plmapp.models.link.CurrentLinkManager" title="openPLM.plmapp.models.link.CurrentLinkManager"><tt class="xref py py-class docutils literal"><span class="pre">CurrentLinkManager</span></tt></a>) which returns alive links.</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.Link.clean">
+<tt class="descname">clean</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#Link.clean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.Link.clean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check for instances with null values in unique_together fields.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.Link.end">
+<tt class="descname">end</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#Link.end"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.Link.end" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ends the link: sets its <a class="reference internal" href="#openPLM.plmapp.models.link.Link.end_time" title="openPLM.plmapp.models.link.Link.end_time"><tt class="xref py py-attr docutils literal"><span class="pre">end_time</span></tt></a> to the current time and saves it
+if its <a class="reference internal" href="#openPLM.plmapp.models.link.Link.end_time" title="openPLM.plmapp.models.link.Link.end_time"><tt class="xref py py-attr docutils literal"><span class="pre">end_time</span></tt></a> is not already set.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.ParentChildLink">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">ParentChildLink</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.link.Link" title="openPLM.plmapp.models.link.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.Link</span></tt></a></p>
+<p>Link between two <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>: a parent and a child</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.parent">
+<tt class="descname">parent</tt><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.child">
+<tt class="descname">child</tt><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.child" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.quantity">
+<tt class="descname">quantity</tt><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>amount of child (a positive float)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.unit">
+<tt class="descname">unit</tt><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>unit of the quantity</p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.order">
+<tt class="descname">order</tt><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.order" title="Permalink to this definition">¶</a></dt>
+<dd><p>positive integer</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.get_shortened_unit">
+<tt class="descname">get_shortened_unit</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLink.get_shortened_unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.get_shortened_unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns unit as a human readable string.
+If <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLink.unit" title="openPLM.plmapp.models.link.ParentChildLink.unit"><tt class="xref py py-attr docutils literal"><span class="pre">unit</span></tt></a> equals to &#8220;-&#8221;, returns an empty string.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.extensions">
+<tt class="descname">extensions</tt><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLink.extensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.extensions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a queryset of bound <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.get_extension_data">
+<tt class="descname">get_extension_data</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLink.get_extension_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.get_extension_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary of extension data. The returned value can be passed
+as a valid arguement to <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLink.clone" title="openPLM.plmapp.models.link.ParentChildLink.clone"><tt class="xref py py-meth docutils literal"><span class="pre">clone()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.ParentChildLink.clone">
+<tt class="descname">clone</tt><big>(</big><em>save=False</em>, <em>extension_data=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLink.clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLink.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clone this link.</p>
+<p>It is possible to pass additional arguments to override some original
+values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>save</strong> &#8211; If True, the cloned link and its extensions are saved</li>
+<li><strong>extension_data</strong> &#8211; dictionary PCLE module name -&gt; data of data
+that are given to <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.clone" title="openPLM.plmapp.models.link.ParentChildLinkExtension.clone"><tt class="xref py py-meth docutils literal"><span class="pre">ParentChildLinkExtension.clone()</span></tt></a>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a tuple (cloned link, list of cloned extensions)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">link</span>
+<span class="go">ParentChildLink&lt;Part&lt;PART_2/MotherBoard/a&gt;, Part&lt;ttd/RAM/a&gt;, 4.000000, -, 10&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">link</span><span class="o">.</span><span class="n">extensions</span>
+<span class="go">[&lt;ReferenceDesignator: ReferenceDesignator&lt;m1,m2,&gt;&gt;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">clone</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="p">{</span><span class="s">&quot;referencedesignator&quot;</span> <span class="p">:</span> <span class="p">{</span> <span class="s">&quot;reference_designator&quot;</span> <span class="p">:</span> <span class="s">&quot;new_value&quot;</span><span class="p">}},</span>
+<span class="gp">... </span>   <span class="n">quantity</span><span class="o">=</span><span class="mi">51</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">clone</span>
+<span class="go">ParentChildLink&lt;Part&lt;PART_2/MotherBoard/a&gt;, Part&lt;ttd/RAM/a&gt;, 51.000000, -, 10&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">ext</span>
+<span class="go">[&lt;ReferenceDesignator: ReferenceDesignator&lt;new_value&gt;&gt;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.ParentChildLinkExtension">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">ParentChildLinkExtension</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLinkExtension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLinkExtension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.ParentModel</span></tt></p>
+<p>Extension of a <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> used to store additional data.</p>
+<p>This class is abstract, subclass must define the <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.clone" title="openPLM.plmapp.models.link.ParentChildLinkExtension.clone"><tt class="xref py py-meth docutils literal"><span class="pre">clone()</span></tt></a> method,
+add at least one field (or it would be useless) and may override
+<a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields" title="openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields"><tt class="xref py py-meth docutils literal"><span class="pre">get_visible_fields()</span></tt></a> or <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.get_editable_fields" title="openPLM.plmapp.models.link.ParentChildLinkExtension.get_editable_fields"><tt class="xref py py-meth docutils literal"><span class="pre">get_editable_fields()</span></tt></a>.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="../bom.html#bom-extensions"><em>Extensions</em></a> explains how to subclass this class.</p>
+</div>
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields">
+<em class="property">classmethod </em><tt class="descname">get_visible_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLinkExtension.get_visible_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of visible fieldnames.</p>
+<p>By default, returns an empty list.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.link.ParentChildLinkExtension.get_editable_fields">
+<em class="property">classmethod </em><tt class="descname">get_editable_fields</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLinkExtension.get_editable_fields"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.get_editable_fields" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of editable fields.</p>
+<p>By default, returns <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields" title="openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields"><tt class="xref py py-meth docutils literal"><span class="pre">get_visible_fields()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.link.ParentChildLinkExtension.one_per_link">
+<em class="property">classmethod </em><tt class="descname">one_per_link</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLinkExtension.one_per_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.one_per_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if only one extension should be created per link.</p>
+<p>By default return True if <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields" title="openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields"><tt class="xref py py-meth docutils literal"><span class="pre">get_visible_fields()</span></tt></a> returns a
+non empty list.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.link.ParentChildLinkExtension.apply_to">
+<em class="property">classmethod </em><tt class="descname">apply_to</tt><big>(</big><em>parent</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLinkExtension.apply_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.apply_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if this extension applies to <em>parent</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> (<a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> (its most specific subclass).) &#8211; part which will have a new child</td>
+</tr>
+</tbody>
+</table>
+<p>Returns True by default.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.ParentChildLinkExtension.clone">
+<tt class="descname">clone</tt><big>(</big><em>link</em>, <em>save=False</em>, <em>**data</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLinkExtension.clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clone this extension.</p>
+<p><strong>Subclass must define its implementation.</strong> and respect the
+following specification:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>link</strong> (<a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a>) &#8211; the new cloned link, the cloned extension must be
+bound to it</li>
+<li><strong>save</strong> (<em>boolean</em>) &#8211; True if the cloned extension must be saved, False
+(the default) if it must not be saved.</li>
+<li><strong>data</strong> &#8211; additional data that override the original values</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">the cloned extension</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.plmapp.models.link.ParentChildLinkExtension.to_dict">
+<tt class="descname">to_dict</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#ParentChildLinkExtension.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary fieldnames -&gt; value that can be safely passed as
+a kwargument to <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension.clone" title="openPLM.plmapp.models.link.ParentChildLinkExtension.clone"><tt class="xref py py-meth docutils literal"><span class="pre">clone()</span></tt></a> and that is used to compare two
+extensions.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.link.register_PCLE">
+<tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">register_PCLE</tt><big>(</big><em>PCLE</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#register_PCLE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.register_PCLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register <em>PCLE</em> so that openPLM can show its visible fields.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>PCLE</strong> (a subclass of <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a>.) &#8211; the registered PCLE</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.plmapp.models.link.get_PCLEs">
+<tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">get_PCLEs</tt><big>(</big><em>parent</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#get_PCLEs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.get_PCLEs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of registered <a class="reference internal" href="#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a> that
+applied to <em>parent</em>.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.RevisionLink">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">RevisionLink</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#RevisionLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.RevisionLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.link.Link" title="openPLM.plmapp.models.link.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.Link</span></tt></a></p>
+<p>Link between two revisions of a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.RevisionLink.old">
+<tt class="descname">old</tt><a class="headerlink" href="#openPLM.plmapp.models.link.RevisionLink.old" title="Permalink to this definition">¶</a></dt>
+<dd><p>old revision (a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>)</p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.link.RevisionLink.new">
+<tt class="descname">new</tt><a class="headerlink" href="#openPLM.plmapp.models.link.RevisionLink.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>new revision (a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>)</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.DocumentPartLink">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">DocumentPartLink</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#DocumentPartLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.DocumentPartLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.link.Link" title="openPLM.plmapp.models.link.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.Link</span></tt></a></p>
+<p>Link between a <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> and a <a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.DocumentPartLink.part">
+<tt class="descname">part</tt><a class="headerlink" href="#openPLM.plmapp.models.link.DocumentPartLink.part" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.link.DocumentPartLink.document">
+<tt class="descname">document</tt><a class="headerlink" href="#openPLM.plmapp.models.link.DocumentPartLink.document" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a></p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.DelegationLink">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">DelegationLink</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#DelegationLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.DelegationLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.link.Link" title="openPLM.plmapp.models.link.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.Link</span></tt></a></p>
+<p>Link between two <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> to delegate
+his rights (abstract class)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.DelegationLink.delegator">
+<tt class="descname">delegator</tt><a class="headerlink" href="#openPLM.plmapp.models.link.DelegationLink.delegator" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who gives his role</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.DelegationLink.delegatee">
+<tt class="descname">delegatee</tt><a class="headerlink" href="#openPLM.plmapp.models.link.DelegationLink.delegatee" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who receives the role</p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.link.DelegationLink.role">
+<tt class="descname">role</tt><a class="headerlink" href="#openPLM.plmapp.models.link.DelegationLink.role" title="Permalink to this definition">¶</a></dt>
+<dd><p>right that is delegated</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="classmethod">
+<dt id="openPLM.plmapp.models.link.DelegationLink.get_delegators">
+<em class="property">classmethod </em><tt class="descname">get_delegators</tt><big>(</big><em>user</em>, <em>role</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#DelegationLink.get_delegators"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.DelegationLink.get_delegators" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the list of user&#8217;s id of the delegators of <em>user</em> for the role
+<em>role</em>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.PLMObjectUserLink">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">PLMObjectUserLink</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#PLMObjectUserLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.PLMObjectUserLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.link.Link" title="openPLM.plmapp.models.link.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.Link</span></tt></a></p>
+<p>Link between a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> and a
+<a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.PLMObjectUserLink.plmobject">
+<tt class="descname">plmobject</tt><a class="headerlink" href="#openPLM.plmapp.models.link.PLMObjectUserLink.plmobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.PLMObjectUserLink.user">
+<tt class="descname">user</tt><a class="headerlink" href="#openPLM.plmapp.models.link.PLMObjectUserLink.user" title="Permalink to this definition">¶</a></dt>
+<dd><p>a <tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.link.PLMObjectUserLink.role">
+<tt class="descname">role</tt><a class="headerlink" href="#openPLM.plmapp.models.link.PLMObjectUserLink.role" title="Permalink to this definition">¶</a></dt>
+<dd><p>role of <em>user</em> for <em>plmobject</em> (like <cite>owner</cite> or <cite>notified</cite>)</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.PromotionApproval">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">PromotionApproval</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#PromotionApproval"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.PromotionApproval" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.plmapp.models.link.Link" title="openPLM.plmapp.models.link.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.Link</span></tt></a></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Model to track a promotion approval</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><dl class="first attribute">
+<dt id="openPLM.plmapp.models.link.PromotionApproval.plmobject">
+<tt class="descname">plmobject</tt><a class="headerlink" href="#openPLM.plmapp.models.link.PromotionApproval.plmobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>approved <a class="reference internal" href="#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.PromotionApproval.user">
+<tt class="descname">user</tt><a class="headerlink" href="#openPLM.plmapp.models.link.PromotionApproval.user" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt> who approved the promotion</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.plmapp.models.link.PromotionApproval.current_state">
+<tt class="descname">current_state</tt><a class="headerlink" href="#openPLM.plmapp.models.link.PromotionApproval.current_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>current <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a> of <a class="reference internal" href="#openPLM.plmapp.models.link.PromotionApproval.plmobject" title="openPLM.plmapp.models.link.PromotionApproval.plmobject"><tt class="xref py py-attr docutils literal"><span class="pre">plmobject</span></tt></a></p>
+</dd></dl>
+
+<dl class="last attribute">
+<dt id="openPLM.plmapp.models.link.PromotionApproval.next_state">
+<tt class="descname">next_state</tt><a class="headerlink" href="#openPLM.plmapp.models.link.PromotionApproval.next_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>next <a class="reference internal" href="#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a> of <a class="reference internal" href="#openPLM.plmapp.models.link.PromotionApproval.plmobject" title="openPLM.plmapp.models.link.PromotionApproval.plmobject"><tt class="xref py py-attr docutils literal"><span class="pre">plmobject</span></tt></a> when if will be promoted</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.plmapp.models.link.AlternatePartSet">
+<em class="property">class </em><tt class="descclassname">openPLM.plmapp.models.link.</tt><tt class="descname">AlternatePartSet</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../_modules/openPLM/plmapp/models/link.html#AlternatePartSet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.plmapp.models.link.AlternatePartSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.PartSet</span></tt></p>
+<p>AlternatePartSet(id, ctime, end_time)</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="navigate.html" title="5.13. navigate — Tools to generate navigation’s graph"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="mail.html" title="5.11. mail — Tools to send mails"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

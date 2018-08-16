@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>9. Publication &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="10. Rich text | Wiki syntax" href="richtext.html" />
+    <link rel="prev" title="8. Bill of materials – BOM" href="bom.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="richtext.html" title="10. Rich text | Wiki syntax"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="bom.html" title="8. Bill of materials – BOM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">9. Publication</a><ul>
+<li><a class="reference internal" href="#publishers">9.1. Publishers</a></li>
+<li><a class="reference internal" href="#model">9.2. Model</a><ul>
+<li><a class="reference internal" href="#plmobject">9.2.1. PLMObject</a></li>
+<li><a class="reference internal" href="#history">9.2.2. History</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#controller">9.3. Controller</a><ul>
+<li><a class="reference internal" href="#publishing-a-document">9.3.1. Publishing a document</a><ul>
+<li><a class="reference internal" href="#methods">9.3.1.1. Methods</a></li>
+<li><a class="reference internal" href="#tests">9.3.1.2. Tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#unpublishing-a-document">9.3.2. Unpublishing a document</a><ul>
+<li><a class="reference internal" href="#id1">9.3.2.1. Methods</a></li>
+<li><a class="reference internal" href="#id2">9.3.2.2. Tests</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#views">9.4. Views</a><ul>
+<li><a class="reference internal" href="#lifecycle">9.4.1. Lifecycle</a><ul>
+<li><a class="reference internal" href="#id3">9.4.1.1. Tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#public">9.4.2. Public</a><ul>
+<li><a class="reference internal" href="#id4">9.4.2.1. Tests</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#public-download">9.4.3. Public download</a></li>
+<li><a class="reference internal" href="#browse">9.4.4. Browse</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#templates">9.5. Templates</a><ul>
+<li><a class="reference internal" href="#lifecycle-html">9.5.1. lifecycle.html</a></li>
+<li><a class="reference internal" href="#public-html">9.5.2. public.html</a></li>
+<li><a class="reference internal" href="#browse-html">9.5.3. browse.html</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="bom.html"
+                        title="previous chapter">8. Bill of materials &#8211; BOM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="richtext.html"
+                        title="next chapter">10. Rich text | Wiki syntax</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/publication.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/publication.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="publication">
+<span id="publication-devel"></span><h1>9. Publication<a class="headerlink" href="#publication" title="Permalink to this headline">¶</a></h1>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>This document describes how the <a class="reference internal" href="../specs/publication.html"><em>Publication specification</em></a>
+is implemented.</p>
+<div class="section" id="publishers">
+<h2>9.1. Publishers<a class="headerlink" href="#publishers" title="Permalink to this headline">¶</a></h2>
+<p>A new boolean field <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.user.UserProfile.can_publish" title="openPLM.plmapp.models.user.UserProfile.can_publish"><tt class="xref py py-attr docutils literal"><span class="pre">UserProfile.can_publish</span></tt></a> is added to each <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.user.UserProfile" title="openPLM.plmapp.models.user.UserProfile"><tt class="xref py py-class docutils literal"><span class="pre">UserProfile</span></tt></a>.
+By default, this field is set to <tt class="docutils literal"><span class="pre">False</span></tt>.
+If this field is set to <tt class="docutils literal"><span class="pre">True</span></tt>, the user can publish an object (if all
+other rules are respected).</p>
+<p>The migration <tt class="file docutils literal"><span class="pre">plmapp/migrations/0014_auto__add_field_userprofile_can_publish.py</span></tt>
+adds this field (set to False) to all existing users.</p>
+<p>This field is neither a creation field nor a modification field.
+Only an admin can modify this field via the admin interface.</p>
+</div>
+<div class="section" id="model">
+<h2>9.2. Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="plmobject">
+<h3>9.2.1. PLMObject<a class="headerlink" href="#plmobject" title="Permalink to this headline">¶</a></h3>
+<p>A new boolean field <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.published" title="openPLM.plmapp.models.plmobject.PLMObject.published"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.published</span></tt></a> is added to each <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.
+By default, this field is set to <tt class="docutils literal"><span class="pre">False</span></tt>.
+If this field is set to <tt class="docutils literal"><span class="pre">True</span></tt>, it means the object has been published
+and is accessible to anonymous users.</p>
+<p>The migration <tt class="file docutils literal"><span class="pre">plmapp/migrations/0015_auto__add_field_plmobject_published.py</span></tt>
+adds this field (set to False) to all existing plmobjects.</p>
+<p>A new property named <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.published_attributes" title="openPLM.plmapp.models.plmobject.PLMObject.published_attributes"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.published_attributes</span></tt></a> returns the
+list of published attributes.
+By default, it returns the following attributes:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>type</li>
+<li>reference</li>
+<li>revision</li>
+<li>name</li>
+</ol>
+</div></blockquote>
+<p>This property can be overriden by a custom model to add more attributes.</p>
+</div>
+<div class="section" id="history">
+<h3>9.2.2. History<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h3>
+<p>All publication and unpublication are stored in the <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.history.History" title="openPLM.plmapp.models.history.History"><tt class="xref py py-class docutils literal"><span class="pre">History</span></tt></a> table.</p>
+<p>A publication is stored with the <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.history.AbstractHistory.action" title="openPLM.plmapp.models.history.AbstractHistory.action"><tt class="xref py py-attr docutils literal"><span class="pre">AbstractHistory.action</span></tt></a> field
+set to <tt class="docutils literal"><span class="pre">Publish</span></tt>.</p>
+<p>A unpublication is stored with the <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.history.AbstractHistory.action" title="openPLM.plmapp.models.history.AbstractHistory.action"><tt class="xref py py-attr docutils literal"><span class="pre">AbstractHistory.action</span></tt></a> field
+set to <tt class="docutils literal"><span class="pre">Unpublish</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="controller">
+<h2>9.3. Controller<a class="headerlink" href="#controller" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="publishing-a-document">
+<h3>9.3.1. Publishing a document<a class="headerlink" href="#publishing-a-document" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="methods">
+<h4>9.3.1.1. Methods<a class="headerlink" href="#methods" title="Permalink to this headline">¶</a></h4>
+<p>The following methods are available to publish a PLMObject and test
+if a PLMObject can be published:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.publish" title="plmapp.controllers.plmobject.PLMObjectController.publish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.publish()</span></tt></a></li>
+<li><a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_publish" title="plmapp.controllers.plmobject.PLMObjectController.check_publish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.check_publish()</span></tt></a></li>
+<li><a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_publish" title="plmapp.controllers.plmobject.PLMObjectController.can_publish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.can_publish()</span></tt></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="tests">
+<h4>9.3.1.2. Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_publish_not_official()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_publish_official()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_publish_deprecated()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_publish_published()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_publish_not_publisher()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_publish_not_in_group()</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="unpublishing-a-document">
+<h3>9.3.2. Unpublishing a document<a class="headerlink" href="#unpublishing-a-document" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>9.3.2.1. Methods<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>The following methods are available to unpublish a PLMObject and test
+if a PLMObject can be unpublished:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.unpublish" title="plmapp.controllers.plmobject.PLMObjectController.unpublish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.unpublish()</span></tt></a></li>
+<li><a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_unpublish" title="plmapp.controllers.plmobject.PLMObjectController.check_unpublish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.check_unpublish()</span></tt></a></li>
+<li><a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_unpublish" title="plmapp.controllers.plmobject.PLMObjectController.can_unpublish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.can_unpublish()</span></tt></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="id2">
+<h4>9.3.2.2. Tests<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_unpublish_not_official()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_unpublish_official()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_unpublish_deprecated()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_unpublish_published()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_unpublish_not_publisher()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ControllerTest.test_unpublish_not_in_group()</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="views">
+<h2>9.4. Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lifecycle">
+<h3>9.4.1. Lifecycle<a class="headerlink" href="#lifecycle" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="modules/views.html#plmapp.views.plmobject.display_object_lifecycle" title="plmapp.views.plmobject.display_object_lifecycle"><tt class="xref py py-func docutils literal"><span class="pre">display_object_lifecycle()</span></tt></a> handles the publication
+and unpublication of a PLMObject.</p>
+<div class="section" id="id3">
+<h4>9.4.1.1. Tests<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ViewTest.test_publish_post()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ViewTest.test_publish_post_error_not_official()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ViewTest.test_publish_post_error_published()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ViewTest.test_unpublish_post()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ViewTest.test_unpublish_post_error_unpublished()</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="public">
+<h3>9.4.2. Public<a class="headerlink" href="#public" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="modules/views.html#plmapp.views.main.public" title="plmapp.views.main.public"><tt class="xref py py-func docutils literal"><span class="pre">public()</span></tt></a> view renders a published PLMObject. If the given
+object is not published, it redirects to the login page.
+If the given object is neither a part nor a document, it raises
+an <tt class="xref py py-exc docutils literal"><span class="pre">Http404</span></tt> exception.</p>
+<div class="section" id="id4">
+<h4>9.4.2.1. Tests<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ViewTest.test_public_get()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">ViewTest.test_public_error()</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="public-download">
+<h3>9.4.3. Public download<a class="headerlink" href="#public-download" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="modules/views.html#plmapp.views.document.public_download" title="plmapp.views.document.public_download"><tt class="xref py py-func docutils literal"><span class="pre">public_download()</span></tt></a> handles the download of a published file.</p>
+</div>
+<div class="section" id="browse">
+<h3>9.4.4. Browse<a class="headerlink" href="#browse" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="modules/views.html#plmapp.views.main.browse" title="plmapp.views.main.browse"><tt class="xref py py-func docutils literal"><span class="pre">browse()</span></tt></a> allows an anonymous user to browse all published
+parts and documents.</p>
+</div>
+</div>
+<div class="section" id="templates">
+<h2>9.5. Templates<a class="headerlink" href="#templates" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="lifecycle-html">
+<h3>9.5.1. lifecycle.html<a class="headerlink" href="#lifecycle-html" title="Permalink to this headline">¶</a></h3>
+<p>If an object has been published, this template displays a link to its
+publish page.</p>
+<p>If the user can publish the object, it adds a form named <tt class="docutils literal"><span class="pre">form-publish</span></tt> that
+prompts the user password and warns the user that a published object is
+accessible to anonymous user.</p>
+<p>If the user can unpublish the object, it adds a form named <tt class="docutils literal"><span class="pre">form-unpublish</span></tt> that
+prompts the user password and warns the user that a unpublished object is
+no more accessible to anonymous user.</p>
+</div>
+<div class="section" id="public-html">
+<h3>9.5.2. public.html<a class="headerlink" href="#public-html" title="Permalink to this headline">¶</a></h3>
+<p>If the object has been published, this template displays:</p>
+<blockquote>
+<div><ul class="simple">
+<li>all non deprecated files</li>
+<li>all published attributes</li>
+<li>the state of the object</li>
+<li>all published revisions</li>
+<li>all published attached parts and documents</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="browse-html">
+<h3>9.5.3. browse.html<a class="headerlink" href="#browse-html" title="Permalink to this headline">¶</a></h3>
+<p>If the user is not authenticated, it hides all unaccessible objects
+(users, groups, unpublished object).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="richtext.html" title="10. Rich text | Wiki syntax"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="bom.html" title="8. Bill of materials – BOM"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

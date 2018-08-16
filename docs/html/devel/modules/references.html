@@ -1,0 +1,228 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.15. references — module to generate a new reference &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.16. thumbnailers — Utilities to generate a thumbnail from a file" href="thumbnailers.html" />
+    <link rel="prev" title="5.14. plmapp_tags — Template tags and filters used by openPLM" href="plmapp_tags.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers.html" title="5.16. thumbnailers — Utilities to generate a thumbnail from a file"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plmapp_tags.html" title="5.14. plmapp_tags — Template tags and filters used by openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plmapp_tags.html"
+                        title="previous chapter">5.14. <tt class="docutils literal docutils literal docutils literal"><span class="pre">plmapp_tags</span></tt> &#8212; Template tags and filters used by openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="thumbnailers.html"
+                        title="next chapter">5.16. <tt class="docutils literal"><span class="pre">thumbnailers</span></tt> &#8212; Utilities to generate a thumbnail from a file</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/references.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/references.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.references">
+<span id="references-module-to-generate-a-new-reference"></span><h1>5.15. <tt class="xref py py-mod docutils literal"><span class="pre">references</span></tt> &#8212; module to generate a new reference<a class="headerlink" href="#module-plmapp.references" title="Permalink to this headline">¶</a></h1>
+<dl class="data">
+<dt id="plmapp.references.rx_bad_ref">
+<tt class="descclassname">plmapp.references.</tt><tt class="descname">rx_bad_ref</tt><em class="property"> = &lt;_sre.SRE_Pattern object at 0xc306d30&gt;</em><a class="headerlink" href="#plmapp.references.rx_bad_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Regular expression to test if a reference is invalid (forbidden characters)</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="plmapp.references.REFERENCE_PATTERNS">
+<tt class="descclassname">plmapp.references.</tt><tt class="descname">REFERENCE_PATTERNS</tt><em class="property"> = {'shared': False, 'part': (u'PART_{number:05d}', '^PART_(\\d+)$'), 'doc': (u'DOC_{number:05d}', '^DOC_(\\d+)$')}</em><a class="headerlink" href="#plmapp.references.REFERENCE_PATTERNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>default reference patterns, generates references like <tt class="docutils literal"><span class="pre">PART_00001</span></tt> and <tt class="docutils literal"><span class="pre">DOC_00001</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.references.validate_reference">
+<tt class="descclassname">plmapp.references.</tt><tt class="descname">validate_reference</tt><big>(</big><em>reference</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/references.html#validate_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.references.validate_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises a <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>reference</em> is not valid.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.references.validate_revision">
+<tt class="descclassname">plmapp.references.</tt><tt class="descname">validate_revision</tt><big>(</big><em>revision</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/references.html#validate_revision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.references.validate_revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises a <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>revision</em> is not valid.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.references.get_new_reference">
+<tt class="descclassname">plmapp.references.</tt><tt class="descname">get_new_reference</tt><big>(</big><em>user</em>, <em>cls</em>, <em>start=0</em>, <em>inbulk_cache=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/references.html#get_new_reference"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.references.get_new_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new reference for creating a <a class="reference internal" href="models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> of type
+<em>cls</em>.</p>
+<p><em>user</em> is the user who will create the object.</p>
+<p>By default, the formatting is <tt class="docutils literal"><span class="pre">PART_000XX</span></tt>
+if <em>cls</em> is a subclass of <a class="reference internal" href="models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> and <tt class="docutils literal"><span class="pre">DOC_000XX</span></tt> otherwise.</p>
+<p>The number is the count of Parts or Documents plus <em>start</em> plus 1.
+It is incremented while an object with the same reference already exists.
+<em>start</em> can be used to create several creation forms at once.</p>
+<p>Parts and documents have an independent reference number. For example,
+the first suggested part reference is <tt class="docutils literal"><span class="pre">PART_00001</span></tt> and the first
+suggested document is <tt class="docutils literal"><span class="pre">DOC_00001</span></tt> even if parts have been created.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The returned referenced may not be valid if a new object has been
+created after the call to this function.</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.references.parse_reference_number">
+<tt class="descclassname">plmapp.references.</tt><tt class="descname">parse_reference_number</tt><big>(</big><em>reference</em>, <em>class_</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/references.html#parse_reference_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.references.parse_reference_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses <em>reference</em> and returns the reference number.
+The reference number is the text that increases after each
+creation of a new document or part.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>reference</strong> &#8211; reference of the created object</li>
+<li><strong>class</strong> &#8211; class of the created object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the reference number, 0 if there is no reference</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">int</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers.html" title="5.16. thumbnailers — Utilities to generate a thumbnail from a file"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="plmapp_tags.html" title="5.14. plmapp_tags — Template tags and filters used by openPLM"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

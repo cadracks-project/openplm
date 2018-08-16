@@ -1,0 +1,821 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1.8. controllers.part — Controllers for parts &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.1. controllers — Controllers" href="../controllers.html" />
+    <link rel="next" title="5.1.9. controllers.plmobject — Controllers for plmobjects" href="controllers_plmobject.html" />
+    <link rel="prev" title="5.1.7. controllers.group — Controllers for groups" href="controllers_group.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_plmobject.html" title="5.1.9. controllers.plmobject — Controllers for plmobjects"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="controllers_group.html" title="5.1.7. controllers.group — Controllers for groups"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" accesskey="U">5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="controllers_group.html"
+                        title="previous chapter">5.1.7. <tt class="docutils literal docutils literal docutils literal"><span class="pre">controllers.group</span></tt> &#8212; Controllers for groups</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controllers_plmobject.html"
+                        title="next chapter">5.1.9. <tt class="docutils literal"><span class="pre">controllers.plmobject</span></tt> &#8212; Controllers for plmobjects</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/controllers/controllers_part.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/controllers/controllers_part.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.controllers.part">
+<span id="controllers-part-controllers-for-parts"></span><h1>5.1.8. <tt class="xref py py-mod docutils literal"><span class="pre">controllers.part</span></tt> &#8212; Controllers for parts<a class="headerlink" href="#module-plmapp.controllers.part" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.controllers.part.Child">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.part.</tt><tt class="descname">Child</tt><a class="headerlink" href="#plmapp.controllers.part.Child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>Child(level, link)</p>
+<dl class="attribute">
+<dt id="plmapp.controllers.part.Child.level">
+<tt class="descname">level</tt><a class="headerlink" href="#plmapp.controllers.part.Child.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.part.Child.link">
+<tt class="descname">link</tt><a class="headerlink" href="#plmapp.controllers.part.Child.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.controllers.part.Parent">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.part.</tt><tt class="descname">Parent</tt><a class="headerlink" href="#plmapp.controllers.part.Parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>Parent(level, link)</p>
+<dl class="attribute">
+<dt id="plmapp.controllers.part.Parent.level">
+<tt class="descname">level</tt><a class="headerlink" href="#plmapp.controllers.part.Parent.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.part.Parent.link">
+<tt class="descname">link</tt><a class="headerlink" href="#plmapp.controllers.part.Parent.link" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.controllers.part.unique_justseen">
+<tt class="descclassname">plmapp.controllers.part.</tt><tt class="descname">unique_justseen</tt><big>(</big><em>iterable</em>, <em>key=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#unique_justseen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.unique_justseen" title="Permalink to this definition">¶</a></dt>
+<dd><p>List unique elements, preserving order. Remember only the element just seen.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.controllers.part.flatten_bom">
+<tt class="descclassname">plmapp.controllers.part.</tt><tt class="descname">flatten_bom</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#flatten_bom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.flatten_bom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.controllers.part.get_last_children">
+<tt class="descclassname">plmapp.controllers.part.</tt><tt class="descname">get_last_children</tt><big>(</big><em>children</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#get_last_children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.get_last_children" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.controllers.part.PartController">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.part.</tt><tt class="descname">PartController</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.controllers.plmobject.PLMObjectController</span></tt></p>
+<p>Controller for <a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>.</p>
+<p>This controller adds methods to manage Parent-Child links between two
+Parts.</p>
+<dl class="attribute">
+<dt id="plmapp.controllers.part.PartController.can_add_child2">
+<tt class="descname">can_add_child2</tt><a class="headerlink" href="#plmapp.controllers.part.PartController.can_add_child2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.check_add_child">
+<tt class="descname">check_add_child</tt><big>(</big><em>child</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.check_add_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.check_add_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if <em>child</em> can be added to <em>self</em>.
+If <em>child</em> can not be added, an exception is raised.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>child</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>) &#8211; child to be added</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>child</em> is already a child or a parent.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.precompute_can_add_child2">
+<tt class="descname">precompute_can_add_child2</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.precompute_can_add_child2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.precompute_can_add_child2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.can_add_child">
+<tt class="descname">can_add_child</tt><big>(</big><em>child</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.can_add_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.can_add_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>child</em> can be added to <em>self</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.add_child">
+<tt class="descname">add_child</tt><big>(</big><em>child</em>, <em>quantity</em>, <em>order</em>, <em>unit='-'</em>, <em>**extension_data</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.add_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.add_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds <em>child</em> to <em>self</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>child</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>) &#8211; added child</li>
+<li><strong>quantity</strong> (<em>positive float</em>) &#8211; amount of <em>child</em></li>
+<li><strong>order</strong> (<em>positive int</em>) &#8211; order</li>
+<li><strong>unit</strong> &#8211; a valid unit</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Extra arguments are used to create relevant <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>child</em> is already a child or a parent.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>quantity</em> or <em>order</em> are negative.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.delete_child">
+<tt class="descname">delete_child</tt><big>(</big><em>child</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.delete_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.delete_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes <em>child</em> from current children and records this action in the
+history.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The link is not destroyed: its <tt class="xref py py-attr docutils literal"><span class="pre">ParentChildLink.end_time</span></tt>
+is set to now.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.modify_child">
+<tt class="descname">modify_child</tt><big>(</big><em>child</em>, <em>new_quantity</em>, <em>new_order</em>, <em>new_unit</em>, <em>**extension_data</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.modify_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.modify_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Modifies information about <em>child</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>child</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>) &#8211; added child</li>
+<li><strong>new_quantity</strong> (<em>positive float</em>) &#8211; amount of <em>child</em></li>
+<li><strong>new_order</strong> (<em>positive int</em>) &#8211; order</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Extra arguments are used to modify relevant <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.replace_child">
+<tt class="descname">replace_child</tt><big>(</big><em>link</em>, <em>new_child</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.replace_child"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.replace_child" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces a child by another one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>link</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a>) &#8211; link being replaced, its data (extensions included)
+are copied</li>
+<li><strong>new_child</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>) &#8211; the new child</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><p class="first"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the link is invalid (already completed
+or its parent is not the current object)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><p class="first last">all permission errors raised by <a class="reference internal" href="#plmapp.controllers.part.PartController.check_add_child" title="plmapp.controllers.part.PartController.check_add_child"><tt class="xref py py-meth docutils literal"><span class="pre">check_add_child()</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_children">
+<tt class="descname">get_children</tt><big>(</big><em>max_level=1</em>, <em>date=None</em>, <em>related=('child'</em>, <em>'child__state'</em>, <em>'child__lifecycle')</em>, <em>only_official=False</em>, <em>only=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all children at time <em>date</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_level</strong> &#8211; maximum level of children, <tt class="docutils literal"><span class="pre">-1</span></tt>
+returns all descendants, <tt class="docutils literal"><span class="pre">1</span></tt> returns direct children</li>
+<li><strong>related</strong> &#8211; a list of related fields that are given
+to retrieve the <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a></li>
+<li><strong>only_official</strong> &#8211; True if the result should be pruned to
+only include official children</li>
+<li><strong>only</strong> &#8211; a list of fields that are given to limit the
+retrieved field of the <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="#plmapp.controllers.part.Child" title="plmapp.controllers.part.Child"><tt class="xref py py-class docutils literal"><span class="pre">Child</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.is_ancestor">
+<tt class="descname">is_ancestor</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.is_ancestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.is_ancestor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>part</em> is an ancestor of the current object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.is_ancestor2">
+<tt class="descname">is_ancestor2</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.is_ancestor2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.is_ancestor2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_parents">
+<tt class="descname">get_parents</tt><big>(</big><em>max_level=1</em>, <em>date=None</em>, <em>related=('parent'</em>, <em>'parent__state'</em>, <em>'parent__lifecycle')</em>, <em>only_official=False</em>, <em>only=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_parents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_parents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all parents at time <em>date</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>max_level</strong> &#8211; maximum level of parents, <tt class="docutils literal"><span class="pre">-1</span></tt>
+returns all ancestors, <tt class="docutils literal"><span class="pre">1</span></tt> returns direct parents</li>
+<li><strong>related</strong> &#8211; a list of related fields that are given
+to retrieve the <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a></li>
+<li><strong>only_official</strong> &#8211; True if the result should be pruned to
+only include official parents</li>
+<li><strong>only</strong> &#8211; a list of fields that are given to limit the
+retrieved field of the <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list of <a class="reference internal" href="#plmapp.controllers.part.Parent" title="plmapp.controllers.part.Parent"><tt class="xref py py-class docutils literal"><span class="pre">Parent</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.update_children">
+<tt class="descname">update_children</tt><big>(</big><em>formset</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.update_children"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.update_children" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates children informations with data from <em>formset</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formset</strong> (a modelfactory_formset of
+<a class="reference internal" href="../forms.html#plmapp.forms.ModifyChildForm" title="plmapp.forms.ModifyChildForm"><tt class="xref py py-class docutils literal"><span class="pre">ModifyChildForm</span></tt></a>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_bom">
+<tt class="descname">get_bom</tt><big>(</big><em>date</em>, <em>level</em>, <em>state='all'</em>, <em>show_documents=False</em>, <em>show_alternates=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_bom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_bom" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Returns some data about children that will be displayed
+in BOM view.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>date</strong> &#8211; date of the BOM (see <a class="reference internal" href="#plmapp.controllers.part.PartController.get_children" title="plmapp.controllers.part.PartController.get_children"><tt class="xref py py-meth docutils literal"><span class="pre">get_children()</span></tt></a>)</li>
+<li><strong>level</strong> &#8211; level of the BOM, valid options are
+<tt class="docutils literal"><span class="pre">&quot;first&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;all&quot;</span></tt> and <tt class="docutils literal"><span class="pre">&quot;last&quot;</span></tt>.</li>
+<li><strong>state</strong> &#8211; set to <tt class="docutils literal"><span class="pre">&quot;official&quot;</span></tt> to hide unofficial parts and document</li>
+<li><strong>show_documents</strong> &#8211; True if attached document are displayed</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>It returns a dictionary containing the following keys:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">children</span></tt></dt>
+<dd>list of <a class="reference internal" href="#plmapp.controllers.part.Child" title="plmapp.controllers.part.Child"><tt class="xref py py-class docutils literal"><span class="pre">Child</span></tt></a>, see <a class="reference internal" href="#plmapp.controllers.part.PartController.get_children" title="plmapp.controllers.part.PartController.get_children"><tt class="xref py py-meth docutils literal"><span class="pre">get_children()</span></tt></a></dd>
+<dt><tt class="docutils literal"><span class="pre">extra_columens</span></tt></dt>
+<dd>list of extra column headers (field name, verbose name):
+its the list of BOMs extensions bound to the object</dd>
+<dt><tt class="docutils literal"><span class="pre">extension_data</span></tt></dt>
+<dd>dictionary (link id -&gt; extension values)</dd>
+<dt><tt class="docutils literal"><span class="pre">level</span></tt></dt>
+<dd>the given <em>level</em></dd>
+<dt><tt class="docutils literal"><span class="pre">documents</span></tt></dt>
+<dd>dictionary (part id -&gt; document)</dd>
+<dt><tt class="docutils literal"><span class="pre">states</span></tt></dt>
+<dd>dictionary (plmobject id -&gt; state) containing the state (str)
+of displayed objects at date <em>date</em></dd>
+<dt><tt class="docutils literal"><span class="pre">obj</span></tt></dt>
+<dd>this controller</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.cmp_bom">
+<tt class="descname">cmp_bom</tt><big>(</big><em>date1</em>, <em>date2</em>, <em>level='first'</em>, <em>state='all'</em>, <em>show_documents=False</em>, <em>show_alternates=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.cmp_bom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.cmp_bom" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Compares two BOMs at date <em>date1</em> and <em>date2</em>.</p>
+<p>dates, <em>level</em>, <em>state</em> and <em>show_documents</em> are described in <a class="reference internal" href="#plmapp.controllers.part.PartController.get_bom" title="plmapp.controllers.part.PartController.get_bom"><tt class="xref py py-meth docutils literal"><span class="pre">get_bom()</span></tt></a>.</p>
+<p>It returns a dictionary containing the following keys:</p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">diff</span></tt></dt>
+<dd>diff result, it is a sequence of tuples
+(tag, first BOM rows, second BOM rows)
+(see <a class="reference external" href="http://docs.python.org/2.6/library/difflib.html#difflib.SequenceMatcher.get_opcodes" title="(in Python v2.6)"><tt class="xref py py-meth docutils literal"><span class="pre">difflib.SequenceMatcher.get_opcodes()</span></tt></a>)</dd>
+<dt><tt class="docutils literal"><span class="pre">boms</span></tt></dt>
+<dd>tuple of BOMs (at date <em>date1</em> and date <em>date2</em>)</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.revise">
+<tt class="descname">revise</tt><big>(</big><em>new_revision</em>, <em>child_links=None</em>, <em>documents=()</em>, <em>parents=()</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.revise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.revise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Revises the part. Does the same thing as <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.revise" title="plmapp.controllers.plmobject.PLMObjectController.revise"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.revise()</span></tt></a>
+and:</p>
+<blockquote>
+<div><ul class="simple">
+<li>copies all <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> of <em>child_links</em>, with the
+new revision as the new parent. If <em>child_links</em> is None (the
+default), all current children are copied. If an empty sequence
+is given, no links are copied.</li>
+<li>attaches all document of <em>documents</em>, by default, no documents
+are attached. The method <a class="reference internal" href="#plmapp.controllers.part.PartController.get_suggested_documents" title="plmapp.controllers.part.PartController.get_suggested_documents"><tt class="xref py py-meth docutils literal"><span class="pre">get_suggested_documents()</span></tt></a> returns a
+list of documents that should be interesting.</li>
+<li>replaces all parent links in <em>parents</em>. This arguments must be
+a list of tuples (link (an instance of <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a>),
+parent (an instance of <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>)) where <em>parent</em> is
+the parent whose the bom will be modified and <em>link</em> is the
+source of data (quantity, unit, order...). <em>link</em> will be
+ended if <em>parent</em> is a parent of the current part.
+The method <a class="reference internal" href="#plmapp.controllers.part.PartController.get_suggested_parents" title="plmapp.controllers.part.PartController.get_suggested_parents"><tt class="xref py py-meth docutils literal"><span class="pre">get_suggested_parents()</span></tt></a> returns a list of
+tuples that may interest the user who revises this part.</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_suggested_documents">
+<tt class="descname">get_suggested_documents</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_suggested_documents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_suggested_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a QuerySet of documents that should be suggested when the
+user revises the part.</p>
+<p>A document is suggested if:</p>
+<blockquote>
+<div><ol class="loweralpha">
+<li><p class="first">it is attached to the current part and:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">it is a <em>draft</em> and its superior revisions, if they exist,
+are <em>not</em> attached to the part</p>
+<p>or</p>
+</li>
+<li><p class="first">it is <em>official</em> and its superior revisions, if they exist,
+are <em>not</em> attached to the part</p>
+<p>or</p>
+</li>
+<li><p class="first">it is <em>official</em> and a superior revision is attached <em>and</em>
+another superior revision is not attached to the part</p>
+</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">it is <em>not</em> attached to the current part, an inferior revision
+is attached to the part and:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">it is a draft</p>
+<p>or</p>
+</li>
+<li><p class="first">it is official</p>
+</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_suggested_parents">
+<tt class="descname">get_suggested_parents</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_suggested_parents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_suggested_parents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of suggested parents that should be suggested
+when the part is revised.</p>
+<p>This method returns a list of tuple (link (an instance of
+<a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a>), parent (an instance of <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>)).
+It does not returns a list of links, since it may suggest a part
+that is not a parent but whose one of its previous revision is a parent.
+We need a link to copy its data (order, quantity, unit and extensions).</p>
+<p>A part is suggested as a parent if:</p>
+<blockquote>
+<div><ol class="loweralpha">
+<li><p class="first">it is already a parent and:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">no superior revisions are a parent and its state is draft
+or official</p>
+<p>or</p>
+</li>
+<li><p class="first">no superior revisions exist and its state is proposed.</p>
+</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">it is not a parent, a previous revision is a parent, its state
+is a draft or a parent. In that case, the link of the most
+superior parent revision is used.</p>
+</li>
+</ol>
+</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.attach_to_document">
+<tt class="descname">attach_to_document</tt><big>(</big><em>document</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.attach_to_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.attach_to_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links <em>document</em> (a <a class="reference internal" href="../models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a>) with
+<tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.detach_document">
+<tt class="descname">detach_document</tt><big>(</big><em>document</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.detach_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.detach_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete link between <em>document</em> (a <a class="reference internal" href="../models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a>)
+and <tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.part.PartController.object" title="plmapp.controllers.part.PartController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_attached_documents">
+<tt class="descname">get_attached_documents</tt><big>(</big><em>time=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_attached_documents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_attached_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all <a class="reference internal" href="../models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> attached to
+<tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_detachable_documents">
+<tt class="descname">get_detachable_documents</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_detachable_documents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_detachable_documents" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all attached documents the user can detach.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.is_document_attached">
+<tt class="descname">is_document_attached</tt><big>(</big><em>document</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.is_document_attached"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.is_document_attached" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>document</em> is attached to the current part.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.check_attach_document">
+<tt class="descname">check_attach_document</tt><big>(</big><em>document</em>, <em>detach=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.check_attach_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.check_attach_document" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.can_attach_document">
+<tt class="descname">can_attach_document</tt><big>(</big><em>document</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.can_attach_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.can_attach_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>document</em> can be attached to the current part.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.can_detach_document">
+<tt class="descname">can_detach_document</tt><big>(</big><em>document</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.can_detach_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.can_detach_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>document</em> can be detached.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.update_doc_cad">
+<tt class="descname">update_doc_cad</tt><big>(</big><em>formset</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.update_doc_cad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.update_doc_cad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates doc_cad informations with data from <em>formset</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formset</strong> (a modelfactory_formset of
+<a class="reference internal" href="../forms.html#plmapp.forms.ModifyChildForm" title="plmapp.forms.ModifyChildForm"><tt class="xref py py-class docutils literal"><span class="pre">ModifyChildForm</span></tt></a>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if one of the document is not detachable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.cancel">
+<tt class="descname">cancel</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels the object:</p>
+<ul class="simple">
+<li>calls <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.cancel" title="plmapp.controllers.plmobject.PLMObjectController.cancel"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.cancel()</span></tt></a></li>
+<li>removes all <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.DocumentPartLink" title="openPLM.plmapp.models.link.DocumentPartLink"><tt class="xref py py-class docutils literal"><span class="pre">DocumentPartLink</span></tt></a> related to the object</li>
+<li>removes all children/parents link (set their end_time)</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.check_cancel">
+<tt class="descname">check_cancel</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.check_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.check_cancel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.clone">
+<tt class="descname">clone</tt><big>(</big><em>form</em>, <em>user</em>, <em>child_links</em>, <em>documents</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clones the object :</p>
+<p>calls PLMObjectController.clone()</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>child_links</strong> &#8211; list of <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> selected to be cloned with the new part as parent</li>
+<li><strong>documents</strong> &#8211; list of <a class="reference internal" href="../models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> selected to be attached to the new part</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.has_links">
+<tt class="descname">has_links</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.has_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.has_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the part :</p>
+<ul class="simple">
+<li>is a parent or a child</li>
+<li>is attached to at least one document</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_cad_files">
+<tt class="descname">get_cad_files</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_cad_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_cad_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterable of all <a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> related
+to <em>part</em> that contain a CAD file. It retrieves all non deprecated
+files of all documents parts to <em>part</em> and its children and
+filters these files according to their extension (see <tt class="xref py py-meth docutils literal"><span class="pre">is_cad_file()</span></tt>).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.check_add_alternate">
+<tt class="descname">check_add_alternate</tt><big>(</big><em>part</em>, <em>check_perm=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.check_add_alternate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.check_add_alternate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.add_alternate">
+<tt class="descname">add_alternate</tt><big>(</big><em>part</em>, <em>check_perm=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.add_alternate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.add_alternate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.can_add_alternate">
+<tt class="descname">can_add_alternate</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.can_add_alternate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.can_add_alternate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.is_alternate">
+<tt class="descname">is_alternate</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.is_alternate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.is_alternate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.delete_alternate">
+<tt class="descname">delete_alternate</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.delete_alternate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.delete_alternate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.end_alternate">
+<tt class="descname">end_alternate</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.end_alternate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.end_alternate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.get_alternates">
+<tt class="descname">get_alternates</tt><big>(</big><em>date=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.get_alternates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.get_alternates" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.promote">
+<tt class="descname">promote</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.promote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.promote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.part.PartController.promote_assembly">
+<tt class="descname">promote_assembly</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/part.html#PartController.promote_assembly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.part.PartController.promote_assembly" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.part.PartController.object">
+<tt class="descname">object</tt><a class="headerlink" href="#plmapp.controllers.part.PartController.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_plmobject.html" title="5.1.9. controllers.plmobject — Controllers for plmobjects"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="controllers_group.html" title="5.1.7. controllers.group — Controllers for groups"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" >5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

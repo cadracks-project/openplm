@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.2. calendrier – calendar generations &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6. Applications" href="../../applications.html" />
+    <link rel="next" title="6.3. Document3D" href="../document3D/index.html" />
+    <link rel="prev" title="6.1.2. badges.views — views for badges" href="../badges/views.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../document3D/index.html" title="6.3. Document3D"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../badges/views.html" title="6.1.2. badges.views — views for badges"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" accesskey="U">6. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6.2. calendrier &#8211; calendar generations</a><ul>
+<li><a class="reference internal" href="#how-html-calendars-are-generated">6.2.1. How HTML calendars are generated</a></li>
+<li><a class="reference internal" href="#how-icalendar-files-are-generated">6.2.2. How iCalendar files are generated</a></li>
+<li><a class="reference internal" href="#module-openPLM.apps.calendrier.views">6.2.3. Views</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../badges/views.html"
+                        title="previous chapter">6.1.2. <tt class="docutils literal docutils literal docutils literal"><span class="pre">badges.views</span></tt> &#8212; views for badges</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../document3D/index.html"
+                        title="next chapter">6.3. Document3D</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/calendrier/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/calendrier/index.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="calendrier-calendar-generations">
+<h1>6.2. calendrier &#8211; calendar generations<a class="headerlink" href="#calendrier-calendar-generations" title="Permalink to this headline">¶</a></h1>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>This application can generate HTML calendars and iCalendar files.
+Currently it can generate a month view of an history page or
+of the timeline page.</p>
+<div class="section" id="how-html-calendars-are-generated">
+<h2>6.2.1. How HTML calendars are generated<a class="headerlink" href="#how-html-calendars-are-generated" title="Permalink to this headline">¶</a></h2>
+<p>Short answer: using the <a class="reference external" href="http://docs.python.org/2.6/library/calendar.html#calendar.HTMLCalendar" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">calendar.HTMLCalendar</span></tt></a> class from the stdlib.</p>
+<p>This <a class="reference external" href="http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/">article</a> explains how to generate an HTML calendar using
+the HTMLCalendar class.</p>
+</div>
+<div class="section" id="how-icalendar-files-are-generated">
+<h2>6.2.2. How iCalendar files are generated<a class="headerlink" href="#how-icalendar-files-are-generated" title="Permalink to this headline">¶</a></h2>
+<p>Short answer: using <a class="reference external" href="https://bitbucket.org/IanLewis/django-ical/">django-ical</a>.</p>
+</div>
+<div class="section" id="module-openPLM.apps.calendrier.views">
+<span id="views"></span><h2>6.2.3. Views<a class="headerlink" href="#module-openPLM.apps.calendrier.views" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="openPLM.apps.calendrier.views.parse_date">
+<tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">parse_date</tt><big>(</big><em>year</em>, <em>month</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#parse_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.parse_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse <em>year</em> and <em>month</em> (string, integer or None) and
+returns a tuple of int (<em>year</em>, <em>month</em>).</p>
+<p>If <em>year</em> is None, the current year is returned.
+If <em>month</em> is None, the current month is returned.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>year</em> &lt; 1900, <em>year</em> &gt; 9999,
+<em>month</em> &lt; 1, <em>month</em> &gt; 12 or <em>month</em> and <em>year</em> can not
+be converted to an integer or (<em>year</em> == 9999 and <em>month</em> == 12)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">HistoryCalendar</tt><big>(</big><em>histories</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.6/library/calendar.html#calendar.HTMLCalendar" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">calendar.HTMLCalendar</span></tt></a></p>
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.formatday">
+<tt class="descname">formatday</tt><big>(</big><em>day</em>, <em>weekday</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.formatday"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.formatday" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.formatmonth">
+<tt class="descname">formatmonth</tt><big>(</big><em>year</em>, <em>month</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.formatmonth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.formatmonth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.formatmonthname">
+<tt class="descname">formatmonthname</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.formatmonthname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.formatmonthname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.formatweekday">
+<tt class="descname">formatweekday</tt><big>(</big><em>day</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.formatweekday"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.formatweekday" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a weekday name as a table header.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.formatweekheader">
+<tt class="descname">formatweekheader</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.formatweekheader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.formatweekheader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a header for a week as a table row.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.formatweek">
+<tt class="descname">formatweek</tt><big>(</big><em>theweek</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.formatweek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.formatweek" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a complete week as a table row.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.group_by_day">
+<tt class="descname">group_by_day</tt><big>(</big><em>histories</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.group_by_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.group_by_day" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.day_cell">
+<tt class="descname">day_cell</tt><big>(</big><em>cssclass</em>, <em>body</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.day_cell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.day_cell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.HistoryCalendar.format_hline">
+<tt class="descname">format_hline</tt><big>(</big><em>history</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#HistoryCalendar.format_hline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.HistoryCalendar.format_hline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.calendrier.views.RevisionHistoryCalendar">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">RevisionHistoryCalendar</tt><big>(</big><em>histories</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#RevisionHistoryCalendar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.RevisionHistoryCalendar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.apps.calendrier.views.HistoryCalendar" title="openPLM.apps.calendrier.views.HistoryCalendar"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.calendrier.views.HistoryCalendar</span></tt></a></p>
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.RevisionHistoryCalendar.format_hline">
+<tt class="descname">format_hline</tt><big>(</big><em>history</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#RevisionHistoryCalendar.format_hline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.RevisionHistoryCalendar.format_hline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendar">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">TimelineCalendar</tt><big>(</big><em>histories</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.apps.calendrier.views.HistoryCalendar" title="openPLM.apps.calendrier.views.HistoryCalendar"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.calendrier.views.HistoryCalendar</span></tt></a></p>
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendar.group_by_day">
+<tt class="descname">group_by_day</tt><big>(</big><em>histories</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendar.group_by_day"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendar.group_by_day" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendar.format_hline">
+<tt class="descname">format_hline</tt><big>(</big><em>history</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendar.format_hline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendar.format_hline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.calendrier.views.history_calendar">
+<tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">history_calendar</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#history_calendar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.history_calendar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calendar view.</p>
+<p>This view displays a history of the selected object and its revisions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><span class="pre">/object/</span><em><span class="pre">obj_type</span></em><span class="pre">/</span><em><span class="pre">obj_ref</span></em><span class="pre">/</span><em><span class="pre">obj_revi</span></em><span class="pre">/history/calendar/[</span><em><span class="pre">year</span></em><span class="pre">/][</span><em><span class="pre">month</span></em><span class="pre">/]</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><span class="pre">/user/</span><em><span class="pre">username</span></em><span class="pre">/history/calendar/[</span><em><span class="pre">year</span></em><span class="pre">/][</span><em><span class="pre">month</span></em><span class="pre">/]`</span></tt></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><span class="pre">/group/</span><em><span class="pre">group_name</span></em><span class="pre">/history/calendar/[</span><em><span class="pre">year</span></em><span class="pre">/][</span><em><span class="pre">month</span></em><span class="pre">/]`</span></tt></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Url :</th><td class="field-body"><tt class="samp docutils literal"><span class="pre">/timeline/calendar/[</span><em><span class="pre">year</span></em><span class="pre">/][</span><em><span class="pre">month</span></em><span class="pre">/]`</span></tt></td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>request</strong> &#8211; <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/request-response/#django.http.QueryDict" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.http.QueryDict</span></tt></a></li>
+<li><strong>obj_type</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.type" title="openPLM.plmapp.models.plmobject.PLMObject.type"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.type</span></tt></a></li>
+<li><strong>obj_ref</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.reference" title="openPLM.plmapp.models.plmobject.PLMObject.reference"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.reference</span></tt></a></li>
+<li><strong>obj_revi</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.revision" title="openPLM.plmapp.models.plmobject.PLMObject.revision"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.revision</span></tt></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/request-response/#django.http.HttpResponse" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">django.http.HttpResponse</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Template:</strong></p>
+<p><tt class="file docutils literal"><span class="pre">calendar.html</span></tt></p>
+<p><strong>Context:</strong></p>
+<p><tt class="docutils literal"><span class="pre">RequestContext</span></tt></p>
+<dl class="docutils">
+<dt><tt class="docutils literal"><span class="pre">calendar</span></tt></dt>
+<dd>the HTML calendar</dd>
+<dt><tt class="docutils literal"><span class="pre">year</span></tt></dt>
+<dd>the given year (or the current year if not given)</dd>
+<dt><tt class="docutils literal"><span class="pre">month</span></tt></dt>
+<dd>the given month (or the current month if not given)</dd>
+<dt><tt class="docutils literal"><span class="pre">current_month</span></tt>, <tt class="docutils literal"><span class="pre">next_month</span></tt>, <tt class="docutils literal"><span class="pre">previous_month</span></tt></dt>
+<dd><a class="reference external" href="http://docs.python.org/2.6/library/datetime.html#datetime.date" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">datetime.date</span></tt></a> objects representing the current, next and previous
+months (may be None if the date is 1900/01 or 9999/12).</dd>
+<dt><tt class="docutils literal"><span class="pre">ical_installed</span></tt></dt>
+<dd>True if django-ical is installed and iCalendar file can be generated</dd>
+<dt><tt class="docutils literal"><span class="pre">prefix_url</span></tt></dt>
+<dd>a prefix to prepend to the url to go to the next and previous monthes.
+(can be <tt class="docutils literal"><span class="pre">&quot;&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;../&quot;</span></tt> or <tt class="docutils literal"><span class="pre">&quot;../../&quot;</span></tt>).</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.calendrier.views.history">
+<tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">history</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#history"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.history" title="Permalink to this definition">¶</a></dt>
+<dd><p>A simple view that wraps <a class="reference internal" href="../../modules/views.html#plmapp.views.main.display_object_history" title="plmapp.views.main.display_object_history"><tt class="xref py py-func docutils literal"><span class="pre">display_object_history()</span></tt></a>
+to use the template <tt class="file docutils literal"><span class="pre">history_cal.html</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.calendrier.views.CalendarFeed">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">CalendarFeed</tt><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#CalendarFeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.CalendarFeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.rss.feeds.RssFeed</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">django_ical.views.ICalFeed</span></tt></p>
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.CalendarFeed.get_object">
+<tt class="descname">get_object</tt><big>(</big><em>request</em>, <em>year=None</em>, <em>month=None</em>, <em>obj_type='-'</em>, <em>obj_ref='-'</em>, <em>obj_revi='-'</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#CalendarFeed.get_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.CalendarFeed.get_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.CalendarFeed.items">
+<tt class="descname">items</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#CalendarFeed.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.CalendarFeed.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.CalendarFeed.item_title">
+<tt class="descname">item_title</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#CalendarFeed.item_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.CalendarFeed.item_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.CalendarFeed.item_start_datetime">
+<tt class="descname">item_start_datetime</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#CalendarFeed.item_start_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.CalendarFeed.item_start_datetime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendarFeed">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.calendrier.views.</tt><tt class="descname">TimelineCalendarFeed</tt><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendarFeed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendarFeed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.rss.feeds.TimelineRssFeed</span></tt>, <tt class="xref py py-class docutils literal"><span class="pre">django_ical.views.ICalFeed</span></tt></p>
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendarFeed.get_object">
+<tt class="descname">get_object</tt><big>(</big><em>request</em>, <em>year=None</em>, <em>month=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendarFeed.get_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendarFeed.get_object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendarFeed.items">
+<tt class="descname">items</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendarFeed.items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendarFeed.items" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendarFeed.item_title">
+<tt class="descname">item_title</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendarFeed.item_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendarFeed.item_title" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.calendrier.views.TimelineCalendarFeed.item_start_datetime">
+<tt class="descname">item_start_datetime</tt><big>(</big><em>item</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/calendrier/views.html#TimelineCalendarFeed.item_start_datetime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.calendrier.views.TimelineCalendarFeed.item_start_datetime" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../document3D/index.html" title="6.3. Document3D"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../badges/views.html" title="6.1.2. badges.views — views for badges"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

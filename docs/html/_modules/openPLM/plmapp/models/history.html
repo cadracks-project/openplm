@@ -1,0 +1,456 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.plmapp.models.history &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="openPLM.plmapp.models" href="../models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" accesskey="U">openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/plmapp/models/history.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.plmapp.models.history</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models.query</span> <span class="kn">import</span> <span class="n">QuerySet</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">django.contrib.comments.signals</span> <span class="kn">import</span> <span class="n">comment_was_posted</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">from</span> <span class="nn">.lifecycle</span> <span class="kn">import</span> <span class="n">State</span><span class="p">,</span> <span class="n">Lifecycle</span><span class="p">,</span> <span class="n">get_cancelled_state</span>
+<span class="kn">from</span> <span class="nn">.plmobject</span> <span class="kn">import</span> <span class="n">PLMObject</span>
+<span class="kn">from</span> <span class="nn">.part</span> <span class="kn">import</span> <span class="n">get_all_parts</span>
+<span class="kn">from</span> <span class="nn">.document</span> <span class="kn">import</span> <span class="n">get_all_documents</span>
+
+<span class="k">def</span> <span class="nf">_prefetch_related</span><span class="p">(</span><span class="n">qs</span><span class="p">,</span> <span class="o">*</span><span class="n">extra</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span><span class="s">&quot;plmobject&quot;</span><span class="p">,</span> <span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="s">&quot;user__profile&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">extra</span><span class="p">)</span>
+
+<span class="c"># history stuff</span>
+<div class="viewcode-block" id="AbstractHistory"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.AbstractHistory">[docs]</a><span class="k">class</span> <span class="nc">AbstractHistory</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    History model.</span>
+<span class="sd">    This model records all events related to :class:`.PLMObject`</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: plmobject</span>
+
+<span class="sd">            :class:`.PLMObject` of the event</span>
+<span class="sd">        .. attribute:: action</span>
+
+<span class="sd">            type of action (see :attr:`.ACTIONS`)</span>
+<span class="sd">        .. attribute:: details</span>
+
+<span class="sd">            type of action (see :attr:`.ACTIONS`)</span>
+<span class="sd">        .. attribute:: date</span>
+
+<span class="sd">            date of the event</span>
+<span class="sd">        .. attribute:: user</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who maded the event</span>
+
+<span class="sd">    :class attribute:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c">#: some actions available in the admin interface</span>
+    <span class="n">ACTIONS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&quot;Create&quot;</span><span class="p">,</span> <span class="s">&quot;Create&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Delete&quot;</span><span class="p">,</span> <span class="s">&quot;Delete&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Modify&quot;</span><span class="p">,</span> <span class="s">&quot;Modify&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Revise&quot;</span><span class="p">,</span> <span class="s">&quot;Revise&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Promote&quot;</span><span class="p">,</span> <span class="s">&quot;Promote&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Demote&quot;</span><span class="p">,</span> <span class="s">&quot;Demote&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Cancel&quot;</span><span class="p">,</span> <span class="s">&quot;Cancel&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Publish&quot;</span><span class="p">,</span> <span class="s">&quot;Publish&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="s">&quot;Unpublish&quot;</span><span class="p">,</span> <span class="s">&quot;Unpublish&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="n">action</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">ACTIONS</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_user&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;History&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plmobject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_day_as_int</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">year</span> <span class="o">*</span> <span class="mi">10000</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">month</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">day</span>
+
+    <span class="k">def</span> <span class="nf">get_day</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">timeline_items</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_prefetch_related</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-date&quot;</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">title</span>
+
+</div>
+<div class="viewcode-block" id="History"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.History">[docs]</a><span class="k">class</span> <span class="nc">History</span><span class="p">(</span><span class="n">AbstractHistory</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_redirect_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;/history_item/object/</span><span class="si">%d</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">timeline_items</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Q</span><span class="p">(</span><span class="n">plmobject__owner__username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">|=</span> <span class="n">models</span><span class="o">.</span><span class="n">Q</span><span class="p">(</span><span class="n">plmobject__group__in</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="n">histories</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">q</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-date&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_prefetch_related</span><span class="p">(</span><span class="n">histories</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="UserHistory"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.UserHistory">[docs]</a><span class="k">class</span> <span class="nc">UserHistory</span><span class="p">(</span><span class="n">AbstractHistory</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_redirect_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;/history_item/user/</span><span class="si">%d</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">username</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">timeline_items</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_prefetch_related</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-date&quot;</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="GroupHistory"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.GroupHistory">[docs]</a><span class="k">class</span> <span class="nc">GroupHistory</span><span class="p">(</span><span class="n">AbstractHistory</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Group</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_redirect_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;/history_item/group/</span><span class="si">%d</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">timeline_items</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_prefetch_related</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-date&quot;</span><span class="p">),</span> <span class="s">&quot;plmobject__groupinfo&quot;</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">groupinfo</span><span class="o">.</span><span class="n">title</span>
+
+</div>
+<div class="viewcode-block" id="StateHistoryQuerySet"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryQuerySet">[docs]</a><span class="k">class</span> <span class="nc">StateHistoryQuerySet</span><span class="p">(</span><span class="n">QuerySet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; QuerySet with utility methods to filter :class:`StateHistory` alive at a given time.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StateHistoryQuerySet.now"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryQuerySet.now">[docs]</a>    <span class="k">def</span> <span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filters state histories: keeps only alive state histories (end_time is null).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">end_time__isnull</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StateHistoryQuerySet.at"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryQuerySet.at">[docs]</a>    <span class="k">def</span> <span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filters state histories: keeps alive state histories at time *time*.</span>
+
+<span class="sd">        :param time: a :class:`~datetime.datetime` or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">start_time__lte</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">end_time__lt</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StateHistoryQuerySet.officials"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryQuerySet.officials">[docs]</a>    <span class="k">def</span> <span class="nf">officials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filters only official state histories.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">state_category</span><span class="o">=</span><span class="n">StateHistory</span><span class="o">.</span><span class="n">OFFICIAL</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="StateHistoryManager"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryManager">[docs]</a><span class="k">class</span> <span class="nc">StateHistoryManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;state histories manager, returns a :class:`StateHistoryQuerySet`.&quot;&quot;&quot;</span>
+
+    <span class="n">use_for_related_fields</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">StateHistoryQuerySet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StateHistoryManager.now"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryManager.now">[docs]</a>    <span class="k">def</span> <span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shorcut for ``self.get_query_set().now()``. See :meth:`StateHistoryQuerySet.now`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="StateHistoryManager.at"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryManager.at">[docs]</a>    <span class="k">def</span> <span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shorcut for ``self.get_query_set().at(time)``. See :meth:`StateHistoryQuerySet.at`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="StateHistoryManager.officials"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistoryManager.officials">[docs]</a>    <span class="k">def</span> <span class="nf">officials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shorcut for ``self.get_query_set().officials()``. See :meth:`StateHistoryQuerySet.officials()`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">officials</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="StateHistory"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history.StateHistory">[docs]</a><span class="k">class</span> <span class="nc">StateHistory</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Models that tracks the promotions and demotions of a :class:`.PLMObject`.</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: plmobject</span>
+
+<span class="sd">            :class:`.PLMObject` that has been promoted/demoted.</span>
+<span class="sd">        .. attribute:: start_time</span>
+
+<span class="sd">            date of the promotion/demotion</span>
+<span class="sd">        .. attribute:: end_time</span>
+
+<span class="sd">            date of the next promotion/demotion, None if the promotion</span>
+<span class="sd">            is the latest promotion</span>
+<span class="sd">        .. attribute:: state</span>
+
+<span class="sd">            :class:`.State` of *plmobject* at *t*, if *start_time* &lt;= t &lt; *end_time*</span>
+<span class="sd">        .. attribute:: lifecycle</span>
+
+<span class="sd">            :class:`.Lifecycle` of *plmobject* at *t*, if *start_time* &lt;= t &lt; *end_time*</span>
+<span class="sd">        .. attribute:: state_category</span>
+
+<span class="sd">            state&#39;s category of *plmobject* at *t*, if *start_time* &lt;= t &lt; *end_time*.</span>
+<span class="sd">            This field is redundant with the tuple (state, lifecycle) but it allows</span>
+<span class="sd">            fast queries to check if an object was official at a given time.</span>
+<span class="sd">            This attribute is automatically set when the object is saved.</span>
+
+<span class="sd">        Valid state&#39;s categories are:</span>
+
+<span class="sd">            .. attribute:: DRAFT</span>
+
+<span class="sd">                set if :meth:`.PLMObject.is_draft` returns True</span>
+<span class="sd">            .. attribute:: PROPOSED</span>
+
+<span class="sd">                set if :meth:`.PLMObject.is_proposed` returns True</span>
+<span class="sd">            .. attribute:: OFFICIAL</span>
+
+<span class="sd">                set if :meth:`.PLMObject.is_official` returns True</span>
+<span class="sd">            .. attribute:: DEPRECATED</span>
+
+<span class="sd">                set if :meth:`.PLMObject.is_deprecated` returns True</span>
+<span class="sd">            .. attribute:: CANCELLED</span>
+
+<span class="sd">                set if :meth:`.PLMObject.is_cancelled` returns True</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="n">DRAFT</span><span class="p">,</span> <span class="n">PROPOSED</span><span class="p">,</span> <span class="n">OFFICIAL</span><span class="p">,</span> <span class="n">DEPRECATED</span><span class="p">,</span> <span class="n">CANCELLED</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">STATE_CATEGORIES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">DRAFT</span><span class="p">,</span> <span class="s">&quot;draft&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">PROPOSED</span><span class="p">,</span> <span class="s">&quot;proposed&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">OFFICIAL</span><span class="p">,</span> <span class="s">&quot;official&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">DEPRECATED</span><span class="p">,</span> <span class="s">&quot;deprecated&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">CANCELLED</span><span class="p">,</span> <span class="s">&quot;cancelled&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">State</span><span class="p">)</span>
+    <span class="n">lifecycle</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Lifecycle</span><span class="p">)</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;date of promotion&quot;</span><span class="p">),</span>
+            <span class="n">default</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">,</span> <span class="n">auto_now_add</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">state_category</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveSmallIntegerField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">STATE_CATEGORIES</span><span class="p">)</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">StateHistoryManager</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">get_cancelled_state</span><span class="p">():</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">StateHistory</span><span class="o">.</span><span class="n">CANCELLED</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">official_state</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">StateHistory</span><span class="o">.</span><span class="n">OFFICIAL</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">first_state</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">StateHistory</span><span class="o">.</span><span class="n">DRAFT</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">last_state</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">StateHistory</span><span class="o">.</span><span class="n">DEPRECATED</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">StateHistory</span><span class="o">.</span><span class="n">PROPOSED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_category</span> <span class="o">=</span> <span class="n">category</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">StateHistory</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<span class="k">def</span> <span class="nf">timeline_histories</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">date_begin</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">date_end</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">done_by</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">list_display</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">date_begin</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">date_end</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">History</span><span class="o">.</span><span class="n">timeline_items</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">history_plmobject</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">history_group</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_document&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_part&quot;</span><span class="p">]:</span>
+            <span class="n">history_plmobject</span> <span class="o">=</span> <span class="n">History</span><span class="o">.</span><span class="n">timeline_items</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_document&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_part&quot;</span><span class="p">]:</span>
+                <span class="n">documents</span> <span class="o">=</span> <span class="n">get_all_documents</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                <span class="n">history_plmobject</span> <span class="o">=</span> <span class="n">history_plmobject</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject__type__in</span> <span class="o">=</span> <span class="n">documents</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_document&quot;</span><span class="p">]:</span>
+                <span class="n">parts</span> <span class="o">=</span> <span class="n">get_all_parts</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+                <span class="n">history_plmobject</span> <span class="o">=</span> <span class="n">history_plmobject</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject__type__in</span> <span class="o">=</span> <span class="n">parts</span><span class="p">)</span>
+            <span class="n">history_plmobject</span> <span class="o">=</span> <span class="n">history_plmobject</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date__gte</span> <span class="o">=</span> <span class="n">date_end</span><span class="p">,</span> <span class="n">date__lt</span> <span class="o">=</span> <span class="n">date_begin</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">done_by</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">done_by</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">history_plmobject</span> <span class="o">=</span> <span class="n">history_plmobject</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__username</span> <span class="o">=</span> <span class="n">done_by</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">history_plmobject</span> <span class="o">=</span> <span class="n">history_plmobject</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_group&quot;</span><span class="p">]:</span>
+            <span class="n">history_group</span> <span class="o">=</span> <span class="n">GroupHistory</span><span class="o">.</span><span class="n">timeline_items</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">history_group</span> <span class="o">=</span> <span class="n">history_group</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date__gte</span> <span class="o">=</span> <span class="n">date_end</span><span class="p">,</span> <span class="n">date__lt</span> <span class="o">=</span> <span class="n">date_begin</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">done_by</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">username</span><span class="o">=</span> <span class="n">done_by</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">history_group</span> <span class="o">=</span> <span class="n">history_group</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__username</span> <span class="o">=</span> <span class="n">done_by</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">history_group</span> <span class="o">=</span> <span class="n">history_group</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">history_group</span><span class="p">:</span>
+                <span class="n">h</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">=</span> <span class="n">h</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">groupinfo</span><span class="o">.</span><span class="n">plmobject_url</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_document&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_part&quot;</span><span class="p">])</span> <span class="ow">and</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_group&quot;</span><span class="p">]:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="n">history_group</span><span class="p">,</span> <span class="n">history_plmobject</span><span class="p">),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">instance</span><span class="p">:</span> <span class="n">instance</span><span class="o">.</span><span class="n">date</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_group&quot;</span><span class="p">]:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="n">history_group</span>
+        <span class="k">elif</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_document&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">list_display</span><span class="p">[</span><span class="s">&quot;display_part&quot;</span><span class="p">]:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="n">history_plmobject</span>
+
+        <span class="k">return</span> <span class="n">history</span>
+
+
+<div class="viewcode-block" id="_save_comment_history"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.history._save_comment_history">[docs]</a><span class="k">def</span> <span class="nf">_save_comment_history</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">comment</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Save an history line when a comment is posted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">get_controller</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">comment</span><span class="o">.</span><span class="n">content_object</span>
+    <span class="n">ctrl_cls</span> <span class="o">=</span> <span class="n">get_controller</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="n">ctrl</span> <span class="o">=</span> <span class="n">ctrl_cls</span><span class="p">(</span><span class="n">comment</span><span class="o">.</span><span class="n">content_object</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">no_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ctrl</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;New comment&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="o">.</span><span class="n">comment</span><span class="p">)</span>
+</div>
+<span class="n">comment_was_posted</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">_save_comment_history</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" >openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

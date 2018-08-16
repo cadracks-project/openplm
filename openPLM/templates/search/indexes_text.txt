@@ -1,0 +1,4 @@
+{% load plmapp_tags %}
+{% for attribute in object.attributes %}
+{% if "time" not in attribute %} - {{attribute}}:{{ object|plainattr:attribute }} {% endif %}
+{% endfor %}

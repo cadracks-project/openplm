@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>8. References – how to customize generated references &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="5. Admin documentation" href="index.html" />
+    <link rel="next" title="9. Rich text | wiki syntax" href="richtext.html" />
+    <link rel="prev" title="7. Publication" href="publication.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="richtext.html" title="9. Rich text | wiki syntax"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="7. Publication"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">8. References &#8211; how to customize generated references</a><ul>
+<li><a class="reference internal" href="#reference-numbers">8.1. Reference numbers</a></li>
+<li><a class="reference internal" href="#default-behavior">8.2. Default behavior</a></li>
+<li><a class="reference internal" href="#how-to-customize-it">8.3. How to customize it</a><ul>
+<li><a class="reference internal" href="#format-template-string">8.3.1. Format template string</a></li>
+<li><a class="reference internal" href="#regular-expression-pattern">8.3.2. Regular expression pattern</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#examples">8.4. Examples</a><ul>
+<li><a class="reference internal" href="#reference-numbers-shared-between-parts-and-documents">8.4.1. Reference numbers shared between parts and documents</a><ul>
+<li><a class="reference internal" href="#part-xx-and-doc-xx">8.4.1.1. PART_XX and DOC_XX</a></li>
+<li><a class="reference internal" href="#obj-xx">8.4.1.2. OBJ_XX</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#including-the-date-of-creation">8.4.2. Including the date of creation</a></li>
+<li><a class="reference internal" href="#including-user-attributes">8.4.3. Including user attributes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="publication.html"
+                        title="previous chapter">7. Publication</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="richtext.html"
+                        title="next chapter">9. Rich text | wiki syntax</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/references.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/references.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="references-how-to-customize-generated-references">
+<span id="admin-references"></span><h1>8. References &#8211; how to customize generated references<a class="headerlink" href="#references-how-to-customize-generated-references" title="Permalink to this headline">¶</a></h1>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.0.</span></p>
+<div class="section" id="reference-numbers">
+<h2>8.1. Reference numbers<a class="headerlink" href="#reference-numbers" title="Permalink to this headline">¶</a></h2>
+<p>Parts and documents have a reference which is a short text field.
+The reference is shared between two revisions of a part or document.
+Generally, a reference includes a number that increases by one after
+each creation.</p>
+<p>OpenPLM extracts this number and stores it in the database.
+When a new object is created, OpenPLM suggests a reference generated
+with the maximum stored reference number.</p>
+<p>The maximum reference number is not equal to the count of objects
+since two revisions shared the same number.</p>
+</div>
+<div class="section" id="default-behavior">
+<h2>8.2. Default behavior<a class="headerlink" href="#default-behavior" title="Permalink to this headline">¶</a></h2>
+<p>By default, OpenPLM generates distinct references for parts and documents.</p>
+<p>For parts, it generates the following references: <tt class="docutils literal"><span class="pre">PART_00001</span></tt>, <tt class="docutils literal"><span class="pre">PART_00002</span></tt>,
+..., <tt class="docutils literal"><span class="pre">PART_00050</span></tt>, <tt class="docutils literal"><span class="pre">PART_155555</span></tt>.</p>
+<p>For documents, it generates the following references: <tt class="docutils literal"><span class="pre">DOC_00001</span></tt>, <tt class="docutils literal"><span class="pre">DOC_00002</span></tt>,
+..., <tt class="docutils literal"><span class="pre">DOC_00050</span></tt>, <tt class="docutils literal"><span class="pre">DOC_155555</span></tt>.</p>
+<p>Parts and documents have two distinct counters.</p>
+</div>
+<div class="section" id="how-to-customize-it">
+<h2>8.3. How to customize it<a class="headerlink" href="#how-to-customize-it" title="Permalink to this headline">¶</a></h2>
+<p>It is possible to customize how references are generated by editing
+the file <tt class="file docutils literal"><span class="pre">settings.py</span></tt>.</p>
+<p>You need to add one variable: <tt class="docutils literal"><span class="pre">REFERENCE_PATTERNS</span></tt>.</p>
+<p>By default, it is set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">REFERENCE_PATTERNS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;shared&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&quot;part&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;PART_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^PART_(\d+)$&quot;</span><span class="p">),</span>
+    <span class="s">&quot;doc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;DOC_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^DOC_(\d+)$&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As you can see, it is a python dictionary with three keys
+(all keys are required).</p>
+<p><em>shared</em> is a boolean.
+If set to True, parts and documents shared the same counter.</p>
+<p><em>part</em> and <em>document</em> describe how reference are generated and
+how number are extracted.
+Their values are a tuple with two strings:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the first string is a format template string</li>
+<li>the second string is a regular expression pattern</li>
+</ul>
+</div></blockquote>
+<div class="section" id="format-template-string">
+<h3>8.3.1. Format template string<a class="headerlink" href="#format-template-string" title="Permalink to this headline">¶</a></h3>
+<p>The format template string should be a unicode object (<tt class="docutils literal"><span class="pre">u&quot;&quot;</span></tt>).
+It must be a <a class="reference external" href="http://docs.python.org/2.6/library/string.html#format-string-syntax">standard python format</a> expression.</p>
+<p>When the reference is generated, the template is formatting with
+the following parameters:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>number</dt>
+<dd>the computed reference number.
+Obviously, it must be present in the template.
+You can add padding, for example <tt class="docutils literal"><span class="pre">{number:05d}</span></tt> adds up to 5 zeros
+before the number (<tt class="docutils literal"><span class="pre">00001</span></tt>, <tt class="docutils literal"><span class="pre">00145</span></tt>, <tt class="docutils literal"><span class="pre">78954</span></tt>, <tt class="docutils literal"><span class="pre">12454558</span></tt>)</dd>
+<dt>now</dt>
+<dd>a <a class="reference external" href="http://docs.python.org/2.6/library/datetime.html#datetime.datetime" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">datetime.datetime</span></tt></a> object representing the current date.
+You can specify a special format to put the current year, month, day, etc.
+See the <a class="reference external" href="http://docs.python.org/2.6/library/datetime.html?highlight=datetime#strftime-strptime-behavior">strftime documentation</a> for all possibilities.</dd>
+<dt>user</dt>
+<dd><p class="first">a <tt class="xref py py-class docutils literal"><span class="pre">User</span></tt> who will creates the object.
+You should not write directly <tt class="docutils literal"><span class="pre">{user}</span></tt>, you should append one of its attributes:</p>
+<blockquote class="last">
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">{user.username}</span></tt>: username (login).</li>
+<li><tt class="docutils literal"><span class="pre">{user.first_name}</span></tt>: first name</li>
+<li><tt class="docutils literal"><span class="pre">{user.last_name}</span></tt>: last name</li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>initials</dt>
+<dd>initials of the user</dd>
+</dl>
+</div></blockquote>
+<p>Be careful when you add a username, first name or last name since
+the generated reference may contains forbidden characters
+and be too long.</p>
+</div>
+<div class="section" id="regular-expression-pattern">
+<h3>8.3.2. Regular expression pattern<a class="headerlink" href="#regular-expression-pattern" title="Permalink to this headline">¶</a></h3>
+<p>OpenPLM must known how to extract.
+A regular expression pattern must be given.
+It must contain one pair of parenthesis that will matches a number (<tt class="docutils literal"><span class="pre">(\d+)</span></tt>).</p>
+<p>OpenPLM accepts a compiled pattern if you need to set a special flag to
+the regular expression.</p>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>8.4. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<p>In all examples, a document, a part, another part and
+a document (in that order) are created.</p>
+<div class="section" id="reference-numbers-shared-between-parts-and-documents">
+<h3>8.4.1. Reference numbers shared between parts and documents<a class="headerlink" href="#reference-numbers-shared-between-parts-and-documents" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="part-xx-and-doc-xx">
+<h4>8.4.1.1. PART_XX and DOC_XX<a class="headerlink" href="#part-xx-and-doc-xx" title="Permalink to this headline">¶</a></h4>
+<p>settings.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">REFERENCE_PATTERNS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;shared&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&quot;part&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;PART_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^PART_(\d+)$&quot;</span><span class="p">),</span>
+    <span class="s">&quot;doc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;DOC_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^DOC_(\d+)$&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>will generate sequences like <tt class="docutils literal"><span class="pre">DOC_00001</span></tt>, <tt class="docutils literal"><span class="pre">PART_00002</span></tt>, <tt class="docutils literal"><span class="pre">PART_00003</span></tt>, <tt class="docutils literal"><span class="pre">DOC_00004</span></tt>, etc.</p>
+</div>
+<div class="section" id="obj-xx">
+<h4>8.4.1.2. OBJ_XX<a class="headerlink" href="#obj-xx" title="Permalink to this headline">¶</a></h4>
+<p>settings.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">REFERENCE_PATTERNS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;shared&quot;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="s">&quot;part&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;OBJ_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^OBJ_(\d+)$&quot;</span><span class="p">),</span>
+    <span class="s">&quot;doc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;OBJ_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^OBJ_(\d+)$&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>will generate sequences like <tt class="docutils literal"><span class="pre">OBJ_00001</span></tt>, <tt class="docutils literal"><span class="pre">OBJ_00002</span></tt>, <tt class="docutils literal"><span class="pre">OBJ_00003</span></tt>, <tt class="docutils literal"><span class="pre">OBJ_00004</span></tt>, etc.</p>
+</div>
+</div>
+<div class="section" id="including-the-date-of-creation">
+<h3>8.4.2. Including the date of creation<a class="headerlink" href="#including-the-date-of-creation" title="Permalink to this headline">¶</a></h3>
+<p>settings.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">REFERENCE_PATTERNS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;shared&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&quot;part&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;{now:%Y}-{number}-part&quot;</span><span class="p">,</span> <span class="s">r&#39;^\d{4}-(\d+)-part$&#39;</span><span class="p">),</span>
+    <span class="s">&quot;doc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;{now:%y}-{number}-doc&quot;</span><span class="p">,</span> <span class="s">r&#39;^\d\d-(\d+)-doc$&#39;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>will generate sequences like <tt class="docutils literal"><span class="pre">13-1-doc</span></tt>, <tt class="docutils literal"><span class="pre">2013-1-part</span></tt>, <tt class="docutils literal"><span class="pre">2013-2-part</span></tt>,
+and <tt class="docutils literal"><span class="pre">13-2-doc</span></tt>, etc.</p>
+</div>
+<div class="section" id="including-user-attributes">
+<h3>8.4.3. Including user attributes<a class="headerlink" href="#including-user-attributes" title="Permalink to this headline">¶</a></h3>
+<p>settings.py:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">REFERENCE_PATTERNS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;shared&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&quot;part&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;{user:username}-{number}-part&quot;</span><span class="p">,</span> <span class="s">r&#39;^.*-(\d+)-part$&#39;</span><span class="p">),</span>
+    <span class="s">&quot;doc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">&quot;{initials}-{number}-doc&quot;</span><span class="p">,</span> <span class="s">r&#39;^.*-(\d+)-doc$&#39;</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If the user is <em>Robert Baratheon &lt;rbaratheon&gt;</em>,
+it will generate sequences like <tt class="docutils literal"><span class="pre">RB-1-doc</span></tt>, <tt class="docutils literal"><span class="pre">rbaratheon-1-part</span></tt>,
+<tt class="docutils literal"><span class="pre">rbaratheon-2-part</span></tt>, and <tt class="docutils literal"><span class="pre">RB-2-doc</span></tt>, etc.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="richtext.html" title="9. Rich text | wiki syntax"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="7. Publication"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

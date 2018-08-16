@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.document3D.models &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/document3D/models.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.document3D.models</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">djcelery_transactions</span> <span class="kn">import</span> <span class="n">task</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.core.files</span> <span class="kn">import</span> <span class="n">File</span>
+
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">get_controller</span><span class="p">,</span> <span class="n">PartController</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.files.formats</span> <span class="kn">import</span> <span class="n">is_cad_file</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.document3D</span> <span class="kn">import</span> <span class="n">classes</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">DocumentController</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">pmodels</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">ControllerError</span>
+
+<span class="c">#./manage.py graph_models document3D &gt; models.dot   dot -Tpng models.dot &gt; models.png</span>
+
+
+<div class="viewcode-block" id="Document3D"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3D">[docs]</a><span class="k">class</span> <span class="nc">Document3D</span><span class="p">(</span><span class="n">pmodels</span><span class="o">.</span><span class="n">Document</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Model which allows to treat :class:`~django.core.files.File` **.stp**  attached to  :class:`.DocumentFile` for his later **visualization** and **decomposition**. It extends :class:`.Document` with the attribute/tab 3D</span>
+
+<span class="sd">     .. attribute:: PartDecompose</span>
+
+<span class="sd">        If the :class:`.Document3D` has been *decomposed*, :class:`.Part` from which we generate the **decomposition**</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">PartDecompose</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">pmodels</span><span class="o">.</span><span class="n">Part</span><span class="p">,</span><span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Document3D.menu_items"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3D.menu_items">[docs]</a>    <span class="k">def</span> <span class="nf">menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add Tab 3D</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Document3D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">menu_items</span><span class="p">)</span>
+        <span class="n">items</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&quot;3D&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">items</span>
+</div>
+<div class="viewcode-block" id="Document3D.get_content_and_size"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3D.get_content_and_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_content_and_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param doc_file: :class:`.DocumentFile` which contains the :class:`~django.core.files.File`</span>
+<span class="sd">        :type plmobject: :class:`.DocumentFile`</span>
+
+<span class="sd">        Returns the :class:`~django.core.files.File` related to the  :class:`.DocumentFile` (**doc_file**) and his *size*</span>
+
+<span class="sd">        If the :class:`~django.core.files.File` contains in the :class:`.DocumentFile` (**doc_file**) is a **.stp** and was *decomposed* , this function calls a subprocess( :meth:`.composer` ) to rebuild the .stp :class:`~django.core.files.File`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">fileName</span><span class="p">,</span> <span class="n">fileExtension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fileExtension</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;.STP&#39;</span><span class="p">,</span> <span class="s">&#39;.STEP&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
+            <span class="n">tempfile_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recompose_step_file</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">tempfile_size</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">tempfile_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">,</span><span class="n">tempfile_size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c">#temp_file , size</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Document3D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_content_and_size</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">recompose_step_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">Document3DController</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">product</span> <span class="ow">and</span> <span class="n">product</span><span class="o">.</span><span class="n">is_decomposed</span><span class="p">:</span>
+            <span class="n">temp_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">temp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">to_list</span><span class="p">()))</span>
+            <span class="n">temp_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+            <span class="n">composer</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s">&quot;generateComposition.py&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&quot;python&quot;</span><span class="p">,</span> <span class="n">composer</span><span class="p">,</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">name</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">temp_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">temp_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">temp_file</span><span class="p">,</span> <span class="n">size</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Could not recompose step file&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Document3D.documents_related"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3D.documents_related">[docs]</a>    <span class="k">def</span> <span class="nf">documents_related</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the :class:`.Document3D` has been decomposed, it returns a list with all the :class:`.Document3D` that form part of the decomposition,</span>
+<span class="sd">        and for every :class:`.Document3D` for ONLY ONE level of depth</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">document_related</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">PartDecompose</span>
+        <span class="k">if</span> <span class="n">part</span><span class="p">:</span>
+            <span class="n">links</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">ParentChildLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">part</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">Location_link</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">link</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">document_related</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">PartDecompose</span><span class="o">=</span><span class="n">link</span><span class="o">.</span><span class="n">child</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">document_related</span>
+</div>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_creation_score</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">files</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">is_cad_file</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">50</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Document3D</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">get_creation_score</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+
+</div>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Document3D</span><span class="p">)</span>
+
+
+<span class="nd">@task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;openPLM.apps.document3D.handle_step_file&quot;</span><span class="p">,</span>
+      <span class="n">soft_time_limit</span><span class="o">=</span><span class="mi">60</span><span class="o">*</span><span class="mi">25</span><span class="p">,</span><span class="n">time_limit</span><span class="o">=</span><span class="mi">60</span><span class="o">*</span><span class="mi">25</span><span class="p">)</span>
+<div class="viewcode-block" id="handle_step_file"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.handle_step_file">[docs]</a><span class="k">def</span> <span class="nf">handle_step_file</span><span class="p">(</span><span class="n">doc_file_pk</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param doc_file_pk: primery key of a :class:`.DocumentFile` that will be treated</span>
+
+<span class="sd">    Method called by :meth:`.DocumentController.handle_added_file` when a STEP</span>
+<span class="sd">    file is added to a Document3D.</span>
+
+<span class="sd">    It calls a subprocess (:meth:`.generateGeometrys_Arborescense` ) that generates a file **.arb** and one or more files **.geo** (these files</span>
+<span class="sd">    are necessary for the visualization 3D and the decomposition of the :class:`~django.core.files.File` **.stp** ),</span>
+<span class="sd">    later these files will be attached to an :class:`.ArbreFile` and one or more :class:`.GeometryFile` and these classes with the :class:`.DocumentFile` determined by **doc_file_pk**</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;GarbageCollector&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">handle_step_file</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">doc_file_pk</span><span class="p">)</span>
+    <span class="n">temp_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryFile</span><span class="p">()</span>
+    <span class="n">error_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
+    <span class="n">stdout</span> <span class="o">=</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.png&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">doc_file_pk</span><span class="p">)</span>
+    <span class="n">thumbnail_path</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">thumbnailfs</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+        <span class="n">status</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&quot;python&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s">&quot;generate3D.py&quot;</span><span class="p">),</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_ROOT</span><span class="o">+</span><span class="s">&quot;3D/&quot;</span><span class="p">,</span> <span class="n">thumbnail_path</span><span class="p">],</span>
+            <span class="n">stdout</span><span class="o">=</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">error_file</span><span class="o">.</span><span class="n">fileno</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The subprocess is going to return a temporary file with the names of the files *.geo* and *.arb* generated.</span>
+<span class="sd">            In the moment of his generation these files are not associated the documentFile</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">delete_ArbreFile</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span> <span class="c">#In case of an update, to erase the previous elements</span>
+            <span class="n">delete_GeometryFiles</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+            <span class="n">generate_relations_BD</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span><span class="n">temp_file</span><span class="p">)</span><span class="c"># We associate the files generated to classes and the classes to the documentFile</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">thumbnail_path</span><span class="p">):</span>
+                <span class="n">doc_file</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">thumbnail_path</span><span class="p">)</span>
+                <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">update_fields</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;thumbnail&quot;</span><span class="p">,))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">temp_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">temp_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">error_file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="c">#MultiRootError  SEND MAIL?</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;OpenPLM does not support files STEP with multiple roots&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">status</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span><span class="p">:</span>
+                <span class="c">#OCCReadingStepError SEND MAIL?</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;PythonOCC could not read the file&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c">#Indeterminate error SEND MAIL?</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Error during the treatment of the file STEP&quot;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">temp_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">error_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="generate_relations_BD"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.generate_relations_BD">[docs]</a><span class="k">def</span> <span class="nf">generate_relations_BD</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span><span class="n">temp_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function used when we add a new :class:`~django.core.files.File` **.stp** in a :class:`.Document3D`</span>
+<span class="sd">    This function associates a series of files with classes :class:`.ArbreFile` and :class:`.GeometryFile`</span>
+<span class="sd">    and this classes to a :class:`.DocumentFile`. The files were generated before the call to this function,</span>
+<span class="sd">    their paths are known thanks to the information supplied in the temporary file(Every line of this file represents</span>
+<span class="sd">    a file, the beginning of every line indicates the type of file)</span>
+
+<span class="sd">    :param doc_file: object which will be updated</span>
+<span class="sd">    :type plmobject: :class:`.DocumentFile`</span>
+<span class="sd">    :param temp_file: :class:`.tempfile` that contains the path of the generated **.geo** and **.arb** files</span>
+<span class="sd">    :type plmobject: :class:`.tempfile`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">stdout</span> <span class="o">=</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">fileno</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">lseek</span><span class="p">(</span><span class="n">stdout</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">arb</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">decomposable</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">temp_file</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+        <span class="n">line</span><span class="o">=</span><span class="n">line</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;GEO:&quot;</span><span class="p">):</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&quot;GEO:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot; , &quot;</span><span class="p">)</span>
+            <span class="n">GeometryFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">stp</span><span class="o">=</span><span class="n">doc_file</span><span class="p">,</span> <span class="nb">file</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;ARB:&quot;</span><span class="p">):</span>
+            <span class="n">arb</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&quot;ARB:&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;Decomposable:&quot;</span><span class="p">):</span>
+            <span class="n">decomposable</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&quot;Decomposable:&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;true&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">arb</span><span class="p">:</span>
+        <span class="n">ArbreFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">arb</span><span class="p">,</span> <span class="n">stp</span><span class="o">=</span><span class="n">doc_file</span><span class="p">,</span> <span class="n">decomposable</span><span class="o">=</span><span class="n">decomposable</span><span class="p">)</span>
+</div>
+<span class="n">is_stp</span><span class="o">=</span><span class="n">Q</span><span class="p">(</span><span class="n">filename__iendswith</span><span class="o">=</span><span class="s">&quot;.stp&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">filename__iendswith</span><span class="o">=</span><span class="s">&quot;.step&quot;</span><span class="p">)</span><span class="c">#.stp , .STP , .step , .STEP</span>
+<span class="n">is_stl</span><span class="o">=</span><span class="n">Q</span><span class="p">(</span><span class="n">filename__iendswith</span><span class="o">=</span><span class="s">&quot;.stl&quot;</span><span class="p">)</span> <span class="c">#.stl, .STL</span>
+<span class="n">is_catia</span><span class="o">=</span><span class="n">Q</span><span class="p">(</span><span class="n">filename__iendswith</span><span class="o">=</span><span class="s">&quot;.catpart&quot;</span><span class="p">)</span> <span class="o">|</span> <span class="n">Q</span><span class="p">(</span><span class="n">filename__iendswith</span><span class="o">=</span><span class="s">&quot;.catproduct&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Document3DController"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3DController">[docs]</a><span class="k">class</span> <span class="nc">Document3DController</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A :class:`DocumentController` which manages</span>
+<span class="sd">    :class:`.Document3D`</span>
+
+<span class="sd">    It provides methods to deprecate and to manage (**visualization3D** and **decomposition**)files STEP.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="n">DocumentController</span><span class="o">.</span><span class="n">__slots__</span> <span class="o">+</span> <span class="p">(</span><span class="s">&quot;_stps&quot;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Document3DController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stps</span> <span class="o">=</span> <span class="bp">None</span>
+
+<div class="viewcode-block" id="Document3DController.handle_added_file"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3DController.handle_added_file">[docs]</a>    <span class="k">def</span> <span class="nf">handle_added_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If a :class:`~django.core.files.File` .stp is set like the file of a :class:`.DocumentFile` (**doc_file**) added to a :class:`.Document3D` , a special treatment (:meth:`.handle_step_file`) is begun (Only one file STEP allowed for each :class:`.Document3D` )</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fileName</span><span class="p">,</span> <span class="n">fileExtension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">fileExtension</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;.STP&#39;</span><span class="p">,</span> <span class="s">&#39;.STEP&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_stp</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Only one step documentfile allowed for each document3D&quot;</span><span class="p">)</span>
+
+            <span class="n">handle_step_file</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">revise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_revision</span><span class="p">,</span> <span class="n">selected_parts</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">rev</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Document3DController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">revise</span><span class="p">(</span><span class="n">new_revision</span><span class="p">,</span> <span class="n">selected_parts</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">STP_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_stp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">STP_file</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">new_STP_file</span> <span class="o">=</span> <span class="n">rev</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">is_stp</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">PartDecompose</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">PartDecompose</span> <span class="ow">in</span> <span class="n">selected_parts</span><span class="p">:</span>
+                <span class="n">rev</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">PartDecompose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">PartDecompose</span>
+                <span class="n">rev</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="n">product</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">STP_file</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span>
+                <span class="n">copy_geometry</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">new_STP_file</span><span class="p">)</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">set_new_root</span><span class="p">(</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span><span class="n">for_child</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                <span class="n">ArbreFile</span><span class="o">.</span><span class="n">create_from_product</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">new_STP_file</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">PartDecompose</span><span class="p">:</span> <span class="c">#and not self.object.PartDecompose in selected_parts</span>
+                <span class="n">product</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">STP_file</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">True</span><span class="p">)</span>
+                <span class="n">tempfile_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recompose_step_file</span><span class="p">(</span><span class="n">STP_file</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">tempfile_size</span><span class="p">:</span>
+                    <span class="n">filename</span> <span class="o">=</span> <span class="n">new_STP_file</span><span class="o">.</span><span class="n">filename</span>
+                    <span class="n">path</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">get_available_name</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">))</span>
+                    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">tempfile_size</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+                    <span class="n">new_doc</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                        <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">tempfile_size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">document</span><span class="o">=</span><span class="n">rev</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+                    <span class="n">new_doc</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">new_STP_file</span><span class="o">.</span><span class="n">thumbnail</span>
+                    <span class="k">if</span> <span class="n">new_STP_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+                        <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">thumb</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+                        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                        <span class="n">thumb_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">thumb</span><span class="p">)</span>
+                        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">thumb_path</span><span class="p">)</span>
+                        <span class="n">new_doc</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">thumb_path</span><span class="p">)</span>
+                    <span class="n">new_doc</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="n">new_doc</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">None</span>
+                    <span class="n">new_doc</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="n">new_STP_file</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                    <span class="n">new_STP_file</span><span class="o">=</span><span class="n">new_doc</span>
+
+                <span class="n">copy_geometry</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">new_STP_file</span><span class="p">)</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">set_new_root</span><span class="p">(</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">new_STP_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">for_child</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">ArbreFile</span><span class="o">.</span><span class="n">create_from_product</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">new_STP_file</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">product</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">STP_file</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">False</span><span class="p">)</span>
+                <span class="n">copy_geometry</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">new_STP_file</span><span class="p">)</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">set_new_root</span><span class="p">(</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="n">new_STP_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span><span class="n">for_child</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                <span class="n">ArbreFile</span><span class="o">.</span><span class="n">create_from_product</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">new_STP_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rev</span>
+
+<div class="viewcode-block" id="Document3DController.delete_file"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3DController.delete_file">[docs]</a>    <span class="k">def</span> <span class="nf">delete_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        We erase also the classes :class:`.GeometryFile` and :class:`.ArbreFile` associated with the :class:`.DocumentFile` (**doc_file**)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Document3DController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="n">fileName</span><span class="p">,</span> <span class="n">fileExtension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">fileExtension</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;.STP&#39;</span><span class="p">,</span> <span class="s">&#39;.STEP&#39;</span><span class="p">):</span>
+            <span class="n">delete_GeometryFiles</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+            <span class="n">delete_ArbreFile</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Document3DController.deprecate_file"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3DController.deprecate_file">[docs]</a>    <span class="k">def</span> <span class="nf">deprecate_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span><span class="n">by_decomposition</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A file can be depreciated for diverse motives, (when a file STEP is decomposed,</span>
+<span class="sd">        when exists a native file associate to one file STEP and we realize a brute check-out of the STEP , the native will be deprecated , ...)</span>
+
+<span class="sd">        :param doc_file: :class:`.DocumentFile` which will be deprecated</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_editable</span><span class="p">()</span>
+        <span class="n">delete_GeometryFiles</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="n">delete_ArbreFile</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">True</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">by_decomposition</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;File deprecated for decomposition&quot;</span><span class="p">,</span> <span class="s">&quot;file : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;File deprecated&quot;</span><span class="p">,</span> <span class="s">&quot;file : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">get_all_geometry_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">PartDecompose</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">pctrl</span> <span class="o">=</span> <span class="n">PartController</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PartDecompose</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stps</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">children_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">child_id</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">pctrl</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">related</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;child__id&quot;</span><span class="p">),</span>
+                    <span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;child__id&quot;</span><span class="p">,</span> <span class="s">&quot;parent__id&quot;</span><span class="p">,))]</span>
+                <span class="k">if</span> <span class="n">children_ids</span><span class="p">:</span>
+                    <span class="n">docs</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">document__type</span><span class="o">=</span><span class="s">&quot;Document3D&quot;</span><span class="p">,</span>
+                            <span class="n">part__in</span><span class="o">=</span><span class="n">children_ids</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                    <span class="n">dfs</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">document__in</span><span class="o">=</span><span class="n">docs</span><span class="p">,</span> <span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>\
+                            <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_stp</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_stps</span> <span class="o">=</span> <span class="n">dfs</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_stps</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="n">stp</span><span class="o">=</span><span class="n">doc_file</span><span class="p">)</span>
+            <span class="n">stps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_stps</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">stps</span><span class="p">:</span>
+                <span class="n">q</span> <span class="o">|=</span> <span class="n">Q</span><span class="p">(</span><span class="n">stp__in</span><span class="o">=</span><span class="n">stps</span><span class="p">)</span>
+            <span class="n">gfs</span> <span class="o">=</span> <span class="n">GeometryFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gfs</span> <span class="o">=</span> <span class="n">GeometryFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">stp</span><span class="o">=</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gfs</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Document3DController.get_product"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Document3DController.get_product">[docs]</a>    <span class="k">def</span> <span class="nf">get_product</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span> <span class="n">recursive</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the :class:`.Product` associated to *doc_file*.</span>
+<span class="sd">        If *recursive* is True, it returns a complet product, built by browsing</span>
+<span class="sd">        the BOM of the attached part, if it has been decomposed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">af</span> <span class="o">=</span> <span class="n">ArbreFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stp</span><span class="o">=</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">classes</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">af</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+        <span class="k">if</span> <span class="n">recursive</span> <span class="ow">and</span> <span class="n">product</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">PartDecompose</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="c"># Here be dragons</span>
+                <span class="c"># this code try to reduce the number of database queries:</span>
+                <span class="c"># h queries (h: height of the BOM) to get children</span>
+                <span class="c"># + 1 query to doc-part links</span>
+                <span class="c"># + 1 query to get STP files</span>
+                <span class="c"># + 1 query to get location links</span>
+                <span class="c"># + 1 query to get ArbreFile</span>
+                <span class="n">pctrl</span> <span class="o">=</span> <span class="n">PartController</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PartDecompose</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+                <span class="n">children</span> <span class="o">=</span> <span class="n">pctrl</span><span class="o">.</span><span class="n">get_children</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">related</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;child__id&quot;</span><span class="p">),</span> <span class="n">only</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;child__id&quot;</span><span class="p">,</span> <span class="s">&quot;parent__id&quot;</span><span class="p">,))</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">children</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">product</span>
+                <span class="n">links</span><span class="p">,</span> <span class="n">children_ids</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">[(</span><span class="n">c</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">child_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">children</span><span class="p">])</span>
+                <span class="n">docs</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">part_to_docs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">doc</span><span class="p">,</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">document__type</span><span class="o">=</span><span class="s">&quot;Document3D&quot;</span><span class="p">,</span>
+                        <span class="n">part__in</span><span class="o">=</span><span class="n">children_ids</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="s">&quot;part&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-ctime&quot;</span><span class="p">):</span>
+                    <span class="c"># order by -ctime to test the most recently attached document first</span>
+                    <span class="n">part_to_docs</span><span class="p">[</span><span class="n">part</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+                    <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">docs</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">product</span>
+
+                <span class="n">dfs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">document__in</span><span class="o">=</span><span class="n">docs</span><span class="p">,</span> <span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>\
+                        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_stp</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="s">&quot;id&quot;</span><span class="p">))</span>
+                <span class="c"># cache this values as it may be useful for get_all_geometry_files</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_stps</span> <span class="o">=</span> <span class="n">dfs</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                <span class="n">locs</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">Location_link</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">link__in</span><span class="o">=</span><span class="n">links</span><span class="p">):</span>
+                    <span class="n">locs</span><span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">link_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+                <span class="c"># read all jsons files</span>
+                <span class="n">jsons</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">af</span> <span class="ow">in</span> <span class="n">ArbreFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">stp__in</span><span class="o">=</span><span class="n">dfs</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                    <span class="n">jsons</span><span class="p">[</span><span class="n">af</span><span class="o">.</span><span class="n">stp_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">af</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+                <span class="c"># browse the BOM and build product</span>
+                <span class="n">previous_level</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">product</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">level</span> <span class="o">&lt;=</span> <span class="n">previous_level</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="n">products</span><span class="p">[</span><span class="n">level</span><span class="p">:]</span>
+                    <span class="n">stp</span> <span class="o">=</span> <span class="bp">None</span>
+                    <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">part_to_docs</span><span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">child_id</span><span class="p">]:</span>
+                        <span class="k">if</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">dfs</span><span class="p">:</span>
+                            <span class="n">stp</span> <span class="o">=</span> <span class="n">dfs</span><span class="p">[</span><span class="n">doc</span><span class="p">]</span>
+                            <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">stp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">stp</span> <span class="ow">in</span> <span class="n">jsons</span><span class="p">:</span>
+                        <span class="n">pr</span> <span class="o">=</span> <span class="n">products</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">prod</span> <span class="o">=</span> <span class="n">classes</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">jsons</span><span class="p">[</span><span class="n">stp</span><span class="p">],</span> <span class="n">product</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                                <span class="n">product_root</span><span class="o">=</span><span class="n">product</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="n">level</span><span class="p">,</span> <span class="n">to_update_product_root</span><span class="o">=</span><span class="n">pr</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">locs</span><span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">]:</span>
+                            <span class="n">pr</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_occurrence</span><span class="p">(</span><span class="n">location</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">location</span><span class="p">)</span>
+                        <span class="n">products</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prod</span><span class="p">)</span>
+                    <span class="n">previous_level</span> <span class="o">=</span> <span class="n">level</span>
+
+        <span class="k">return</span> <span class="n">product</span>
+
+</div></div>
+<span class="n">media3DGeometryFile</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentStorage</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_ROOT</span><span class="o">+</span><span class="s">&quot;3D/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="GeometryFile"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.GeometryFile">[docs]</a><span class="k">class</span> <span class="nc">GeometryFile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+
+<span class="sd">    Link between :class:`.DocumentFile` that contains a :class:`~django.core.files.File` **.stp** present in a :class:`.Document3D` and a file **.geo** that represents his geometry</span>
+<span class="sd">    A :class:`.DocumentFile` can have zero or many :class:`.GeometryFile` associated , to identify the different :class:`.GeometryFile` attached to one :class:`.DocumentFile` we use the</span>
+<span class="sd">    attribute index. (**index** should be **&gt;=1**)</span>
+
+<span class="sd">    The information contained in the file **.geo** will allow to generate the  3D view of the :class:`.DocumentFile`</span>
+
+<span class="sd">     .. attribute:: stp</span>
+
+<span class="sd">        :class:`.DocumentFile` of relation</span>
+
+<span class="sd">     .. attribute:: file</span>
+
+<span class="sd">        file **.geo**</span>
+
+<span class="sd">     .. attribute:: index</span>
+
+<span class="sd">        to identify the different :class:`.GeometryFile` attached to one :class:`.DocumentFile`  (&gt;=1)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="p">,</span><span class="n">storage</span><span class="o">=</span><span class="n">media3DGeometryFile</span><span class="p">)</span>
+    <span class="n">stp</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;GeometryFile&lt;</span><span class="si">%d</span><span class="s">:</span><span class="si">%s</span><span class="s">, </span><span class="si">%d</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stp</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stp</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+
+<span class="c">#admin.site.register(GeometryFile)</span>
+</div>
+<div class="viewcode-block" id="delete_GeometryFiles"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.delete_GeometryFiles">[docs]</a><span class="k">def</span> <span class="nf">delete_GeometryFiles</span><span class="p">(</span><span class="n">doc_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Physically deletes (*.geo* files) and logically deletes :class:`.GeometryFiles` associated</span>
+<span class="sd">    to *doc_file*</span>
+
+<span class="sd">    :param doc_file: :class:`.DocumentFile`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">to_delete</span> <span class="o">=</span> <span class="n">GeometryFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">stp</span><span class="o">=</span><span class="n">doc_file</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">to_delete</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">delete_files</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">media3DGeometryFile</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+    <span class="n">to_delete</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+</div>
+<span class="n">media3DArbreFile</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentStorage</span><span class="p">(</span><span class="n">location</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_ROOT</span><span class="o">+</span><span class="s">&quot;3D/&quot;</span><span class="p">)</span>
+<span class="c">#admin.site.register(ArbreFile)</span>
+<div class="viewcode-block" id="ArbreFile"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.ArbreFile">[docs]</a><span class="k">class</span> <span class="nc">ArbreFile</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Link between :class:`.DocumentFile` that contains a :class:`~django.core.files.File` **.stp** present in a :class:`.Document3D` and  a file **.arb** that represents his arborescense</span>
+<span class="sd">    A :class:`.DocumentFile` STEP have one :class:`.ArbreFile` associated</span>
+
+<span class="sd">    The information contained in the file **.arb** will allow to generate the  3D view and the decomposition of the :class:`.DocumentFile`</span>
+
+<span class="sd">     .. attribute:: stp</span>
+
+<span class="sd">        :class:`.DocumentFile` of relation</span>
+
+<span class="sd">     .. attribute:: file</span>
+
+<span class="sd">        :class:`~django.core.files.File` **.arb**</span>
+
+<span class="sd">     .. attribute:: decomposable</span>
+
+<span class="sd">        this attribute indicates if the :class:`.DocumentFile` can be decompose</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span><span class="n">upload_to</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="p">,</span><span class="n">storage</span><span class="o">=</span><span class="n">media3DArbreFile</span><span class="p">)</span>
+    <span class="n">stp</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">)</span>
+    <span class="n">decomposable</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ArbreFile.create_from_product"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.ArbreFile.create_from_product">[docs]</a>    <span class="k">def</span> <span class="nf">create_from_product</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new ArbreFile from product. Its content is seririalized to</span>
+<span class="sd">        a new *..arb* file.</span>
+
+<span class="sd">        Returns the created ArbreFile.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span><span class="o">=</span><span class="n">product</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span>
+        <span class="n">filename</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">arbre_file</span> <span class="o">=</span> <span class="n">ArbreFile</span><span class="p">(</span><span class="n">decomposable</span><span class="o">=</span><span class="n">product</span><span class="o">.</span><span class="n">is_decomposable</span><span class="p">)</span>
+        <span class="n">arbre_file</span><span class="o">.</span><span class="n">stp</span> <span class="o">=</span> <span class="n">doc_file</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">arbre_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_available_name</span><span class="p">(</span><span class="n">filename</span><span class="o">+</span><span class="s">&quot;.arb&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">arbre_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">arbre_file</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">arbre_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span><span class="s">&quot;w&quot;</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">arbre_file</span>
+
+</div></div>
+<div class="viewcode-block" id="delete_ArbreFile"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.delete_ArbreFile">[docs]</a><span class="k">def</span> <span class="nf">delete_ArbreFile</span><span class="p">(</span><span class="n">doc_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Erase physical (file **.arb**) and logically the :class:`.ArbreFile` associated with a :class:`.DocumentFile` (**doc_file**)</span>
+
+
+<span class="sd">    :param doc_file: :class:`.DocumentFile`</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">to_delete</span> <span class="o">=</span> <span class="n">ArbreFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">stp</span><span class="o">=</span><span class="n">doc_file</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">to_delete</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">delete_files</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">media3DArbreFile</span><span class="o">.</span><span class="n">location</span><span class="p">)</span>
+    <span class="n">to_delete</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</div>
+<span class="k">def</span> <span class="nf">delete_files</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="n">location</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Document3D_decomposer_Error</span><span class="p">(</span><span class="n">ControllerError</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;Error while the file step was split&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Document_Generate_Bom_Error</span><span class="p">(</span><span class="n">ControllerError</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_delete</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">assembly</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_delete</span><span class="o">=</span><span class="n">to_delete</span><span class="c"># DocumentFiles generated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assembly</span><span class="o">=</span><span class="n">assembly</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;Columns reference, type, revision are not unique between the products of the assembly &quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">assembly</span> <span class="c">#meter referencia</span>
+
+
+
+<div class="viewcode-block" id="Location_link"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.Location_link">[docs]</a><span class="k">class</span> <span class="nc">Location_link</span><span class="p">(</span><span class="n">pmodels</span><span class="o">.</span><span class="n">ParentChildLinkExtension</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extend :class:`.ParentChildLinkExtension`</span>
+<span class="sd">    Represents the matrix of transformation (rotation and translation) and the name of one relation between assemblies.</span>
+<span class="sd">    When a file STEP is decomposed in Parts a :class:`.ParentChildLink` is generated between the Parts</span>
+<span class="sd">    and each of these :class:`.ParentChildLink` could have attached one or more :class:`.Location_link`</span>
+
+<span class="sd">    Defines a non-persistent transformation in 3D space</span>
+
+
+<span class="sd">     == == == == == = ==</span>
+<span class="sd">     x1 x2 x3 x4  x = x&#39;</span>
+<span class="sd">     y1 y2 y3 y4  y = y&#39;</span>
+<span class="sd">     z1 z2 z3 z4  z = z&#39;</span>
+<span class="sd">     0  0  0  1   1 = 1</span>
+<span class="sd">     == == == == == = ==</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">x3</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">x4</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">y3</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">y4</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">z3</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">z4</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;no_name&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x4</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y4</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">apply_to</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="c"># only apply to all parts</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;x1&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">)</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;x2&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x2</span><span class="p">)</span>
+        <span class="n">x3</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;x3&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x3</span><span class="p">)</span>
+        <span class="n">x4</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;x4&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x4</span><span class="p">)</span>
+        <span class="n">y1</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;y1&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span>
+        <span class="n">y2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;y2&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y2</span><span class="p">)</span>
+        <span class="n">y3</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;y3&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y3</span><span class="p">)</span>
+        <span class="n">y4</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;y4&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y4</span><span class="p">)</span>
+        <span class="n">z1</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z1&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="p">)</span>
+        <span class="n">z2</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z2&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="p">)</span>
+        <span class="n">z3</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z3&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="p">)</span>
+        <span class="n">z4</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z4&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="p">)</span>
+
+        <span class="n">name</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="n">Location_link</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">link</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">x1</span><span class="o">=</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="o">=</span><span class="n">x3</span><span class="p">,</span> <span class="n">x4</span><span class="o">=</span><span class="n">x4</span><span class="p">,</span>
+                <span class="n">y1</span><span class="o">=</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="o">=</span><span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="o">=</span><span class="n">y3</span><span class="p">,</span> <span class="n">y4</span><span class="o">=</span><span class="n">y4</span><span class="p">,</span>
+                <span class="n">z1</span><span class="o">=</span><span class="n">z1</span><span class="p">,</span><span class="n">z2</span><span class="o">=</span><span class="n">z2</span><span class="p">,</span><span class="n">z3</span><span class="o">=</span><span class="n">z3</span><span class="p">,</span><span class="n">z4</span><span class="o">=</span><span class="n">z4</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">clone</span>
+
+
+<span class="c">#admin.site.register(Location_link)</span></div>
+<span class="n">pmodels</span><span class="o">.</span><span class="n">register_PCLE</span><span class="p">(</span><span class="n">Location_link</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="generate_extra_location_links"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.generate_extra_location_links">[docs]</a><span class="k">def</span> <span class="nf">generate_extra_location_links</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">pcl</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates all :class:`Location_link` bound to *link and *pcl*.</span>
+
+<span class="sd">    :param link: :class:`.openPLM.apps.document3D.classes.Link` which will be used to create :class:`.Location_link`</span>
+<span class="sd">    :type plmobject: :class:`.Link`</span>
+<span class="sd">    :param ParentChildLink: Parent child link that is extended</span>
+<span class="sd">    :type plmobject: :class:`.ParentChildLink`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># Location_link inherits from PCLE: it is not possible to call bulk_create</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">quantity</span><span class="p">):</span>
+        <span class="n">loc</span> <span class="o">=</span> <span class="n">Location_link</span><span class="p">()</span>
+        <span class="n">loc</span><span class="o">.</span><span class="n">link</span> <span class="o">=</span> <span class="n">pcl</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_array</span><span class="p">()</span>
+        <span class="n">loc</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="p">(</span><span class="n">loc</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">x3</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">x4</span><span class="p">,</span>
+         <span class="n">loc</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">y2</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">y3</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">y4</span><span class="p">,</span>
+         <span class="n">loc</span><span class="o">.</span><span class="n">z1</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">z2</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">z3</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">z4</span><span class="p">)</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-50</span> <span class="k">else</span> <span class="n">x</span><span class="p">,</span> <span class="n">array</span><span class="p">)</span>
+        <span class="n">loc</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+</div>
+<span class="nd">@task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;openPLM.apps.document3D.decomposer_all&quot;</span><span class="p">,</span>
+      <span class="n">soft_time_limit</span><span class="o">=</span><span class="mi">60</span><span class="o">*</span><span class="mi">25</span><span class="p">,</span><span class="n">time_limit</span><span class="o">=</span><span class="mi">60</span><span class="o">*</span><span class="mi">25</span><span class="p">)</span>
+<div class="viewcode-block" id="decomposer_all"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.decomposer_all">[docs]</a><span class="k">def</span> <span class="nf">decomposer_all</span><span class="p">(</span><span class="n">stp_file_pk</span><span class="p">,</span><span class="n">arbre</span><span class="p">,</span><span class="n">part_pk</span><span class="p">,</span><span class="n">native_related_pk</span><span class="p">,</span><span class="n">user_pk</span><span class="p">,</span><span class="n">old_arbre</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param arbre: Information contained in file **.arb** that allows to generate a :class:`.Product` that represents the arborescense of the :class:`~django.core.files.File` .stp to decompose , his nodes contains doc_id and doc_path of new :class:`.DocumentFile` created in the arborescense</span>
+<span class="sd">    :type plmobject: :class:`.Product`</span>
+<span class="sd">    :param stp_file_pk: primery key of a :class:`.DocumentFile` that contains the :class:`~django.core.files.File` that will be decomposed</span>
+<span class="sd">    :param part_pk: primery key of a :class:`.Part` attached to the :class:`.Document3D` that contains the :class:`.DocumentFile` that will be decomposed</span>
+<span class="sd">    :param native_related_pk: If exists a native file related to the :class:`.DocumentFile` that will be decomposed ,  contains the primary key of the :class:`.DocumentFile` related to the native file</span>
+
+
+<span class="sd">    This function departs from a :class:`.DocumentFile` (**stp_file_pk**) associated with a :class:`.Document3D` attached to a :class:`.Part` (``part_pk``) and from</span>
+<span class="sd">    the :class:`.Product` related to the :class:`.DocumentFile` in order to decompose :class:`~django.core.files.File` .stp.With this purpose it realizes a call to the subprocess</span>
+<span class="sd">    :meth:`.generateDecomposition.py`.</span>
+
+
+
+<span class="sd">    -**Preconditions** ,before calling to this function, the following steps must have been realized:</span>
+
+<span class="sd">        -The bom-child of Parts (in relation to the :class:`.Product` (generate across the **arbre**)) has been generated</span>
+
+<span class="sd">        -For every :class:`.ParentChildLink` generated in the previous condition we attach all the :class:`.Location_link` relatives</span>
+
+<span class="sd">        -To every generated :class:`.Part` a :class:`.Document3D` has been attached and the :class:`.Document3D` has been set like the attribute PartDecompose of the :class:`.Part`</span>
+
+<span class="sd">        -The attribute doc_id of every node of the :class:`.Product` (generate across the **arbre**) is now the relative id of :class:`.Document3D` generated in the previous condition</span>
+
+<span class="sd">        -To every generated :class:`.Document3D` has been added a new empty(locked) :class:`.DocumentFile` .stp</span>
+
+<span class="sd">        -The attribute doc_path of every node of the :class:`.Product` is now the path of :class:`.DocumentFile` generated in the previous condition</span>
+
+<span class="sd">        -The :class:`.DocumentFile` (**stp_file_pk**) is locked</span>
+
+<span class="sd">        -If exists a native :class:`.DocumentFile` (**native_related_pk**) related to the :class:`.DocumentFile` (**stp_file_pk**), then this one was depreciated (afterwards will be promoted)</span>
+
+
+
+
+<span class="sd">    -**Treatment**</span>
+
+
+<span class="sd">        -The subprocess  :meth:`.generateDecomposition.py` is going to write in to doc_path of every node of the :class:`.Product` (generate across the **arbre**) the corresponding decomposed file</span>
+
+
+<span class="sd">    -**Postconditions**</span>
+
+<span class="sd">        -For every generated :class:`.Document3D` , the new :class:`.DocumentFile` added is unlocked</span>
+
+<span class="sd">        -For every new :class:`.DocumentFile` , his :class:`.GeometryFile` and :class:`.ArbreFile` have been generated</span>
+
+<span class="sd">        -The root :class:`.DocumentFile` (**stp_file_pk**) has been deprecated and unlocked</span>
+
+<span class="sd">        -A new root :class:`.DocumentFile` has been generated according to the situation</span>
+
+<span class="sd">        -If exists a native :class:`.DocumentFile` (**native_related_pk**) related to the :class:`.DocumentFile` (**stp_file_pk**), then this one was promoted</span>
+
+<span class="sd">        -We set the :class:`.Part` (**part_pk**) like the attribute PartDecompose of the :class:`.Document3D` that contains the :class:`.DocumentFile` (**stp_file_pk**)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">stp_file</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">stp_file_pk</span><span class="p">)</span>
+        <span class="n">ctrl</span><span class="o">=</span><span class="n">get_controller</span><span class="p">(</span><span class="n">stp_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+        <span class="n">user</span><span class="o">=</span><span class="n">pmodels</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">user_pk</span><span class="p">)</span>
+        <span class="n">ctrl</span><span class="o">=</span><span class="n">ctrl</span><span class="p">(</span><span class="n">stp_file</span><span class="o">.</span><span class="n">document</span><span class="p">,</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">part</span><span class="o">=</span><span class="n">pmodels</span><span class="o">.</span><span class="n">Part</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">part_pk</span><span class="p">)</span>
+
+        <span class="n">product</span><span class="o">=</span><span class="n">classes</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">arbre</span><span class="p">))</span>   <span class="c">#whit doc_id and doc_path updated for every node</span>
+        <span class="n">old_product</span><span class="o">=</span><span class="n">classes</span><span class="o">.</span><span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">old_arbre</span><span class="p">))</span> <span class="c"># doc_id and doc_path original</span>
+        <span class="n">new_stp_file</span><span class="o">=</span><span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">()</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">new_stp_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_available_name</span><span class="p">((</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s">&quot;.stp&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">))</span>
+        <span class="n">new_stp_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_stp_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">new_stp_path</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">))</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+        <span class="n">product</span><span class="o">.</span><span class="n">doc_path</span><span class="o">=</span><span class="n">new_stp_path</span> <span class="c"># the old documentfile will be deprecated</span>
+        <span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="o">=</span><span class="n">new_stp_file</span><span class="o">.</span><span class="n">id</span> <span class="c"># the old documentfile will be deprecated</span>
+
+        <span class="n">temp_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">temp_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">to_list</span><span class="p">()))</span>
+        <span class="n">temp_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">call</span><span class="p">([</span><span class="s">&quot;python&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="s">&quot;generateDecomposition.py&quot;</span><span class="p">),</span>
+            <span class="n">stp_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span><span class="n">temp_file</span><span class="o">.</span><span class="n">name</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">update_child_files_BD</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">old_product</span><span class="p">)</span>
+            <span class="n">update_root_BD</span><span class="p">(</span><span class="n">new_stp_file</span><span class="p">,</span><span class="n">stp_file</span><span class="p">,</span><span class="n">ctrl</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">f</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">part</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">raise</span> <span class="n">Document3D_decomposer_Error</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Document3D_decomposer_Error</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">native_related_pk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">native_related</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="n">native_related_pk</span><span class="p">)</span>
+            <span class="n">native_related</span><span class="o">.</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span>
+            <span class="n">native_related</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">stp_file</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">stp_file</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">stp_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+
+</div>
+<div class="viewcode-block" id="update_root_BD"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.update_root_BD">[docs]</a><span class="k">def</span> <span class="nf">update_root_BD</span><span class="p">(</span><span class="n">new_stp_file</span><span class="p">,</span><span class="n">stp_file</span><span class="p">,</span><span class="n">ctrl</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="nb">file</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">part</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param stp_file: :class:`.DocumentFile` that was decomposed (will be deprecated)</span>
+<span class="sd">    :param new_stp_file: :class:`.DocumentFile` that will replace the :class:`.DocumentFile` that was decomposed</span>
+<span class="sd">    :param product: :class:`.Product` that represents the arborescense of the :class:`.DocumentFile` that was decomposed</span>
+<span class="sd">    :param part: :class:`.Part` attached to the :class:`.Document3D` that contains the :class:`.DocumentFile` that was decomposed</span>
+<span class="sd">    :param ctrl: :class:`.Document3DController` that contains the :class:`.DocumentFile` that was decomposed</span>
+<span class="sd">    :param file: :class:`~django.core.files.File` that contains the new file .stp root</span>
+<span class="sd">    :param name: name for the :class:`.DocumentFile` (new_stp_file)</span>
+<span class="sd">    :type plmobject: :class:`.Product`</span>
+
+
+
+<span class="sd">    Updates a :class:`.DocumentFile` (**stp_file**) that was used like root in a decomposition , deprecating it and replacing by a new :class:`.DocumentFile` (**new_stp_file**)</span>
+
+<span class="sd">    This update consists in:</span>
+
+<span class="sd">        Connect the :class:`.DocumentFile` (**new_stp_file**) to the :class:`.Document3D` (**ctrl.object**)</span>
+
+<span class="sd">        Generate a new :class:`.ArbreFile` for the **new_stp_file** (**product**.doc_id and **product**.doc_path related to the **new_stp_file**)</span>
+
+<span class="sd">        Fix the attribute PartDecompose of the :class:`.Document3D` (**ctrl**.object) to the :class:`.Part` (**part**)</span>
+
+<span class="sd">        Deprecate the :class:`.DocumentFile` (**stp_file**)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc3D</span><span class="o">=</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">stp_file</span><span class="o">.</span><span class="n">document_id</span><span class="p">)</span>
+    <span class="n">doc3D</span><span class="o">.</span><span class="n">PartDecompose</span><span class="o">=</span><span class="n">part</span>
+    <span class="n">doc3D</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">new_stp_file</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s">&quot;.stp&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="n">new_stp_file</span><span class="o">.</span><span class="n">file</span><span class="o">=</span><span class="n">name</span>
+    <span class="n">new_stp_file</span><span class="o">.</span><span class="n">size</span><span class="o">=</span><span class="nb">file</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">new_stp_file</span><span class="o">.</span><span class="n">document</span><span class="o">=</span><span class="n">ctrl</span><span class="o">.</span><span class="n">object</span>
+    <span class="n">new_stp_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">new_stp_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mo">0400</span><span class="p">)</span>
+    <span class="n">ctrl</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;File generated by decomposition&quot;</span><span class="p">,</span> <span class="s">&quot;file : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">new_stp_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="o">=</span><span class="p">[]</span>
+
+    <span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="o">=</span><span class="n">new_stp_file</span><span class="o">.</span><span class="n">id</span>
+    <span class="n">product</span><span class="o">.</span><span class="n">doc_path</span><span class="o">=</span><span class="n">new_stp_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span>
+
+    <span class="n">ArbreFile</span><span class="o">.</span><span class="n">create_from_product</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">new_stp_file</span><span class="p">)</span>
+    <span class="n">ctrl</span><span class="o">.</span><span class="n">deprecate_file</span><span class="p">(</span><span class="n">stp_file</span><span class="p">,</span><span class="n">by_decomposition</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="update_child_files_BD"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.update_child_files_BD">[docs]</a><span class="k">def</span> <span class="nf">update_child_files_BD</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">old_product</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param product: :class:`.Product` that represents a sub-arborescense of the file **.stp** that was decomposed UPDATE whit the news doc_id and doc_path generating in the bomb-child</span>
+<span class="sd">    :param old_product: :class:`.Product` that represents a sub-arborescense ORIGINAL of the file **.stp** that was decomposed</span>
+
+
+
+<span class="sd">    Updates a :class:`.DocumentFile` STEP that WAS NOT root in a decomposition, to know which :class:`.DocumentFile` to update we use the attribute **product**.doc_id of the arborescense(**product**)</span>
+
+<span class="sd">    This update consists in:</span>
+
+<span class="sd">        Generate a new :class:`.ArbreFile` for each  :class:`.DocumentFile` STEP present in the arborescense(**product**)</span>
+
+<span class="sd">        Generate news :class:`.GeometryFile` for the :class:`.DocumentFile` STEP (Copies of the GeometryFiles of the root :class:`.DocumentFile` (Identified for **old_product**.doc_id))</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">link</span><span class="p">,</span> <span class="n">old_link</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">,</span><span class="n">old_product</span><span class="o">.</span><span class="n">links</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">:</span>
+            <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="o">=</span><span class="bp">True</span>
+            <span class="n">product_copy</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+            <span class="n">old_product_copy</span><span class="o">=</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">old_link</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+            <span class="n">product_copy</span><span class="o">.</span><span class="n">links</span><span class="o">=</span><span class="p">[]</span>       <span class="c">#when we decompose we delete the links</span>
+            <span class="n">old_product_copy</span><span class="o">.</span><span class="n">links</span><span class="o">=</span><span class="p">[]</span>
+            <span class="n">doc_file</span><span class="o">=</span><span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">product_copy</span><span class="o">.</span><span class="n">doc_id</span><span class="p">)</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="o">=</span><span class="n">product_copy</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s">&quot;.stp&quot;</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">no_index</span><span class="o">=</span><span class="bp">False</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">size</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mo">0400</span><span class="p">)</span>
+
+            <span class="n">copy_geometry</span><span class="p">(</span><span class="n">old_product_copy</span><span class="p">,</span><span class="n">doc_file</span><span class="p">)</span> <span class="c">#we utilise old_product</span>
+            <span class="n">ArbreFile</span><span class="o">.</span><span class="n">create_from_product</span><span class="p">(</span><span class="n">product_copy</span><span class="p">,</span><span class="n">doc_file</span><span class="p">)</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">no_index</span><span class="o">=</span><span class="bp">False</span> <span class="c"># to reverse no_index=True make in document3D.views.generate_part_doc_links</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">ctrl</span><span class="o">=</span><span class="n">get_controller</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+            <span class="n">ctrl</span><span class="o">=</span><span class="n">ctrl</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;File generated by decomposition&quot;</span><span class="p">,</span> <span class="s">&quot;file : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="n">update_child_files_BD</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">old_link</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="copy_geometry"><a class="viewcode-back" href="../../../../devel/applications/document3D/models.html#openPLM.apps.document3D.models.copy_geometry">[docs]</a><span class="k">def</span> <span class="nf">copy_geometry</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param product: :class:`.Product` that represents a sub-arborescense original of the file step that was decompose</span>
+<span class="sd">    :param doc_file: :class:`.DocumentFile` for which the files **.geo** that generated</span>
+
+
+<span class="sd">    Copy the content of all :class:`.GeometryFile` (determined by his index(**product**.geometry)) present in the :class:`.Product` (**product**) and his childrens  for a :class:`.DocumentFile` (**doc_file**) generating and connecting news entitys :class:`.GeometryFile`</span>
+
+
+<span class="sd">    To differentiate the content of a file **.geo** we use the combination index (determined by **product**.geometry) more id (**product**.doc_id)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">geometry</span><span class="p">:</span>
+        <span class="n">product</span><span class="o">.</span><span class="n">visited</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">old_GeometryFile</span> <span class="o">=</span> <span class="n">GeometryFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">stp__id</span><span class="o">=</span><span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">product</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
+        <span class="n">new_GeometryFile</span> <span class="o">=</span> <span class="n">GeometryFile</span><span class="p">()</span>
+        <span class="n">fileName</span><span class="p">,</span> <span class="n">fileExtension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="n">new_GeometryFile</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">new_GeometryFile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_available_name</span><span class="p">(</span><span class="n">fileName</span><span class="o">+</span><span class="s">&quot;.geo&quot;</span><span class="p">)</span>
+        <span class="n">new_GeometryFile</span><span class="o">.</span><span class="n">stp</span> <span class="o">=</span> <span class="n">doc_file</span>
+        <span class="n">new_GeometryFile</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">geometry</span>
+        <span class="n">new_GeometryFile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">old_GeometryFile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_GeometryFile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">old_var</span> <span class="o">=</span> <span class="s">&quot;_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="p">)</span>
+                <span class="n">new_var</span> <span class="o">=</span> <span class="s">&quot;_</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
+                    <span class="n">new_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">old_var</span><span class="p">,</span> <span class="n">new_var</span><span class="p">)</span>
+                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">new_line</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">:</span>
+            <span class="n">copy_geometry</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,236 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.5. gdoc – Google Document Application &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="3. Applications" href="../../applications.html" />
+    <link rel="next" title="3.6. oerp – OpenERP Application" href="../oerp/index.html" />
+    <link rel="prev" title="3.4. ecr - Engineering Change Requests" href="../ecr/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../oerp/index.html" title="3.6. oerp – OpenERP Application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../ecr/index.html" title="3.4. ecr - Engineering Change Requests"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" accesskey="U">3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.5. gdoc &#8211; Google Document Application</a><ul>
+<li><a class="reference internal" href="#dependencies">3.5.1. Dependencies</a></li>
+<li><a class="reference internal" href="#oauth-2">3.5.2. OAuth 2</a></li>
+<li><a class="reference internal" href="#settings-py">3.5.3. settings.py</a></li>
+<li><a class="reference internal" href="#synchronize-the-database">3.5.4. Synchronize the database</a></li>
+<li><a class="reference internal" href="#testing">3.5.5. Testing</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../ecr/index.html"
+                        title="previous chapter">3.4. ecr - Engineering Change Requests</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../oerp/index.html"
+                        title="next chapter">3.6. oerp &#8211; OpenERP Application</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/admin/applications/gdoc/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/applications/gdoc/index.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="gdoc-google-document-application">
+<span id="gdoc-admin"></span><h1>3.5. gdoc &#8211; Google Document Application<a class="headerlink" href="#gdoc-google-document-application" title="Permalink to this headline">¶</a></h1>
+<p>This application adds a <strong>GoogleDocument</strong> document which links to a document
+stored in <a class="reference external" href="https://docs.google.com/#home">Google Document</a>.</p>
+<div class="section" id="dependencies">
+<h2>3.5.1. Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>The <em>gdoc</em> application adds the following dependencies:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://code.google.com/intl/fr-FR/apis/gdata/">gdata</a></li>
+<li><a class="reference external" href="http://code.google.com/p/google-api-python-client/">google-api-python-client</a></li>
+</ul>
+</div></blockquote>
+<p>They are installable through <em>pip</em> or <em>easy_install</em>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">gdata</span> <span class="pre">google-api-python-client</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="oauth-2">
+<h2>3.5.2. OAuth 2<a class="headerlink" href="#oauth-2" title="Permalink to this headline">¶</a></h2>
+<p><em>gdoc</em> uses OAuth 2 to authenticate an user so that openPLM does not have
+to store user passwords.</p>
+<p>You must register your application to Google:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Go on <a class="reference external" href="https://code.google.com/apis/console/">https://code.google.com/apis/console/</a> , if you have never created
+register an application, this should show you this page:</p>
+<img alt="../../../_images/gapi_1.png" src="../../../_images/gapi_1.png" />
+</li>
+<li><p class="first">Click on the <em>Create project</em> button.</p>
+<img alt="../../../_images/gapi_2.png" src="../../../_images/gapi_2.png" />
+</li>
+<li><p class="first">Click on the API access link.</p>
+<img alt="../../../_images/gapi_3.png" src="../../../_images/gapi_3.png" />
+</li>
+<li><p class="first">Click on <em>Create an OAuth 2.0 client ID...</em> button, this will pop up
+a form. On the second page, enter your site domain:</p>
+<img alt="../../../_images/gapi_4.png" src="../../../_images/gapi_4.png" />
+</li>
+<li><p class="first">Enter your application domain and validate the form. Your credentials
+are the client ID and client secret fields.</p>
+<img alt="../../../_images/gapi_5.png" src="../../../_images/gapi_5.png" />
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="settings-py">
+<h2>3.5.3. settings.py<a class="headerlink" href="#settings-py" title="Permalink to this headline">¶</a></h2>
+<p>To enable the <em>gdoc</em> application, it must be enabled in the settings file: add
+<tt class="docutils literal"><span class="pre">'openPLM.apps.gdoc'</span></tt> to the list of installed applications
+(<a class="reference internal" href="../../upgrade/upgrade-2.0.html#INSTALLED_APPS" title="INSTALLED_APPS"><tt class="xref py py-const docutils literal"><span class="pre">INSTALLED_APPS</span></tt></a>).</p>
+<p>At the end of the <tt class="file docutils literal"><span class="pre">settings.py</span></tt> file, adds two variables:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">GOOGLE_CONSUMER_KEY</span> <span class="o">=</span> <span class="s">u&#39;client id from Google API access page&#39;</span>
+<span class="n">GOOGLE_CONSUMER_SECRET</span> <span class="o">=</span> <span class="s">u&#39;client secret from Google API access page&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="synchronize-the-database">
+<h2>3.5.4. Synchronize the database<a class="headerlink" href="#synchronize-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">migrate</span> <span class="pre">gdoc</span></tt>.</p>
+</div>
+<div class="section" id="testing">
+<h2>3.5.5. Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>To test this application, create a new GoogleDocument. You will be redirected
+to a page asking you to allow openPLM to access your documents. Accept and
+you will be able to select a document from your Google documents.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../oerp/index.html" title="3.6. oerp – OpenERP Application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../ecr/index.html" title="3.4. ecr - Engineering Change Requests"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

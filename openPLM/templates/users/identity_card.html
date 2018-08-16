@@ -1,0 +1,27 @@
+{% extends "identity_card.html" %}
+{% load i18n plmapp_tags highlight humanize %}
+
+{% block object_url %}/user/{{object.username|urlencode}}{{ suffix_url }}{% endblock %}
+
+{% block thumbnail_url%}{% avatar_url object %}{% endblock %}
+{% block id_title %}
+    <p>
+    <span class="type">{% trans "User" %}</span>
+    </p>
+    <p>
+    <span class="reference">{{object.username}}</span>
+    </p>
+{% endblock %}
+{% block id_details%}
+    <p>
+    <span class="fullname name">{{ object.get_full_name }}</span>
+    </p>
+
+    {% if sort == "recently-added" and not restricted %}
+        <p>
+        <span class="sort">
+            {% blocktrans with object.date_joined|naturaltime as ctime %}joined {{ctime}} {% endblocktrans %}
+        </span>
+        </p>
+    {% endif %}
+{% endblock %}

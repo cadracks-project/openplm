@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+<!-- Manage html display in the Content div which correspond to the "attributes" menu -->
+
+{% block content %}
+    {% if is_owner %}
+        <div class="tb-btn-group">
+            <a class="tb-btn tb-dropdown-toggle" data-toggle="dropdown" href="#">
+                {% trans "Delegate..." %}
+                <span class="tb-caret"></span>
+            </a>
+            <ul class="tb tb-dropdown-menu">
+                <li>
+                <a href="./delegate/owner/?q=&type=User">{% trans "Ownership" %}</a>
+                </li>
+                <li>
+                <a href="./delegate/sign/1/?q=&type=User">{% trans "Signature 1st level" %}</a>
+                </li>
+                <li>
+                <a href="./delegate/sign/2/?q=&type=User">{% trans "Signature 2nd level" %}</a>
+                </li>
+                <li>
+                <a href="./delegate/sign/all/?q=&type=User">{% trans "All signatures" %}</a>
+                </li>
+                <li>
+                <a href="./delegate/notified/?q=&type=User">{% trans "Notifications" %}</a>
+                </li>
+            </ul>
+        </div>
+        {% if obj.is_contributor or obj.is_administrator %}
+            <a class="tb-btn tb-btn-primary" href="./sponsor/">
+                {% trans "Sponsor" %}</a>
+        {% endif %}
+    {% endif %}
+    <table class="Content">
+        <tr class="Content">
+            <th class="Content"> {% trans "Username" %} </th>
+            <th class="Content"> {% trans "First Name" %} </th>
+            <th class="Content"> {% trans "Last Name" %} </th>
+            <th class="Content"> {% trans "Role" %} </th>
+        </tr>
+        {% for link in user_delegation_link %}
+            <tr class="Content">
+                <td class="Content"><a href="/user/{{link.delegatee.username|urlencode}}/">{{link.delegatee.username}}</a></td>
+                <td class="Content">{{link.delegatee.first_name}}</td>
+                <td class="Content">{{link.delegatee.last_name}}</td>
+                <td class="Content">{{link.role}}</td>
+                {% if is_owner %}
+                    {% if link.role != "sponsor" %}
+                        <td class="Content">
+                            <form method="post" action="./delete/">{% csrf_token %}
+                                <input type="hidden" name="link_id" value="{{link.id}}" />
+                                <input type="submit" class="tb-btn" value="{% trans "STOP DELEGATION" %}"/>
+                            </form>
+                        </td>
+                    {% else %}
+                        {% if link.delegatee.last_login <= link.ctime and link.delegatee.is_active %}
+                            <td class="Content">
+                                <form method="post" action="sponsor/mail/">{% csrf_token %}
+                                    <input type="hidden" name="link_id" value="{{link.id}}" />
+                                    <input type="submit" class="tb-btn" value="{% trans "Resend mail" %}"/>
+                                </form>
+                            </td>
+                        {% endif %}
+
+
+                    {% endif %}
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
+
+

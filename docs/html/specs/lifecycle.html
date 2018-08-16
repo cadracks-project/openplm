@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Lifecycle &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="7. Specifications" href="index.html" />
+    <link rel="next" title="3. Publication" href="publication.html" />
+    <link rel="prev" title="1. Part and document cloning: specifications" href="clone.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="3. Publication"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="clone.html" title="1. Part and document cloning: specifications"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Lifecycle</a><ul>
+<li><a class="reference internal" href="#standard-lifecycles">2.1. Standard lifecycles</a><ul>
+<li><a class="reference internal" href="#promote-rules-for-standard-lifecycles">2.1.1. Promote rules for Standard lifecycles</a><ul>
+<li><a class="reference internal" href="#parts">2.1.1.1. Parts</a></li>
+<li><a class="reference internal" href="#documents">2.1.1.2. Documents</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#promote-rules-to-official-for-standard-lifecycles">2.1.2. Promote rules to official for Standard lifecycles</a></li>
+<li><a class="reference internal" href="#cancel-rules">2.1.3. Cancel rules</a></li>
+<li><a class="reference internal" href="#ownership">2.1.4. Ownership</a></li>
+<li><a class="reference internal" href="#visibility">2.1.5. Visibility</a></li>
+<li><a class="reference internal" href="#edit-modification">2.1.6. Edit/Modification</a></li>
+<li><a class="reference internal" href="#revision">2.1.7. Revision</a></li>
+<li><a class="reference internal" href="#notification">2.1.8. Notification</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#cancelled-lifecycle">2.2. Cancelled lifecycle</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="clone.html"
+                        title="previous chapter">1. Part and document cloning: specifications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="publication.html"
+                        title="next chapter">3. Publication</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/specs/lifecycle.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/specs/lifecycle.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lifecycle">
+<h1>2. Lifecycle<a class="headerlink" href="#lifecycle" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The following rules may not have been implemented.</p>
+</div>
+<p>TODO: Add examples, list tests validating these rules.</p>
+<div class="section" id="standard-lifecycles">
+<h2>2.1. Standard lifecycles<a class="headerlink" href="#standard-lifecycles" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li>All standard lifecycles shall have an official status</li>
+<li>All standard lifecycles shall have a deprecated status</li>
+<li>All standard lifecycles shall have one or more status
+before official status (draft, to be validated, ...)</li>
+<li>Only one object with the same type/reference shall be at
+official status</li>
+</ol>
+</div></blockquote>
+<div class="section" id="promote-rules-for-standard-lifecycles">
+<h3>2.1.1. Promote rules for Standard lifecycles<a class="headerlink" href="#promote-rules-for-standard-lifecycles" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="parts">
+<h4>2.1.1.1. Parts<a class="headerlink" href="#parts" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Part without children shall have at least one linked official
+document before being promoted</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><ul class="first">
+<li><p class="first">Can promote:</p>
+<blockquote>
+<div><p class="graphviz">
+<img src="../_images/graphviz-2003c9af59defe01d5b239fe4928b093afd48f5f.png" alt="digraph {
+    node [fontsize=10, shape=&quot;box&quot;, width=&quot;.2&quot;, height=&quot;.2&quot;];
+
+    subgraph g {
+        part [label=&quot;Part\ndraft&quot;]
+        doc [label=&quot;Document\nofficial&quot;, shape=&quot;folder&quot;]
+        doc -&gt; part;
+    }
+
+    subgraph g2 {
+        part1 [label=&quot;Part\ndraft&quot;]
+        doc1 [label=&quot;Document\nofficial&quot;, shape=&quot;folder&quot;]
+        doc2 [label=&quot;Document\ndeprecated&quot;, shape=&quot;folder&quot;]
+        doc1 -&gt; part1;
+        doc2 -&gt; part1;
+    }
+
+    subgraph g3 {
+        part3 [label=&quot;Part\ndraft&quot;]
+        doc31 [label=&quot;Document\nofficial&quot;, shape=&quot;folder&quot;]
+        doc32 [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc31 -&gt; part3;
+        doc32 -&gt; part3;
+    }
+
+}" />
+</p>
+</div></blockquote>
+</li>
+<li><p class="first">Can not promote:</p>
+<blockquote>
+<div><p class="graphviz">
+<img src="../_images/graphviz-00a3aea0bc40f74b48a455c3e482ae2830727dfb.png" alt="digraph {
+    node [fontsize=10, shape=&quot;box&quot;, width=&quot;.2&quot;, height=&quot;.2&quot;];
+
+    subgraph g1 {
+        part [label=&quot;Part\ndraft&quot;]
+    }
+
+    subgraph g2 {
+        part1 [label=&quot;Part\ndraft&quot;]
+        doc1 [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc2 [label=&quot;Document\ndeprecated&quot;, shape=&quot;folder&quot;]
+        doc1 -&gt; part1;
+        doc2 -&gt; part1;
+    }
+
+    subgraph g3 {
+        part3 [label=&quot;Part\ndraft&quot;]
+        doc31 [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc31 -&gt; part3;
+    }
+}" />
+</p>
+</div></blockquote>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.PartControllerTest.test_is_promotable1</li>
+<li>plmapp.PartControllerTest.test_is_promotable_no_document</li>
+<li>plmapp.PartControllerTest.test_is_promotable_no_official_document</li>
+<li>plmapp.PartControllerTest.test_is_promotable_one_official_document</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="documents">
+<h4>2.1.1.2. Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Document shall not be promoted without a file in
+it or equivalent</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><ul class="first">
+<li><p class="first">Can promote:</p>
+<blockquote>
+<div><p class="graphviz">
+<img src="../_images/graphviz-75ae5d13660f78f24b82c840cc817bb7e3e35a4d.png" alt="digraph {
+    node [fontsize=10, shape=&quot;box&quot;, width=&quot;.2&quot;, height=&quot;.2&quot;];
+
+    subgraph g {
+        file [label=&quot;File\nunlocked&quot;, shape=&quot;note&quot;]
+        doc [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc -&gt; file;
+    }
+
+    subgraph g2 {
+        file1 [label=&quot;File\nunlocked&quot;, shape=&quot;note&quot;]
+        file2 [label=&quot;File\nunlocked&quot;, shape=&quot;note&quot;]
+        doc2 [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc2 -&gt; file1;
+        doc2 -&gt; file2;
+    }
+
+}" />
+</p>
+</div></blockquote>
+</li>
+<li><p class="first">Can not promote:</p>
+<blockquote>
+<div><p class="graphviz">
+<img src="../_images/graphviz-74c9167a9fe2be404f8bb05ee442274dee6f8e52.png" alt="digraph {
+    node [fontsize=10, shape=&quot;box&quot;, width=&quot;.2&quot;, height=&quot;.2&quot;];
+
+    subgraph g1 {
+        doc [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+    }
+}" />
+</p>
+</div></blockquote>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.DocumentControllerTest.test_is_promotable_no_file</li>
+<li>plmapp.DocumentControllerTest.test_is_promotable_one_unlocked_file</li>
+<li>suversion.SubversionRepositoryTestCase.test_is_promotable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Document shall not be promoted if one of their files is locked</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Examples:</th><td class="field-body"><ul class="first">
+<li><p class="first">Can promote:</p>
+<blockquote>
+<div><p class="graphviz">
+<img src="../_images/graphviz-75ae5d13660f78f24b82c840cc817bb7e3e35a4d.png" alt="digraph {
+    node [fontsize=10, shape=&quot;box&quot;, width=&quot;.2&quot;, height=&quot;.2&quot;];
+
+    subgraph g {
+        file [label=&quot;File\nunlocked&quot;, shape=&quot;note&quot;]
+        doc [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc -&gt; file;
+    }
+
+    subgraph g2 {
+        file1 [label=&quot;File\nunlocked&quot;, shape=&quot;note&quot;]
+        file2 [label=&quot;File\nunlocked&quot;, shape=&quot;note&quot;]
+        doc2 [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc2 -&gt; file1;
+        doc2 -&gt; file2;
+    }
+
+}" />
+</p>
+</div></blockquote>
+</li>
+<li><p class="first">Can not promote:</p>
+<blockquote>
+<div><p class="graphviz">
+<img src="../_images/graphviz-db520321124f2706aec3f92f3b398715f6c2620a.png" alt="digraph {
+    node [fontsize=10, shape=&quot;box&quot;, width=&quot;.2&quot;, height=&quot;.2&quot;];
+
+    subgraph g {
+        file [label=&quot;File\nlocked&quot;, shape=&quot;note&quot;]
+        doc [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc -&gt; file;
+    }
+
+    subgraph g2 {
+        file1 [label=&quot;File\nlocked&quot;, shape=&quot;note&quot;]
+        file2 [label=&quot;File\nunlocked&quot;, shape=&quot;note&quot;]
+        doc2 [label=&quot;Document\ndraft&quot;, shape=&quot;folder&quot;]
+        doc2 -&gt; file1;
+        doc2 -&gt; file2;
+    }
+
+}" />
+</p>
+</div></blockquote>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.DocumentControllerTest.test_is_promotable_one_locked_file</li>
+<li>plmapp.DocumentControllerTest.test_is_promotable_one_unlocked_file</li>
+<li>plmapp.DocumentControllerTest.test_is_promotable_two_unlocked_files</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="promote-rules-to-official-for-standard-lifecycles">
+<h3>2.1.2. Promote rules to official for Standard lifecycles<a class="headerlink" href="#promote-rules-to-official-for-standard-lifecycles" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Promoting one object to official status shall
+push the prior official revision to deprecated status</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_promote_to_official_revision_previous_is_official</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Promoting one object to official status shall
+push all prior non official revisions to cancelled lifecycle</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_promote_to_official_revision_previous_is_editable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Parent part shall not be promoted to a status
+higher than its child&#8217;s status:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">What to do if the lifecycles are different?</p>
+</div>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="cancel-rules">
+<h3>2.1.3. Cancel rules<a class="headerlink" href="#cancel-rules" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">An object can only be cancelled by its owner</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first simple">
+<li>plmapp.ControllerTest.test_cancel_not_owner</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_cancel_owner</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">When an object has more than one revision, none of its revisions can&#8217;t be
+cancelled</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_cancel_revised</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Non draft objects can&#8217;t be cancelled</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_cancel_draft</li>
+<li>plmapp.ControllerTest.test_cancel_not_draft</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">If a part is wether a child or a parent, it can&#8217;t be cancelled</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first simple">
+<li>plmapp.PartControllerTest.test_cancel_has_child</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.PartControllerTest.test_cancel_has_parent</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">If a part is related to a document and inversely, it can&#8217;t be cancelled.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first simple">
+<li>plmapp.PartControllerTest.test_cancel_has_document_related</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.DocumentControllerTest.test_cancel_has_part_related</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="ownership">
+<h3>2.1.4. Ownership<a class="headerlink" href="#ownership" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">When an object is official, ownership shall switch from
+one user to Company</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_promote_to_official_status</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">When an object is deprecated, ownership shall stay to Company</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_promote_to_deprecated_status</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Non official objects can&#8217;t switch to Company ownership</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_set_owner_error2</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="visibility">
+<h3>2.1.5. Visibility<a class="headerlink" href="#visibility" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Object is visible only by its group&#8217;s users when its status is before
+official</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_is_readable_group_ok</li>
+<li>plmapp.ControllerTest.test_is_readable_group_invalid</li>
+<li>plmapp.ControllerTest.test_is_readable_owner</li>
+<li>plmapp.ControllerTest.test_is_readable_company</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Object is visible by all users when its status is official</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_is_readable_not_editable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Object is visible by all users when its status is deprecated</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_is_readable_not_editable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="edit-modification">
+<h3>2.1.6. Edit/Modification<a class="headerlink" href="#edit-modification" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Object can only be edited by its owner</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.MechantUserViewTest.test_edit_attributes</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Part links can be created/removed only by its owner</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.PartControllerTest.test_add_child_error_not_owner</li>
+<li>plmapp.PartControllerTest.test_delete_child_error_not_owner</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Part links can&#8217;t be removed at official status</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.PartControllerTest.test_delete_child_error_official_status</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Part&#8217;s child links can&#8217;t be created/removed at official status</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.PartControllerTest.test_add_child_error_official_status</li>
+<li>plmapp.PartControllerTest.test_delete_child_error_official_status</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Part&#8217;s parent links can be created/removed at official status</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.PartControllerTest.test_add_child_error_official_status</li>
+<li>plmapp.PartControllerTest.test_delete_child_error_official_status</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">Owner can create/remove links between draft Documents and parts at all status</p>
+</li>
+<li><p class="first">Ownership and other signature rights can be modified only by its owner</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="revision">
+<h3>2.1.7. Revision<a class="headerlink" href="#revision" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">All users who can see an object can revise it</p>
+</li>
+<li><p class="first">Only the last revision can be revised</p>
+</li>
+<li><p class="first">An object can be revised whatever is its status (except deprecated)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_revise_error_deprecated_object</li>
+<li>plmapp.Controller.test_revise</li>
+<li>plmapp.Controller.test_revise_official</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">The user who revises an object can change the group of the revised object? <strong>??</strong></p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="notification">
+<h3>2.1.8. Notification<a class="headerlink" href="#notification" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ol class="arabic simple">
+<li>When an object is promoted to official status,
+all members of the group shall be notified by e-mail</li>
+<li>When an object is promoted the next signer shall be notified by e-mail</li>
+<li>When an object is demoted the previous signer shall be notified by
+e-mail</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="cancelled-lifecycle">
+<h2>2.2. Cancelled lifecycle<a class="headerlink" href="#cancelled-lifecycle" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Shall have only one status: Cancelled</p>
+</li>
+<li><p class="first">Object is visible by all users</p>
+</li>
+<li><p class="first">Ownership is Company</p>
+</li>
+<li><p class="first">Object is cancelled if it is pushed by another promoted to
+official status</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_promote_to_official_revision_previous_is_editable</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first">All part-part and part-document links shall be removed</p>
+</li>
+<li><p class="first">Cancelled objects can&#8217;t be edited nor modified</p>
+</li>
+<li><p class="first">Users can&#8217;t revise an object with cancelled status</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Tests:</th><td class="field-body"><ul class="first last simple">
+<li>plmapp.ControllerTest.test_revise_error_cancelled_object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="3. Publication"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="clone.html" title="1. Part and document cloning: specifications"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.7.2. files.formats — Simple module to test if a file is a CAD file &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.7. files" href="../files.html" />
+    <link rel="next" title="5.8. filters – Rendering of text written in a wiki syntax" href="../filters.html" />
+    <link rel="prev" title="5.7.1. files.deletable – Module to get files to delete" href="deletable.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../filters.html" title="5.8. filters – Rendering of text written in a wiki syntax"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="deletable.html" title="5.7.1. files.deletable – Module to get files to delete"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../files.html" accesskey="U">5.7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">files</span></tt></a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="deletable.html"
+                        title="previous chapter">5.7.1. <tt class="docutils literal docutils literal docutils literal"><span class="pre">files.deletable</span></tt> &#8211; Module to get files to delete</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../filters.html"
+                        title="next chapter">5.8. filters &#8211; Rendering of text written in a wiki syntax</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/files/formats.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/files/formats.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.files.formats">
+<span id="files-formats-simple-module-to-test-if-a-file-is-a-cad-file"></span><h1>5.7.2. <tt class="xref py py-mod docutils literal"><span class="pre">files.formats</span></tt> &#8212; Simple module to test if a file is a CAD file<a class="headerlink" href="#module-plmapp.files.formats" title="Permalink to this headline">¶</a></h1>
+<dl class="data">
+<dt id="plmapp.files.formats.CAD_FORMATS">
+<tt class="descclassname">plmapp.files.formats.</tt><tt class="descname">CAD_FORMATS</tt><em class="property"> = set(['.vs', '.fscript', '.gerber', '.esw', '.ifc', '.stl', '.model', '.fcstd', '.dwb', '.excellon', '.dwg', '.dwf', '.co', '.brep', '.catprocess', '.par', '.catproduct', '.idw', '.psmodel', '.fmz', '.ccm', '.cgr', '.iges', '.prt', '.psm', '.amf', '.dgk', '.stp', '.fm', '.pyt', '.dgn', '.cad', '.ccc', '.xe', '.asc', '.cel', '.scdoc', '.3dmlw', '.vc6', '.dxf', '.tct', '.ccs', '.brp', '.unv', '.ocd', '.dmt', '.emb', '.vlm', '.catdrawing', '.mcd', '.rfa', '.skp', '.acp', '.slddrw', '.jt', '.bin', '.bim', '.drw', '.3dxml', '.step', '.ipn', '.sldprt', '.ipt', '.pwi', '.wrl', '.art', '.exp', '.pln', '.icd', '.rlf', '.g', '.ar', '.iam', '.sldasm', '.dft', '.catpart', '.fmacro', '.tcw', '.grb', '.asm', '.rvt', '.gtc', '.idv'])</em><a class="headerlink" href="#plmapp.files.formats.CAD_FORMATS" title="Permalink to this definition">¶</a></dt>
+<dd><p>a set of CAD file extensions, all values are in lowercase and starts with a dot.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.files.formats.is_cad_file">
+<tt class="descclassname">plmapp.files.formats.</tt><tt class="descname">is_cad_file</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/files/formats.html#is_cad_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.files.formats.is_cad_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>filename</em> is a CAD file.
+Only tests if its extension is in <a class="reference internal" href="#plmapp.files.formats.CAD_FORMATS" title="plmapp.files.formats.CAD_FORMATS"><tt class="xref py py-const docutils literal"><span class="pre">CAD_FORMATS</span></tt></a>.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../filters.html" title="5.8. filters – Rendering of text written in a wiki syntax"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="deletable.html" title="5.7.1. files.deletable – Module to get files to delete"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../files.html" >5.7. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">files</span></tt></a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

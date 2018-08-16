@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+<!-- Manage html display in the Content div which correspond to the "doc-cad" menu -->
+
+{% block scripts %}
+    <script type="text/javascript">
+        function update_add_param(query){
+            var add_link = $("a.add-link");
+            var Part_group = $("#search_id_type").children("[label='Part']");
+            var part_types=[];
+            $.each($(Part_group).children(), function(i,v){
+                    part_types.push($(v).val());
+                    });
+            if($.inArray(query.type,part_types)==-1){
+                query.type = "Part";
+            }
+            add_link.attr("href","./add/" + get_search_query(query));               
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <form method="post" action="">{% csrf_token %}	
+
+        {% if is_contributor and not obj.is_cancelled %}
+            {{ parts_formset.management_form }}
+            <div class="tb-btn-toolbar">
+                <div class="tb-btn-group">
+                    <a class="tb-btn add-link" 
+                        {% if obj.type|can_link:request.session.type %}
+                            href="./add/{% add_search %}"
+                        {% else %}
+                            href="./add/{% add_search type='Part' %}"
+                        {% endif %}>
+                        <span class="ui-button-text">{% trans "Attach a part" %}</span>
+                    </a>
+                    {% if not obj.is_deprecated %}
+                        <button class="tb-btn tb-dropdown-toggle" data-toggle="dropdown">
+                            <span class="tb-caret"></span>
+                        </button>
+                        <ul class="tb tb-dropdown-menu">
+
+                            <li>
+                            <a class="add-link" 
+                                {% if obj.type|can_link:request.session.type %}
+                                    href="./add/{% add_search %}"
+                                {% else %}
+                                    href="./add/{% add_search type='Part' %}"
+                                {% endif %}> {% trans "Attach a part" %}</a> 
+                            </li>
+
+                            {# action valid if the doc is not deprecated, since the user will own the part #}
+                            <li>
+                            <a href="/object/create/?type=Part&amp;related_doc={{obj.id}}&amp;__next__={{obj.plmobject_url|add:"parts/"|urlencode}}">
+                                {% trans "Create a part and attach it to the document." %}  
+                            </a>
+                            </li>
+
+                        </ul>
+                    {% endif %}
+                </div>
+                {% if as_table and parts_formset.forms %}
+                    <input type="submit" class="tb-btn tb-btn-danger" value="{% trans "Detach selected parts" %}"/>
+                {% endif %}
+                {% include "snippets/astable.html" %}
+            </div>
+        {% endif %}
+
+        {% if as_table %}
+            <table class="Content">
+                {% for link in parts %}
+
+                    <tr class="Content">
+                        {% with link.part as part %}
+                            {% if is_contributor and link.id in forms %}
+                                {% with forms|key:link.id as form %} 
+                                    {{ form.id }}
+                                    {{ form.document }}
+                                    {{ form.part }}
+                                    <td class="Content" style="width:50px; text-align:center">{{ form.delete }}</td>
+                                {% endwith %}
+                            {% else %}
+                                <td class="Content"> - </td>
+                            {% endif %}
+                            <td class="Content">{{ part.type }}</td>
+                            <td class="Content">
+                                <a href="{{ part.plmobject_url }}"/>
+                                    {{ part.reference }}
+                                </a>
+                            </td>
+                            <td class="Content">{{ part.revision }}</td>
+                            <td class="Content">{{ part.name }}</td>
+                        {% endwith %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td>
+                            {% trans "There are no parts attached to this document" %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </form>
+
+
+    {% if not as_table %}
+        <div>
+
+            {% for link in parts %}
+                {% if is_contributor and link.id in forms %}
+                    {% include "parts/identity_card.html" with object=link.part detach_objects=True%}
+                {% else %}
+                    {% include "parts/identity_card.html" with object=link.part %}
+                {% endif %}
+            {% empty %}
+                {% trans "No attached parts." %}
+            {% endfor %}
+
+        </div>
+    {% endif %}
+{% endblock %}
+
+

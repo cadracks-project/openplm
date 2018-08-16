@@ -1,0 +1,14 @@
+<map id="inheritancec2ecd15f81" name="inheritancec2ecd15f81">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.link.AlternatePartSet" title="AlternatePartSet" alt="" coords="649,4,763,29"/>
+<area shape="rect" id="node4" href="#openPLM.plmapp.models.link.Link" title="Link" alt="" coords="302,162,366,187"/>
+<area shape="rect" id="node18" href="#openPLM.plmapp.models.link.DocumentPartLink" title="DocumentPartLink" alt="" coords="464,49,587,74"/>
+<area shape="rect" id="node22" href="#openPLM.plmapp.models.link.DelegationLink" title="DelegationLink" alt="" coords="474,95,577,119"/>
+<area shape="rect" id="node24" href="#openPLM.plmapp.models.link.ParentChildLink" title="ParentChildLink" alt="" coords="473,140,578,165"/>
+<area shape="rect" id="node26" href="#openPLM.plmapp.models.link.RevisionLink" title="RevisionLink" alt="" coords="481,185,569,210"/>
+<area shape="rect" id="node32" href="#openPLM.plmapp.models.link.PLMObjectUserLink" title="PLMObjectUserLink" alt="" coords="461,230,590,255"/>
+<area shape="rect" id="node34" href="#openPLM.plmapp.models.link.PromotionApproval" title="PromotionApproval" alt="" coords="461,275,590,300"/>
+<area shape="rect" id="node28" href="#openPLM.plmapp.models.link.ParentChildLinkExtension" title="ParentChildLinkExtension" alt="" coords="445,320,606,345"/>
+<area shape="rect" id="node36" href="#openPLM.plmapp.models.link.LinkQuerySet" title="LinkQuerySet" alt="" coords="125,207,220,232"/>
+<area shape="rect" id="node20" href="#openPLM.plmapp.models.link.LinkManager" title="LinkManager" alt="" coords="127,72,218,97"/>
+<area shape="rect" id="node30" href="#openPLM.plmapp.models.link.CurrentLinkManager" title="CurrentLinkManager" alt="" coords="267,72,401,97"/>
+</map>

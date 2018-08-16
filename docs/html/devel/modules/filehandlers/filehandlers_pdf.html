@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.6.3. filehandlers.pdf — Handler for pdf files &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.6. filehandlers — Utilities to retrieve informations from a file" href="../filehandlers.html" />
+    <link rel="next" title="5.7. files" href="../files.html" />
+    <link rel="prev" title="5.6.2. filehandlers.odf — Handler for odf files" href="filehandlers_odf.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../files.html" title="5.7. files"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="filehandlers_odf.html" title="5.6.2. filehandlers.odf — Handler for odf files"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../filehandlers.html" accesskey="U">5.6. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="filehandlers_odf.html"
+                        title="previous chapter">5.6.2. <tt class="docutils literal docutils literal docutils literal"><span class="pre">filehandlers.odf</span></tt> &#8212; Handler for odf files</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../files.html"
+                        title="next chapter">5.7. <tt class="docutils literal"><span class="pre">files</span></tt></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/filehandlers/filehandlers_pdf.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/filehandlers/filehandlers_pdf.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.filehandlers.pdfhandler">
+<span id="filehandlers-pdf-handler-for-pdf-files"></span><h1>5.6.3. <tt class="xref py py-mod docutils literal"><span class="pre">filehandlers.pdf</span></tt> &#8212; Handler for pdf files<a class="headerlink" href="#module-plmapp.filehandlers.pdfhandler" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.filehandlers.pdfhandler.PDFHandler">
+<em class="property">class </em><tt class="descclassname">plmapp.filehandlers.pdfhandler.</tt><tt class="descname">PDFHandler</tt><big>(</big><em>path</em>, <em>filename</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/pdfhandler.html#PDFHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.pdfhandler.PDFHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="filehandlers_base.html#plmapp.filehandlers.base.FileHandler" title="plmapp.filehandlers.base.FileHandler"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.filehandlers.base.FileHandler</span></tt></a></p>
+<p>This <a class="reference internal" href="filehandlers_base.html#plmapp.filehandlers.base.FileHandler" title="plmapp.filehandlers.base.FileHandler"><tt class="xref py py-class docutils literal"><span class="pre">FileHandler</span></tt></a> can parse opendocument (<tt class="docutils literal"><span class="pre">&quot;.odt&quot;</span></tt>) files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes :</th><td class="field-body"><dl class="first last attribute">
+<dt id="plmapp.filehandlers.pdfhandler.PDFHandler.nb_pages">
+<tt class="descname">nb_pages</tt><a class="headerlink" href="#plmapp.filehandlers.pdfhandler.PDFHandler.nb_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p>number of pages of the file</p>
+</dd></dl>
+
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../files.html" title="5.7. files"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="filehandlers_odf.html" title="5.6.2. filehandlers.odf — Handler for odf files"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../filehandlers.html" >5.6. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

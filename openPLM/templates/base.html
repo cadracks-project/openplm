@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+{% load i18n plmapp_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
+        <link href="{{STATIC_URL}}css/bootstrap.min.prefixed.css" rel="stylesheet" media="screen">
+
+        <link type="text/css" href="{{STATIC_URL}}css/openplm/jquery-ui.css" rel="Stylesheet" /> 
+        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/openplm.css" />
+        <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/help.css" />
+        <link rel="stylesheet" href="{{STATIC_URL}}css/chosen.css" type="text/css" media="screen" charset="utf-8" />
+
+        {% block css %} {% endblock %}
+
+        <title>
+            openPLM - {{user}} - {{object_type}} | {{object_reference}} | {{object_revision}} {{site.domain}}
+        </title>
+        <meta name="Robots" content="none"/>
+        <meta name="Author" content="openplm" />
+        <meta name="Classification" content="" />
+        <meta name="Description" content="" />
+        <meta name="keywords" content="" />
+        <script type="text/javascript" src="{{STATIC_URL}}js/jquery.min.js"></script>
+        <script src="{{STATIC_URL}}js/bootstrap.min.prefixed.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/chosen.jquery.min.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/jquery.hoverIntent.minified.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/plmapp.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/help.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/panels.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/confirm.js"></script>
+        <script type="text/javascript" src="{{STATIC_URL}}js/async_search.js"></script>
+
+
+        {% block scripts %} {% endblock %}
+        {% block extrahead %}{% endblock %}
+    </head>
+    <body>
+
+        {% get_current_language as LANGUAGE_CODE %}
+        <div class="main-box" id="Page">
+            <div class="top-box">
+                <div id="home">
+                    <a href="/home/">
+                        <img src="{{STATIC_URL}}img/dark/logo_openplm_linear.png"
+                        alt="logo-openplm" title="{% trans "Home page" %}" />
+                    </a>
+                </div>
+                <div id="LoggedPersonBox">
+                    {% include "blocks/user.html" %}
+                </div>
+            </div>
+
+            {% if messages %}
+                <div id="messages" class="center">
+                    {% for message in messages %}
+                        <div class="tb-alert {% if message.tags %}tb-alert-{{ message.tags }}{% endif %}">
+                            <button type="button" class="tb-close" data-dismiss="alert">&times;</button>
+                            <p>{{ message }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div id="content-box" class="clearfix">
+                {% block toolbar %}
+                    {% if request.user.is_authenticated %}
+                        <div id="DisplayBox">
+{% if navigation_history %}
+        <div id="navigation_history">
+            <div id="navigation_history_inner">
+                <ul>
+                    {% for url_, type, reference, revision, menu in navigation_history %}
+                        <li>
+                        <a href="{{ url_ }}">
+                            <span class="type">{{type}}</span>
+                            // <span class="reference">{{reference}}</span>
+                            {% if revision != "-" %}
+                                // <span class="rev">{{revision}}</span>
+                            {% endif %}
+                        </a>
+                        <div class="quick_link">
+                            {% for item in menu %}
+                                {% if item != "management" %}
+                                <a class="quick_link" href="{{url_}}{{item}}">
+                                    {% filter upper %}{% trans item %}{% endfilter%}
+                                </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        </li>
+                    {% endfor%}
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+
+                            <div class="main-nav tb-btn-toolbar">
+
+                                <a class="tb-btn tb-btn-large" href="/home/">
+                                    <i class="tb-icon-home"></i>
+                                    <span class="ui-button-text">{% trans "HOME" %}</span>
+                                </a>
+
+                                {% if not restricted %}
+                                    <a class="tb-btn tb-btn-large" href="/search/{% add_search page=1 %}">
+                                        <i class="tb-icon-search"></i>
+                                        <span class="ui-button-text">{% trans "SEARCH" %}</span>
+                                    </a>
+                                {% endif %}
+
+                                <a class="tb-btn tb-btn-large" href="/browse/object/">
+                                    <i class="tb-icon-th-list"></i>
+                                    <span class="ui-button-text">{% trans "BROWSE" %}</span>
+                                </a>
+
+                                {% if is_contributor %}
+                                    <div class="tb-btn-group">
+                                        <a class="tb-btn tb-btn-large" href="{{user.profile.plmobject_url}}files/">
+                                            <i class="tb-icon-upload"></i>
+                                            <span class="ui-button-text">{% trans "Upload" %}</span>
+                                        </a>
+
+                                        <a class="tb-btn tb-btn-large" href="/object/create/?type={{ctype}}">
+                                            <i class="tb-icon-plus"></i>
+                                            <span class="ui-button-text">{% trans "CREATE" %}</span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+
+                                {% if not restricted and not navigate_bool %}
+                                    <a class="tb-btn tb-btn-large" href="{{obj_url}}navigate/">
+                                        <i class="tb-icon-eye-open"></i>
+                                        <span class="ui-button-text">{% trans "NAVIGATE" %}</span>
+                                    </a>
+                                {% endif %}
+                                {% if restricted or navigate_bool %}
+                                    <a class="tb-btn tb-btn-large" href="{{obj_url}}">
+                                        <i class="tb-icon-pencil"></i>
+                                        <span class="ui-button-text">{% trans "STUDY" %}</span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+                <div class="clearfix">
+                    {% if not restricted %}
+                        {% block leftcolumn %}
+                            <div id="ToggleBoxButton">
+                                <input type="checkbox" id="SearchButton" />
+                                <label for="SearchButton">{% trans "Toggle the left panel" %}</label>
+                            </div>
+                            <div id="left-col">
+
+                                {% block search %}
+                                    <div id="SearchBox" class="Box {{link_creation|yesno:"link_creation,"}}">
+                                        <h2>{% trans "Search" %}
+                                            <div class="toolbar">
+                                                <ul>
+                                                    <li>
+                                                    <a class="help ui-button ui-button-text-icon-primary ui-state-default ui-button-icon-only ui-corner-all ui-widget" 
+                                                        href="{{STATIC_URL}}help/{{LANGUAGE_CODE}}/search.html" target="_blank">
+                                                        <span class="ui-button-icon-primary ui-icon ui-icon-help">&nbsp;</span>
+                                                        <span class="ui-button-text">?</span>
+                                                    </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </h2>
+                                        {% include "blocks/search.html" %}
+                                    </div>
+                                {% endblock %}
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+
+                    <div id="center-col" class="heightfix">
+
+                        {% block main %}
+                            <div id="ActiveBox" {% if object_reference != "-" %}class="{{ obj|main_type }}"{% endif %}>
+                                {% block reference %}
+                                    {% include "blocks/reference.html" %}
+                                {% endblock %}
+
+                                <div id="ActiveArea">
+                                    {% if is_readable %}
+                                        {% if object_menu and not navigate_bool %}
+                                            {% include "blocks/menu.html" %}
+                                        {% endif %}
+                                        <div id="main_content">
+                                            {% block content %}{% endblock %}	
+                                        </div>
+                                    {% else %}
+                                        <p>{% trans "You are not allowed to see this object" %}</p>
+                                    {% endif %}
+
+                                    <div class="clearfix"></div>
+
+                                </div>
+
+                            </div>
+                        {% endblock %}
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="bottom-box">
+                <div id="links">
+                    <div class="legal">
+                        2010-2013 openPLM &#0153; - openPLM {{ openPLM_version }}
+                        - <a href="http://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GNU General Public License</a>
+                        - <a href="http://wiki.openplm.org/trac/wiki/Credits" target="_blank">Credits</a>
+                    </div>
+                    <a id="linobject" href="http://www.linobject.com">Powered by LinObject</a>
+                </div>                    
+            </div>
+
+        </div>
+    </body>
+</html>

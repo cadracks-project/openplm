@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+
+{% block css %}
+
+    <link rel="stylesheet" href="{{STATIC_URL}}css/lifecycle.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/timeline.css" />
+    <link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/management.css" />
+{% endblock %}
+
+<!-- Manage html display in the Content div which correspond to the "lifecycle" menu -->
+
+{% block content %}
+
+    {# lifecycle : display all states #}
+    <div class="lifecycle">
+        {% for status, is_current_state, links in object_lifecycle %}
+            <div class="state_wrapper">
+                <div class="state
+                    {% if forloop.first %}
+                        draft
+                    {% elif status == obj.lifecycle.official_state.name %}
+                        official 
+                    {% elif forloop.last %}
+                        deprecated
+                    {% endif %}
+                    {% if is_current_state %}
+                        active
+                    {% endif %}
+                    ">
+                    <span class="state">{{status}}</span>
+                </div>
+
+            </div>
+            {% if not forloop.last %}
+                <div class="management">
+                    <div class="arrow {% if is_current_state %} active {% endif %}" style="">&gt;</div>
+                    {% for link in links %}
+                        <span class="signer">
+                            <a href="/user/{{link.user.username|urlencode}}">{{link.user.username}}</a>
+                            {% if can_edit_signer %}
+                                <a title="{% trans "Replace" %}" class="tb-btn tb-btn-small" href="../management/replace/{{link.id}}/?q=&type=User">
+                                    <i class="tb-icon-refresh"></i>
+                                </a>
+                                {% if links|length > 1 %}
+                                    <form style="display:inline" method="POST" action="../management/delete/">{% csrf_token %}
+                                        <input type="hidden" name="link_id" value="{{ link.id }}"/>
+                                        <input name="action" type="submit"
+                                        class="tb-btn" value="—" 
+                                        title="{% trans "Remove" %}"/>
+                                    </form>
+                                {% endif %}
+                            {% else %}
+                                {% if is_current_state and link.user_id in approvers %}
+                                    <span class="approver">{% trans "Approved" %}</span>
+                                {% endif %}
+
+                            {% endif %}
+                        </span>
+                        <br/>
+                    {% endfor %}
+                    {% if can_edit_signer %}
+                        <a class="tb-btn" href="../management/add-signer{{forloop.counter0}}/?q=&type=User"><span class="ui-button-text">{% trans "Add" %}</span></a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+
+    </div>
+
+    <div style="padding:1%">
+        {% if is_owner %}
+            {% trans 'You have the rights of owner on this object' %}
+        {% endif %}
+    </div>
+
+    {# first put error messages, then put buttons #}
+    {% spaceless %}
+        <div class="msg">
+            {# demote #}
+
+            {% if not obj.is_draft %}
+                {% if is_signer_dm %}
+                    {% if not obj.is_proposed %}
+                        <p>{% trans "You can not demote this object since its state is official or more advanced." %}</p>
+                    {% endif %}
+                {% else %}
+                    <p>{% trans "You do not have the permission to demote this object." %}</p>
+                {% endif %}
+            {% endif %}
+
+            {# promote #}
+            {% if is_signer %}
+                {% if not is_promotable %}
+                    <p>{% trans "You can not promote this object:" %}</p>
+                    {{ obj.promotion_errors.as_ul }}
+                    {% if promote_assembly %}
+                        <p>{% trans "But you can try to promote the whole assembly." %}</p>
+                    {% endif %}
+                {% elif not can_approve %}
+                    {% trans "You already have approved this promotion." %}
+                {% endif %}
+            {% else %}
+                <p>{% trans "You do not have the permission to promote this object." %}</p>
+            {% endif %}
+
+            {# cancel #}
+            {% if obj.is_draft and is_owner %}
+                {% if not can_cancel %}
+                    {% with obj.get_all_revisions|length as nb_revision %}
+                        {% if nb_revision > 1 %}
+                            <p>{% trans "You can not cancel this object since it has more than one revision." %}</p>
+                        {% endif %}
+                    {% endwith %}
+                    {% if obj.has_links %}
+                        <p>{% trans "You can not cancel this object since it is related to another object (part, document)." %}</p>
+                    {% endif %}
+                {% endif %}
+            {% elif not is_owner %}
+                <p>{% trans "You do not have the permission to cancel this object." %}</p>
+            {% else %}
+                <p>{% trans "You can not cancel this object since its state is more advanced than draft." %}</p>
+            {% endif %}
+        </div>
+    {% endspaceless %}
+
+    {% with obj.plmobject_url|add:"lifecycle/apply/" as action_url %}
+
+        {# demote #}
+        {% if is_signer_dm and obj.is_proposed %}
+            {% confirm "demote" _("DEMOTE") _("Are you sure you want to demote this object.") %}
+        {% endif %}
+
+        {# promotion form #}
+        {% if is_signer and can_approve and is_promotable or promote_assembly %}
+            {% with action_name=promote_assembly|yesno:"promote_assembly,promote" %}
+                <form id ="form-{{action_name}}" class="confirmation" style="display: inline;"
+                action="{{obj.plmobject_url}}lifecycle/apply/" method="POST">{% csrf_token %}
+                <div id="form-{{action_name}}-dialog"
+                    title="{% trans "Are you sure?" %}"
+                    {% if password_form.is_bound and not password_form.is_valid %} 
+                        class="c-error action-{{ action }}"
+                    {% endif %}
+                    >
+                    <p>
+                    <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>
+                    {% trans "If you promote this object, you may not be allowed to undo this action." %}
+                    </p>
+
+                    {# show the list of previous revisions that will be cancelled/deprecated #}
+
+                    <div class="msg" style="border-style:hidden; color: #000000;">
+                        {% if cancelled_revisions %}
+                            <p> {% trans "The following revisions will be cancelled:" %} </p>
+                            <ul>
+                                {% for rev in cancelled_revisions %}
+                                    <li>
+                                    {% blocktrans with rev.revision as revision and rev.name as name %}
+                                        Revision {{ revision }} : {{ name }}
+                                    {% endblocktrans %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if deprecated_revisions %}
+                            <p> {% trans "The following revisions will be deprecated:" %} </p>
+                            <ul>
+                                {% for rev in deprecated_revisions %}
+                                    <li>
+                                    {% blocktrans with rev.revision as revision and rev.name as name %}
+                                        Revision {{ revision }} : {{ name }}
+                                    {% endblocktrans %}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if previous_alternates %}
+                            <p> {% trans "The following alternate links will switch from the previous revision to the current one:" %} </p>
+                            <ul>
+                                {% for part in previous_alternates %}
+                                    <li>
+                                        {{ part.type }} // {{part.reference }} // {{ part.revision }} // {{ part.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if alternates and obj.is_official %}
+                            <p> {% trans "Current alternate links will be dropped:" %} </p>
+                            <ul>
+                                {% for part in alternates %}
+                                    <li>
+                                        {{ part.type }} // {{part.reference }} // {{ part.revision }} // {{ part.name }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {# TODO promote assembly #}
+                    </div>
+
+                    <div class="password">
+                        {{ password_form.as_p }}
+                    </div>
+                </div>
+
+                {# buttons #}
+                <input name="{{ action_name }}" type="submit" class="tb-btn tb-btn-large tb-btn-success" 
+                {% if obj.is_last_promoter %}
+                    {% if promote_assembly %}
+                        value="{% trans "Promote assembly" %}"
+                    {% else %}
+                        value="{% trans "PROMOTE" %}"
+                    {% endif %}
+                {% else %}
+                    value="{% trans "Approve the promotion" %}"
+                {% endif %} />
+
+            </form>
+        {% endwith %}
+        {% endif %}
+
+        {# discard approvals #}
+        {% if is_signer and approvers %}
+            {% confirm "discard" _("Discard approvals") _("Warning, all signers will have to approve again the promotion.") %}
+        {% endif %}
+
+        {# cancel #}
+        {% if can_cancel %}
+            {% confirm "cancel" _("CANCEL") _("Warning, if you cancel this object, it won't be anymore accessible to everyone.") btn_classes="tb-btn-danger" %}
+        {% endif %}
+
+
+        {# publish #}
+        {% if obj.can_publish %}
+            {% confirm "publish" _("PUBLISH") _("Warning, if you publish this object, it will be accessible to everyone, including anonymous users.") %}
+        {% endif %}
+
+        {% if obj.published %}
+            {# unpublish #}
+            {% if obj.can_unpublish %}
+                {% confirm "unpublish" _("UNPUBLISH") _("Warning, if you unpublish this object, it won't be anymore accessible to everyone.") %}
+            {% endif %}
+
+            <div id="published-info">
+                <p>
+                {% trans "This object has been published:" %}
+                <a href="{{obj.plmobject_url}}public/">{% trans "Public link" %}</a>
+                </p>
+            </div>
+        {% endif %}
+        {% if is_owner %}
+            <a class="tb-btn tb-btn-large" href="../management/add/?q=&type=User" ><span class="ui-button-text">{% trans "Notify" %}</span></a>
+        {% elif is_notified %}
+            <form  method="POST" action="../management/delete/">{% csrf_token %}
+                <input type="hidden" name="link_id" value="{{ remove_notify_link.id }}"/>
+                <input name="action" type="submit" class="tb-btn tb-btn-large" value="{% trans "Unnotify me" %}" />
+            </form>
+        {% elif can_notify %}
+            <form  method="POST" action="../management/add/?q=&type=User">{% csrf_token %}
+                {{ notify_self_form.as_p }}
+                <input name="action" type="submit" class="tb-btn" value="{% trans "Notify me" %}" />
+            </form>
+        {% endif %}
+
+    {% endwith %}
+
+    {# owner and notified users #}
+    <div style="margin-top:2%;padding-top:1%;border-top:2px dotted black">
+        {% if obj.is_official and in_group %}
+            <a class="tb-btn" href="../management/add-reader/" >{% trans "Give access to a restricted account" %}</a>
+        {% endif %}
+        {% include "snippets/management_block.html" with links=reader_list can_delete=in_group %}
+        {% include "snippets/management_block.html" with links=notified_list can_delete=is_owner %}
+        {% include "snippets/management_block.html" with links=owner_list can_delete=is_owner %}
+    </div>
+{% endblock %}

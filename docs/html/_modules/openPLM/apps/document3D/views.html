@@ -1,0 +1,841 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.document3D.views &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/document3D/views.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.document3D.views</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">fileinput</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.views</span> <span class="kn">import</span> <span class="n">redirect_to_login</span>
+<span class="kn">from</span> <span class="nn">django.core.files.base</span> <span class="kn">import</span> <span class="n">File</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">transaction</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span>
+        <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">Http404</span><span class="p">,</span> <span class="n">StreamingHttpResponse</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="p">(</span><span class="n">handle_errors</span><span class="p">,</span> <span class="n">secure_required</span><span class="p">,</span>
+        <span class="n">get_generic_data</span><span class="p">,</span> <span class="n">get_obj</span><span class="p">,</span> <span class="n">get_obj_by_id</span><span class="p">,</span> <span class="n">init_ctx</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.ajax</span> <span class="kn">import</span> <span class="n">ajax_login_required</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.document3D</span> <span class="kn">import</span> <span class="n">forms</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.document3D</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.document3D.arborescense</span> <span class="kn">import</span> <span class="n">JSGenerator</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.document3D</span> <span class="kn">import</span> <span class="n">classes</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp</span> <span class="kn">import</span> <span class="n">forms</span> <span class="k">as</span> <span class="n">pforms</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp</span> <span class="kn">import</span> <span class="n">models</span> <span class="k">as</span> <span class="n">pmodels</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">get_all_plmobjects</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.tasks</span> <span class="kn">import</span> <span class="n">update_indexes</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.decomposers.base</span> <span class="kn">import</span> <span class="n">Decomposer</span><span class="p">,</span> <span class="n">DecomposersManager</span>
+<span class="kn">from</span> <span class="nn">django.template.loader</span> <span class="kn">import</span> <span class="n">render_to_string</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">r2r</span>
+
+
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_3d"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.display_3d">[docs]</a><span class="k">def</span> <span class="nf">display_3d</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    3D view.</span>
+
+<span class="sd">    This view is able to show a 3D file (STEP or STL) using WebGL.</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`Display3D.html`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Document3D&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;3D&#39;</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;stl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">doc_file</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">is_stp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="n">doc_file</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">geometry_files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">javascript_arborescense</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">doc_file</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">is_stl</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;stl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;stl_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_file</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">geometry_files</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_all_geometry_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="n">geometry_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_URL</span><span class="p">,</span> <span class="s">&quot;3D&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">geometry_files</span><span class="p">]</span>
+        <span class="n">javascript_arborescense</span> <span class="o">=</span> <span class="n">JSGenerator</span><span class="p">(</span><span class="n">product</span><span class="p">)</span><span class="o">.</span><span class="n">get_js</span><span class="p">()</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;GeometryFiles&#39;</span> <span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">geometry_files</span><span class="p">),</span>
+        <span class="s">&#39;javascript_arborescense&#39;</span> <span class="p">:</span> <span class="n">javascript_arborescense</span> <span class="p">,</span> <span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;Display3D.htm&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@secure_required</span>
+<span class="k">def</span> <span class="nf">display_public_3d</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="s">&quot;Document3D&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">published</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">redirect_to_login</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">get_full_path</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">published</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_restricted_readable</span><span class="p">(</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">init_ctx</span><span class="p">(</span><span class="s">&quot;Document3D&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;stl&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">doc_file</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">is_stp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="n">doc_file</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">javascript_arborescense</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">doc_file</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">is_stl</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;stl&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;stl_file&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_file</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">javascript_arborescense</span> <span class="o">=</span> <span class="n">JSGenerator</span><span class="p">(</span><span class="n">product</span><span class="p">)</span><span class="o">.</span><span class="n">get_js</span><span class="p">()</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;is_readable&#39;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;is_contributor&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+        <span class="c"># disable the menu and the navigation_history</span>
+        <span class="s">&#39;object_menu&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+        <span class="s">&#39;navigation_history&#39;</span> <span class="p">:</span> <span class="p">[],</span>
+        <span class="s">&#39;obj&#39;</span> <span class="p">:</span> <span class="n">obj</span><span class="p">,</span>
+        <span class="s">&#39;javascript_arborescense&#39;</span> <span class="p">:</span> <span class="n">javascript_arborescense</span><span class="p">,</span>
+    <span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;public_3d_view.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+
+<span class="nd">@secure_required</span>
+<span class="k">def</span> <span class="nf">public_3d_js</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_id</span><span class="p">):</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">obj_id</span><span class="p">),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_document</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s">&quot;Document3D&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">published</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">redirect_to_login</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">get_full_path</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">published</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_restricted_readable</span><span class="p">(</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">doc_file</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">is_stp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="n">js_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">js_files</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_all_geometry_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">js_files</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">fileinput</span><span class="o">.</span><span class="n">FileInput</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">MEDIA_ROOT</span><span class="p">,</span> <span class="s">&quot;3D&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">js_files</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">StreamingHttpResponse</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&quot;text/script&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+
+<div class="viewcode-block" id="StepDecomposer"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.StepDecomposer">[docs]</a><span class="k">class</span> <span class="nc">StepDecomposer</span><span class="p">(</span><span class="n">Decomposer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :class:`.Decomposer` of Document3D.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;part&quot;</span><span class="p">,</span> <span class="s">&quot;decompose_valid&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_decomposable_stpfile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span><span class="o">.</span><span class="n">ArbreFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">stp__document</span><span class="o">=</span><span class="n">doc</span><span class="p">,</span>
+            <span class="n">stp__deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stp__locked</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">decomposable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">stp_file</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span>
+                    <span class="s">&quot;filename&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">is_stp</span><span class="p">,</span> <span class="n">locked</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                            <span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span><span class="o">.</span><span class="n">ArbreFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">stp</span><span class="o">=</span><span class="n">stp_file</span><span class="p">,</span> <span class="n">decomposable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">return</span> <span class="bp">None</span>
+            <span class="k">if</span> <span class="n">stp_file</span><span class="o">.</span><span class="n">checkout_valid</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">stp_file</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">is_decomposable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="n">decompose_valid</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">PartDecompose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">part</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">links</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">part</span><span class="p">,</span>
+                    <span class="n">document__type</span><span class="o">=</span><span class="s">&quot;Document3D&quot;</span><span class="p">,</span>
+                    <span class="n">document__document3d__PartDecompose</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">msg</span><span class="p">:</span>
+                        <span class="n">doc</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">doc_id</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">doc</span> <span class="o">=</span> <span class="n">doc_id</span>
+                    <span class="n">file_stp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_decomposable_stpfile</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">file_stp</span> <span class="ow">and</span> <span class="n">msg</span><span class="p">:</span>
+                        <span class="n">decompose_valid</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">doc</span><span class="p">,</span> <span class="n">file_stp</span><span class="p">))</span>
+                    <span class="k">elif</span> <span class="n">file_stp</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="bp">True</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">doc</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">PartDecompose</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">part</span><span class="p">)</span>
+                <span class="n">file_stp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_decomposable_stpfile</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">file_stp</span> <span class="ow">and</span> <span class="n">msg</span><span class="p">:</span>
+                    <span class="n">decompose_valid</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">doc</span><span class="p">,</span> <span class="n">file_stp</span><span class="p">))</span>
+                <span class="k">elif</span> <span class="n">file_stp</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">decompose_valid</span> <span class="o">=</span> <span class="n">decompose_valid</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">decompose_valid</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">get_decomposable_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
+        <span class="n">decomposable</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="c"># invalid parts are parts already decomposed by a StepDecomposer</span>
+            <span class="n">invalid_parts</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">PartDecompose__in</span><span class="o">=</span><span class="n">parts</span><span class="p">)</span>\
+                    <span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;PartDecompose&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="n">links</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">part__in</span><span class="o">=</span><span class="n">parts</span><span class="p">,</span>
+                    <span class="n">document__type</span><span class="o">=</span><span class="s">&quot;Document3D&quot;</span><span class="p">,</span> <span class="c"># Document3D has no subclasses</span>
+                    <span class="n">document__document3d__PartDecompose</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span><span class="o">.</span> \
+                    <span class="n">exclude</span><span class="p">(</span><span class="n">part__in</span><span class="o">=</span><span class="n">invalid_parts</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="s">&quot;part&quot;</span><span class="p">))</span>
+            <span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">links</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">docs</span><span class="p">:</span>
+                <span class="c"># valid documents are documents with a step file that is decomposable</span>
+                <span class="n">valid_docs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ArbreFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">stp__document__in</span><span class="o">=</span><span class="n">docs</span><span class="p">,</span>
+                    <span class="n">stp__deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">stp__locked</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                    <span class="n">decomposable</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;stp__document&quot;</span><span class="p">,</span> <span class="s">&quot;stp&quot;</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">part_id</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">doc_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_docs</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">part_id</span> <span class="ow">in</span> <span class="n">decomposable</span><span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="n">stp</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="s">&quot;filename&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">valid_docs</span><span class="p">[</span><span class="n">doc_id</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">stp</span><span class="o">.</span><span class="n">checkout_valid</span><span class="p">:</span>
+                        <span class="n">decomposable</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">part_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">decomposable</span>
+
+    <span class="k">def</span> <span class="nf">get_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">decompose_valid</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_to_string</span><span class="p">(</span><span class="s">&quot;decompose_msg.html&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="s">&quot;part&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">part</span><span class="p">,</span>
+                <span class="s">&quot;decomposable_docs&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">decompose_valid</span> <span class="p">})</span>
+        <span class="k">return</span> <span class="s">&quot;&quot;</span>
+</div>
+<span class="n">DecomposersManager</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">StepDecomposer</span><span class="p">)</span>
+
+<span class="n">PartDoc</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;PartDoc&quot;</span><span class="p">,</span> <span class="s">&quot;part_type qty_form cforms name is_assembly prefix ref&quot;</span><span class="p">)</span>
+<span class="n">Assembly</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;Assembly&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s">&quot;part_docs&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;visited&quot;</span><span class="p">,</span> <span class="s">&quot;depth&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">))</span>
+
+<span class="n">INVALID_TIME_ERROR</span> <span class="o">=</span> <span class="s">&quot;Error: document has been modified since the beginning of this task.&quot;</span>
+
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_decompose"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.display_decompose">[docs]</a><span class="k">def</span> <span class="nf">display_decompose</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">stp_id</span><span class="p">):</span>
+
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param obj_type: Type of the :class:`.Part` from which we want to realize the decomposition</span>
+<span class="sd">    :param obj_ref: Reference of the :class:`.Part` from which we want to realize the decomposition</span>
+<span class="sd">    :param obj_revi: Revision of the :class:`.Part` from which we want to realize the decomposition</span>
+<span class="sd">    :param stp_id: Id that identify the :class:`.DocumentFile` contained in a :class:`.Document3D` attached to the :class:`.Part` (identified by **obj_type**, **obj_ref**, **obj_revi**) that we will decompose</span>
+
+
+<span class="sd">    When we demand the decomposition across the web form, the following tasks are realized</span>
+
+<span class="sd">    - We check that the :class:`.Document3D` that contains the :class:`.DocumentFile` (**stp_id**) that will be decomposed has not been modified since the generation of the form</span>
+
+<span class="sd">    - We check the validity of the information got in the form</span>
+
+<span class="sd">    - If exists a native :class:`.DocumentFile` file related to :class:`.DocumentFile` (**stp_id**) that will be decomposed</span>
+<span class="sd">        then this one was depreciated (afterwards will be promoted)</span>
+
+<span class="sd">    - The :class:`.DocumentFile` (**stp_id**) was locked (afterwards will be promoted)</span>
+
+
+<span class="sd">    - We call the function :meth:`.generate_part_doc_links_AUX` (with the property **transaction.commit_on_success**)</span>
+
+<span class="sd">        - We generate the arborescense (:class:`.product`) of the :class:`.DocumentFile` (**stp_id**)</span>
+
+<span class="sd">        - The bom-child of Parts (in relation to the arborescense of the :class:`.DocumentFile` (**stp_id**)) has been generated</span>
+
+<span class="sd">        - For every :class:`.ParentChildLink` generated in the previous condition  we attach all the :class:`.Location_link` relatives</span>
+
+<span class="sd">        - To every generated :class:`.Part` a :class:`.Document3D` has been attached and this document has been set like the attribute PartDecompose of the :class:`.Part`</span>
+
+<span class="sd">        - The attribute doc_id of every node of the arborescense (:class:`.Product`) is now the relative id of :class:`.Document3D` generated in the previous condition</span>
+
+<span class="sd">        - To every generated :class:`.Document3D` has been added a new empty(locked) :class:`.DocumentFile` STP</span>
+
+<span class="sd">        - The attribute doc_path of every node of the arborescense(:class:`.Product`) is now the path of :class:`.DocumentFile` STP generated in the previous condition</span>
+
+<span class="sd">    - We update the indexes for the objects generated</span>
+
+<span class="sd">    - We call the processus decomposer_all(with celeryd)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">stp_file</span><span class="o">=</span><span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">stp_id</span><span class="p">)</span>
+    <span class="n">assemblies</span><span class="o">=</span><span class="p">[]</span>
+
+    <span class="k">if</span> <span class="n">stp_file</span><span class="o">.</span><span class="n">locked</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not allowed operation.This DocumentFile is locked&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_attached_documents</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">document</span><span class="o">=</span><span class="n">stp_file</span><span class="o">.</span><span class="n">document</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not allowed operation.The Document and the Part are not linked&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">PartDecompose</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">PartDecompose</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">)</span><span class="o">.</span><span class="n">id</span><span class="o">==</span><span class="n">stp_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">id</span><span class="p">):</span>
+        <span class="c">#a same document could be re-decomposed for the same part</span>
+
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not allowed operation.This Part already forms part of another split BOM&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">doc3D</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">stp_file</span><span class="o">.</span><span class="n">document_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not allowed operation.The document is not a subtype of document3D&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">doc3D</span><span class="o">.</span><span class="n">PartDecompose</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">doc3D</span><span class="o">.</span><span class="n">PartDecompose</span><span class="o">.</span><span class="n">id</span><span class="o">==</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not allowed operation.This Document already forms part of another split BOM&quot;</span><span class="p">)</span>
+
+    <span class="n">document_controller</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3DController</span><span class="p">(</span><span class="n">doc3D</span><span class="p">,</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span><span class="p">:</span>
+        <span class="n">extra_errors</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="n">document_controller</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">stp_file</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">last_mtime</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">Form_save_time_last_modification</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">block_mails</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">last_mtime</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">product</span><span class="p">:</span>
+            <span class="n">old_time</span> <span class="o">=</span> <span class="n">last_mtime</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;last_modif_time&#39;</span><span class="p">]</span>
+            <span class="n">old_microseconds</span> <span class="o">=</span> <span class="n">last_mtime</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&#39;last_modif_microseconds&#39;</span><span class="p">]</span>
+
+            <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">clean_form</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">assemblies</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">index</span><span class="p">,</span><span class="n">obj_type</span><span class="p">,</span> <span class="p">{}):</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="n">same_time</span><span class="p">(</span><span class="n">old_time</span><span class="p">,</span> <span class="n">old_microseconds</span><span class="p">,</span> <span class="n">document_controller</span><span class="o">.</span><span class="n">mtime</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">stp_file</span><span class="o">.</span><span class="n">checkout_valid</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">stp_file</span><span class="o">.</span><span class="n">locked</span><span class="p">):</span>
+
+                    <span class="n">stp_file</span><span class="o">.</span><span class="n">locked</span><span class="o">=</span><span class="bp">True</span>
+                    <span class="n">stp_file</span><span class="o">.</span><span class="n">locker</span><span class="o">=</span><span class="n">pmodels</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">)</span>
+                    <span class="n">stp_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                    <span class="n">native_related</span><span class="o">=</span><span class="n">stp_file</span><span class="o">.</span><span class="n">native_related</span>
+                    <span class="k">if</span> <span class="n">native_related</span><span class="p">:</span>
+                        <span class="n">native_related</span><span class="o">.</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">True</span>
+                        <span class="n">native_related</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                        <span class="n">native_related_pk</span><span class="o">=</span><span class="n">native_related</span><span class="o">.</span><span class="n">pk</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">native_related_pk</span><span class="o">=</span><span class="bp">None</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="n">old_product</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span> <span class="c"># we save the product before update nodes whit new doc_id and doc_path generated during the bomb-child</span>
+                        <span class="n">generate_part_doc_links_AUX</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span><span class="n">instances</span><span class="p">,</span><span class="n">doc3D</span><span class="p">)</span>
+                        <span class="n">update_indexes</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">excep</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">excep</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Document_Generate_Bom_Error</span><span class="p">):</span>
+                            <span class="n">models</span><span class="o">.</span><span class="n">delete_files</span><span class="p">(</span><span class="n">excep</span><span class="o">.</span><span class="n">to_delete</span><span class="p">)</span>
+
+                        <span class="n">extra_errors</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">excep</span><span class="p">)</span>
+                        <span class="n">stp_file</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+                        <span class="n">stp_file</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">None</span>
+                        <span class="n">stp_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">native_related</span><span class="p">:</span>
+                            <span class="n">native_related</span><span class="o">.</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span>
+                            <span class="n">native_related</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+
+                        <span class="n">models</span><span class="o">.</span><span class="n">decomposer_all</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">stp_file</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span>
+                                <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">to_list</span><span class="p">()),</span>
+                                <span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">native_related_pk</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">old_product</span><span class="p">)</span>
+
+                        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span><span class="o">+</span><span class="s">&quot;BOM-child/&quot;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">extra_errors</span><span class="o">=</span><span class="s">&quot;The Document3D associated with the file STEP to analyze has been modified by another user while the forms were refilled:Please restart the process&quot;</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">extra_errors</span><span class="o">=</span><span class="s">&quot;Error refilling the form, please check it&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">extra_errors</span> <span class="o">=</span> <span class="n">INVALID_TIME_ERROR</span>
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">last_mtime</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Form_save_time_last_modification</span><span class="p">()</span>
+        <span class="n">last_mtime</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;last_modif_time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">stp_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">mtime</span>
+        <span class="n">last_mtime</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;last_modif_microseconds&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span><span class="o">=</span> <span class="n">stp_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">mtime</span><span class="o">.</span><span class="n">microsecond</span>
+        <span class="n">product</span><span class="o">=</span> <span class="n">document_controller</span><span class="o">.</span><span class="n">get_product</span><span class="p">(</span><span class="n">stp_file</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">product</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span><span class="o">+</span><span class="s">&quot;BOM-child/&quot;</span><span class="p">)</span>
+
+        <span class="n">group</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">group</span>
+        <span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="c"># index[1] to evade generate holes in part_revision_default generation</span>
+        <span class="n">inbulk_cache</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">initialize_assemblies</span><span class="p">(</span><span class="n">assemblies</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">group</span><span class="p">,</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span><span class="n">index</span><span class="p">,</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="p">)</span>
+        <span class="n">extra_errors</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+
+    <span class="n">deep_assemblies</span><span class="o">=</span><span class="n">sort_assemblies_by_depth</span><span class="p">(</span><span class="n">assemblies</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;decomposer&#39;</span><span class="p">,</span>
+                <span class="s">&#39;deep_assemblies&#39;</span> <span class="p">:</span> <span class="n">deep_assemblies</span><span class="p">,</span>
+                <span class="s">&#39;extra_errors&#39;</span> <span class="p">:</span>  <span class="n">extra_errors</span><span class="p">,</span>
+                <span class="s">&#39;last_mtime&#39;</span> <span class="p">:</span> <span class="n">last_mtime</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;DisplayDecompose.htm&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">sort_assemblies_by_depth</span><span class="p">(</span><span class="n">assemblies</span><span class="p">):</span>
+
+    <span class="n">new_assembly</span><span class="o">=</span><span class="p">[]</span>
+    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">assemblies</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">elem</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">new_assembly</span><span class="p">)):</span>
+            <span class="n">new_assembly</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="n">new_assembly</span><span class="p">[</span><span class="n">elem</span><span class="p">[</span><span class="mi">3</span><span class="p">]]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">elem</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_assembly</span>
+
+
+<div class="viewcode-block" id="clean_form"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.clean_form">[docs]</a><span class="k">def</span> <span class="nf">clean_form</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">assemblies</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param assemblies: will be refill whit the information necessary the generate the forms</span>
+<span class="sd">    :param product: :class:`.Product` that represents the arborescense of the :class:`~django.core.files.File` .stp contained in a :class:`.DocumentFile`</span>
+<span class="sd">    :param index: Use  to mark and to identify the **product** s that already have been visited</span>
+<span class="sd">    :param obj_type: Type of the :class:`.Part` from which we want to realize the decomposition</span>
+
+<span class="sd">    It checks the validity of the forms contained in **request**</span>
+
+
+
+<span class="sd">    If the forms are not valid, it returns the information to refill the new forms contained in **assemblies**.</span>
+
+<span class="sd">    Refill **assemblies** with the different assemblies of the file step , we use **index** to mark and to identify the **products** that already have been visited</span>
+
+<span class="sd">    For every Assembly we have the next information:</span>
+
+<span class="sd">        - Name of assembly</span>
+
+<span class="sd">        - Visited , If assembly is sub-assembly of more than one assembly, this attribute will be **False** for all less one of the occurrences</span>
+
+<span class="sd">            If visited is **False**, we will be able to modify only the attributes **Order** , **Quantity** and **Unit** refered to the :class:`.ParentChildLink` in the form</span>
+
+<span class="sd">            If visited is not **False** , it will be a new id acording to **index** (&gt;=1) generated to identify the assembly</span>
+
+<span class="sd">        - Depth  of assembly</span>
+
+<span class="sd">        - **obj_type** , type of :class:`.Part` of Assembly</span>
+
+<span class="sd">        - A list with the products that compose the assembly</span>
+
+<span class="sd">          for each element in the list:</span>
+
+<span class="sd">                - part_type contains the form to select the type of :class:`.Part`</span>
+
+<span class="sd">                - ord_quantity contains the forms to select Order , Quantity and Unit refered to the :class:`.ParentChildLink`</span>
+
+<span class="sd">                - creation_formset contains the form for the creation of the part selected in part_type and of one :class:`.Document3D`</span>
+
+<span class="sd">                - name_child_assemblies contains the name of the element</span>
+
+<span class="sd">                - is_assembly determine if the element is a single product or another assembly</span>
+
+<span class="sd">                - prefix contains the **index** of the assembly  if he is visited for first time , else is False</span>
+
+<span class="sd">                - ref contains the **index** of the assembly if he was visited previously, else False</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">valid</span><span class="o">=</span><span class="bp">True</span>
+    <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+        <span class="n">part_docs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="n">link</span><span class="o">.</span><span class="n">visited</span><span class="o">=</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">oq</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">Order_Quantity_Form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">oq</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                <span class="n">valid</span><span class="o">=</span><span class="bp">False</span>
+
+            <span class="n">is_assembly</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">is_assembly</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">:</span>
+                <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="n">part_type</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">Doc_Part_type_Form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">part_type</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">part</span> <span class="o">=</span> <span class="n">part_type</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;type_part&quot;</span><span class="p">]</span>
+                <span class="n">cls</span> <span class="o">=</span> <span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">part</span><span class="p">]</span>
+                <span class="n">part_cform</span> <span class="o">=</span> <span class="n">pforms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                        <span class="n">inbulk_cache</span><span class="o">=</span><span class="n">inbulk_cache</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s">&quot;-part&quot;</span><span class="p">)</span>
+                <span class="n">doc_cform</span> <span class="o">=</span> <span class="n">pforms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                        <span class="n">inbulk_cache</span><span class="o">=</span><span class="n">inbulk_cache</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s">&quot;-document&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">part_cform</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">doc_cform</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">part_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PartDoc</span><span class="p">(</span><span class="n">part_type</span><span class="p">,</span> <span class="n">oq</span><span class="p">,</span> <span class="p">(</span><span class="n">part_cform</span><span class="p">,</span> <span class="n">doc_cform</span><span class="p">),</span> <span class="n">name</span><span class="p">,</span> <span class="n">is_assembly</span><span class="p">,</span>
+                    <span class="n">prefix</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+                <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">clean_form</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">assemblies</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">,</span><span class="n">index</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="p">):</span>
+                    <span class="n">valid</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="n">part_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PartDoc</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="n">oq</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">is_assembly</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">))</span>
+
+        <span class="n">assemblies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Assembly</span><span class="p">(</span><span class="n">part_docs</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">name</span> <span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">visited</span> <span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">deep</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">valid</span>
+
+</div>
+<div class="viewcode-block" id="initialize_assemblies"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.initialize_assemblies">[docs]</a><span class="k">def</span> <span class="nf">initialize_assemblies</span><span class="p">(</span><span class="n">assemblies</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">group</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">index</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param assemblies: will be refill whit the information necessary the generate the forms</span>
+<span class="sd">    :param product: :class:`.Product` that represents the arborescense of the :class:`~django.core.files.File` .stp contained in a :class:`.DocumentFile`</span>
+<span class="sd">    :param index: Use  to mark and to identify the **product** s that already have been visited</span>
+<span class="sd">    :param obj_type: Type of the :class:`.Part` from which we want to realize the decomposition</span>
+<span class="sd">    :param group: group by default from which we want to realize the decomposition</span>
+
+
+<span class="sd">    Returns in assemblies a list initialized with the different assemblies of the file step</span>
+
+
+<span class="sd">    For every Assembly we have the next information:</span>
+
+<span class="sd">        - Name of assembly</span>
+
+<span class="sd">        - Visited , If assembly is sub-assembly of more than an assembly, this attribute will be **False** for all less one of the occurrences</span>
+
+<span class="sd">            If visited is **False**, we will be able to modify only the attributes **Order** , **Quantity** and **Unit** refered to the :class:`.ParentChildLinkin` in the form</span>
+
+<span class="sd">            If visited is not **False** , it will be a new id acording to **index** (&gt;=1) generated to identify the assembly</span>
+
+<span class="sd">        - Depth  of assembly</span>
+
+<span class="sd">        - **obj_type** , type of :class:`.Part` of Assembly</span>
+
+<span class="sd">        - A list with the products that compose the assembly</span>
+
+<span class="sd">          for each element in the list:</span>
+
+<span class="sd">                - part_type contains the form to select the type of :class:`.Part`</span>
+
+<span class="sd">                - ord_quantity contains the forms to select Order , Quantity and Unit refered to the :class:`.ParentChildLink`</span>
+
+<span class="sd">                - creation_formset contains the form for the creation of the part selected in part_type and of one :class:`.Document3D`</span>
+
+<span class="sd">                - name_child_assemblies contains the name of the element</span>
+
+<span class="sd">                - is_assembly determine if the element is a single product or another assembly</span>
+
+<span class="sd">                - prefix contains the **index** of the assembly if he is visited for first time , else is False</span>
+
+<span class="sd">                - ref contains the **index** of the assembly if he was visited previously, else False</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+        <span class="n">part_docs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">order</span><span class="p">,</span> <span class="n">link</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">):</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">oq</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Order_Quantity_Form</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">oq</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;order&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="p">(</span><span class="n">order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="mi">10</span>
+            <span class="n">oq</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;quantity&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">quantity</span>
+            <span class="n">is_assembly</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">is_assembly</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">:</span>
+                <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">part_type</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">Doc_Part_type_Form</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">part_cform</span> <span class="o">=</span> <span class="n">pforms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">Part</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">inbulk_cache</span><span class="p">)</span> <span class="c"># index[0].initial=1 -&gt; -1</span>
+                <span class="n">part_cform</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s">&quot;-part&quot;</span>
+                <span class="n">part_cform</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">group</span>
+                <span class="n">part_cform</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">doc_cform</span> <span class="o">=</span> <span class="n">pforms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">inbulk_cache</span><span class="p">)</span>
+                <span class="n">doc_cform</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">+</span><span class="s">&quot;-document&quot;</span>
+                <span class="n">doc_cform</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span>
+                <span class="n">doc_cform</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">group</span>
+                <span class="n">prefix</span> <span class="o">=</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="n">part_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PartDoc</span><span class="p">(</span><span class="n">part_type</span><span class="p">,</span> <span class="n">oq</span><span class="p">,</span> <span class="p">(</span><span class="n">part_cform</span><span class="p">,</span> <span class="n">doc_cform</span><span class="p">),</span> <span class="n">name</span><span class="p">,</span> <span class="n">is_assembly</span><span class="p">,</span>
+                    <span class="n">prefix</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+                <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="n">initialize_assemblies</span><span class="p">(</span><span class="n">assemblies</span><span class="p">,</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">,</span><span class="n">group</span><span class="p">,</span><span class="n">user</span><span class="p">,</span><span class="n">index</span><span class="p">,</span> <span class="s">&quot;Part&quot;</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+=</span><span class="mi">1</span>
+                <span class="n">part_docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PartDoc</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="n">oq</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">is_assembly</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">))</span>
+
+        <span class="n">assemblies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Assembly</span><span class="p">(</span><span class="n">part_docs</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">,</span> <span class="n">product</span><span class="o">.</span><span class="n">deep</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">))</span>
+</div>
+<span class="nd">@transaction.commit_on_success</span>
+<span class="k">def</span> <span class="nf">generate_part_doc_links_AUX</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">product</span><span class="p">,</span> <span class="n">parent_ctrl</span><span class="p">,</span><span class="n">instances</span><span class="p">,</span><span class="n">doc3D</span><span class="p">):</span>
+    <span class="c"># wraps generate_part_doc_links with @commit_on_succes</span>
+    <span class="c"># it is not possible to decorate this function since it is recursive</span>
+    <span class="n">generate_part_doc_links</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">product</span><span class="p">,</span> <span class="n">parent_ctrl</span><span class="p">,</span><span class="n">instances</span><span class="p">,</span><span class="n">doc3D</span><span class="p">,</span> <span class="p">{})</span>
+
+<div class="viewcode-block" id="generate_part_doc_links"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.generate_part_doc_links">[docs]</a><span class="k">def</span> <span class="nf">generate_part_doc_links</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">product</span><span class="p">,</span> <span class="n">parent_ctrl</span><span class="p">,</span><span class="n">instances</span><span class="p">,</span><span class="n">doc3D</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param product: :class:`.Product` that represents the arborescense</span>
+<span class="sd">    :param parent_ctrl: :class:`.Part` from which we want to realize the decomposition</span>
+<span class="sd">    :param instances: Use to trace the items to update</span>
+
+<span class="sd">    Parses forms and generates:</span>
+
+
+<span class="sd">    - The bom-child of Parts (in relation to the **product**)</span>
+
+<span class="sd">    - For every :class:`.ParentChildLink` generated in the previous condition we attach all the :class:`.Location_link` relatives</span>
+
+<span class="sd">    - To every generated :class:`.Part` a :class:`.Document3D` has been attached and Document3D has been set like the attribute PartDecompose of the Part</span>
+
+<span class="sd">    - The attribute doc_id of every node of the arborescense(**product**) is now the relative id of :class:`.DocumentFile` generated in the previous condition</span>
+
+<span class="sd">    - To every generated :class:`.Document3D` has been added a new empty(locked) :class:`.DocumentFile` STP ( :meth:`.generateGhostDocumentFile` )</span>
+
+<span class="sd">    - The attribute doc_path of every node of the arborescense(**product**) is now the path of :class:`.DocumentFile` STP generated in the previous condition</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">to_delete</span><span class="o">=</span><span class="p">[]</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">parent_ctrl</span><span class="o">.</span><span class="n">_user</span>
+    <span class="n">company</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">)</span>
+    <span class="n">other_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">doc3D</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">is_stp</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="n">oq</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Order_Quantity_Form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="n">link</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+            <span class="n">oq</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">oq</span><span class="o">.</span><span class="n">cleaned_data</span>
+            <span class="n">order</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s">&quot;order&quot;</span><span class="p">]</span>
+            <span class="n">quantity</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s">&quot;quantity&quot;</span><span class="p">]</span>
+            <span class="n">unit</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s">&quot;unit&quot;</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">part_to_decompose</span><span class="p">:</span>
+
+                <span class="n">part_ctype</span><span class="o">=</span><span class="n">forms</span><span class="o">.</span><span class="n">Doc_Part_type_Form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span><span class="n">prefix</span><span class="o">=</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span>
+                <span class="n">part_ctype</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span>
+                <span class="n">options</span> <span class="o">=</span> <span class="n">part_ctype</span><span class="o">.</span><span class="n">cleaned_data</span>
+                <span class="n">cls</span> <span class="o">=</span> <span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">options</span><span class="p">[</span><span class="s">&quot;type_part&quot;</span><span class="p">]]</span>
+                <span class="n">part_form</span> <span class="o">=</span> <span class="n">pforms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                    <span class="n">inbulk_cache</span><span class="o">=</span><span class="n">inbulk_cache</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;-part&quot;</span><span class="p">)</span>
+
+                <span class="n">part_ctrl</span> <span class="o">=</span> <span class="n">parent_ctrl</span><span class="o">.</span><span class="n">create_from_form</span><span class="p">(</span><span class="n">part_form</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+                <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">part_ctrl</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span>
+                    <span class="n">part_ctrl</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">part_ctrl</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_get_pk_val</span><span class="p">()))</span>
+
+                <span class="n">c_link</span> <span class="o">=</span> <span class="n">parent_ctrl</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">part_ctrl</span><span class="o">.</span><span class="n">object</span><span class="p">,</span><span class="n">quantity</span><span class="p">,</span><span class="n">order</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+
+                <span class="n">models</span><span class="o">.</span><span class="n">generate_extra_location_links</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">c_link</span><span class="p">)</span>
+
+                <span class="n">doc_form</span> <span class="o">=</span> <span class="n">pforms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3D</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span>
+                    <span class="n">inbulk_cache</span><span class="o">=</span><span class="n">inbulk_cache</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">visited</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;-document&quot;</span><span class="p">)</span>
+                <span class="n">doc_ctrl</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Document3DController</span><span class="o">.</span><span class="n">create_from_form</span><span class="p">(</span><span class="n">doc_form</span><span class="p">,</span>
+                        <span class="n">user</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+
+                <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">part_to_decompose</span><span class="o">=</span><span class="n">part_ctrl</span><span class="o">.</span><span class="n">object</span>
+                <span class="n">to_delete</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generateGhostDocumentFile</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">,</span> <span class="n">doc_ctrl</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">company</span><span class="p">))</span>
+
+                <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">doc_ctrl</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span>
+                    <span class="n">doc_ctrl</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">doc_ctrl</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_get_pk_val</span><span class="p">()))</span>
+                <span class="n">part_ctrl</span><span class="o">.</span><span class="n">attach_to_document</span><span class="p">(</span><span class="n">doc_ctrl</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+                <span class="n">new_Doc3D</span> <span class="o">=</span> <span class="n">doc_ctrl</span><span class="o">.</span><span class="n">object</span>
+                <span class="n">new_Doc3D</span><span class="o">.</span><span class="n">PartDecompose</span> <span class="o">=</span> <span class="n">part_ctrl</span><span class="o">.</span><span class="n">object</span>
+                <span class="n">new_Doc3D</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">new_Doc3D</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                <span class="k">for</span> <span class="n">doc_file</span> <span class="ow">in</span> <span class="n">other_files</span><span class="p">:</span>
+                    <span class="n">filename</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                    <span class="c"># add files with the same name (for example a .sldXXX</span>
+                    <span class="c"># or.CATXXX file)</span>
+                    <span class="k">if</span> <span class="n">filename</span> <span class="o">==</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                        <span class="n">f</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">size</span>
+                        <span class="n">df</span> <span class="o">=</span> <span class="n">doc_ctrl</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+                            <span class="n">doc_ctrl</span><span class="o">.</span><span class="n">add_thumbnail</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">File</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">))</span>
+                        <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">pk</span><span class="p">))</span>
+                        <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">doc_file</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">pk</span><span class="p">))</span>
+                        <span class="n">doc_file</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+                <span class="n">generate_part_doc_links</span><span class="p">(</span><span class="n">request</span><span class="p">,</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">,</span> <span class="n">part_ctrl</span><span class="p">,</span><span class="n">instances</span><span class="p">,</span><span class="n">doc3D</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">c_link</span> <span class="o">=</span> <span class="n">parent_ctrl</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">part_to_decompose</span><span class="p">,</span><span class="n">quantity</span><span class="p">,</span><span class="n">order</span><span class="p">,</span><span class="n">unit</span><span class="p">)</span>
+                <span class="n">models</span><span class="o">.</span><span class="n">generate_extra_location_links</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">c_link</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">models</span><span class="o">.</span><span class="n">Document_Generate_Bom_Error</span><span class="p">(</span><span class="n">to_delete</span><span class="p">,</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="generateGhostDocumentFile"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.generateGhostDocumentFile">[docs]</a><span class="k">def</span> <span class="nf">generateGhostDocumentFile</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">locker</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param product: :class:`.Product` that represents the arborescense</span>
+<span class="sd">    :param Doc_controller: :class:`.Document3DController` from which we want to generate the :class:`.DocumentFile`</span>
+
+
+<span class="sd">    For one :class:`.Product` (**product**) and one :class:`.Document3DController` (**Doc_controller**), generates a :class:`.DocumentFile` with a file .stp emptily without indexation</span>
+
+<span class="sd">    It updates the attributes **doc_id** and **doc_path** of the :class:`.Product` (**product**) in relation of the generated :class:`.DocumentFile`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">get_available_name</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s">&quot;.stp&quot;</span><span class="p">)</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">storage</span><span class="o">.</span><span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="s">&#39;w&#39;</span><span class="p">))</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s">&quot;Ghost.stp&quot;</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span> <span class="o">=</span> <span class="n">document</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="n">locker</span>
+    <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="n">product</span><span class="o">.</span><span class="n">doc_id</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">id</span>
+    <span class="n">product</span><span class="o">.</span><span class="n">doc_path</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span>
+    <span class="k">return</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span>
+
+</div>
+<span class="nd">@secure_required</span>
+<span class="nd">@ajax_login_required</span>
+<div class="viewcode-block" id="ajax_part_creation_form"><a class="viewcode-back" href="../../../../devel/applications/document3D/views.html#openPLM.apps.document3D.views.ajax_part_creation_form">[docs]</a><span class="k">def</span> <span class="nf">ajax_part_creation_form</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">prefix</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    It updates the form of an assembly determined by **prefix** without recharging the whole page and respecting the information introduced up to the moment</span>
+
+<span class="sd">    The attributes can change depending on the type of part selected</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">Doc_Part_type_Form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">tf</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">pmodels</span><span class="o">.</span><span class="n">get_all_parts</span><span class="p">()[</span><span class="n">tf</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;type_part&quot;</span><span class="p">]]</span>
+        <span class="n">cf</span> <span class="o">=</span> <span class="n">pforms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="o">+</span><span class="s">&quot;-part&quot;</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()))</span>
+
+        <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;extra_attributes.html&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s">&quot;creation_form&quot;</span> <span class="p">:</span> <span class="n">cf</span><span class="p">},</span> <span class="n">request</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+
+</div>
+<span class="k">def</span> <span class="nf">same_time</span><span class="p">(</span><span class="n">old_modification_data</span><span class="p">,</span><span class="n">old_modification_data_microsecond</span><span class="p">,</span><span class="n">mtime</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">old_modification_data</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">old_modification_data_microsecond</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">d</span> <span class="o">==</span> <span class="n">mtime</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

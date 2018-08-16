@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.plmapp.models &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/plmapp/models.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.plmapp.models</h1><div class="highlight"><pre>
+<span class="c">#! -*- coding:utf-8 -*-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">Introduction</span>
+<span class="sd">=============</span>
+
+<span class="sd">Models for openPLM</span>
+
+<span class="sd">This module contains openPLM&#39;s main models.</span>
+
+<span class="sd">There are 5 kinds of models:</span>
+<span class="sd">    * User and group related:</span>
+<span class="sd">        - :class:`.UserProfile`</span>
+<span class="sd">        - :class:`.GroupInfo`</span>
+<span class="sd">        - :class:`.Invitation`</span>
+<span class="sd">    * Lifecycle related models:</span>
+<span class="sd">        - :class:`.Lifecycle`</span>
+<span class="sd">        - :class:`.State`</span>
+<span class="sd">        - :class:`.LifecycleStates`</span>
+<span class="sd">        - there are some functions that may be useful:</span>
+<span class="sd">            - :func:`.get_default_lifecycle`</span>
+<span class="sd">            - :func:`.get_default_state`</span>
+<span class="sd">    * History models:</span>
+<span class="sd">        - :class:`.AbstractHistory`</span>
+<span class="sd">        - :class:`.History`</span>
+<span class="sd">        - :class:`.UserHistory`</span>
+<span class="sd">        - :class:`.GroupHistory`</span>
+<span class="sd">        - :class:`.history.StateHistory`</span>
+<span class="sd">    * PLMObject models:</span>
+<span class="sd">        - :class:`.PLMObject` is the base class</span>
+<span class="sd">        - :class:`.Part`</span>
+<span class="sd">        - :class:`.Document` and related classes:</span>
+<span class="sd">            - :class:`.DocumentStorage` (see also :obj:`.docfs`)</span>
+<span class="sd">            - :class:`.DocumentFile`</span>
+<span class="sd">            - :class:`.PrivateFile`</span>
+<span class="sd">        - functions:</span>
+<span class="sd">            - :func:`.get_all_plmobjects`</span>
+<span class="sd">            - :func:`.part.get_all_parts`</span>
+<span class="sd">            - :func:`.get_all_documents`</span>
+<span class="sd">            - :func:`.import_models`</span>
+<span class="sd">    * :class:`.link.Link` models:</span>
+<span class="sd">        - :class:`.RevisionLink`</span>
+<span class="sd">        - :class:`.ParentChildLink`</span>
+<span class="sd">        - :class:`.DocumentPartLink`</span>
+<span class="sd">        - :class:`.DelegationLink`</span>
+<span class="sd">        - :class:`.PLMObjectUserLink`</span>
+<span class="sd">        - :class:`.AlternatePartSet`</span>
+
+
+<span class="sd">Inheritance diagrams</span>
+<span class="sd">=====================</span>
+
+<span class="sd">Users and groups</span>
+<span class="sd">----------------</span>
+
+<span class="sd">.. inheritance-diagram:: openPLM.plmapp.models.user  openPLM.plmapp.models.group</span>
+<span class="sd">    :parts: 1</span>
+
+<span class="sd">Lifecycles</span>
+<span class="sd">----------</span>
+
+<span class="sd">.. inheritance-diagram:: openPLM.plmapp.models.lifecycle</span>
+<span class="sd">    :parts: 1</span>
+
+<span class="sd">PLMObjects</span>
+<span class="sd">----------</span>
+
+<span class="sd">.. inheritance-diagram::  openPLM.plmapp.models.plmobject  openPLM.plmapp.models.part openPLM.plmapp.models.document</span>
+<span class="sd">    :parts: 1</span>
+
+<span class="sd">Histories</span>
+<span class="sd">----------</span>
+
+<span class="sd">.. inheritance-diagram:: openPLM.plmapp.models.history</span>
+<span class="sd">    :parts: 1</span>
+
+<span class="sd">Links</span>
+<span class="sd">-----</span>
+
+<span class="sd">.. inheritance-diagram:: openPLM.plmapp.models.link</span>
+<span class="sd">    :parts: 1</span>
+
+<span class="sd">Classes and functions</span>
+<span class="sd">========================</span>
+
+<span class="sd">.. note::</span>
+<span class="sd">    This module imports all the following functions and classes.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">fnmatch</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.lifecycle</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.group</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.user</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.plmobject</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.part</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.document</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.history</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models.link</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># monkey patch Comment models to select related fields</span>
+<span class="kn">from</span> <span class="nn">django.contrib.comments.models</span> <span class="kn">import</span> <span class="n">Comment</span>
+<span class="kn">from</span> <span class="nn">django.contrib.comments.managers</span> <span class="kn">import</span> <span class="n">CommentManager</span>
+
+<span class="k">class</span> <span class="nc">CommentManager</span><span class="p">(</span><span class="n">CommentManager</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">CommentManager</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&#39;user&#39;</span><span class="p">,</span> <span class="s">&#39;user__profile&#39;</span><span class="p">))</span>
+<span class="n">Comment</span><span class="o">.</span><span class="n">add_to_class</span><span class="p">(</span><span class="s">&#39;objects&#39;</span><span class="p">,</span> <span class="n">CommentManager</span><span class="p">())</span>
+
+<span class="c"># import_models should be the last function</span>
+
+<div class="viewcode-block" id="import_models"><a class="viewcode-back" href="../../../devel/modules/models.html#openPLM.plmapp.models.import_models">[docs]</a><span class="k">def</span> <span class="nf">import_models</span><span class="p">(</span><span class="n">force_reload</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Imports recursively all modules in directory *plmapp/customized_models*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MODELS_DIR</span> <span class="o">=</span> <span class="s">&quot;customized_models&quot;</span>
+    <span class="n">IMPORT_ROOT</span> <span class="o">=</span> <span class="s">&quot;openPLM.plmapp.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">MODELS_DIR</span>
+    <span class="k">if</span> <span class="n">__name__</span> <span class="o">!=</span> <span class="s">&quot;openPLM.plmapp.models&quot;</span><span class="p">:</span>
+        <span class="c"># this avoids to import models twice</span>
+        <span class="k">return</span>
+    <span class="k">if</span> <span class="n">force_reload</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">import_models</span><span class="p">,</span> <span class="s">&quot;done&quot;</span><span class="p">):</span>
+        <span class="n">import_models</span><span class="o">.</span><span class="n">done</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">models_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">__file__</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">MODELS_DIR</span><span class="p">)</span>
+        <span class="c"># we browse recursively models_dir</span>
+        <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">models_dir</span><span class="p">):</span>
+            <span class="c"># we only look at python files</span>
+            <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">fnmatch</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">files</span><span class="p">,</span> <span class="s">&quot;*.py&quot;</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">module</span> <span class="o">==</span> <span class="s">&quot;__init__.py&quot;</span><span class="p">:</span>
+                    <span class="c"># these files are empty</span>
+                    <span class="k">continue</span>
+                <span class="c"># import_name should respect the format</span>
+                <span class="c"># &#39;openPLM.plmapp.customized_models.{module_name}&#39;</span>
+                <span class="n">module_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">module</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">import_dir</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">MODELS_DIR</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span><span class="p">,</span> <span class="s">&quot;.&quot;</span><span class="p">)</span>
+                <span class="n">import_name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">IMPORT_ROOT</span><span class="p">,</span> <span class="n">import_dir</span><span class="p">,</span> <span class="n">module_name</span><span class="p">)</span>
+                <span class="n">import_name</span> <span class="o">=</span> <span class="n">import_name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="s">&quot;.&quot;</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">__import__</span><span class="p">(</span><span class="n">import_name</span><span class="p">,</span> <span class="nb">globals</span><span class="p">(),</span> <span class="nb">locals</span><span class="p">(),</span> <span class="p">[],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">ImportError</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;Exception in import_models&quot;</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">exc</span>
+                <span class="k">except</span> <span class="ne">StandardError</span><span class="p">,</span> <span class="n">exc</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="s">&quot;Exception in import_models&quot;</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">exc</span><span class="p">),</span> <span class="n">exc</span></div>
+<span class="n">import_models</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

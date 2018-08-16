@@ -1,0 +1,362 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.webdav.backends &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/webdav/backends.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.webdav.backends</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">django-webdav is a small WebDAV implementation for Django.</span>
+<span class="sd">Copyright 2012 Peter Gebauer</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.util</span> <span class="kn">import</span> <span class="n">get_class</span><span class="p">,</span> <span class="n">ClassNotFoundException</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.acl</span> <span class="kn">import</span> <span class="n">WebDavAcl</span>
+
+
+<div class="viewcode-block" id="BackendException"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendException">[docs]</a><span class="k">class</span> <span class="nc">BackendException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="BackendIOException"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendIOException">[docs]</a><span class="k">class</span> <span class="nc">BackendIOException</span><span class="p">(</span><span class="n">BackendException</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="BackendStorageException"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendStorageException">[docs]</a><span class="k">class</span> <span class="nc">BackendStorageException</span><span class="p">(</span><span class="n">BackendException</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="BackendResourceNotFoundException"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendResourceNotFoundException">[docs]</a><span class="k">class</span> <span class="nc">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">BackendException</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="BackendLockException"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendLockException">[docs]</a><span class="k">class</span> <span class="nc">BackendLockException</span><span class="p">(</span><span class="n">BackendException</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="BackendLock"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendLock">[docs]</a><span class="k">class</span> <span class="nc">BackendLock</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used for the WebDav backend locking mechanisms.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BackendLock.from_dict"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendLock.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;exclusive&quot;</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;exclusive&quot;</span><span class="p">),</span>
+                  <span class="s">&quot;infinite&quot;</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;infinite&quot;</span><span class="p">),</span>
+                  <span class="s">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;timeout&quot;</span><span class="p">),</span>
+                  <span class="s">&quot;owner&quot;</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">),</span>
+                  <span class="p">}</span>
+        <span class="k">return</span> <span class="n">BackendLock</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;path&quot;</span><span class="p">),</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;token&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;no path specified&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;no token specified&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">token</span> <span class="o">=</span> <span class="n">token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exclusive</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;exclusive&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">infinite</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;infinite&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;timeout&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;invalid timeout specified&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BackendLock.to_dict"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendLock.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&quot;path&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+                <span class="s">&quot;token&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">token</span><span class="p">,</span>
+                <span class="s">&quot;exclusive&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">exclusive</span><span class="p">,</span>
+                <span class="s">&quot;infinite&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">infinite</span><span class="p">,</span>
+                <span class="s">&quot;owner&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span>
+                <span class="s">&quot;timeout&quot;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+                <span class="p">}</span>
+
+
+</div></div>
+<div class="viewcode-block" id="PropertySet"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.PropertySet">[docs]</a><span class="k">class</span> <span class="nc">PropertySet</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">props</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;200 OK&quot;</span><span class="p">):</span>
+        <span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">props</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+
+</div>
+<div class="viewcode-block" id="BackendItem"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendItem">[docs]</a><span class="k">class</span> <span class="nc">BackendItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">is_collection</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">property_sets</span> <span class="o">=</span> <span class="p">[]):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_collection</span> <span class="o">=</span> <span class="n">is_collection</span>        
+        <span class="bp">self</span><span class="o">.</span><span class="n">property_sets</span> <span class="o">=</span> <span class="p">[</span><span class="n">ps</span> <span class="k">for</span> <span class="n">ps</span> <span class="ow">in</span> <span class="n">property_sets</span> <span class="k">if</span> <span class="n">ps</span><span class="p">]</span>
+
+<div class="viewcode-block" id="BackendItem.add_properties"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.BackendItem.add_properties">[docs]</a>    <span class="k">def</span> <span class="nf">add_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">props</span> <span class="o">=</span> <span class="p">{},</span> <span class="n">status</span> <span class="o">=</span> <span class="s">&quot;200 OK&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">props</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">property_sets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PropertySet</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">status</span><span class="p">))</span>
+
+</div></div>
+<div class="viewcode-block" id="Backend"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend">[docs]</a><span class="k">class</span> <span class="nc">Backend</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract files backend class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">LOCK_EX</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">LOCK_SH</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Backend.validate_config"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.validate_config">[docs]</a>    <span class="k">def</span> <span class="nf">validate_config</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Validator for a specific backend. Config is a dictionary.</span>
+<span class="sd">        Override to validate specific values in that dictionary.</span>
+<span class="sd">        Raises django.core.exceptions.ValidationError if it fails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Backend.get_category"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.get_category">[docs]</a>    <span class="k">def</span> <span class="nf">get_category</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override. Return a string with the category name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Backend.get_name"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override. Return proper human readable name as string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">configuration</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        All backends must take the configuration dictionary argument.</span>
+<span class="sd">        If the configuration is bad, BackendConfigException is raised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">validate_config</span><span class="p">(</span><span class="n">configuration</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">configuration</span> <span class="o">=</span> <span class="n">configuration</span>
+
+<div class="viewcode-block" id="Backend.get_acl"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.get_acl">[docs]</a>    <span class="k">def</span> <span class="nf">get_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns an empty WebDavAcl instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">WebDavAcl</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.set_acl"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.set_acl">[docs]</a>    <span class="k">def</span> <span class="nf">set_acl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">acl</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write WebDavAcl instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_propfind"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_propfind">[docs]</a>    <span class="k">def</span> <span class="nf">dav_propfind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">property_names</span> <span class="o">=</span> <span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The property_names argument can be used to specify which properties</span>
+<span class="sd">        to return with the BackendItems. Empty list (default) means ALL</span>
+<span class="sd">        properties.</span>
+<span class="sd">        Return a list of BackendItem instances found in the specified path</span>
+<span class="sd">        collection. Always include the resource specified in path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_set_properties"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_set_properties">[docs]</a>    <span class="k">def</span> <span class="nf">dav_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">properties</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set properties (dictionary) for resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_remove_properties"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_remove_properties">[docs]</a>    <span class="k">def</span> <span class="nf">dav_remove_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">property_names</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove properties (list of names) from resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_mkcol"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_mkcol">[docs]</a>    <span class="k">def</span> <span class="nf">dav_mkcol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new collection for resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_get"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_get">[docs]</a>    <span class="k">def</span> <span class="nf">dav_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return readable file object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_head"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_head">[docs]</a>    <span class="k">def</span> <span class="nf">dav_head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Not sure yet! FIXME!!!</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_delete"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_delete">[docs]</a>    <span class="k">def</span> <span class="nf">dav_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes the resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_put"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_put">[docs]</a>    <span class="k">def</span> <span class="nf">dav_put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">readable</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">estimated_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Upload data using file object. (or any object with read method)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_copy"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_copy">[docs]</a>    <span class="k">def</span> <span class="nf">dav_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_path</span><span class="p">,</span> <span class="n">to_path</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Copies a resource from one path to another.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_move"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_move">[docs]</a>    <span class="k">def</span> <span class="nf">dav_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_path</span><span class="p">,</span> <span class="n">to_path</span><span class="p">,</span> <span class="n">token1</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">token2</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Movies a resource from one path to another.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_lock"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_lock">[docs]</a>    <span class="k">def</span> <span class="nf">dav_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Locks the resource, exclusive or shared, depth infinite or not.</span>
+<span class="sd">        Must support the following keyword arguments:</span>
+<span class="sd">        owner (str), exclusive (bool), infinite (bool) and timeout (int).</span>
+<span class="sd">        Returns a BackendLock instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_unlock"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_unlock">[docs]</a>    <span class="k">def</span> <span class="nf">dav_unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">owner</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unlocks the resource.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Backend.dav_get_lock"><a class="viewcode-back" href="../../../../devel/applications/webdav/backends.html#openPLM.apps.webdav.backends.Backend.dav_get_lock">[docs]</a>    <span class="k">def</span> <span class="nf">dav_get_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a BackendLock instance.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

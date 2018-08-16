@@ -1,0 +1,905 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1.9. controllers.plmobject — Controllers for plmobjects &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.1. controllers — Controllers" href="../controllers.html" />
+    <link rel="next" title="5.1.10. controllers.user — Controllers for users" href="controllers_user.html" />
+    <link rel="prev" title="5.1.8. controllers.part — Controllers for parts" href="controllers_part.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_user.html" title="5.1.10. controllers.user — Controllers for users"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="controllers_part.html" title="5.1.8. controllers.part — Controllers for parts"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" accesskey="U">5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="controllers_part.html"
+                        title="previous chapter">5.1.8. <tt class="docutils literal docutils literal docutils literal"><span class="pre">controllers.part</span></tt> &#8212; Controllers for parts</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controllers_user.html"
+                        title="next chapter">5.1.10. <tt class="docutils literal"><span class="pre">controllers.user</span></tt> &#8212; Controllers for users</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/controllers/controllers_plmobject.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/controllers/controllers_plmobject.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.controllers.plmobject">
+<span id="controllers-plmobject-controllers-for-plmobjects"></span><h1>5.1.9. <tt class="xref py py-mod docutils literal"><span class="pre">controllers.plmobject</span></tt> &#8212; Controllers for plmobjects<a class="headerlink" href="#module-plmapp.controllers.plmobject" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.controllers.plmobject.PLMObjectController">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.plmobject.</tt><tt class="descname">PLMObjectController</tt><big>(</big><em>obj</em>, <em>user</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.controllers.base.Controller</span></tt></p>
+<p>Object used to manage a <tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt> and store his
+modification in a history</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes :</th><td class="field-body"><dl class="first attribute">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.object">
+<tt class="descname">object</tt><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> managed by the controller</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.plmobject.PLMObjectController._user">
+<tt class="descname">_user</tt><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController._user" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who modifies <tt class="docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>obj</strong> (a subinstance of <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>) &#8211; managed object</li>
+<li><strong>user</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; user who modifies <em>obj</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.HISTORY">
+<tt class="descname">HISTORY</tt><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.HISTORY" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">History</span></tt></p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.create">
+<em class="property">classmethod </em><tt class="descname">create</tt><big>(</big><em>reference</em>, <em>type</em>, <em>revision</em>, <em>user</em>, <em>data={}</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method builds a new <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> of
+type <em>class_</em> and return a <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> associated to
+the created object.</p>
+<p>Raises <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>reference</em>, <em>type</em> or <em>revision</em> are
+empty. Raises <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>type</em> is not valid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>reference</strong> &#8211; reference of the objet</li>
+<li><strong>type</strong> &#8211; type of the object</li>
+<li><strong>revision</strong> &#8211; revision of the object</li>
+<li><strong>user</strong> &#8211; user who creates/owns the object</li>
+<li><strong>data</strong> &#8211; a dict&lt;key, value&gt; with informations to add to the plmobject</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.create_from_form">
+<em class="property">classmethod </em><tt class="descname">create_from_form</tt><big>(</big><em>form</em>, <em>user</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.create_from_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.create_from_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> from <em>form</em> and associates <em>user</em>
+as the creator/owner of the PLMObject.</p>
+<p>This method raises <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>form</em> is invalid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>form</strong> &#8211; a django form associated to a model</li>
+<li><strong>user</strong> &#8211; user who creates/owns the object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.load">
+<em class="property">classmethod </em><tt class="descname">load</tt><big>(</big><em>type</em>, <em>reference</em>, <em>revision</em>, <em>user</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.can_approve_promotion">
+<tt class="descname">can_approve_promotion</tt><big>(</big><em>user=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.can_approve_promotion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.can_approve_promotion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.get_represented_approvers">
+<tt class="descname">get_represented_approvers</tt><big>(</big><em>user=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.get_represented_approvers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.get_represented_approvers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.is_last_promoter">
+<tt class="descname">is_last_promoter</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.is_last_promoter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.is_last_promoter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.approve_promotion">
+<tt class="descname">approve_promotion</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.approve_promotion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.approve_promotion" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.discard_approvals">
+<tt class="descname">discard_approvals</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.discard_approvals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.discard_approvals" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.promote">
+<tt class="descname">promote</tt><big>(</big><em>checked=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.promote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.promote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Promotes <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> in its lifecycle and writes its promotion in
+the history</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PromotionError" title="plmapp.exceptions.PromotionError"><tt class="xref py py-exc docutils literal"><span class="pre">PromotionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not promotable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the use can not sign <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a dictionary with two keys:<dl class="docutils">
+<dt>new_state</dt>
+<dd>the new current <a class="reference internal" href="../models.html#openPLM.plmapp.models.lifecycle.State" title="openPLM.plmapp.models.lifecycle.State"><tt class="xref py py-class docutils literal"><span class="pre">State</span></tt></a> of the object</dd>
+<dt>updated_revisions</dt>
+<dd>a list of updated (deprecated or cancelled) revisions</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.demote">
+<tt class="descname">demote</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.demote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.demote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Demotes <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> in irs lifecycle and writes irs demotion in the
+history</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the use can not sign <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.has_permission">
+<tt class="descname">has_permission</tt><big>(</big><em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.has_permission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.has_permission" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_editable">
+<tt class="descname">check_editable</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_editable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_editable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raises a <a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_in_group">
+<tt class="descname">check_in_group</tt><big>(</big><em>user</em>, <em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_in_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_in_group" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.0.1.</span></p>
+<p>Checks that <em>user</em> belongs to the object&#8217;s group.</p>
+<p>Returns True if the user belongs to the group.
+Otherwise, returns False if <em>raise_</em> is False or raises
+a <a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>raise_</em> is True.</p>
+<p>Note that it always returns True if <em>user</em> is the company.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.revise">
+<tt class="descname">revise</tt><big>(</big><em>new_revision</em>, <em>group=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.revise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.revise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a new revision: duplicates <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>. The duplicated
+object&#8217;s revision is <em>new_revision</em>.</p>
+<p>Returns a controller of the new object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.is_revisable">
+<tt class="descname">is_revisable</tt><big>(</big><em>check_user=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.is_revisable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.is_revisable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is revisable: if <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.revise" title="plmapp.controllers.plmobject.PLMObjectController.revise"><tt class="xref py py-meth docutils literal"><span class="pre">revise()</span></tt></a> can be
+called safely.</p>
+<p>If <em>check_user</em> is True (the default), it also checks if <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController._user" title="plmapp.controllers.plmobject.PLMObjectController._user"><tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt></a> can
+see the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.get_previous_revisions">
+<tt class="descname">get_previous_revisions</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.get_previous_revisions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.get_previous_revisions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.get_next_revisions">
+<tt class="descname">get_next_revisions</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.get_next_revisions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.get_next_revisions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.get_all_revisions">
+<tt class="descname">get_all_revisions</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.get_all_revisions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.get_all_revisions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all revisions, ordered from less recent to most recent</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">list of <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.set_owner">
+<tt class="descname">set_owner</tt><big>(</big><em>new_owner</em>, <em>dirty=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.set_owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.set_owner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <em>new_owner</em> as current owner.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method does <strong>NOT</strong> check that the current user
+is the owner of the object. <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.set_role" title="plmapp.controllers.plmobject.PLMObjectController.set_role"><tt class="xref py py-meth docutils literal"><span class="pre">set_role()</span></tt></a> does that check.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>new_owner</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; the new owner</li>
+<li><strong>dirty</strong> &#8211; True if set_owner should skip sanity checks and
+should not send a mail (usefull for tests, default is
+False)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>new_owner</em> is not a contributor</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>new_owner</em> is the company and the
+object is editable</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 1.0.1.</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>new_owner</em> does not belong to
+the object&#8217;s group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.add_notified">
+<tt class="descname">add_notified</tt><big>(</big><em>new_notified</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.add_notified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.add_notified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds <em>new_notified</em> to the list of users notified when <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>
+changes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_notified</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; the new user who would be notified</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">IntegrityError</span></tt> if <em>new_notified</em> is already notified
+when <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> changes</td>
+</tr>
+</tbody>
+</table>
+<p class="versionchanged">
+<span class="versionmodified">Changed in version 1.0.1.</span></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>new_notified</em> does not belong to
+the object&#8217;s group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.add_reader">
+<tt class="descname">add_reader</tt><big>(</big><em>new_reader</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.add_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.add_reader" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_edit_signer">
+<tt class="descname">check_edit_signer</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_edit_signer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_edit_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Checks that the current user can edit the signers of the object:</p>
+<blockquote>
+<div><ul class="simple">
+<li>He must own the object</li>
+<li>No user should have approved the promotion</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>raise_</em> is True and one of the
+above conditions is not met</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the user can edit the signers</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.can_edit_signer">
+<tt class="descname">can_edit_signer</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.can_edit_signer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.can_edit_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Returns True if the user can edit signers of the object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_signer">
+<tt class="descname">check_signer</tt><big>(</big><em>user</em>, <em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_signer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Checks that <em>user</em> can become a signer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>user</em> is not a contributor</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>user</em> is not in the object&#8217;s group</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>role</em> is not a valid signer role according to
+the object&#8217;s lifecycle</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.add_signer">
+<tt class="descname">add_signer</tt><big>(</big><em>new_signer</em>, <em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.add_signer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.add_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Adds <em>new_signer</em> to the list of signer for the role <em>role</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body">exceptions raised by <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.check_edit_signer" title="plmapp.controllers.plmobject.PLMObjectController.check_edit_signer"><tt class="xref py py-meth docutils literal"><span class="pre">check_edit_signer()</span></tt></a></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body">exceptions raised by <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.check_signer" title="plmapp.controllers.plmobject.PLMObjectController.check_signer"><tt class="xref py py-meth docutils literal"><span class="pre">check_signer()</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.remove_notified">
+<tt class="descname">remove_notified</tt><big>(</big><em>notified</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.remove_notified"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.remove_notified" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes <em>notified</em> to the list of users notified when <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>
+changes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>notified</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; the user who would be no more notified</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ObjectDoesNotExist</span></tt> if <em>notified</em> is not notified
+when <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> changes</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.remove_reader">
+<tt class="descname">remove_reader</tt><big>(</big><em>reader</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.remove_reader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.remove_reader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes <em>reader</em> to the list of restricted readers when <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.object" title="plmapp.controllers.plmobject.PLMObjectController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>
+changes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reader</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; the user who would be no more reader</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ObjectDoesNotExist</span></tt> if <em>reader</em> is not reader</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.remove_signer">
+<tt class="descname">remove_signer</tt><big>(</big><em>signer</em>, <em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.remove_signer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.remove_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Removes <em>signer</em> to the list of signers for role <em>role</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>signer</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; the user who would be no more signer</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if:</p>
+<ul class="simple">
+<li>user is not the owner</li>
+<li>one signer has approved the promotion</li>
+<li>there is only one signer</li>
+</ul>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">ObjectDoesNotExist</span></tt> if <em>signer</em> is not a signer</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.replace_signer">
+<tt class="descname">replace_signer</tt><big>(</big><em>old_signer</em>, <em>new_signer</em>, <em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.replace_signer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.replace_signer" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Sets <em>new_signer</em> as current signer instead of <em>old_signer</em> for <em>role</em>.
+<em>role</em> must be a valid sign role (see <a class="reference internal" href="../utils.html#plmapp.utils.level_to_sign_str" title="plmapp.utils.level_to_sign_str"><tt class="xref py py-func docutils literal"><span class="pre">level_to_sign_str()</span></tt></a> to get a role from a
+sign level (int)).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>old_signer</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; the replaced signer</li>
+<li><strong>new_signer</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; the new signer</li>
+<li><strong>role</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#str" title="(in Python v2.6)"><em>str</em></a>) &#8211; the sign role</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>signer</em> is not a contributor</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><p class="first"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>new_signer</em> does not belong to
+the object&#8217;s group.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><p class="first last"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>role</em> is invalid (level to high)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.set_role">
+<tt class="descname">set_role</tt><big>(</big><em>user</em>, <em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.set_role"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.set_role" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets role <em>role</em> (like <cite>owner</cite> or <cite>notified</cite>) for <em>user</em></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If <em>role</em> is <tt class="xref py py-const docutils literal"><span class="pre">ROLE_OWNER</span></tt>, the previous owner is
+replaced by <em>user</em>.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>role</em> is invalid</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raise :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <em>user</em> is not allowed to has role
+<em>role</em></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.remove_user">
+<tt class="descname">remove_user</tt><big>(</big><em>link</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.remove_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.remove_user" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_permission">
+<tt class="descname">check_permission</tt><big>(</big><em>role</em>, <em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_permission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_permission" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_readable">
+<tt class="descname">check_readable</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_readable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_readable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <tt class="docutils literal"><span class="pre">True</span></tt> if the user can read (is allowed to) this object.</p>
+<p>Raises a <a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user cannot read the object
+and <em>raise_</em> is <tt class="docutils literal"><span class="pre">True</span></tt> (the default).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_restricted_readable">
+<tt class="descname">check_restricted_readable</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_restricted_readable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_restricted_readable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <tt class="docutils literal"><span class="pre">True</span></tt> if the user can read (is allowed to) the restricted
+data of this object.</p>
+<p>Raises a <a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user cannot read the object
+and <em>raise_</em> is <tt class="docutils literal"><span class="pre">True</span></tt> (the default).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.cancel">
+<tt class="descname">cancel</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels the object:</p>
+<ul class="simple">
+<li>Its lifecycle becomes &#8220;cancelled&#8221;.</li>
+<li>Its owner becomes the company.</li>
+<li>It removes all signer.</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_publish">
+<tt class="descname">check_publish</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_publish" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Checks that an object can be published.</p>
+<p>If <em>raise_</em> is True:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the object is not official</td>
+</tr>
+<tr class="field-even field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user is not allowed to publish
+an object (see <a class="reference internal" href="../models.html#openPLM.plmapp.models.user.UserProfile.can_publish" title="openPLM.plmapp.models.user.UserProfile.can_publish"><tt class="xref py py-attr docutils literal"><span class="pre">UserProfile.can_publish</span></tt></a>)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user does not belong to
+the object&#8217;s group</td>
+</tr>
+<tr class="field-even field"><th class="field-name">raise:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the object is already published</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>If <em>raise_</em> is False:</p>
+<blockquote>
+<div>Returns True if all previous tests has been succesfully passed,
+False otherwise.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.can_publish">
+<tt class="descname">can_publish</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.can_publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.can_publish" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns True if the user can publish this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.publish">
+<tt class="descname">publish</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.publish" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Publish the object.</p>
+<p>A published object can be accessed by anonymous users.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body">all exceptions raised by <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.check_publish" title="plmapp.controllers.plmobject.PLMObjectController.check_publish"><tt class="xref py py-meth docutils literal"><span class="pre">check_publish()</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_unpublish">
+<tt class="descname">check_unpublish</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_unpublish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_unpublish" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Checks that an object can be unpublished.</p>
+<p>If <em>raise_</em> is True:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user is not allowed to unpublish
+an object (see <a class="reference internal" href="../models.html#openPLM.plmapp.models.user.UserProfile.can_publish" title="openPLM.plmapp.models.user.UserProfile.can_publish"><tt class="xref py py-attr docutils literal"><span class="pre">UserProfile.can_publish</span></tt></a>)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user does not belong to
+the object&#8217;s group</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the object is unpublished</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>If <em>raise_</em> is False:</p>
+<blockquote>
+<div>Returns True if all previous tests has been succesfully passed,
+False otherwise.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.can_unpublish">
+<tt class="descname">can_unpublish</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.can_unpublish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.can_unpublish" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns True if the user can unpublish this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.unpublish">
+<tt class="descname">unpublish</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.unpublish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.unpublish" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Unpublish the object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raise :</th><td class="field-body">all exceptions raised by <a class="reference internal" href="#plmapp.controllers.plmobject.PLMObjectController.check_unpublish" title="plmapp.controllers.plmobject.PLMObjectController.check_unpublish"><tt class="xref py py-meth docutils literal"><span class="pre">check_unpublish()</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_cancel">
+<tt class="descname">check_cancel</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Checks that an object can be cancelled.</p>
+<p>If <em>raise_</em> is True:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the object is not draft</td>
+</tr>
+<tr class="field-even field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the object has related previous
+or next revision</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user has not owner rights on
+an object</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>If <em>raise_</em> is False:</p>
+<blockquote>
+<div>Returns True if all previous tests has been succesfully passed,
+False otherwise.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.can_cancel">
+<tt class="descname">can_cancel</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.can_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.can_cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns True if the user can cancel this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.safe_cancel">
+<tt class="descname">safe_cancel</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.safe_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.safe_cancel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.check_clone">
+<tt class="descname">check_clone</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.check_clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.check_clone" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Checks that an object can be cloned.</p>
+<p>If <em>raise_</em> is True:</p>
+<blockquote>
+<div><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the object is not readable</td>
+</tr>
+<tr class="field-even field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the object can not be read</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">raise:</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the object is not cloneable</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>If <em>raise_</em> is False:</p>
+<blockquote>
+<div>Returns True if all previous tests has been succesfully passed,
+False otherwise.</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.can_clone">
+<tt class="descname">can_clone</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.can_clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.can_clone" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns True if the user can clone this object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.clone">
+<tt class="descname">clone</tt><big>(</big><em>form</em>, <em>user</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Clone this object and return the related controller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>form</strong> &#8211; the form sent from clone view</li>
+<li><strong>user</strong> &#8211; the user who is cloning the object</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.plmobject.PLMObjectController.histories">
+<tt class="descname">histories</tt><a class="reference internal" href="../../../_modules/plmapp/controllers/plmobject.html#PLMObjectController.histories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.plmobject.PLMObjectController.histories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">object</tt></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_user.html" title="5.1.10. controllers.user — Controllers for users"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="controllers_part.html" title="5.1.8. controllers.part — Controllers for parts"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" >5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

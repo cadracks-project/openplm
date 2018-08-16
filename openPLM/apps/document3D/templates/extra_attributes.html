@@ -1,0 +1,21 @@
+<table class="Content">
+    {% for field in creation_form.visible_fields %} 
+        {% if field.name != "reference" and field.name != "name" and field.name != "revision" %} 
+            <tr>
+
+                <th class="cell_label">
+                    <label for="{{field.id}}"> {{ field.label }}</label>
+                </th>
+                <td class="{{field.errors|yesno:"errors,valid"}}">
+                    {{ field }}
+                    {{ field.errors }}
+                </td>
+                
+            </tr>
+
+        {% endif %}
+    {% endfor %} 
+    {% for field in creation_form.hidden_fields %}
+        {{ field }}
+    {% endfor %}
+</table>

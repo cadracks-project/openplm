@@ -1,0 +1,227 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.references &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/references.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.references</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">PLMObject</span><span class="p">,</span> <span class="n">Part</span><span class="p">,</span> <span class="n">Document</span>
+
+<span class="c">#: Regular expression to test if a reference is invalid (forbidden characters)</span>
+<span class="n">rx_bad_ref</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;[?/#\n\t\r\f]|\.\.&quot;</span><span class="p">)</span>
+
+<span class="c">#: default reference patterns, generates references like ``PART_00001`` and ``DOC_00001``</span>
+<span class="n">REFERENCE_PATTERNS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;shared&quot;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&quot;part&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;PART_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^PART_(\d+)$&quot;</span><span class="p">),</span>
+    <span class="s">&quot;doc&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s">u&quot;DOC_{number:05d}&quot;</span><span class="p">,</span> <span class="s">r&quot;^DOC_(\d+)$&quot;</span><span class="p">),</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="validate_reference"><a class="viewcode-back" href="../../devel/modules/references.html#plmapp.references.validate_reference">[docs]</a><span class="k">def</span> <span class="nf">validate_reference</span><span class="p">(</span><span class="n">reference</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Raises a :exc:`ValueError` if *reference* is not valid.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">rx_bad_ref</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">reference</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Bad reference: &#39;#&#39;, &#39;?&#39;, &#39;/&#39; and &#39;..&#39; are not allowed&quot;</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="validate_revision"><a class="viewcode-back" href="../../devel/modules/references.html#plmapp.references.validate_revision">[docs]</a><span class="k">def</span> <span class="nf">validate_revision</span><span class="p">(</span><span class="n">revision</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Raises a :exc:`ValueError` if *revision* is not valid.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">revision</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Empty value not permitted for revision&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rx_bad_ref</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">revision</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Bad revision: &#39;#&#39;, &#39;?&#39;, &#39;/&#39; and &#39;..&#39; are not allowed&quot;</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="get_new_reference"><a class="viewcode-back" href="../../devel/modules/references.html#plmapp.references.get_new_reference">[docs]</a><span class="k">def</span> <span class="nf">get_new_reference</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns a new reference for creating a :class:`.PLMObject` of type</span>
+<span class="sd">    *cls*.</span>
+
+<span class="sd">    *user* is the user who will create the object.</span>
+
+<span class="sd">    By default, the formatting is ``PART_000XX``</span>
+<span class="sd">    if *cls* is a subclass of :class:`.Part` and ``DOC_000XX`` otherwise.</span>
+
+<span class="sd">    The number is the count of Parts or Documents plus *start* plus 1.</span>
+<span class="sd">    It is incremented while an object with the same reference already exists.</span>
+<span class="sd">    *start* can be used to create several creation forms at once.</span>
+
+<span class="sd">    Parts and documents have an independent reference number. For example,</span>
+<span class="sd">    the first suggested part reference is ``PART_00001`` and the first</span>
+<span class="sd">    suggested document is ``DOC_00001`` even if parts have been created.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The returned referenced may not be valid if a new object has been</span>
+<span class="sd">        created after the call to this function.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">patterns</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;REFERENCE_PATTERNS&quot;</span><span class="p">,</span> <span class="n">REFERENCE_PATTERNS</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">patterns</span><span class="p">[</span><span class="s">&quot;shared&quot;</span><span class="p">]:</span>
+        <span class="n">base_cls</span> <span class="o">=</span> <span class="n">PLMObject</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;part&quot;</span> <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">Part</span><span class="p">)</span> <span class="k">else</span> <span class="s">&quot;doc&quot;</span>
+    <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">Part</span><span class="p">):</span>
+        <span class="n">base_cls</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">Part</span><span class="p">,</span> <span class="s">&quot;part&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">base_cls</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="n">Document</span><span class="p">,</span> <span class="s">&quot;doc&quot;</span>
+    <span class="n">format</span> <span class="o">=</span> <span class="n">patterns</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">inbulk_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="s">&quot;max_&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">inbulk_cache</span><span class="p">:</span>
+        <span class="n">max_ref</span> <span class="o">=</span> <span class="n">inbulk_cache</span><span class="p">[</span><span class="s">&quot;max_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">max_ref</span> <span class="o">=</span> <span class="n">base_cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-reference_number&quot;</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;reference_number&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">max_ref</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">inbulk_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">inbulk_cache</span><span class="p">[</span><span class="s">&quot;max_&quot;</span> <span class="o">+</span> <span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">max_ref</span>
+    <span class="n">nb</span> <span class="o">=</span> <span class="n">max_ref</span> <span class="o">+</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">initials</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">first_name</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">user</span><span class="o">.</span><span class="n">last_name</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">now</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+            <span class="n">number</span><span class="o">=</span><span class="n">nb</span><span class="p">,</span> <span class="n">initials</span><span class="o">=</span><span class="n">initials</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="parse_reference_number"><a class="viewcode-back" href="../../devel/modules/references.html#plmapp.references.parse_reference_number">[docs]</a><span class="k">def</span> <span class="nf">parse_reference_number</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">class_</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses *reference* and returns the reference number.</span>
+<span class="sd">    The reference number is the text that increases after each</span>
+<span class="sd">    creation of a new document or part.</span>
+
+<span class="sd">    :param reference: reference of the created object</span>
+<span class="sd">    :param class_: class of the created object</span>
+<span class="sd">    :return: the reference number, 0 if there is no reference</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">patterns</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;REFERENCE_PATTERNS&quot;</span><span class="p">,</span> <span class="n">REFERENCE_PATTERNS</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;part&quot;</span> <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">class_</span><span class="p">,</span> <span class="n">Part</span><span class="p">)</span> <span class="k">else</span> <span class="s">&quot;doc&quot;</span>
+        <span class="n">reference_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">patterns</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">reference</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">reference_number</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">reference_number</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">reference_number</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">reference_number</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

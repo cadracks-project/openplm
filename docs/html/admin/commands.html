@@ -1,0 +1,539 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Commands &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="5. Admin documentation" href="index.html" />
+    <link rel="next" title="5. Files" href="files.html" />
+    <link rel="prev" title="3.10. webdav – WebDAV support" href="applications/webdav/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="files.html" title="5. Files"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="applications/webdav/index.html" title="3.10. webdav – WebDAV support"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. Commands</a><ul>
+<li><a class="reference internal" href="#database-related-commands">4.1. Database related commands</a><ul>
+<li><a class="reference internal" href="#syncdb">4.1.1. syncdb</a></li>
+<li><a class="reference internal" href="#migrate">4.1.2. migrate</a></li>
+<li><a class="reference internal" href="#dbshell">4.1.3. dbshell</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#search-index-related-commands">4.2. Search index related commands</a><ul>
+<li><a class="reference internal" href="#rebuild-index">4.2.1. rebuild_index</a></li>
+<li><a class="reference internal" href="#update-index">4.2.2. update_index</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#user-related-commands">4.3. User related commands</a><ul>
+<li><a class="reference internal" href="#changepassword">4.3.1. changepassword</a></li>
+<li><a class="reference internal" href="#createsuperuser">4.3.2. createsuperuser</a></li>
+<li><a class="reference internal" href="#createcompany">4.3.3. createcompany</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#translation-related-commands">4.4. Translation related commands</a><ul>
+<li><a class="reference internal" href="#makemessages">4.4.1. makemessages</a></li>
+<li><a class="reference internal" href="#compilemessages">4.4.2. compilemessages</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="applications/webdav/index.html"
+                        title="previous chapter">3.10. webdav &#8211; WebDAV support</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="files.html"
+                        title="next chapter">5. Files</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/commands.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/commands.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="commands">
+<h1>4. Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h1>
+<p>Most of the available commands must be run from the main directory where the
+file <tt class="file docutils literal"><span class="pre">manage.py</span></tt> is located.</p>
+<p>This script accepts a command followed by mandatory and optional arguments.</p>
+<p>Usage: <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">subcommand</span> <span class="pre">[options]</span> <span class="pre">[args]</span></tt></p>
+<p>The following options are always available:</p>
+<dl class="option">
+<dt id="cmdoption-v">
+<tt class="descname">-v</tt><tt class="descclassname"> VERBOSITY</tt><tt class="descclassname">, </tt><tt class="descname">--verbosity</tt><tt class="descclassname">=VERBOSITY</tt><a class="headerlink" href="#cmdoption-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verbosity level; 0=minimal output, 1=normal output, 2=all output</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption--traceback">
+<tt class="descname">--traceback</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print traceback on exception. Useful for debugging purpose.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption--settings">
+<tt class="descname">--settings</tt><tt class="descclassname">=SETTINGS</tt><a class="headerlink" href="#cmdoption--settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Python path to a settings module, e.g.  &#8220;myproject.settings.main&#8221;.
+If this isn&#8217;t provided, the DJANGO_SETTINGS_MODULE environment variable will be used.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption--pythonpath">
+<tt class="descname">--pythonpath</tt><tt class="descclassname">=PYTHONPATH</tt><a class="headerlink" href="#cmdoption--pythonpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>A directory to add to the Python path, e.g.  &#8220;/home/djangoprojects/myproject&#8221;.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption--version">
+<tt class="descname">--version</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption--version" title="Permalink to this definition">¶</a></dt>
+<dd><p>show Django&#8217;s version number</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-h">
+<tt class="descname">-h</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--help</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-h" title="Permalink to this definition">¶</a></dt>
+<dd><p>show an help message and exit</p>
+</dd></dl>
+
+<div class="section" id="database-related-commands">
+<h2>4.1. Database related commands<a class="headerlink" href="#database-related-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="syncdb">
+<h3>4.1.1. syncdb<a class="headerlink" href="#syncdb" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py syncdb</strong> creates
+the database tables for all apps in <a class="reference internal" href="settings.html#settings.INSTALLED_APPS" title="settings.INSTALLED_APPS"><tt class="xref py py-const docutils literal"><span class="pre">INSTALLED_APPS</span></tt></a>
+whose tables haven&#8217;t already been created, except those which use migrations.</p>
+<p>Usage: <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">syncdb</span> <span class="pre">[options]</span></tt></p>
+<dl class="option">
+<dt id="cmdoption-./manage.py-syncdb--all">
+<tt class="descname">--all</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-syncdb--all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes syncdb work on all apps, even migrated ones. Be careful!
+This option should only be set to initialize if no tables were
+created.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="migrate">
+<h3>4.1.2. migrate<a class="headerlink" href="#migrate" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py migrate</strong> runs migrations for all apps.</p>
+<p>Use this commands after an upgrade of OpenPLM to synchronize the database.
+Always make a backup of your data (database and files) before running this
+command!</p>
+<p>Usage: <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">migrate</span> <span class="pre">[options]</span> <span class="pre">[appname]</span> <span class="pre">[migrationname|zero]</span> <span class="pre">[--all]</span> <span class="pre">[--list]</span> <span class="pre">[--skip]</span> <span class="pre">[--merge]</span> <span class="pre">[--no-initial-data]</span> <span class="pre">[--fake]</span> <span class="pre">[--db-dry-run]</span> <span class="pre">[--database=dbalias]</span></tt></p>
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--all">
+<tt class="descname">--all</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the specified migration for all apps.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--list">
+<tt class="descname">--list</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--list" title="Permalink to this definition">¶</a></dt>
+<dd><p>List migrations noting those that have been applied</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--skip">
+<tt class="descname">--skip</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--skip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will skip over out-of-order missing migrations</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--merge">
+<tt class="descname">--merge</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--merge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will run out-of-order missing migrations as they are - no rollbacks.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--no-initial-data">
+<tt class="descname">--no-initial-data</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--no-initial-data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Skips loading initial data if specified.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--fake">
+<tt class="descname">--fake</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--fake" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretends to do the migrations, but doesn&#8217;t actually execute them.
+Only set this option if your database schema is synchronised with
+OpenPLM source code.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--db-dry-run">
+<tt class="descname">--db-dry-run</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--db-dry-run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Doesn&#8217;t execute the SQL generated by the db methods, and doesn&#8217;t store a
+record that the migration(s) occurred. Useful to test migrations before
+applying them.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--delete-ghost-migrations">
+<tt class="descname">--delete-ghost-migrations</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--delete-ghost-migrations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells South to delete any &#8216;ghost&#8217; migrations (ones in
+the database but not on disk).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-migrate--ignore-ghost-migrations">
+<tt class="descname">--ignore-ghost-migrations</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-migrate--ignore-ghost-migrations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tells South to ignore any &#8216;ghost&#8217; migrations (ones in
+the database but not on disk) and continue to apply
+new migrations.</p>
+</dd></dl>
+
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">More documentation on this command is available
+<a class="reference external" href="http://south.readthedocs.org/en/latest/commands.html#migrate">here</a>.</p>
+</div>
+</div>
+<div class="section" id="dbshell">
+<h3>4.1.3. dbshell<a class="headerlink" href="#dbshell" title="Permalink to this headline">¶</a></h3>
+<p>Runs the command-line client for the database.</p>
+<p>Usage: <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">dbshell</span></tt></p>
+</div>
+</div>
+<div class="section" id="search-index-related-commands">
+<h2>4.2. Search index related commands<a class="headerlink" href="#search-index-related-commands" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Do not forget to set change the owner of the index directory
+to www-data (user who runs celery)</p>
+</div>
+<div class="section" id="rebuild-index">
+<h3>4.2.1. rebuild_index<a class="headerlink" href="#rebuild-index" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py rebuild_index</strong> completely rebuilds the search
+index by removing the old data and then updating.</p>
+<p>Usage: <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">rebuild_index</span> <span class="pre">[options]</span></tt></p>
+<dl class="option">
+<dt id="cmdoption-./manage.py-rebuild_index-a">
+<tt class="descname">-a</tt><tt class="descclassname"> AGE</tt><tt class="descclassname">, </tt><tt class="descname">--age</tt><tt class="descclassname">=AGE</tt><a class="headerlink" href="#cmdoption-./manage.py-rebuild_index-a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of hours back to consider objects new.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-rebuild_index-b">
+<tt class="descname">-b</tt><tt class="descclassname"> BATCHSIZE</tt><tt class="descclassname">, </tt><tt class="descname">--batch-size</tt><tt class="descclassname">=BATCHSIZE</tt><a class="headerlink" href="#cmdoption-./manage.py-rebuild_index-b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of items to index at once.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-rebuild_index-r">
+<tt class="descname">-r</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--remove</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-rebuild_index-r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove objects from the index that are no longer present in the database.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-rebuild_index-k">
+<tt class="descname">-k</tt><tt class="descclassname"> WORKERS</tt><tt class="descclassname">, </tt><tt class="descname">--workers</tt><tt class="descclassname">=WORKERS</tt><a class="headerlink" href="#cmdoption-./manage.py-rebuild_index-k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows for the use multiple workers to parallelize indexing. Requires
+multiprocessing.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="update-index">
+<h3>4.2.2. update_index<a class="headerlink" href="#update-index" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py update_index</strong> freshens the index for the given app(s).</p>
+<p>Usage: <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">update_index</span> <span class="pre">[options]</span> <span class="pre">&lt;</span><em><span class="pre">appname</span></em> <em><span class="pre">appname</span></em> <span class="pre">...&gt;</span></tt></p>
+<dl class="option">
+<dt id="cmdoption-./manage.py-update_index-a">
+<tt class="descname">-a</tt><tt class="descclassname"> AGE</tt><tt class="descclassname">, </tt><tt class="descname">--age</tt><tt class="descclassname">=AGE</tt><a class="headerlink" href="#cmdoption-./manage.py-update_index-a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of hours back to consider objects new.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-update_index-b">
+<tt class="descname">-b</tt><tt class="descclassname"> BATCHSIZE</tt><tt class="descclassname">, </tt><tt class="descname">--batch-size</tt><tt class="descclassname">=BATCHSIZE</tt><a class="headerlink" href="#cmdoption-./manage.py-update_index-b" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of items to index at once.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-update_index-r">
+<tt class="descname">-r</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--remove</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-update_index-r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove objects from the index that are no longer present in the database.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-update_index-k">
+<tt class="descname">-k</tt><tt class="descclassname"> WORKERS</tt><tt class="descclassname">, </tt><tt class="descname">--workers</tt><tt class="descclassname">=WORKERS</tt><a class="headerlink" href="#cmdoption-./manage.py-update_index-k" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows for the use multiple workers to parallelize indexing. Requires
+multiprocessing.</p>
+</dd></dl>
+
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">More documentation on these commands is available
+<a class="reference external" href="http://django-haystack.readthedocs.org/en/v1.2.7/management_commands.html">here</a>.</p>
+</div>
+</div>
+</div>
+<div class="section" id="user-related-commands">
+<h2>4.3. User related commands<a class="headerlink" href="#user-related-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="changepassword">
+<h3>4.3.1. changepassword<a class="headerlink" href="#changepassword" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py changepassword</strong> changes the password of the
+given user.</p>
+<p>Usage <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">changepassword</span> <span class="pre">[options]</span> <em><span class="pre">username</span></em></tt></p>
+</div>
+<div class="section" id="createsuperuser">
+<h3>4.3.2. createsuperuser<a class="headerlink" href="#createsuperuser" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py createsuperuser</strong> creates a new super user
+(administrator who can manage data through the admin interface).</p>
+<p>Usage <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">createsuperuser</span> <span class="pre">[options]</span></tt></p>
+</div>
+<div class="section" id="createcompany">
+<h3>4.3.3. createcompany<a class="headerlink" href="#createcompany" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py createcompany</strong> creates the <em>company</em>
+user (special user who owns official and deprecated parts and documents).</p>
+<p>Usage <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">createcompany</span> <span class="pre">[options]</span></tt></p>
+</div>
+</div>
+<div class="section" id="translation-related-commands">
+<h2>4.4. Translation related commands<a class="headerlink" href="#translation-related-commands" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="makemessages">
+<h3>4.4.1. makemessages<a class="headerlink" href="#makemessages" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py makemessages</strong> creates/updates a message file (extensions : .po) in the conf/locale
+(in the django tree) or locale (for project and application) directory.</p>
+<p>Usage <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">makemessages</span> <span class="pre">[options]</span></tt></p>
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages-v">
+<tt class="descname">-v</tt><tt class="descclassname"> VERBOSITY</tt><tt class="descclassname">, </tt><tt class="descname">--verbosity</tt><tt class="descclassname">=VERBOSITY</tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verbosity level; 0=minimal output, 1=normal output, 2=all output</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages--settings">
+<tt class="descname">--settings</tt><tt class="descclassname">=SETTINGS</tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages--settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Python path to a settings module, e.g. &#8220;myproject.settings.main&#8221;.
+If this isn&#8217;t provided, the DJANGO_SETTINGS_MODULE environment variable will be
+used.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages--pythonpath">
+<tt class="descname">--pythonpath</tt><tt class="descclassname">=PYTHONPATH</tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages--pythonpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>A directory to add to the Python path, e.g. &#8220;/home/djangoprojects/myproject&#8221;.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages--traceback">
+<tt class="descname">--traceback</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages--traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print traceback on exception</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages-l">
+<tt class="descname">-l</tt><tt class="descclassname"> LOCALE</tt><tt class="descclassname">, </tt><tt class="descname">--locale</tt><tt class="descclassname">=LOCALE</tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages-l" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates or updates the message files only for the given locale (e.g. pt_BR).</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages-a">
+<tt class="descname">-a</tt><tt class="descclassname"></tt><tt class="descclassname">, </tt><tt class="descname">--all</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages-a" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reexamines all source code and templates for new translation strings and updates all message files for
+all available languages.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages-e">
+<tt class="descname">-e</tt><tt class="descclassname"> EXTENSIONS</tt><tt class="descclassname">, </tt><tt class="descname">--extension</tt><tt class="descclassname">=EXTENSIONS</tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages-e" title="Permalink to this definition">¶</a></dt>
+<dd><p>The file extension(s) to examine (default: &#8221;.html&#8221;, separate multiple extensions with commas, or use -e
+multiple times)</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-makemessages-i">
+<tt class="descname">-i</tt><tt class="descclassname"> PATTERN</tt><tt class="descclassname">, </tt><tt class="descname">--ignore</tt><tt class="descclassname">=PATTERN</tt><a class="headerlink" href="#cmdoption-./manage.py-makemessages-i" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ignore files or directories matching this glob-style
+pattern. Use multiple times to ignore more.</p>
+</dd></dl>
+
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">More documentation on these commands is available
+<a class="reference external" href="http://django-haystack.readthedocs.org/en/v1.2.7/management_commands.html">here</a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When you create/update message files for the main application use
+<strong class="program">./manage.py makemessages - -ignore=apps/* [options]</strong></p>
+<p class="last">If you want to create/update message files for a given application, first change your current
+directory to the application directory.</p>
+</div>
+</div>
+<div class="section" id="compilemessages">
+<h3>4.4.2. compilemessages<a class="headerlink" href="#compilemessages" title="Permalink to this headline">¶</a></h3>
+<p>The command <strong class="program">./manage.py compilemessages</strong> compiles message files (.po) to .mo files .</p>
+<p>Usage <tt class="samp docutils literal"><span class="pre">./manage.py</span> <span class="pre">compilemessages</span> <span class="pre">[options]</span></tt></p>
+<dl class="option">
+<dt id="cmdoption-./manage.py-compilemessages-v">
+<tt class="descname">-v</tt><tt class="descclassname"> VERBOSITY</tt><tt class="descclassname">, </tt><tt class="descname">--verbosity</tt><tt class="descclassname">=VERBOSITY</tt><a class="headerlink" href="#cmdoption-./manage.py-compilemessages-v" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verbosity level; 0=minimal output, 1=normal output, 2=all output</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-compilemessages--settings">
+<tt class="descname">--settings</tt><tt class="descclassname">=SETTINGS</tt><a class="headerlink" href="#cmdoption-./manage.py-compilemessages--settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Python path to a settings module, e.g. &#8220;myproject.settings.main&#8221;.
+If this isn&#8217;t provided, the DJANGO_SETTINGS_MODULE environment variable will be
+used.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-compilemessages--pythonpath">
+<tt class="descname">--pythonpath</tt><tt class="descclassname">=PYTHONPATH</tt><a class="headerlink" href="#cmdoption-./manage.py-compilemessages--pythonpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>A directory to add to the Python path, e.g. &#8220;/home/djangoprojects/myproject&#8221;.</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-compilemessages--traceback">
+<tt class="descname">--traceback</tt><tt class="descclassname"></tt><a class="headerlink" href="#cmdoption-./manage.py-compilemessages--traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print traceback on exception</p>
+</dd></dl>
+
+<dl class="option">
+<dt id="cmdoption-./manage.py-compilemessages-l">
+<tt class="descname">-l</tt><tt class="descclassname"> LOCALE</tt><tt class="descclassname">, </tt><tt class="descname">--locale</tt><tt class="descclassname">=LOCALE</tt><a class="headerlink" href="#cmdoption-./manage.py-compilemessages-l" title="Permalink to this definition">¶</a></dt>
+<dd><p>The locale to process. Default is to process all.</p>
+</dd></dl>
+
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">More documentation on these commands is available
+<a class="reference external" href="http://django-haystack.readthedocs.org/en/v1.2.7/management_commands.html">here</a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you want to compile message files for a given application, first change your current
+directory to the application directory.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="files.html" title="5. Files"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="applications/webdav/index.html" title="3.10. webdav – WebDAV support"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

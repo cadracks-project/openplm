@@ -1,0 +1,184 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.thumbnailers.base &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/thumbnailers/base.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.thumbnailers.base</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<div class="viewcode-block" id="ThumbnailersManager"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_base.html#plmapp.thumbnailers.base.ThumbnailersManager">[docs]</a><span class="k">class</span> <span class="nc">ThumbnailersManager</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The ThumbnailersManager has methods to register a thumbnailer with a</span>
+<span class="sd">    type of file (an extension with the dot, like ``&quot;.pdf&quot;``) and to get a</span>
+<span class="sd">    thumbnailer from a extension.</span>
+<span class="sd">    </span>
+<span class="sd">    A thumbnailer is a function which takes 3 arguments:</span>
+
+<span class="sd">        * input_path: path of the input file</span>
+<span class="sd">        * original_filename: original filename, as uploaded by the user</span>
+<span class="sd">        * output_path: path where the thumbnail should be saved.</span>
+
+<span class="sd">    It returns ``True`` if the generated thumbnail should be resized to</span>
+<span class="sd">    :attr:`.THUMBNAIL_SIZE`, ``False`` otherwise.</span>
+
+<span class="sd">    A thumbnailer must generate a png file. If it fails, it must raise an</span>
+<span class="sd">    exception.</span>
+
+<span class="sd">    In all methods, *extension* should be in lowercase and starts with a dot.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c">#: internal dict(extension-&gt;Hanfler)</span>
+    <span class="n">_thumbnailers</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+   
+    <span class="c">#: thumbnail size</span>
+    <span class="n">THUMBNAIL_SIZE</span> <span class="o">=</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ThumbnailersManager.register"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_base.html#plmapp.thumbnailers.base.ThumbnailersManager.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">thumbnailer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Registers *thumbnailer* for *extension*.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">_thumbnailers</span><span class="p">[</span><span class="n">extension</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thumbnailer</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ThumbnailersManager.get_best_thumbnailer"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_base.html#plmapp.thumbnailers.base.ThumbnailersManager.get_best_thumbnailer">[docs]</a>    <span class="k">def</span> <span class="nf">get_best_thumbnailer</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Gets the best thumbnailer associated to *extension*. The best</span>
+<span class="sd">        thumbnailer is the first registered thumbnailer for *extension*.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_thumbnailers</span><span class="p">[</span><span class="n">extension</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ThumbnailersManager.get_all_thumbnailers"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_base.html#plmapp.thumbnailers.base.ThumbnailersManager.get_all_thumbnailers">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_thumbnailers</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of all thumbnailer associated to *extension*.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">_thumbnailers</span><span class="p">[</span><span class="n">extension</span><span class="p">])</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ThumbnailersManager.get_all_supported_types"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_base.html#plmapp.thumbnailers.base.ThumbnailersManager.get_all_supported_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_supported_types</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all supported types (a list of string).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_thumbnailers</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

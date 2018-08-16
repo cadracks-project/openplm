@@ -1,0 +1,212 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>7. Documenting OpenPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="8. Bill of materials – BOM" href="bom.html" />
+    <link rel="prev" title="6.6.4. webdav.webdav_handler — Handler of webdav request" href="applications/webdav/webdav_handler.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="bom.html" title="8. Bill of materials – BOM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="applications/webdav/webdav_handler.html" title="6.6.4. webdav.webdav_handler — Handler of webdav request"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">7. Documenting OpenPLM</a><ul>
+<li><a class="reference internal" href="#tools-used-to-write-the-documention">7.1. Tools used to write the documention</a></li>
+<li><a class="reference internal" href="#compiling-the-documentation">7.2. Compiling the documentation</a></li>
+<li><a class="reference internal" href="#directories">7.3. Directories</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="applications/webdav/webdav_handler.html"
+                        title="previous chapter">6.6.4. <tt class="docutils literal docutils literal docutils literal"><span class="pre">webdav.webdav_handler</span></tt> &#8212; Handler of webdav request</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="bom.html"
+                        title="next chapter">8. Bill of materials &#8211; BOM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/documentation.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/documentation.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="documenting-openplm">
+<h1>7. Documenting OpenPLM<a class="headerlink" href="#documenting-openplm" title="Permalink to this headline">¶</a></h1>
+<p>If you want to contribute to this documentation, here are some instructions.</p>
+<div class="section" id="tools-used-to-write-the-documention">
+<h2>7.1. Tools used to write the documention<a class="headerlink" href="#tools-used-to-write-the-documention" title="Permalink to this headline">¶</a></h2>
+<p>This documentation is written with <a class="reference external" href="http://sphinx.pocoo.org/">Sphinx</a>.</p>
+<p>Here are some links about this wonderful tool and the reStructuredText language:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html">http://thomas-cokelaer.info/tutorials/sphinx/rest_syntax.html</a></li>
+<li><a class="reference external" href="http://docutils.sourceforge.net/rst.html">http://docutils.sourceforge.net/rst.html</a></li>
+<li><a class="reference external" href="http://readthedocs.org/docs/pvdevtools/en/latest/devel/documentation/sphinx/index.html">http://readthedocs.org/docs/pvdevtools/en/latest/devel/documentation/sphinx/index.html</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="compiling-the-documentation">
+<h2>7.2. Compiling the documentation<a class="headerlink" href="#compiling-the-documentation" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cd</span> <span class="pre">docs/</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">make</span> <span class="pre">html</span></tt> or <tt class="samp docutils literal"><span class="pre">make</span> <span class="pre">LANGUAGE=</span><em><span class="pre">lang</span></em> <span class="pre">html</span></tt></li>
+</ul>
+</div></blockquote>
+<p>You may also try another output format but html format is the preferred one.</p>
+</div>
+<div class="section" id="directories">
+<h2>7.3. Directories<a class="headerlink" href="#directories" title="Permalink to this headline">¶</a></h2>
+<p>The documentation is available in several languages. There is one directory
+per language. It duplicates some contents but it makes it possible to change screenshots
+and it is simple to avoid duplicated reST references by using independant directories.</p>
+<p>The <tt class="file docutils literal"><span class="pre">docs</span></tt> directory contains one directory per language (<tt class="docutils literal"><span class="pre">en</span></tt>, <tt class="docutils literal"><span class="pre">fr</span></tt>...) and
+a <tt class="file docutils literal"><span class="pre">skel</span></tt> directory. This last directory is intended to simply add a language
+by copying it.</p>
+<p>Each documentation directory contains the following files and directories:</p>
+<div class="highlight-none"><div class="highlight"><pre>admin                -&gt; administrator documentation
+_build               -&gt; built files are here
+conf.py              -&gt; Sphinx configuration file
+devel                -&gt; developer documentation, can be a symlink to ../en/devel
+index.rst            -&gt; documentation home page
+Makefile
+specs                -&gt; specifications, can be a symlink to ../en/specs
+_static              -&gt; static files
+_templates           -&gt; sphinx templates, including the one to select the language
+user                 -&gt; user documentation
+whatsnew             -&gt; documentation describing new features
+and some .rst files
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="bom.html" title="8. Bill of materials – BOM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="applications/webdav/webdav_handler.html" title="6.6.4. webdav.webdav_handler — Handler of webdav request"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

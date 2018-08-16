@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.thumbnailers.magickthumbnailer &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/thumbnailers/magickthumbnailer.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.thumbnailers.magickthumbnailer</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">subprocess</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">mswindows</span> <span class="o">=</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">platform</span> <span class="o">==</span> <span class="s">&quot;win32&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">base</span> <span class="kn">import</span> <span class="n">ThumbnailersManager</span>
+
+<div class="viewcode-block" id="limit_resources"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_magick.html#plmapp.thumbnailers.magickthumbnailer.limit_resources">[docs]</a><span class="k">def</span> <span class="nf">limit_resources</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Limits the process execution time to 60 seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">resource</span> <span class="kn">import</span> <span class="n">getrlimit</span><span class="p">,</span> <span class="n">setrlimit</span><span class="p">,</span> <span class="n">RLIMIT_CPU</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">_setrlimit</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">soft</span><span class="p">,</span> <span class="n">hard</span> <span class="o">=</span> <span class="n">getrlimit</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="c"># Change soft limit</span>
+                <span class="k">if</span> <span class="n">hard</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">soft</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">hard</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">soft</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">hard</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="n">setrlimit</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">soft</span><span class="p">,</span> <span class="n">hard</span><span class="p">))</span>
+        <span class="n">_setrlimit</span><span class="p">(</span><span class="n">RLIMIT_CPU</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="magick_thumbnailer"><a class="viewcode-back" href="../../../devel/modules/thumbnailers/thumbnailers_magick.html#plmapp.thumbnailers.magickthumbnailer.magick_thumbnailer">[docs]</a><span class="k">def</span> <span class="nf">magick_thumbnailer</span><span class="p">(</span><span class="n">input_path</span><span class="p">,</span> <span class="n">original_filename</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Thumbnailer that calls :command:`convert` (from ImageMagick) to generate</span>
+<span class="sd">    a thumbnail.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">mswindows</span><span class="p">:</span>
+        <span class="n">preexec_fn</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">preexec_fn</span> <span class="o">=</span> <span class="n">limit_resources</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;convert&quot;</span><span class="p">,</span> <span class="s">&quot;-format&quot;</span><span class="p">,</span> <span class="s">&quot;png&quot;</span><span class="p">,</span>
+            <span class="s">&quot;-thumbnail&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">x</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ThumbnailersManager</span><span class="o">.</span><span class="n">THUMBNAIL_SIZE</span><span class="p">,</span>
+            <span class="s">u&quot;</span><span class="si">%s</span><span class="s">[0]&quot;</span> <span class="o">%</span> <span class="n">input_path</span><span class="p">,</span> <span class="n">output_path</span><span class="p">]</span>
+    <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">preexec_fn</span><span class="o">=</span><span class="n">preexec_fn</span><span class="p">)</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+<span class="c">#: Supported formats (if all ImageMagick decoders are installed)</span></div>
+<span class="n">FORMATS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;.3fr&quot;</span><span class="p">,</span> <span class="s">&quot;.a&quot;</span><span class="p">,</span> <span class="s">&quot;.ai&quot;</span><span class="p">,</span> <span class="s">&quot;.art&quot;</span><span class="p">,</span> <span class="s">&quot;.arw&quot;</span><span class="p">,</span> <span class="s">&quot;.avi&quot;</span><span class="p">,</span> <span class="s">&quot;.avs&quot;</span><span class="p">,</span> <span class="s">&quot;.b&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.bgr&quot;</span><span class="p">,</span> <span class="s">&quot;.bgra&quot;</span><span class="p">,</span> <span class="s">&quot;.bmp&quot;</span><span class="p">,</span> <span class="s">&quot;.brg&quot;</span><span class="p">,</span> <span class="s">&quot;.c&quot;</span><span class="p">,</span> <span class="s">&quot;.cal&quot;</span><span class="p">,</span> <span class="s">&quot;.cals&quot;</span><span class="p">,</span> <span class="s">&quot;.caption&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.cin&quot;</span><span class="p">,</span> <span class="s">&quot;.cmyk&quot;</span><span class="p">,</span> <span class="s">&quot;.cmyka&quot;</span><span class="p">,</span> <span class="s">&quot;.cr2&quot;</span><span class="p">,</span> <span class="s">&quot;.crw&quot;</span><span class="p">,</span> <span class="s">&quot;.cur&quot;</span><span class="p">,</span> <span class="s">&quot;.cut&quot;</span><span class="p">,</span> <span class="s">&quot;.dcm&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.dcr&quot;</span><span class="p">,</span> <span class="s">&quot;.dcx&quot;</span><span class="p">,</span> <span class="s">&quot;.dds&quot;</span><span class="p">,</span> <span class="s">&quot;.dfont&quot;</span><span class="p">,</span> <span class="s">&quot;.djvu&quot;</span><span class="p">,</span> <span class="s">&quot;.dng&quot;</span><span class="p">,</span> <span class="s">&quot;.dot&quot;</span><span class="p">,</span> <span class="s">&quot;.dpx&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.epdf&quot;</span><span class="p">,</span> <span class="s">&quot;.epi&quot;</span><span class="p">,</span> <span class="s">&quot;.eps&quot;</span><span class="p">,</span> <span class="s">&quot;.epsf&quot;</span><span class="p">,</span> <span class="s">&quot;.epsi&quot;</span><span class="p">,</span> <span class="s">&quot;.ept&quot;</span><span class="p">,</span> <span class="s">&quot;.ept2&quot;</span><span class="p">,</span> <span class="s">&quot;.ept3&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.erf&quot;</span><span class="p">,</span> <span class="s">&quot;.exr&quot;</span><span class="p">,</span> <span class="s">&quot;.fax&quot;</span><span class="p">,</span> <span class="s">&quot;.fits&quot;</span><span class="p">,</span> <span class="s">&quot;.fractal&quot;</span><span class="p">,</span> <span class="s">&quot;.fts&quot;</span><span class="p">,</span> <span class="s">&quot;.g&quot;</span><span class="p">,</span> <span class="s">&quot;.g3&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.gbr&quot;</span><span class="p">,</span> <span class="s">&quot;.gif&quot;</span><span class="p">,</span> <span class="s">&quot;.gif87&quot;</span><span class="p">,</span> <span class="s">&quot;.gradient&quot;</span><span class="p">,</span> <span class="s">&quot;.gray&quot;</span><span class="p">,</span> <span class="s">&quot;.grb&quot;</span><span class="p">,</span> <span class="s">&quot;.group4&quot;</span><span class="p">,</span> <span class="s">&quot;.hald&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.hrz&quot;</span><span class="p">,</span> <span class="s">&quot;.icb&quot;</span><span class="p">,</span> <span class="s">&quot;.ico&quot;</span><span class="p">,</span> <span class="s">&quot;.icon&quot;</span><span class="p">,</span> <span class="s">&quot;.inline&quot;</span><span class="p">,</span> <span class="s">&quot;.ipl&quot;</span><span class="p">,</span> <span class="s">&quot;.j2c&quot;</span><span class="p">,</span> <span class="s">&quot;.jng&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.jp2&quot;</span><span class="p">,</span> <span class="s">&quot;.jpc&quot;</span><span class="p">,</span> <span class="s">&quot;.jpeg&quot;</span><span class="p">,</span> <span class="s">&quot;.jpg&quot;</span><span class="p">,</span> <span class="s">&quot;.jpx&quot;</span><span class="p">,</span> <span class="s">&quot;.k&quot;</span><span class="p">,</span> <span class="s">&quot;.k25&quot;</span><span class="p">,</span> <span class="s">&quot;.kdc&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.label&quot;</span><span class="p">,</span> <span class="s">&quot;.m&quot;</span><span class="p">,</span> <span class="s">&quot;.m2v&quot;</span><span class="p">,</span> <span class="s">&quot;.m4v&quot;</span><span class="p">,</span> <span class="s">&quot;.map&quot;</span><span class="p">,</span> <span class="s">&quot;.mat&quot;</span><span class="p">,</span> <span class="s">&quot;.miff&quot;</span><span class="p">,</span> <span class="s">&quot;.mng&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.mono&quot;</span><span class="p">,</span> <span class="s">&quot;.mov&quot;</span><span class="p">,</span> <span class="s">&quot;.mp4&quot;</span><span class="p">,</span> <span class="s">&quot;.mpc&quot;</span><span class="p">,</span> <span class="s">&quot;.mpeg&quot;</span><span class="p">,</span> <span class="s">&quot;.mpg&quot;</span><span class="p">,</span> <span class="s">&quot;.mrw&quot;</span><span class="p">,</span> <span class="s">&quot;.msl&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.msvg&quot;</span><span class="p">,</span> <span class="s">&quot;.mtv&quot;</span><span class="p">,</span> <span class="s">&quot;.mvg&quot;</span><span class="p">,</span> <span class="s">&quot;.nef&quot;</span><span class="p">,</span> <span class="s">&quot;.null&quot;</span><span class="p">,</span> <span class="s">&quot;.o&quot;</span><span class="p">,</span> <span class="s">&quot;.orf&quot;</span><span class="p">,</span> <span class="s">&quot;.otb&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.otf&quot;</span><span class="p">,</span> <span class="s">&quot;.pal&quot;</span><span class="p">,</span> <span class="s">&quot;.palm&quot;</span><span class="p">,</span> <span class="s">&quot;.pam&quot;</span><span class="p">,</span> <span class="s">&quot;.pattern&quot;</span><span class="p">,</span> <span class="s">&quot;.pbm&quot;</span><span class="p">,</span> <span class="s">&quot;.pcd&quot;</span><span class="p">,</span> <span class="s">&quot;.pcds&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.pcl&quot;</span><span class="p">,</span> <span class="s">&quot;.pct&quot;</span><span class="p">,</span> <span class="s">&quot;.pcx&quot;</span><span class="p">,</span> <span class="s">&quot;.pdb&quot;</span><span class="p">,</span> <span class="s">&quot;.pdf&quot;</span><span class="p">,</span> <span class="s">&quot;.pdfa&quot;</span><span class="p">,</span> <span class="s">&quot;.pef&quot;</span><span class="p">,</span> <span class="s">&quot;.pes&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.pfa&quot;</span><span class="p">,</span> <span class="s">&quot;.pfb&quot;</span><span class="p">,</span> <span class="s">&quot;.pfm&quot;</span><span class="p">,</span> <span class="s">&quot;.pgm&quot;</span><span class="p">,</span> <span class="s">&quot;.pgx&quot;</span><span class="p">,</span> <span class="s">&quot;.picon&quot;</span><span class="p">,</span> <span class="s">&quot;.pict&quot;</span><span class="p">,</span> <span class="s">&quot;.pix&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.pjpeg&quot;</span><span class="p">,</span> <span class="s">&quot;.plasma&quot;</span><span class="p">,</span> <span class="s">&quot;.png&quot;</span><span class="p">,</span> <span class="s">&quot;.png24&quot;</span><span class="p">,</span> <span class="s">&quot;.png32&quot;</span><span class="p">,</span> <span class="s">&quot;.png8&quot;</span><span class="p">,</span> <span class="s">&quot;.pnm&quot;</span><span class="p">,</span> <span class="s">&quot;.ppm&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.ps&quot;</span><span class="p">,</span> <span class="s">&quot;.psb&quot;</span><span class="p">,</span> <span class="s">&quot;.psd&quot;</span><span class="p">,</span> <span class="s">&quot;.ptif&quot;</span><span class="p">,</span> <span class="s">&quot;.pwp&quot;</span><span class="p">,</span> <span class="s">&quot;.r&quot;</span><span class="p">,</span> <span class="s">&quot;.raf&quot;</span><span class="p">,</span> <span class="s">&quot;.ras&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.rbg&quot;</span><span class="p">,</span> <span class="s">&quot;.rgb&quot;</span><span class="p">,</span> <span class="s">&quot;.rgba&quot;</span><span class="p">,</span> <span class="s">&quot;.rgbo&quot;</span><span class="p">,</span> <span class="s">&quot;.rla&quot;</span><span class="p">,</span> <span class="s">&quot;.rle&quot;</span><span class="p">,</span> <span class="s">&quot;.scr&quot;</span><span class="p">,</span> <span class="s">&quot;.sct&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.sfw&quot;</span><span class="p">,</span> <span class="s">&quot;.sgi&quot;</span><span class="p">,</span> <span class="s">&quot;.sr2&quot;</span><span class="p">,</span> <span class="s">&quot;.srf&quot;</span><span class="p">,</span> <span class="s">&quot;.stegano&quot;</span><span class="p">,</span> <span class="s">&quot;.sun&quot;</span><span class="p">,</span> <span class="s">&quot;.svg&quot;</span><span class="p">,</span> <span class="s">&quot;.svgz&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.text&quot;</span><span class="p">,</span> <span class="s">&quot;.tga&quot;</span><span class="p">,</span> <span class="s">&quot;.tiff&quot;</span><span class="p">,</span> <span class="s">&quot;.tile&quot;</span><span class="p">,</span> <span class="s">&quot;.tim&quot;</span><span class="p">,</span> <span class="s">&quot;.ttc&quot;</span><span class="p">,</span> <span class="s">&quot;.ttf&quot;</span><span class="p">,</span> <span class="s">&quot;.txt&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.uyvy&quot;</span><span class="p">,</span> <span class="s">&quot;.vda&quot;</span><span class="p">,</span> <span class="s">&quot;.vicar&quot;</span><span class="p">,</span> <span class="s">&quot;.vid&quot;</span><span class="p">,</span> <span class="s">&quot;.viff&quot;</span><span class="p">,</span> <span class="s">&quot;.vst&quot;</span><span class="p">,</span> <span class="s">&quot;.wbmp&quot;</span><span class="p">,</span> <span class="s">&quot;.wmf&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.wmv&quot;</span><span class="p">,</span> <span class="s">&quot;.wmz&quot;</span><span class="p">,</span> <span class="s">&quot;.wpg&quot;</span><span class="p">,</span> <span class="s">&quot;.x&quot;</span><span class="p">,</span> <span class="s">&quot;.x3f&quot;</span><span class="p">,</span> <span class="s">&quot;.xbm&quot;</span><span class="p">,</span> <span class="s">&quot;.xc&quot;</span><span class="p">,</span> <span class="s">&quot;.xcf&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.xpm&quot;</span><span class="p">,</span> <span class="s">&quot;.xps&quot;</span><span class="p">,</span> <span class="s">&quot;.xv&quot;</span><span class="p">,</span> <span class="s">&quot;.xwd&quot;</span><span class="p">,</span> <span class="s">&quot;.y&quot;</span><span class="p">,</span> <span class="s">&quot;.ycbcr&quot;</span><span class="p">,</span> <span class="s">&quot;.ycbcra&quot;</span><span class="p">,</span> <span class="s">&quot;.yuv&quot;</span><span class="p">)</span>
+
+<span class="c"># some formats may not be available, but it is simpler/faster to let</span>
+<span class="c"># imagemagick fail than checking available format.</span>
+<span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">FORMATS</span><span class="p">:</span>
+    <span class="n">ThumbnailersManager</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="n">magick_thumbnailer</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

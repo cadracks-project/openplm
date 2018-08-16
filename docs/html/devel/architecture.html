@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Architecture overview &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="2. List of how-to’s" href="how-tos.html" />
+    <link rel="prev" title="6. Developer documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="how-tos.html" title="2. List of how-to’s"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6. Developer documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. Architecture overview</a><ul>
+<li><a class="reference internal" href="#main-dependencies">1.1. Main dependencies</a><ul>
+<li><a class="reference internal" href="#django-and-python">1.1.1. Django and Python</a></li>
+<li><a class="reference internal" href="#celery">1.1.2. Celery</a></li>
+<li><a class="reference internal" href="#south">1.1.3. South</a></li>
+<li><a class="reference internal" href="#haystack-and-xapian">1.1.4. Haystack and Xapian</a></li>
+<li><a class="reference internal" href="#graphviz-and-pygraphviz">1.1.5. Graphviz and PyGraphviz</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#directories">1.2. Directories</a></li>
+<li><a class="reference internal" href="#plmapp">1.3. plmapp</a><ul>
+<li><a class="reference internal" href="#models">1.3.1. Models</a></li>
+<li><a class="reference internal" href="#controllers">1.3.2. Controllers</a></li>
+<li><a class="reference internal" href="#forms">1.3.3. Forms</a></li>
+<li><a class="reference internal" href="#views">1.3.4. Views</a></li>
+<li><a class="reference internal" href="#tests">1.3.5. Tests</a></li>
+<li><a class="reference internal" href="#others">1.3.6. Others</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#custom-applications">1.4. Custom applications</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">6. Developer documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="how-tos.html"
+                        title="next chapter">2. List of how-to&#8217;s</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/architecture.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/architecture.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="architecture-overview">
+<h1>1. Architecture overview<a class="headerlink" href="#architecture-overview" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the architecture of openPLM.</p>
+<div class="section" id="main-dependencies">
+<h2>1.1. Main dependencies<a class="headerlink" href="#main-dependencies" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="django-and-python">
+<h3>1.1.1. Django and Python<a class="headerlink" href="#django-and-python" title="Permalink to this headline">¶</a></h3>
+<p>OpenPLM is based on <a class="reference external" href="https://www.djangoproject.com/">Django</a> : a <a class="reference external" href="http://www.python.org/">Python</a> web framework.
+Django follows the <cite>model-view-controller design</cite>.</p>
+</div>
+<div class="section" id="celery">
+<h3>1.1.2. Celery<a class="headerlink" href="#celery" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://celeryproject.org/">Celery</a> is an asynchronous task queue/job queue
+based on distributed message passing. In openPLM, we use Celery (version 2.3) to:</p>
+<blockquote>
+<div><ul class="simple">
+<li>send mails</li>
+<li>update search indexes</li>
+<li>run cron jobs</li>
+</ul>
+</div></blockquote>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p>The documentation of Celery: <a class="reference external" href="http://celery.readthedocs.org/en/latest/">http://celery.readthedocs.org/en/latest/</a> .</p>
+<p class="last"><a class="reference external" href="http://www.rabbitmq.com/">RabbitMQ</a>, an efficient
+message broker recommended by Celery.</p>
+</div>
+</div>
+<div class="section" id="south">
+<h3>1.1.3. South<a class="headerlink" href="#south" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://south.aeracode.org/">South</a> is an intelligent schema and data
+migrations for Django projects. All applications of openPLM are managed by
+South to ensure easy updates.</p>
+</div>
+<div class="section" id="haystack-and-xapian">
+<h3>1.1.4. Haystack and Xapian<a class="headerlink" href="#haystack-and-xapian" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://haystacksearch.org/">Haystack</a> is a Django application that provides
+modular search for Django.
+Haystack makes it possible to plug openPLM with an efficient search engine.
+<a class="reference external" href="http://xapian.org">Xapian</a> is a search engine and <a class="reference external" href="https://github.com/notanumber/xapian-haystack">xapian-haystack</a> is a backend for use with Haystack and the Xapian.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">The documentation of Haystack: <a class="reference external" href="http://docs.haystacksearch.org/dev/index.html">http://docs.haystacksearch.org/dev/index.html</a> .</p>
+</div>
+</div>
+<div class="section" id="graphviz-and-pygraphviz">
+<h3>1.1.5. Graphviz and PyGraphviz<a class="headerlink" href="#graphviz-and-pygraphviz" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="http://www.graphviz.org">graphviz</a> is a tool to generate graphs. It has a lot
+of features to custom the rendering.
+<a class="reference external" href="http://networkx.lanl.gov/trac/wiki/PyGraphviz">PyGraphviz</a> is a Python binding
+for Graphviz. openPLM uses PyGraphviz to generate the graphs of the <em>Navigate</em>
+page.</p>
+</div>
+</div>
+<div class="section" id="directories">
+<h2>1.2. Directories<a class="headerlink" href="#directories" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-none"><div class="highlight"><pre>+-openPLM/
+ | apache/                    apache/wsgi files
+ | apps/                      optional applications
+ | bin/                       misc executable scripts
+ | datatests/                 test data
+ | django_xml_test_runner/    an incorporated dependency required to run test
+ | etc/                       files that should be copied to /etc (celeryes configuration files)
+ | help/                      help messages in reStructuredText format
+ | locale/                    translation data
+ +-media/                     all media files (served by apache)
+ |  css/
+ |  img/
+ |  js/
+ +-plmapp/                    core application (most of the code!)
+ |  controllers/
+ |  decomposers/
+ |  customized_models/
+ |  filehandlers/
+ |  fixtures/
+ |  management/
+ |  middleware/
+ |  templatetags/
+ |  thumbnailers/
+ |  tests/
+ |  views/
+ +-templates/                 core templates
+ |  blocks/
+ |  documents/
+ |  groups/
+ |  import/
+ |  mails/
+ |  navigate/
+ |  parts/
+ |  search/
+ |  snippets/
+ |  users/
+</pre></div>
+</div>
+</div>
+<div class="section" id="plmapp">
+<h2>1.3. plmapp<a class="headerlink" href="#plmapp" title="Permalink to this headline">¶</a></h2>
+<p>plmapp is the main application of openPLM. It defines main models, views and
+controllers and is the core of openPLM.</p>
+<div class="section" id="models">
+<h3>1.3.1. Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>A model is the single, definitive source of data about your data. It
+contains the essential fields and behaviors of the data you’re storing.</p>
+<p class="attribution">&mdash;<a class="reference external" href="https://docs.djangoproject.com/en/1.3/topics/db/models/#module-django.db.models">Django&#8217;s documentation</a></p>
+</div></blockquote>
+<p>Resources:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Module: <a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models" title="openPLM.plmapp.models"><tt class="xref py py-mod docutils literal"><span class="pre">models</span></tt></a></li>
+<li><a class="reference internal" href="cookbook.html#cookbook-models"><em>Related recipes</em></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="controllers">
+<h3>1.3.2. Controllers<a class="headerlink" href="#controllers" title="Permalink to this headline">¶</a></h3>
+<p>In Django, applications do not have dedicate controllers and let this kind of
+work to views. But openPLM has several kinds of views (html, api), so to
+keep the views simple and stupid, openPLM has controllers.
+Controllers manage user&#8217;s rights (they ensures the user can do the asked action)
+and check inputs. Controllers also keep trace of what have been done
+(histories) and send mails to affected users.</p>
+<p>Resources:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="modules/controllers.html#module-plmapp.controllers" title="plmapp.controllers"><tt class="xref py py-mod docutils literal"><span class="pre">controllers</span></tt></a></li>
+<li>base: <a class="reference internal" href="modules/controllers/controllers_base.html#module-plmapp.controllers.base" title="plmapp.controllers.base"><tt class="xref py py-mod docutils literal"><span class="pre">base</span></tt></a></li>
+<li>plmobject: <a class="reference internal" href="modules/controllers/controllers_plmobject.html#module-plmapp.controllers.plmobject" title="plmapp.controllers.plmobject"><tt class="xref py py-mod docutils literal"><span class="pre">plmobject</span></tt></a></li>
+<li>part: <a class="reference internal" href="modules/controllers/controllers_part.html#module-plmapp.controllers.part" title="plmapp.controllers.part"><tt class="xref py py-mod docutils literal"><span class="pre">part</span></tt></a></li>
+<li>document: <a class="reference internal" href="modules/controllers/controllers_document.html#module-plmapp.controllers.document" title="plmapp.controllers.document"><tt class="xref py py-mod docutils literal"><span class="pre">document</span></tt></a></li>
+<li>user: <a class="reference internal" href="modules/controllers/controllers_user.html#module-plmapp.controllers.user" title="plmapp.controllers.user"><tt class="xref py py-mod docutils literal"><span class="pre">user</span></tt></a></li>
+<li>group: <a class="reference internal" href="modules/controllers/controllers_group.html#module-plmapp.controllers.group" title="plmapp.controllers.group"><tt class="xref py py-mod docutils literal"><span class="pre">group</span></tt></a></li>
+</ul>
+</div></blockquote>
+<p>The following figure shows which models a controller manages.
+As you can see, <em>PartController</em> manages the <em>Coffee</em> model since <em>CoffeeController</em> does not exist.</p>
+<div class="figure">
+<img alt="../_images/uml_models_controllers.png" src="../_images/uml_models_controllers.png" style="width: 100%;" />
+</div>
+</div>
+<div class="section" id="forms">
+<h3>1.3.3. Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h3>
+<p>openPLM has many forms. Some forms are generated dynamically from a model
+(similar to a Django ModelForm). Obviously, views use forms but controllers
+also use form. For example, <a class="reference internal" href="modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.update_from_form" title="plmapp.controllers.base.Controller.update_from_form"><tt class="xref py py-meth docutils literal"><span class="pre">Controller.update_from_form()</span></tt></a> and
+<a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.create_from_form" title="plmapp.controllers.plmobject.PLMObjectController.create_from_form"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.create_from_form()</span></tt></a> take a form as their argument.</p>
+<p>Resources:</p>
+<blockquote>
+<div><ul class="simple">
+<li>forms module: <a class="reference internal" href="modules/forms.html#module-plmapp.forms" title="plmapp.forms"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.forms</span></tt></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="views">
+<h3>1.3.4. Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h3>
+<p>openPLM splits its views module:</p>
+<blockquote>
+<div><ul class="simple">
+<li>all common functions are in the <tt class="xref py py-mod docutils literal"><span class="pre">base_views</span></tt> module</li>
+<li>classical HTML views are in the <a class="reference internal" href="modules/views.html#module-plmapp.views.main" title="plmapp.views.main"><tt class="xref py py-mod docutils literal"><span class="pre">main</span></tt></a> module</li>
+<li>ajax views are in the <a class="reference internal" href="modules/views.html#module-plmapp.views.ajax" title="plmapp.views.ajax"><tt class="xref py py-mod docutils literal"><span class="pre">ajax</span></tt></a> module</li>
+<li>views that handle the HTTP/Json api are in the <a class="reference internal" href="modules/views.html#module-plmapp.views.api" title="plmapp.views.api"><tt class="xref py py-mod docutils literal"><span class="pre">api</span></tt></a> module</li>
+</ul>
+</div></blockquote>
+<p>Resources:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="http-api.html#module-http_api" title="http_api"><tt class="xref py py-mod docutils literal"><span class="pre">the</span> <span class="pre">HTTP</span> <span class="pre">api</span></tt></a>.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="tests">
+<h3>1.3.5. Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="testing.html"><em>Testing openPLM</em></a>.</p>
+</div>
+<div class="section" id="others">
+<h3>1.3.6. Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h3>
+<p>A complete list of documented modules is available <a class="reference internal" href="modules.html"><em>here</em></a>.</p>
+</div>
+</div>
+<div class="section" id="custom-applications">
+<h2>1.4. Custom applications<a class="headerlink" href="#custom-applications" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference internal" href="applications.html#applications"><em>Applications</em></a> and <a class="reference internal" href="ht_3_add_models2.html#how-to-app"><em>How to add a model (django application)</em></a>.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="how-tos.html" title="2. List of how-to’s"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6. Developer documentation"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

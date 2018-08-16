@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.2. csvimport — Tools to import data from a CSV file &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.3. decomposers — Utilities to decompose a part" href="decomposers.html" />
+    <link rel="prev" title="5.1.10. controllers.user — Controllers for users" href="controllers/controllers_user.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="decomposers.html" title="5.3. decomposers — Utilities to decompose a part"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="controllers/controllers_user.html" title="5.1.10. controllers.user — Controllers for users"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="controllers/controllers_user.html"
+                        title="previous chapter">5.1.10. <tt class="docutils literal docutils literal docutils literal"><span class="pre">controllers.user</span></tt> &#8212; Controllers for users</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="decomposers.html"
+                        title="next chapter">5.3. <tt class="docutils literal"><span class="pre">decomposers</span></tt> &#8212; Utilities to decompose a part</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/csvimport.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/csvimport.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.csvimport">
+<span id="csvimport-tools-to-import-data-from-a-csv-file"></span><h1>5.2. <tt class="xref py py-mod docutils literal"><span class="pre">csvimport</span></tt> &#8212; Tools to import data from a CSV file<a class="headerlink" href="#module-plmapp.csvimport" title="Permalink to this headline">¶</a></h1>
+<p>Tools to import data from a CSV file.</p>
+<dl class="exception">
+<dt id="plmapp.csvimport.CSVImportError">
+<em class="property">exception </em><tt class="descclassname">plmapp.csvimport.</tt><tt class="descname">CSVImportError</tt><big>(</big><em>errors</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImportError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImportError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.StandardError</span></tt></p>
+<p>Exception raised when an import of a CSV file fails.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.csvimport.Preview">
+<em class="property">class </em><tt class="descclassname">plmapp.csvimport.</tt><tt class="descname">Preview</tt><big>(</big><em>csv_file</em>, <em>encoding</em>, <em>known_headers</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#Preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.Preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Preview of a CSV file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>csv_file</strong> (<em>a file like object</em>) &#8211; the csv file being parsed</li>
+<li><strong>encoding</strong> &#8211; encoding of the file (<cite>utf-8</cite>, <cite>ascii</cite>, etc.)</li>
+<li><strong>known_headers</strong> &#8211; collection of headers that may be valid</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="plmapp.csvimport.Preview.headers">
+<tt class="descname">headers</tt><a class="headerlink" href="#plmapp.csvimport.Preview.headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>headers of the CSV file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.csvimport.Preview.guessed_headers">
+<tt class="descname">guessed_headers</tt><a class="headerlink" href="#plmapp.csvimport.Preview.guessed_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>headers translated according to <em>known_headers</em>, an header that can
+not be translated is replaced by <cite>None</cite></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.csvimport.Preview.rows">
+<tt class="descname">rows</tt><a class="headerlink" href="#plmapp.csvimport.Preview.rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>first non-headers rows of the file (at most two rows)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.csvimport.CSVImporter">
+<em class="property">class </em><tt class="descclassname">plmapp.csvimport.</tt><tt class="descname">CSVImporter</tt><big>(</big><em>csv_file</em>, <em>user</em>, <em>encoding='utf-8'</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Abstract class to import data from a CSV file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>csv_file</strong> (<em>a file like object</em>) &#8211; file being imported</li>
+<li><strong>user</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; user who imports the file</li>
+<li><strong>encoding</strong> &#8211; encoding of the file (<cite>utf-8</cite>, <cite>ascii</cite>, etc.)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For &#8220;end users&#8221;, this class has two useful methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#plmapp.csvimport.CSVImporter.get_preview" title="plmapp.csvimport.CSVImporter.get_preview"><tt class="xref py py-meth docutils literal"><span class="pre">get_preview()</span></tt></a> to generate a <a class="reference internal" href="#plmapp.csvimport.Preview" title="plmapp.csvimport.Preview"><tt class="xref py py-class docutils literal"><span class="pre">Preview</span></tt></a> of the file</li>
+<li><a class="reference internal" href="#plmapp.csvimport.CSVImporter.import_csv" title="plmapp.csvimport.CSVImporter.import_csv"><tt class="xref py py-meth docutils literal"><span class="pre">import_csv()</span></tt></a> to import the csv file</li>
+</ul>
+</div></blockquote>
+<p>An implementation must overwrite the methods <a class="reference internal" href="#plmapp.csvimport.CSVImporter.get_headers_set" title="plmapp.csvimport.CSVImporter.get_headers_set"><tt class="xref py py-meth docutils literal"><span class="pre">get_headers_set()</span></tt></a> and
+<a class="reference internal" href="#plmapp.csvimport.CSVImporter.parse_row" title="plmapp.csvimport.CSVImporter.parse_row"><tt class="xref py py-meth docutils literal"><span class="pre">parse_row()</span></tt></a> and redefine the attribute <a class="reference internal" href="#plmapp.csvimport.CSVImporter.REQUIRED_HEADERS" title="plmapp.csvimport.CSVImporter.REQUIRED_HEADERS"><tt class="xref py py-attr docutils literal"><span class="pre">REQUIRED_HEADERS</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="plmapp.csvimport.CSVImporter.REQUIRED_HEADERS">
+<tt class="descname">REQUIRED_HEADERS</tt><em class="property"> = ()</em><a class="headerlink" href="#plmapp.csvimport.CSVImporter.REQUIRED_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers that must be present in the csv file</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.csvimport.CSVImporter.get_headers_set">
+<em class="property">classmethod </em><tt class="descname">get_headers_set</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.get_headers_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.get_headers_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of all possible headers.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This method is abstract and must be implemented.</p>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.csvimport.CSVImporter.get_headers">
+<em class="property">classmethod </em><tt class="descname">get_headers</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.get_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.get_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a sorted list of all possible headers.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.csvimport.CSVImporter.get_missing_headers_msg">
+<em class="property">classmethod </em><tt class="descname">get_missing_headers_msg</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.get_missing_headers_msg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.get_missing_headers_msg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a message explaining which headers are required.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.CSVImporter.get_preview">
+<tt class="descname">get_preview</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.get_preview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.get_preview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a <a class="reference internal" href="#plmapp.csvimport.Preview" title="plmapp.csvimport.Preview"><tt class="xref py py-class docutils literal"><span class="pre">Preview</span></tt></a> of the csv file.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.CSVImporter.import_csv">
+<tt class="descname">import_csv</tt><big>(</big><em>headers</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.import_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.import_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imports the csv file. <em>headers</em> is the list of headers as given by the
+user. Columns whose header is <cite>None</cite> are ignored.
+<em>headers</em> must contains all values of <a class="reference internal" href="#plmapp.csvimport.CSVImporter.REQUIRED_HEADERS" title="plmapp.csvimport.CSVImporter.REQUIRED_HEADERS"><tt class="xref py py-attr docutils literal"><span class="pre">REQUIRED_HEADERS</span></tt></a>.</p>
+<p>If one or several errors occur (missing headers, row which can not be
+parsed), a <a class="reference internal" href="#plmapp.csvimport.CSVImportError" title="plmapp.csvimport.CSVImportError"><tt class="xref py py-exc docutils literal"><span class="pre">CSVImportError</span></tt></a> is raised with all detected errors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A list of <a class="reference internal" href="controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> of all created objects.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.CSVImporter.tear_down">
+<tt class="descname">tear_down</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.tear_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.tear_down" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called once <em>all</em> rows have been successfully parsed.</p>
+<p>By default, this method sends all blocked mails.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.CSVImporter.store_errors">
+<tt class="descname">store_errors</tt><big>(</big><em>line</em>, <em>*errors</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.store_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.store_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends <em>errors</em> to the list of errors which occured at the line <em>line</em>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.CSVImporter.get_value">
+<tt class="descname">get_value</tt><big>(</big><em>row</em>, <em>header</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.get_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.CSVImporter.get_values">
+<tt class="descname">get_values</tt><big>(</big><em>row</em>, <em>*headers</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.get_values"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.get_values" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.CSVImporter.parse_row">
+<tt class="descname">parse_row</tt><big>(</big><em>line</em>, <em>row</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#CSVImporter.parse_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.CSVImporter.parse_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called by <a class="reference internal" href="#plmapp.csvimport.CSVImporter.import_csv" title="plmapp.csvimport.CSVImporter.import_csv"><tt class="xref py py-meth docutils literal"><span class="pre">import_csv()</span></tt></a> for each row.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>line</strong> (<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#int" title="(in Python v2.6)"><em>int</em></a>) &#8211; line number of current row, useful to store a list of
+errors</li>
+<li><strong>row</strong> (<em>list of unicode strings.</em>) &#8211; row being parsed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This method must be overwritten. Implementation can use the methods
+<a class="reference internal" href="#plmapp.csvimport.CSVImporter.get_value" title="plmapp.csvimport.CSVImporter.get_value"><tt class="xref py py-meth docutils literal"><span class="pre">get_value()</span></tt></a>, <a class="reference internal" href="#plmapp.csvimport.CSVImporter.get_values" title="plmapp.csvimport.CSVImporter.get_values"><tt class="xref py py-meth docutils literal"><span class="pre">get_values()</span></tt></a>, and <a class="reference internal" href="#plmapp.csvimport.CSVImporter.store_errors" title="plmapp.csvimport.CSVImporter.store_errors"><tt class="xref py py-meth docutils literal"><span class="pre">store_errors()</span></tt></a> to
+retrieve values and store detected errors.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>All <a class="reference internal" href="controllers/controllers_base.html#plmapp.controllers.base.Controller" title="plmapp.controllers.base.Controller"><tt class="xref py py-class docutils literal"><span class="pre">Controller</span></tt></a> created should not send emails since an
+error may occur and thus, all modifications would be cancelled.
+To block mails, call <a class="reference internal" href="controllers/controllers_base.html#plmapp.controllers.base.Controller.block_mails" title="plmapp.controllers.base.Controller.block_mails"><tt class="xref py py-meth docutils literal"><span class="pre">Controller.block_mails()</span></tt></a>. You can
+released all blocked mails by appending the controller to
+<tt class="xref py py-attr docutils literal"><span class="pre">objects</span></tt>. <a class="reference internal" href="#plmapp.csvimport.CSVImporter.import_csv" title="plmapp.csvimport.CSVImporter.import_csv"><tt class="xref py py-meth docutils literal"><span class="pre">import_csv()</span></tt></a> will send mails if no errors
+occurred.</p>
+<p>Example:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">ctrl</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+<span class="n">ctrl</span><span class="o">.</span><span class="n">block_mails</span><span class="p">()</span>
+<span class="o">...</span>
+<span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ctrl</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.csvimport.PLMObjectsImporter">
+<em class="property">class </em><tt class="descclassname">plmapp.csvimport.</tt><tt class="descname">PLMObjectsImporter</tt><big>(</big><em>csv_file</em>, <em>user</em>, <em>encoding='utf-8'</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#PLMObjectsImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.PLMObjectsImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.csvimport.CSVImporter" title="plmapp.csvimport.CSVImporter"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.csvimport.CSVImporter</span></tt></a></p>
+<p>An <a class="reference internal" href="#plmapp.csvimport.CSVImporter" title="plmapp.csvimport.CSVImporter"><tt class="xref py py-class docutils literal"><span class="pre">CSVImporter</span></tt></a> that creates <tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt> from
+a csv file.</p>
+<p>The CSV must contain the following columns:</p>
+<blockquote>
+<div><ul class="simple">
+<li>type</li>
+<li>reference</li>
+<li>revision</li>
+<li>name</li>
+<li>group (name of the group, not its id)</li>
+<li>lifecycle (name of the lifecycle, not its id)</li>
+</ul>
+</div></blockquote>
+<p>Moreover, it must have a column for each required field of defined types.</p>
+<dl class="attribute">
+<dt id="plmapp.csvimport.PLMObjectsImporter.REQUIRED_HEADERS">
+<tt class="descname">REQUIRED_HEADERS</tt><em class="property"> = ('type', 'reference', 'revision', 'name', 'group', 'lifecycle')</em><a class="headerlink" href="#plmapp.csvimport.PLMObjectsImporter.REQUIRED_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Headers that must be present in the csv file</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.csvimport.PLMObjectsImporter.get_headers_set">
+<em class="property">classmethod </em><tt class="descname">get_headers_set</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#PLMObjectsImporter.get_headers_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.PLMObjectsImporter.get_headers_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of all possible headers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.PLMObjectsImporter.tear_down">
+<tt class="descname">tear_down</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#PLMObjectsImporter.tear_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.PLMObjectsImporter.tear_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.PLMObjectsImporter.parse_row">
+<tt class="descname">parse_row</tt><big>(</big><em>line</em>, <em>row</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#PLMObjectsImporter.parse_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.PLMObjectsImporter.parse_row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called by <tt class="xref py py-meth docutils literal"><span class="pre">import_csv()</span></tt> for each row.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.csvimport.BOMImporter">
+<em class="property">class </em><tt class="descclassname">plmapp.csvimport.</tt><tt class="descname">BOMImporter</tt><big>(</big><em>csv_file</em>, <em>user</em>, <em>encoding='utf-8'</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#BOMImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.BOMImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.csvimport.CSVImporter" title="plmapp.csvimport.CSVImporter"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.csvimport.CSVImporter</span></tt></a></p>
+<p>A <a class="reference internal" href="#plmapp.csvimport.CSVImporter" title="plmapp.csvimport.CSVImporter"><tt class="xref py py-class docutils literal"><span class="pre">CSVImporter</span></tt></a> that builds a bom from a CSV file.</p>
+<p>The CSV must contain the following columns:</p>
+<blockquote>
+<div><ul class="simple">
+<li>parent-type</li>
+<li>parent-reference</li>
+<li>parent-revision</li>
+<li>child-type</li>
+<li>child-reference</li>
+<li>child-revision</li>
+<li>quantity</li>
+<li>order</li>
+</ul>
+</div></blockquote>
+<dl class="attribute">
+<dt id="plmapp.csvimport.BOMImporter.REQUIRED_HEADERS">
+<tt class="descname">REQUIRED_HEADERS</tt><em class="property"> = ('parent-type', 'parent-reference', 'parent-revision', 'child-type', 'child-reference', 'child-revision', 'quantity', 'order')</em><a class="headerlink" href="#plmapp.csvimport.BOMImporter.REQUIRED_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.csvimport.BOMImporter.HEADERS_SET">
+<tt class="descname">HEADERS_SET</tt><em class="property"> = set(['parent-reference', 'parent-revision', 'child-revision', 'child-reference', 'child-type', 'order', 'parent-type', 'quantity'])</em><a class="headerlink" href="#plmapp.csvimport.BOMImporter.HEADERS_SET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.csvimport.BOMImporter.get_headers_set">
+<em class="property">classmethod </em><tt class="descname">get_headers_set</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#BOMImporter.get_headers_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.BOMImporter.get_headers_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.BOMImporter.parse_row">
+<tt class="descname">parse_row</tt><big>(</big><em>line</em>, <em>row</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#BOMImporter.parse_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.BOMImporter.parse_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.csvimport.UsersImporter">
+<em class="property">class </em><tt class="descclassname">plmapp.csvimport.</tt><tt class="descname">UsersImporter</tt><big>(</big><em>csv_file</em>, <em>user</em>, <em>encoding='utf-8'</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#UsersImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.UsersImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.csvimport.CSVImporter" title="plmapp.csvimport.CSVImporter"><tt class="xref py py-class docutils literal"><span class="pre">plmapp.csvimport.CSVImporter</span></tt></a></p>
+<p>A <a class="reference internal" href="#plmapp.csvimport.CSVImporter" title="plmapp.csvimport.CSVImporter"><tt class="xref py py-class docutils literal"><span class="pre">CSVImporter</span></tt></a> that sponsors users from a CSV file.</p>
+<p>The CSV must contain the following columns:</p>
+<blockquote>
+<div><ul class="simple">
+<li>username</li>
+<li>first_name</li>
+<li>last_name</li>
+<li>email</li>
+<li>groups (multiple groups can be separeted by a &#8220;/&#8221;)</li>
+<li>language</li>
+</ul>
+</div></blockquote>
+<dl class="attribute">
+<dt id="plmapp.csvimport.UsersImporter.REQUIRED_HEADERS">
+<tt class="descname">REQUIRED_HEADERS</tt><em class="property"> = ('username', 'first_name', 'last_name', 'email', 'groups', 'language')</em><a class="headerlink" href="#plmapp.csvimport.UsersImporter.REQUIRED_HEADERS" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.csvimport.UsersImporter.HEADERS_SET">
+<tt class="descname">HEADERS_SET</tt><em class="property"> = set(['username', 'first_name', 'last_name', 'language', 'groups', 'email'])</em><a class="headerlink" href="#plmapp.csvimport.UsersImporter.HEADERS_SET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.csvimport.UsersImporter.get_headers_set">
+<em class="property">classmethod </em><tt class="descname">get_headers_set</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#UsersImporter.get_headers_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.UsersImporter.get_headers_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.UsersImporter.tear_down">
+<tt class="descname">tear_down</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#UsersImporter.tear_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.UsersImporter.tear_down" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.csvimport.UsersImporter.parse_row">
+<tt class="descname">parse_row</tt><big>(</big><em>line</em>, <em>row</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/csvimport.html#UsersImporter.parse_row"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.csvimport.UsersImporter.parse_row" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="plmapp.csvimport.IMPORTERS">
+<tt class="descclassname">plmapp.csvimport.</tt><tt class="descname">IMPORTERS</tt><em class="property"> = {'csv': &lt;class 'plmapp.csvimport.PLMObjectsImporter'&gt;, 'bom': &lt;class 'plmapp.csvimport.BOMImporter'&gt;, 'users': &lt;class 'plmapp.csvimport.UsersImporter'&gt;}</em><a class="headerlink" href="#plmapp.csvimport.IMPORTERS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary (name -&gt; CSVImporter&#8217;s subclass) of known <a class="reference internal" href="#plmapp.csvimport.CSVImporter" title="plmapp.csvimport.CSVImporter"><tt class="xref py py-class docutils literal"><span class="pre">CSVImporter</span></tt></a></p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="decomposers.html" title="5.3. decomposers — Utilities to decompose a part"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="controllers/controllers_user.html" title="5.1.10. controllers.user — Controllers for users"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Functions in common related PLM objects : PART / DOCUMENT &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="1.2. Functions related to PLM objects : PART / DOCUMENT" href="../tuto_2_plmobject.html" />
+    <link rel="next" title="2. Functions specific to PLM object : PART" href="2_part.html" />
+    <link rel="prev" title="1.2. Functions related to PLM objects : PART / DOCUMENT" href="../tuto_2_plmobject.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="2_part.html" title="2. Functions specific to PLM object : PART"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../tuto_2_plmobject.html" title="1.2. Functions related to PLM objects : PART / DOCUMENT"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../tutorials.html" >1. List of Tutorials</a> &raquo;</li>
+          <li><a href="../tuto_2_plmobject.html" accesskey="U">1.2. Functions related to PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. Functions in common related PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a><ul>
+<li><a class="reference internal" href="#overview">1.1. OVERVIEW</a></li>
+<li><a class="reference internal" href="#attributes">1.2. ATTRIBUTES</a></li>
+<li><a class="reference internal" href="#lifecycle">1.3. LIFECYCLE</a></li>
+<li><a class="reference internal" href="#revisions">1.4. REVISIONS</a></li>
+<li><a class="reference internal" href="#history">1.5. HISTORY</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../tuto_2_plmobject.html"
+                        title="previous chapter">1.2. Functions related to PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="2_part.html"
+                        title="next chapter">2. Functions specific to PLM object : <strong>PART</strong></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/user/PLMObject/1_common.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/PLMObject/1_common.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="functions-in-common-related-plm-objects-part-document">
+<h1>1. Functions in common related PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong><a class="headerlink" href="#functions-in-common-related-plm-objects-part-document" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>1.1. OVERVIEW<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Parts</strong> and <strong>Documents</strong> are PLM objects. They represent a product in real life.</p>
+<p>Eg : A bicycle, a pack of cookies, a medicine, a wheel, a drawing, a 3D document, ...</p>
+<p><strong>Part</strong> and <strong>Document</strong> are subclasses of <strong>PLMObject</strong>. Depending on the industry you use OpenPLM for, we can define subclasses of <strong>Part</strong> and <strong>Document</strong>.
+Each subclass are designated as <em>type</em>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="28%" />
+<col width="36%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Example 1 :</th>
+<th class="head">Example 2 :</th>
+<th class="head">Example 3 :</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>PLMObject</td>
+<td>PLMObject</td>
+<td>PLMObject</td>
+</tr>
+<tr class="row-odd"><td>...=&gt; Part</td>
+<td>...=&gt; Part</td>
+<td>...=&gt; Document</td>
+</tr>
+<tr class="row-even"><td>......=&gt; Bicycle</td>
+<td>......=&gt; CardboardPacking</td>
+<td>......=&gt; Drawing</td>
+</tr>
+<tr class="row-odd"><td>......=&gt; Wheel</td>
+<td>......=&gt; PlasticWrap</td>
+<td>......=&gt; Standard</td>
+</tr>
+<tr class="row-even"><td>......=&gt; Handlebar</td>
+<td>......=&gt; Cake</td>
+<td>......=&gt; TestData</td>
+</tr>
+<tr class="row-odd"><td>......=&gt; Saddle</td>
+<td>......=&gt; Floor</td>
+<td>......=&gt; Document3D</td>
+</tr>
+<tr class="row-even"><td>......=&gt; ...</td>
+<td>......=&gt; ...</td>
+<td>......=&gt; ...</td>
+</tr>
+</tbody>
+</table>
+<p>In one subclass/type, you have several instances with a <em>reference</em>.</p>
+<p>For a reference, you may have several <em>revisions</em> in order to trace the major modifications. They follow the a, b, c, ... sequence or 1, 2, 3, ... sequence or any other customized sequence.</p>
+<p>Each <strong>Part</strong> and <strong>Document</strong> have a unique set of <em>type</em>, <em>reference</em>, <em>revision</em>.</p>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Example : Bicycle / BI-2010 / a</p>
+</div>
+<p>Assemblies and sub-assemblies are also Parts. We can create links between an assembly and another Part. Doing that we define the assembly and, therefore, build a BOM (Bill Of Material).</p>
+<p>We can create links between a <strong>Part</strong> and <strong>Documents</strong>. Each Document helps the Part definition/description.</p>
+<p>Documents contain one or more electronic files.</p>
+</div>
+<div class="section" id="attributes">
+<h2>1.2. ATTRIBUTES<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<p>Displays the ID card of the object.</p>
+<p>You find standard attributes like name, date of creation, owner, ...
+You find customized attributes depending of the company OpenPLM is implemented for (like size or weight or supplier, ...).</p>
+<dl class="docutils">
+<dt>If you have necessary rights, you can :</dt>
+<dd><ul class="first last simple">
+<li><strong>Edit</strong> the attributes and modify them,</li>
+<li><strong>Clone</strong> the current object.</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can proceed some research based on each attribute.</p>
+</div>
+</div>
+<div class="section" id="lifecycle">
+<h2>1.3. LIFECYCLE<a class="headerlink" href="#lifecycle" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Displays :</dt>
+<dd><ul class="first last simple">
+<li>the lifecycle of the object,</li>
+<li>related users and their rights.</li>
+</ul>
+</dd>
+</dl>
+<p>You find the different states of the object including the current one.
+These lifecycles can be customized following specifications given by
+the company OpenPLM is implemented for (with 1, 2, 3 or more states).</p>
+<dl class="docutils">
+<dt>If you have necessary rights, you can :</dt>
+<dd><ul class="first last simple">
+<li><strong>Promote</strong> or <strong>Demote</strong> the object</li>
+<li><strong>Cancel</strong> the object</li>
+<li><strong>Replace</strong> some signers or notified users</li>
+<li><strong>Add</strong> or <strong>Remove</strong> Users for e-mail notification, i.e. he/she will receive e-mail
+for each new event related to this object (revision, modification, promotion, ...).</li>
+</ul>
+</dd>
+</dl>
+<p>We can implement different triggers on <strong>Promote</strong>/<strong>Demote</strong> actions
+following specifications (rights checking, e-mail sending, other PLM object promotion, ...).</p>
+</div>
+<div class="section" id="revisions">
+<h2>1.4. REVISIONS<a class="headerlink" href="#revisions" title="Permalink to this headline">¶</a></h2>
+<p>Displays all the revisions of the object.</p>
+<p>If the current object is the last revision, we can add a new one.</p>
+</div>
+<div class="section" id="history">
+<h2>1.5. HISTORY<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>Displays the history of the object.</p>
+<p>It ensures the full tracability of the object.</p>
+<p>A RSS feed icon is shown when you are on this tab. By clicking it you can
+subscribe to the feed of the object.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="2_part.html" title="2. Functions specific to PLM object : PART"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../tuto_2_plmobject.html" title="1.2. Functions related to PLM objects : PART / DOCUMENT"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../tutorials.html" >1. List of Tutorials</a> &raquo;</li>
+          <li><a href="../tuto_2_plmobject.html" >1.2. Functions related to PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

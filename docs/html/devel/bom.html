@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>8. Bill of materials – BOM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="9. Publication" href="publication.html" />
+    <link rel="prev" title="7. Documenting OpenPLM" href="documentation.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="9. Publication"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="documentation.html" title="7. Documenting OpenPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">8. Bill of materials &#8211; BOM</a><ul>
+<li><a class="reference internal" href="#definition">8.1. Definition</a></li>
+<li><a class="reference internal" href="#how-the-bom-is-stored">8.2. How the BOM is stored</a></li>
+<li><a class="reference internal" href="#extensions">8.3. Extensions</a><ul>
+<li><a class="reference internal" href="#purpose">8.3.1. Purpose</a></li>
+<li><a class="reference internal" href="#implementation">8.3.2. Implementation</a></li>
+<li><a class="reference internal" href="#registration">8.3.3. Registration</a></li>
+<li><a class="reference internal" href="#visible-and-invisible-fields">8.3.4. Visible and invisible fields</a></li>
+<li><a class="reference internal" href="#cloning">8.3.5. Cloning</a></li>
+<li><a class="reference internal" href="#examples">8.3.6. Examples</a><ul>
+<li><a class="reference internal" href="#reference-designator-field">8.3.6.1. Reference designator field</a></li>
+<li><a class="reference internal" href="#hidden-location-fields">8.3.6.2. Hidden location fields</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#boms-comparison">8.4. BOMs comparison</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="documentation.html"
+                        title="previous chapter">7. Documenting OpenPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="publication.html"
+                        title="next chapter">9. Publication</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/bom.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/bom.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="bill-of-materials-bom">
+<h1>8. Bill of materials &#8211; BOM<a class="headerlink" href="#bill-of-materials-bom" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="definition">
+<h2>8.1. Definition<a class="headerlink" href="#definition" title="Permalink to this headline">¶</a></h2>
+<p>In openPLM, all parts have a bill of materials (BOM) which lists the children parts that
+compose a part.
+A BOM lists for each child part how much is needed to build or assembly
+the parent part.</p>
+<p>openPLM manages single-line BOM (first level of children) and indented BOM
+(all levels of children).</p>
+</div>
+<div class="section" id="how-the-bom-is-stored">
+<h2>8.2. How the BOM is stored<a class="headerlink" href="#how-the-bom-is-stored" title="Permalink to this headline">¶</a></h2>
+<p>openPLM stores each row of a BOM but it only stores the first level.
+Indented BOM are dynamically built.</p>
+<p>For example, the following (simplified) BOM is stored with 3 rows.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="35%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Level</th>
+<th class="head">Element</th>
+<th class="head">Quantity</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8212;</td>
+<td>P0</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>P1</td>
+<td>2</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>P2</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>P2</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>The rows are (notation: parent, child, quantity):</p>
+<blockquote>
+<div><ul class="simple">
+<li>P0, P1, 2</li>
+<li>P1, P2, 4</li>
+<li>P0, P2, 5</li>
+</ul>
+</div></blockquote>
+<p>The model behind these rows is <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a>. It has the following
+fields:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>parent</dt>
+<dd>id of a part</dd>
+<dt>child</dt>
+<dd>id of a part</dd>
+<dt>quantity</dt>
+<dd>amount of child</dd>
+<dt>unit</dt>
+<dd>unit of the quantity (like kg, m)</dd>
+<dt>order</dt>
+<dd>field to order (sort) the BOM</dd>
+<dt>ctime</dt>
+<dd>date of creation of the row</dd>
+<dt>end_time</dt>
+<dd>date of deletion of the row (null value means no deletion)</dd>
+</dl>
+</div></blockquote>
+<p>The <em>ctime</em> and <em>end_time</em> fields allow openPLM to track changes of a BOM.
+For example, if the quantity changes, the row is not deleted but, its <em>end_time</em>
+field is set and a new row is created.</p>
+<p>For example, the following BOM (date of creation: 2012/01/01) is</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="24%" />
+<col width="28%" />
+<col width="14%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Level</th>
+<th class="head">Element</th>
+<th class="head">Quantity</th>
+<th class="head">Unit</th>
+<th class="head">Order</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8212;</td>
+<td>P0</td>
+<td>&#8212;</td>
+<td>&#8211;</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>P1</td>
+<td>2</td>
+<td>m</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<p>is stored as one row: parent -&gt; P0, child -&gt; P1, quantity -&gt; 2, unit -&gt; m,
+order -&gt; 100, ctime -&gt; 2012/01/01, end_time -&gt; null.</p>
+<p>If an user changes the unit to km and the quantity to 3,
+the BOM will be</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="24%" />
+<col width="28%" />
+<col width="14%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Level</th>
+<th class="head">Element</th>
+<th class="head">Quantity</th>
+<th class="head">Unit</th>
+<th class="head">Order</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8212;</td>
+<td>P0</td>
+<td>&#8212;</td>
+<td>&#8211;</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>P1</td>
+<td>3</td>
+<td>km</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<p>and the database will contains two rows (date of modification: 2012/01/02):</p>
+<blockquote>
+<div><ul class="simple">
+<li>parent -&gt; P0, child -&gt; P1, quantity -&gt; 2, unit -&gt; m,
+order -&gt; 100, ctime -&gt; 2012/01/01, end_time -&gt; 2012/01/02</li>
+<li>parent -&gt; P0, child -&gt; P1, quantity -&gt; 3, unit -&gt; km,
+order -&gt; 100, ctime -&gt; 2012/01/02, end_time -&gt; null</li>
+</ul>
+</div></blockquote>
+<p>If he adds a new child (P2, date of addition: 2012/01/03):</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="24%" />
+<col width="28%" />
+<col width="14%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Level</th>
+<th class="head">Element</th>
+<th class="head">Quantity</th>
+<th class="head">Unit</th>
+<th class="head">Order</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8212;</td>
+<td>P0</td>
+<td>&#8212;</td>
+<td>&#8211;</td>
+<td>&#8212;</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>P1</td>
+<td>2</td>
+<td>km</td>
+<td>100</td>
+</tr>
+<tr class="row-even"><td>1</td>
+<td>P2</td>
+<td>120</td>
+<td>m</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+<p>The database will contains 3 rows:</p>
+<blockquote>
+<div><ul class="simple">
+<li>parent -&gt; P0, child -&gt; P1, quantity -&gt; 2, unit -&gt; m,
+order -&gt; 100, ctime -&gt; 2012/01/01, end_time -&gt; 2012/01/02</li>
+<li>parent -&gt; P0, child -&gt; P1, quantity -&gt; 3, unit -&gt; km,
+order -&gt; 100, ctime -&gt; 2012/01/02, end_time -&gt; null</li>
+<li>parent -&gt; P0, child -&gt; P3, quantity -&gt; 120, unit -&gt; m,
+order -&gt; 200, ctime -&gt; 2012/01/03, end_time -&gt; null</li>
+</ul>
+</div></blockquote>
+<p>So previous rows are not altered since they have not been modified.</p>
+</div>
+<div class="section" id="extensions">
+<span id="bom-extensions"></span><h2>8.3. Extensions<a class="headerlink" href="#extensions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="purpose">
+<h3>8.3.1. Purpose<a class="headerlink" href="#purpose" title="Permalink to this headline">¶</a></h3>
+<p>Some applications need to store additional data on each row. These data
+should or should not be displayed or editable. For example, an electronic CAD
+application adds a <em>referenced designator</em> field which tells where a component
+is put on a board. This field must be displayed and is editable. Another
+application can add several location fields per row which tell where each
+child element is located. These location field would be invisible but are
+useful to generate a STEP document from the BOM.</p>
+</div>
+<div class="section" id="implementation">
+<h3>8.3.2. Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<p>openPLM has a model named <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a> to store these
+extensions. An application can add a model that extends
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a> and register it. The application only has
+to override some methods and openPLM will handle the display and edition of
+the BOM.</p>
+<div class="admonition-pcle-and-pcle admonition">
+<p class="first admonition-title">PCLE and pcle</p>
+<p class="last">Starting from here, PCLE means a model that extends a
+ParentChildLinkExtension and pcle means an instance of a
+ParentChildLinkExtension</p>
+</div>
+<p>A PCLE has one mandatory field, <em>link</em> which is a foreign key to a
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a>.</p>
+<p>When a <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> is duplicated (after a modification from an
+user), its bound extensions are duplicated by calling their
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.clone" title="openPLM.plmapp.models.link.ParentChildLinkExtension.clone"><tt class="xref py py-meth docutils literal"><span class="pre">ParentChildLinkExtension.clone()</span></tt></a> method.</p>
+</div>
+<div class="section" id="registration">
+<h3>8.3.3. Registration<a class="headerlink" href="#registration" title="Permalink to this headline">¶</a></h3>
+<p>By default, a PCLE will not be used by openPLM and must be registered.
+A PCLE can be registered by calling the <tt class="xref py py-func docutils literal"><span class="pre">registered_pcle()</span></tt> function.</p>
+<p>By default, a registered PCLE applies to all BOM. It is possible to change
+this behaviour by overriding the method
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.apply_to" title="openPLM.plmapp.models.link.ParentChildLinkExtension.apply_to"><tt class="xref py py-meth docutils literal"><span class="pre">ParentChildLinkExtension.apply_to()</span></tt></a>. This method takes one argument,
+the parent which will have a child, so it is possible to test its type or some
+of its attributes.</p>
+</div>
+<div class="section" id="visible-and-invisible-fields">
+<h3>8.3.4. Visible and invisible fields<a class="headerlink" href="#visible-and-invisible-fields" title="Permalink to this headline">¶</a></h3>
+<p>A PCLE can have as many fields as needed. Added fields are hidden by default.
+The classmethod <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields" title="openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields"><tt class="xref py py-meth docutils literal"><span class="pre">ParentChildLinkExtension.get_visible_fields()</span></tt></a> can be
+overridden to return a list of visible fields.</p>
+<p>The classmethod <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.get_editable_fields" title="openPLM.plmapp.models.link.ParentChildLinkExtension.get_editable_fields"><tt class="xref py py-meth docutils literal"><span class="pre">ParentChildLinkExtension.get_editable_fields()</span></tt></a> is
+called to get the list of editable fields that are added to the &#8220;add child&#8221;
+form and to the &#8220;edit bom&#8221; form. By default, it returns the list of visible
+fields.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>If a PCLE has at least one visible field, openPLM can create at most one
+pcle per link and it will not be able to display several columns for the
+same field.</p>
+<p>This behaviour is intended to keep the BOM readable and easily
+editable.</p>
+<p class="last">If you really need several visible pcles per link, you can create
+your own models.Field and play with its <tt class="xref py py-meth docutils literal"><span class="pre">formfield()</span></tt> method.</p>
+</div>
+</div>
+<div class="section" id="cloning">
+<h3>8.3.5. Cloning<a class="headerlink" href="#cloning" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> are never deleted but they are cloned. And since
+a pcle is bound to a link, it must be clonable. A PCLE must define
+the <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.clone" title="openPLM.plmapp.models.link.ParentChildLinkExtension.clone"><tt class="xref py py-meth docutils literal"><span class="pre">ParentChildLinkExtension.clone()</span></tt></a> method. By default, it raises
+a <tt class="xref py py-exc docutils literal"><span class="pre">NotImplementedError</span></tt> exception.</p>
+</div>
+<div class="section" id="examples">
+<h3>8.3.6. Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="reference-designator-field">
+<h4>8.3.6.1. Reference designator field<a class="headerlink" href="#reference-designator-field" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ReferenceDesignator</span><span class="p">(</span><span class="n">ParentChildLinkExtension</span><span class="p">):</span>
+
+    <span class="n">reference_designator</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;ReferenceDesignator&lt;</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_designator</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_visible_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&quot;reference_designator&quot;</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">apply_to</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="c"># only apply to mother boards</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">MotherBoard</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;reference_designator&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference_designator</span><span class="p">)</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="n">ReferenceDesignator</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">link</span><span class="p">,</span> <span class="n">reference_designator</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">clone</span>
+
+<span class="n">register</span><span class="p">(</span><span class="n">ReferenceDesignator</span><span class="p">)</span>
+<span class="n">register_PCLE</span><span class="p">(</span><span class="n">ReferenceDesignator</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="hidden-location-fields">
+<h4>8.3.6.2. Hidden location fields<a class="headerlink" href="#hidden-location-fields" title="Permalink to this headline">¶</a></h4>
+<p>Since all fields are hidden, no Location objects will be by openPLM created.
+A custom controller can create them but it would not have to handle their cloning.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Location</span><span class="p">(</span><span class="n">ParentChildLinkExtension</span><span class="p">):</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;&lt;Location&lt;</span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%f</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">apply_to</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="c"># only apply to all parts</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;y&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">clone</span> <span class="o">=</span> <span class="n">Location</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="n">link</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+            <span class="n">clone</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">clone</span>
+
+<span class="n">register</span><span class="p">(</span><span class="n">Location</span><span class="p">)</span>
+<span class="n">register_PCLE</span><span class="p">(</span><span class="n">Location</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="versionadded" id="bom-comparison">
+<span class="versionmodified">New in version 1.2.</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="boms-comparison">
+<h2>8.4. BOMs comparison<a class="headerlink" href="#boms-comparison" title="Permalink to this headline">¶</a></h2>
+<p>Since the version 1.2, it&#8217;s possible to compare two BOMs at two different dates
+and renders a diff view showing differences side by side (like in trac).</p>
+<p>The method <a class="reference internal" href="modules/controllers/controllers_part.html#plmapp.controllers.part.PartController.cmp_bom" title="plmapp.controllers.part.PartController.cmp_bom"><tt class="xref py py-meth docutils literal"><span class="pre">PartController.cmp_bom()</span></tt></a> performs the comparison and the view
+<a class="reference internal" href="modules/views.html#plmapp.views.part.compare_bom" title="plmapp.views.part.compare_bom"><tt class="xref py py-func docutils literal"><span class="pre">compare_bom()</span></tt></a> renders the result.</p>
+<p>This comparison relies <a class="reference external" href="http://docs.python.org/2.6/library/difflib.html#difflib.SequenceMatcher.get_opcodes" title="(in Python v2.6)"><tt class="xref py py-meth docutils literal"><span class="pre">difflib.SequenceMatcher.get_opcodes()</span></tt></a>.
+The standard <a class="reference external" href="http://docs.python.org/2.6/library/difflib.html#module-difflib" title="(in Python v2.6)"><tt class="xref py py-mod docutils literal"><span class="pre">difflib</span></tt></a> module can compare strings and any types of finite
+sequences. Using this module is only a matter of input formats. In OpenPLM, BOMs
+are flatten (see <a class="reference internal" href="modules/controllers/controllers_part.html#plmapp.controllers.part.flatten_bom" title="plmapp.controllers.part.flatten_bom"><tt class="xref py py-func docutils literal"><span class="pre">flatten_bom()</span></tt></a>) and three lines of code do the comparison.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="9. Publication"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="documentation.html" title="7. Documenting OpenPLM"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

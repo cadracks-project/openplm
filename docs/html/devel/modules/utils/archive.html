@@ -1,0 +1,269 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.17.1. archive — Module to stream tar and zip archives &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.17. utils — Utilities" href="../utils.html" />
+    <link rel="next" title="5.17.2. importing — Importing helpers" href="importing.html" />
+    <link rel="prev" title="5.17. utils — Utilities" href="../utils.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="importing.html" title="5.17.2. importing — Importing helpers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../utils.html" title="5.17. utils — Utilities"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../utils.html" accesskey="U">5.17. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">utils</span></tt> &#8212; Utilities</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../utils.html"
+                        title="previous chapter">5.17. <tt class="docutils literal docutils literal docutils literal"><span class="pre">utils</span></tt> &#8212; Utilities</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="importing.html"
+                        title="next chapter">5.17.2. <tt class="docutils literal"><span class="pre">importing</span></tt> &#8212; Importing helpers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/utils/archive.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/utils/archive.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.utils.archive">
+<span id="archive-module-to-stream-tar-and-zip-archives"></span><h1>5.17.1. <tt class="xref py py-mod docutils literal"><span class="pre">archive</span></tt> &#8212; Module to stream tar and zip archives<a class="headerlink" href="#module-plmapp.utils.archive" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="plmapp.utils.archive.get_available_name">
+<tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">get_available_name</tt><big>(</big><em>name</em>, <em>exiting_files</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/utils/archive.html#get_available_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.archive.get_available_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="plmapp.utils.archive.ZIP_AUTO">
+<tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">ZIP_AUTO</tt><em class="property"> = -1</em><a class="headerlink" href="#plmapp.utils.archive.ZIP_AUTO" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if files are compressed or not according to their extension</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="plmapp.utils.archive.STORED_FORMATS">
+<tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">STORED_FORMATS</tt><em class="property"> = set(['pptx', 'mpg', 'tgz', 'ods', 'odt', 'gz', 'jpg', 'xz', 'rar', 'odm', 'odf', 'odg', 'mpeg', 'bz2', 'zip', 'mkv', 'm4p', 'wmv', 'gif', 'ra', 'rm', 'odp', 'm4a', 'svgz', 'xlsx', 'docx', 'ram', 'mpa', '3gp', 'dotx', 'mov', 'dat', 'xlsm', 'jpeg', 'flac', 'docm', 'otp', 'ogg', 'ott', 'png', 'aaf', 'aac', 'ace', 'avi', '.zipx', 'flv', 'mp2', 'mp3', 'pptm'])</em><a class="headerlink" href="#plmapp.utils.archive.STORED_FORMATS" title="Permalink to this definition">¶</a></dt>
+<dd><p>formats that are stored uncompressed</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.utils.archive.IterZipFile">
+<em class="property">class </em><tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">IterZipFile</tt><big>(</big><em>compression=-1</em>, <em>allowZip64=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/utils/archive.html#IterZipFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.archive.IterZipFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>A write-only ZipFile that does not write to a file but yields
+its output.</p>
+<p>Example:</p>
+<div class="highlight-python"><pre>z = IterZipFile()
+for buf in z.write(filename, arcname):
+    # do stuff with buf
+for buf in z.close():
+    # do stuff with buf</pre>
+</div>
+<p>The code is mostly based on <a class="reference external" href="http://docs.python.org/2.6/library/zipfile.html#zipfile.ZipFile" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">zipfile.ZipFile</span></tt></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>compression</strong> &#8211; ZIP_STORED (no compression) or ZIP_DEFLATED (requires zlib)
+or ZIP_AUTO (compression or not according to the filename).</li>
+<li><strong>allowZip64</strong> &#8211; if True ZipFile will create files with ZIP64 extensions when
+needed, otherwise it will raise an exception when this would
+be necessary.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="plmapp.utils.archive.IterZipFile.write">
+<tt class="descname">write</tt><big>(</big><em>filename</em>, <em>arcname=None</em>, <em>compress_type=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/utils/archive.html#IterZipFile.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.archive.IterZipFile.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put the bytes from filename into the archive under the name
+arcname.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.utils.archive.IterZipFile.close">
+<tt class="descname">close</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/utils/archive.html#IterZipFile.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.archive.IterZipFile.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close the file, and for mode &#8220;w&#8221; and &#8220;a&#8221; write the ending
+records.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.archive.generate_tarfile">
+<tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">generate_tarfile</tt><big>(</big><em>files</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/utils/archive.html#generate_tarfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.archive.generate_tarfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a generator that yields <em>files</em> as a tar file.</p>
+<p>This generator does <strong>not</strong> create temporary files and is designed to not
+consume too much memory so it can be used to serve efficiently a tar file
+of large files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>files</strong> &#8211; a sequence of class:<cite>.DocumentFile</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.archive.generate_zipfile">
+<tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">generate_zipfile</tt><big>(</big><em>files</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/utils/archive.html#generate_zipfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.archive.generate_zipfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a generator that yields <em>files</em> as a zip file.</p>
+<p>This generator does <strong>not</strong> create temporary files and is designed to not
+consume too much memory so it can be used to serve efficiently a tar file
+of large files.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>files</strong> &#8211; a sequence of class:<cite>.DocumentFile</cite></li>
+<li><strong>compressed</strong> &#8211; <tt class="docutils literal"><span class="pre">True</span></tt> if files should be compressed (default: True)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="data">
+<dt id="plmapp.utils.archive.ARCHIVE_FORMATS">
+<tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">ARCHIVE_FORMATS</tt><em class="property"> = ['tar', 'zip']</em><a class="headerlink" href="#plmapp.utils.archive.ARCHIVE_FORMATS" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of available archive formats (currently: <tt class="docutils literal"><span class="pre">zip</span></tt> and <tt class="docutils literal"><span class="pre">tar</span></tt>).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.archive.generate_archive">
+<tt class="descclassname">plmapp.utils.archive.</tt><tt class="descname">generate_archive</tt><big>(</big><em>files</em>, <em>format</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/utils/archive.html#generate_archive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.archive.generate_archive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="importing.html" title="5.17.2. importing — Importing helpers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../utils.html" title="5.17. utils — Utilities"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../utils.html" >5.17. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">utils</span></tt> &#8212; Utilities</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

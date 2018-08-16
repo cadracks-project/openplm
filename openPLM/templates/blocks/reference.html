@@ -1,0 +1,43 @@
+{% load i18n plmapp_tags %}
+<div id="ReferenceArea">
+    <div id="reference-title">
+        {% if object_type == "User" %}
+            <div class="icon">
+                <img class="avatar" src="{% avatar_url obj %}"/>
+            </div>
+        {% else %}
+            <div class="icon {% if obj.is_document %}
+                    document_icon
+                {%else %} {% if obj.is_part %}
+                    part_icon
+                {% else %} user_icon {% endif %} {% endif %}">
+
+            </div>
+        {% endif %}
+        <h2>
+            {% if object_reference != '-' %}
+                {{ obj.title }}
+            {% else %}
+                <span class="type">{{object_type}}
+                    {% ifequal object_type "Timeline" %}
+                        <a target="_blank" href="rss/">
+                            <img style="float:none;" src="{{STATIC_URL}}img/feed_icon.png" alt="{% trans "click here to subscribe to the related feed" %}" title="{% trans "click here to subscribe to the related feed" %}">
+                        </a>
+                    {% endifequal %}
+                </span>
+            {% endif%}
+        </h2>
+        {% if object_reference != '-' and object_type != "User" %}
+            <div id="mtime-wrapper">
+                {% if request.user.is_authenticated and not restricted %}
+                    <a href="{{ obj.plmobject_url }}history/">
+                {% endif %}
+                    {% blocktrans with obj.mtime|timesince as mtime %}Last modified {{mtime}} ago{% endblocktrans %}
+                {% if request.user.is_authenticated and not restricted %}
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+

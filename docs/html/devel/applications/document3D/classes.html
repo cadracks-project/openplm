@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.3.2. document3D.classes — models for openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.3. Document3D" href="index.html" />
+    <link rel="next" title="6.3.3. document3D.views — models for openPLM" href="views.html" />
+    <link rel="prev" title="6.3.1. document3D.models — models for openPLM" href="models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="views.html" title="6.3.3. document3D.views — models for openPLM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="models.html" title="6.3.1. document3D.models — models for openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="models.html"
+                        title="previous chapter">6.3.1. <tt class="docutils literal"><span class="pre">document3D.models</span></tt> &#8212; models for openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="views.html"
+                        title="next chapter">6.3.3. <tt class="docutils literal docutils literal"><span class="pre">document3D.views</span></tt> &#8212; models for openPLM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/document3D/classes.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/document3D/classes.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="document3d-classes-models-for-openplm">
+<h1>6.3.2. <tt class="xref py py-mod docutils literal"><span class="pre">document3D.classes</span></tt> &#8212; models for openPLM<a class="headerlink" href="#document3d-classes-models-for-openplm" title="Permalink to this headline">¶</a></h1>
+<p>Habla sobre los modelos</p>
+<span class="target" id="module-openPLM.apps.document3D.classes"></span><dl class="class">
+<dt id="openPLM.apps.document3D.classes.Product">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.classes.</tt><tt class="descname">Product</tt><big>(</big><em>name</em>, <em>deep</em>, <em>label_reference</em>, <em>doc_id</em>, <em>id</em>, <em>doc_path=None</em>, <em>geometry=False</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/classes.html#Product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.classes.Product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Class used to represent the <strong>arborescense</strong> contained in a
+<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> <strong>.stp</strong>.A <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> can be
+simple or an assembly, if it is an assembly in <strong>links</strong> we will
+guard the information about other <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that compose it.</p>
+<p>There are two ways of generating a <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>, reading the file
+<strong>.stp</strong> across the class <a class="reference internal" href="STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.StepImporter" title="openPLM.apps.document3D.STP_converter_WebGL.StepImporter"><tt class="xref py py-class docutils literal"><span class="pre">StepImporter</span></tt></a> ( will refill the
+attribute <strong>label_reference</strong>  for every <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>), or reading
+a file <strong>.arb</strong> related to a <a class="reference internal" href="models.html#openPLM.apps.document3D.models.ArbreFile" title="openPLM.apps.document3D.models.ArbreFile"><tt class="xref py py-class docutils literal"><span class="pre">ArbreFile</span></tt></a>  .
+Therefore there exist two ways of distinguishing the different <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>,
+by means of the attribute <strong>label_reference</strong> if this one is not False ,
+or by means of the combination of attributes  <strong>id</strong> and <strong>doc_id</strong>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.links">
+<tt class="descname">links</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.links" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the product is an assembly, links stores one or more
+<a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.document3D.classes.Link</span></tt></a> references to the products that compose it</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.label_reference">
+<tt class="descname">label_reference</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.label_reference" title="Permalink to this definition">¶</a></dt>
+<dd><p>When we generate an arborescense using <a class="reference internal" href="STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.StepImporter" title="openPLM.apps.document3D.STP_converter_WebGL.StepImporter"><tt class="xref py py-class docutils literal"><span class="pre">StepImporter</span></tt></a> ,
+here we will store the label that represents the <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> ,
+if we generate the arborescense reading a file <strong>.geo</strong>, this attribute will be <strong>False</strong></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> ,if the name is empty and there exists a
+<a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a> at the <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> , we will assign the name of the
+<a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a> to the <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.doc_id">
+<tt class="descname">doc_id</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.doc_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that contains the <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> ,
+in the case of <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> .stp decomposed them
+<strong>doc_id</strong> may be different for every <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> of the arborescense</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.doc_path">
+<tt class="descname">doc_path</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.doc_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Path of the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> represented by the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that contains the product</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.part_to_decompose">
+<tt class="descname">part_to_decompose</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.part_to_decompose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in the decomposition, it indicates the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> where the <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> was decomposed</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.geometry">
+<tt class="descname">geometry</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.geometry" title="Permalink to this definition">¶</a></dt>
+<dd><p>If geometry is True (&gt;=1) then the <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> is single (without <strong>links</strong> )
+, and his value refers to the index that we will use to recover a <a class="reference internal" href="models.html#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.deep">
+<tt class="descname">deep</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.deep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Depth in the arborescense</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.visited">
+<tt class="descname">visited</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.visited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in the decomposition , indicates if a <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>  has been visited in the tour of the arborescense</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.id">
+<tt class="descname">id</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>identified the <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.is_decomposed">
+<tt class="descname">is_decomposed</tt><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/classes.html#Product.is_decomposed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.is_decomposed" title="Permalink to this definition">¶</a></dt>
+<dd><p>If it is an assembly and any <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> contents in its <strong>links</strong>
+are defined (<strong>doc_id</strong>) in another <tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt> (<strong>doc_id</strong>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Product.is_decomposable">
+<tt class="descname">is_decomposable</tt><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/classes.html#Product.is_decomposable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.is_decomposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>If it is an assembly and any <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> contents in its <strong>links</strong>
+are defined (<strong>doc_id</strong>) in the same <tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt> (<strong>doc_id</strong>)</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.apps.document3D.classes.Product.from_list">
+<em class="property">classmethod </em><tt class="descname">from_list</tt><big>(</big><em>arbre</em>, <em>product=False</em>, <em>product_root=False</em>, <em>deep=0</em>, <em>to_update_product_root=False</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/classes.html#Product.from_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.classes.Product.from_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new Product built from <em>arbre</em>. <em>arbre</em> is a serialized version as returned
+by <tt class="xref py py-meth docutils literal"><span class="pre">to_list()</span></tt>.</p>
+<p>Example:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">To generate a <strong>product</strong> of a single file <strong>.arb</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">tree</span><span class="o">=</span><span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">new_ArbreFile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To generate a <strong>product</strong> of a single file .arb and link this one like a branch
+of a certain <strong>product_root_node</strong> of an already existing <strong>product_root</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">product</span><span class="o">=</span><span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">new_ArbreFile</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()),</span><span class="n">product</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">product_root</span><span class="o">=</span><span class="n">product_root</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="n">xxx</span><span class="p">,</span> <span class="n">to_update_product_root</span><span class="o">=</span><span class="n">product_root_node</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This method generates the <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a> between <strong>product_root_node</strong> and  <strong>product</strong> ,
+<strong>BUT</strong> it does not add the occurrences, generally this occurrences are stored in the
+existing <tt class="xref py py-class docutils literal"><span class="pre">Location_link</span></tt></p>
+<p>After generating the <strong>product</strong> and the <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a>, we will have to refill the
+<a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a> calling the function <tt class="xref py py-meth docutils literal"><span class="pre">add_occurrence()</span></tt> for the <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a>:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">locations</span><span class="p">:</span>
+    <span class="n">product_root_node</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_occurrence</span><span class="p">(</span><span class="n">location</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">location</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>arbre</strong> &#8211; </li>
+<li><strong>product</strong> &#8211; Product that represents an arborescense , <strong>ONLY</strong> used in successive
+recursive calls of the function</li>
+<li><strong>product_root</strong> &#8211; Product that represents a root arborescense , used to determine if
+the product to generate is already present in the tree</li>
+<li><strong>deep</strong> &#8211; depth of <strong>product</strong> in the arborescense</li>
+<li><strong>to_update_product_root</strong> &#8211; Product that represents a node of an arborescense
+(sub-branch of arborescense referenced by <strong>product_root</strong>)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.classes.Link">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.classes.</tt><tt class="descname">Link</tt><big>(</big><em>product</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/classes.html#Link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.classes.Link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Class used to represent a parent child link between two <cite>.Product</cite>.
+A <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a> can have several references, each one with its name and transformation matrix.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Link.names">
+<tt class="descname">names</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Link.names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of each instances of the <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a> , if the instance does not have name,
+it gets the name of its <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> child</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Link.locations">
+<tt class="descname">locations</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Link.locations" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.apps.document3D.classes.TransformationMatrix" title="openPLM.apps.document3D.classes.TransformationMatrix"><tt class="xref py py-class docutils literal"><span class="pre">TransformationMatrix</span></tt></a> of each instances of the <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Link.product">
+<tt class="descname">product</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Link.product" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> child of the <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Link.quantity">
+<tt class="descname">quantity</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Link.quantity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of instances of the <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a>  (each instance has a <strong>name</strong> and <strong>location</strong>)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.classes.Link.visited">
+<tt class="descname">visited</tt><a class="headerlink" href="#openPLM.apps.document3D.classes.Link.visited" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in the decomposition , indicates if a <a class="reference internal" href="#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">Link</span></tt></a> has been visited in the tour of the arborescense</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.classes.TransformationMatrix">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.classes.</tt><tt class="descname">TransformationMatrix</tt><big>(</big><em>coords</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/classes.html#TransformationMatrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.classes.TransformationMatrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Defines a non-persistent transformation in 3D space</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="8%" />
+<col width="15%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>x1</td>
+<td>x2</td>
+<td>x3</td>
+<td>x4</td>
+<td>x</td>
+<td>=</td>
+<td>x&#8217;</td>
+</tr>
+<tr class="row-even"><td>y1</td>
+<td>y2</td>
+<td>y3</td>
+<td>y4</td>
+<td>y</td>
+<td>=</td>
+<td>y&#8217;</td>
+</tr>
+<tr class="row-odd"><td>z1</td>
+<td>z2</td>
+<td>z3</td>
+<td>z4</td>
+<td>z</td>
+<td>=</td>
+<td>z&#8217;</td>
+</tr>
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>=</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.classes.search_assembly">
+<tt class="descclassname">openPLM.apps.document3D.classes.</tt><tt class="descname">search_assembly</tt><big>(</big><em>product</em>, <em>product_root</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/classes.html#search_assembly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.classes.search_assembly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if a <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> is already present in an arborescense <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> (<strong>product_root</strong>)
+There are two manners of comparison, across <strong>label_reference</strong>
+( generated for <a class="reference internal" href="STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.StepImporter" title="openPLM.apps.document3D.STP_converter_WebGL.StepImporter"><tt class="xref py py-class docutils literal"><span class="pre">StepImporter</span></tt></a> for every <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>),
+or across <strong>id</strong> and <strong>doc_id</strong> (extracted of a file <strong>.geo</strong> for every <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>product_root</strong> &#8211; <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> root of the arborescense</li>
+<li><strong>product</strong> &#8211; <a class="reference internal" href="#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> for that we look in the <strong>product_root</strong></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="views.html" title="6.3.3. document3D.views — models for openPLM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="models.html" title="6.3.1. document3D.models — models for openPLM"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

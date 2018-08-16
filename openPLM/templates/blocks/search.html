@@ -1,0 +1,42 @@
+{% load i18n plmapp_tags highlight %}
+<div>
+    <form id="search_form" method="get" action="." enctype="text/plain">
+        <table id="search_table">
+            {{search_form.as_table}}
+        </table>
+        <div style="text-align:center"><input id="search_button" type="submit" class="tb-btn tb-btn-inverse" value="{% trans "SEARCH !" %}"/></div>
+    </form>
+</div>
+
+
+<hr/>
+{% if link_creation %}
+    {% trans "Results for link creation:" %}
+{% endif %}
+<div class="Result" link_creation="{{link_creation|yesno:"true,false"}}"
+    navigate="{{navigate_bool|yesno:"true,false"}}">
+    {% for result in results %}
+
+        {% if forloop.first %}
+            <p>
+            {% trans "Results" %}
+            <span id="numresults">
+                {% blocktrans with results|length as count and search_count as total %}
+                    (1 - {{count}} on {{total}})
+                {% endblocktrans %}
+                <a href="/search/{% add_search %}">{% trans "All results" %}</a>
+            </span> 
+            </p>
+            <ul class="Result">
+            {% endif %}
+
+            {% include "search/result.html" %}
+
+            {% if forloop.last %}
+            </ul>
+        {% endif %}
+
+    {% empty %}
+        <p>{% trans "No result matching given query" %}</p>
+    {% endfor %}
+</div>

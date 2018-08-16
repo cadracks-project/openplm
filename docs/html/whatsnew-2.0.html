@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. What’s new in OpenPLM 2.0 &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="index.html" />
+    <link rel="next" title="3.5.1. What’s new in OpenPLM 1.2" href="whatsnew/whatsnew-1.2.html" />
+    <link rel="prev" title="2. Glossary" href="glossary.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="whatsnew/whatsnew-1.2.html" title="3.5.1. What’s new in OpenPLM 1.2"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="glossary.html" title="2. Glossary"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">openPLM 2.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. What&#8217;s new in OpenPLM 2.0</a><ul>
+<li><a class="reference internal" href="#introduction">3.1. Introduction</a></li>
+<li><a class="reference internal" href="#what-s-new-for-users">3.2. What&#8217;s new for users</a><ul>
+<li><a class="reference internal" href="#enhanced-login-page">3.2.1. Enhanced Login page</a></li>
+<li><a class="reference internal" href="#enhanced-home-page">3.2.2. Enhanced Home page</a></li>
+<li><a class="reference internal" href="#wiki-syntax">3.2.3. Wiki syntax</a></li>
+<li><a class="reference internal" href="#interface-enhancements">3.2.4. Interface enhancements</a></li>
+<li><a class="reference internal" href="#parts-and-documents-new-description-field">3.2.5. Parts and documents: new <em>description</em> field</a></li>
+<li><a class="reference internal" href="#assembly-promotion-in-two-clicks">3.2.6. Assembly promotion in two clicks</a></li>
+<li><a class="reference internal" href="#avatars">3.2.7. Avatars</a></li>
+<li><a class="reference internal" href="#check-in-improvements">3.2.8. Check-in improvements</a></li>
+<li><a class="reference internal" href="#search-all-types-official-objects">3.2.9. Search: all types, official objects</a></li>
+<li><a class="reference internal" href="#timeline-browse-by-date-and-filtering">3.2.10. Timeline: browse by date and filtering</a></li>
+<li><a class="reference internal" href="#navigate-full-screen-display">3.2.11. Navigate: full screen display</a></li>
+<li><a class="reference internal" href="#d-view-full-screen-display-and-bom">3.2.12. 3D view: full screen display and BOM</a></li>
+<li><a class="reference internal" href="#other-enhancements">3.2.13. Other enhancements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-s-new-for-administrators">3.3. What&#8217;s new for administrators</a><ul>
+<li><a class="reference internal" href="#customize-default-references">3.3.1. Customize default references</a></li>
+<li><a class="reference internal" href="#new-application-richpage">3.3.2. New application: richpage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-s-new-for-developers">3.4. What&#8217;s new for developers</a><ul>
+<li><a class="reference internal" href="#django-1-5">3.4.1. Django 1.5</a></li>
+<li><a class="reference internal" href="#rich-text-wiki-syntax">3.4.2. Rich text | Wiki syntax</a></li>
+<li><a class="reference internal" href="#modules">3.4.3. Modules</a></li>
+<li><a class="reference internal" href="#http-api">3.4.4. HTTP API</a></li>
+<li><a class="reference internal" href="#references">3.4.5. References</a></li>
+<li><a class="reference internal" href="#celery-tasks">3.4.6. Celery tasks</a></li>
+<li><a class="reference internal" href="#models">3.4.7. Models</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#previous-versions">3.5. Previous versions</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="glossary.html"
+                        title="previous chapter">2. Glossary</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="whatsnew/whatsnew-1.2.html"
+                        title="next chapter">3.5.1. What&#8217;s new in OpenPLM 1.2</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/whatsnew-2.0.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/whatsnew-2.0.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="whatsnew-2-0"></span><div class="section" id="what-s-new-in-openplm-2-0">
+<h1>3. What&#8217;s new in OpenPLM 2.0<a class="headerlink" href="#what-s-new-in-openplm-2-0" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>3.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>OpenPLM is a product oriented PLM solution.
+A product oriented PLM (Product Lifecycle Management) solution unifies
+all activities of the company in an ECM which structures data around the product.
+OpenPLM features a full web and user-friendly interface.
+OpenPLM is Free and Open Source Software.
+This means that all our work is free to use, modify and redistribute.</p>
+<p>Notable changes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Wiki syntax and Page document</li>
+<li>Avatars</li>
+<li>Interface enhancements</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="what-s-new-for-users">
+<h2>3.2. What&#8217;s new for users<a class="headerlink" href="#what-s-new-for-users" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="enhanced-login-page">
+<h3>3.2.1. Enhanced Login page<a class="headerlink" href="#enhanced-login-page" title="Permalink to this headline">¶</a></h3>
+<p>We improve the style of the Login page.</p>
+<img alt="_images/login_page.png" class="align-center" src="_images/login_page.png" />
+</div>
+<div class="section" id="enhanced-home-page">
+<h3>3.2.2. Enhanced Home page<a class="headerlink" href="#enhanced-home-page" title="Permalink to this headline">¶</a></h3>
+<p>You access to Search engine directly from Home page.</p>
+<img alt="_images/home_page.png" class="align-center" src="_images/home_page.png" />
+</div>
+<div class="section" id="wiki-syntax">
+<h3>3.2.3. Wiki syntax<a class="headerlink" href="#wiki-syntax" title="Permalink to this headline">¶</a></h3>
+<p>It is now possible to write rich formatted comments and other text
+(description, technical details, etc.).</p>
+<p>The syntax is based on Markdown and it supports:</p>
+<blockquote>
+<div><ul class="simple">
+<li>titles and subtitles</li>
+<li>images</li>
+<li>bullet and ordered lists</li>
+<li>tables</li>
+<li>special links (to a part, document, user and more)</li>
+</ul>
+</div></blockquote>
+<p>The syntax is documented <a class="reference internal" href="user/features/markdown_syntax.html#user-richtext"><em>on this page</em></a>.</p>
+<p>A visual editor is available:</p>
+<div class="figure align-center">
+<img alt="_images/editor_compose.png" src="_images/editor_compose.png" />
+<p class="caption">The compose mode of the markdown editor.</p>
+</div>
+<div class="figure align-center">
+<img alt="_images/editor_preview.png" src="_images/editor_preview.png" />
+<p class="caption">The preview mode of the markdown editor.</p>
+</div>
+<div class="figure align-center">
+<img alt="_images/editor_result.png" src="_images/editor_result.png" />
+<p class="caption">The rendered content.</p>
+</div>
+</div>
+<div class="section" id="interface-enhancements">
+<h3>3.2.4. Interface enhancements<a class="headerlink" href="#interface-enhancements" title="Permalink to this headline">¶</a></h3>
+<p>All buttons have been redesigned.
+Their background colors depend on the consequences of their actions.
+For example, delete buttons have a red background and promote buttons
+have a green background.</p>
+<div class="figure align-center">
+<img alt="_images/attributes.png" src="_images/attributes.png" />
+<p class="caption">Icons and styles are based on Twitter Bootstrap.</p>
+</div>
+<div class="figure align-center">
+<img alt="_images/toolbar.png" src="_images/toolbar.png" />
+<p class="caption">The main toolbar</p>
+</div>
+<div class="figure align-center">
+<img alt="_images/cards.png" src="_images/cards.png" />
+<p class="caption">New cards</p>
+</div>
+</div>
+<div class="section" id="parts-and-documents-new-description-field">
+<h3>3.2.5. Parts and documents: new <em>description</em> field<a class="headerlink" href="#parts-and-documents-new-description-field" title="Permalink to this headline">¶</a></h3>
+<p>Parts and documents have now a <em>description</em> field.
+Now parts, documents, groups and ECRs have a name and a description fields.</p>
+<p>This field supports formatted content and is indexed by the search engine.</p>
+</div>
+<div class="section" id="assembly-promotion-in-two-clicks">
+<h3>3.2.6. Assembly promotion in two clicks<a class="headerlink" href="#assembly-promotion-in-two-clicks" title="Permalink to this headline">¶</a></h3>
+<p>A new button is available to promote a whole assembly.
+It is no more necessary to promote each individual part in the right order.</p>
+<p>This button is available if the following conditions are met:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the user is the only signer of every parts (or other signers have delegated their right);</li>
+<li>all leaf parts are attached to an official document.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="avatars">
+<h3>3.2.7. Avatars<a class="headerlink" href="#avatars" title="Permalink to this headline">¶</a></h3>
+<p>Each user can now upload an avatar.</p>
+<p>Avatars are visible on:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">each user&#8217;s page</p>
+<img alt="_images/avatar_profile.png" src="_images/avatar_profile.png" />
+</li>
+<li><p class="first">each comment</p>
+<img alt="_images/avatar_comment.png" src="_images/avatar_comment.png" />
+</li>
+<li><p class="first">each action of the timeline</p>
+<img alt="_images/avatar_timeline.png" src="_images/avatar_timeline.png" />
+</li>
+<li><p class="first">each card (browse and navigate)</p>
+<img alt="_images/avatar_card.png" src="_images/avatar_card.png" />
+</li>
+</ul>
+</div></blockquote>
+<p>To upload your avatar, simply edit your personal data on your user&#8217;s page.</p>
+</div>
+<div class="section" id="check-in-improvements">
+<h3>3.2.8. Check-in improvements<a class="headerlink" href="#check-in-improvements" title="Permalink to this headline">¶</a></h3>
+<p>A click on the check-in button immediately triggers the file selector.
+And the file is uploaded when the file selector is validated.</p>
+</div>
+<div class="section" id="search-all-types-official-objects">
+<h3>3.2.9. Search: all types, official objects<a class="headerlink" href="#search-all-types-official-objects" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to run a query matching any types of object (parts, documents,
+groups, users, ECRs).</p>
+<p>The drop down menu used to select the type is replaced by a left panel.
+This panel is divised in two sections. The first section gives
+direct access to main types (All, Part, Document, Group, User and ECR).
+The second is fold and gives access to part or document subtypes
+(Document3D, ElectronicPart, etc.).</p>
+<p>It is possible to search for only official objects.</p>
+<p>Moreover, the search engine suggests a spelling correction when no results
+are returned.</p>
+</div>
+<div class="section" id="timeline-browse-by-date-and-filtering">
+<h3>3.2.10. Timeline: browse by date and filtering<a class="headerlink" href="#timeline-browse-by-date-and-filtering" title="Permalink to this headline">¶</a></h3>
+<p>The timeline has been improved. It now displays all events which happened
+during a given period.
+The previous version displayed a fixed number of events.</p>
+<p>Moreover, it is possible to filter events based on their type (part, document and/or group)
+and by their author.</p>
+<div class="figure align-center">
+<img alt="_images/history.png" src="_images/history.png" />
+<p class="caption">History of a part</p>
+</div>
+</div>
+<div class="section" id="navigate-full-screen-display">
+<h3>3.2.11. Navigate: full screen display<a class="headerlink" href="#navigate-full-screen-display" title="Permalink to this headline">¶</a></h3>
+<p>You can now display the navigate view in full screen mode.</p>
+</div>
+<div class="section" id="d-view-full-screen-display-and-bom">
+<h3>3.2.12. 3D view: full screen display and BOM<a class="headerlink" href="#d-view-full-screen-display-and-bom" title="Permalink to this headline">¶</a></h3>
+<p>The assembly tree of a STEP file is now displayed as a treeview.</p>
+<p>You can now display the 3D view in full screen mode.</p>
+<div class="figure align-center">
+<img alt="_images/3D_mendelmax.png" src="_images/3D_mendelmax.png" />
+<p class="caption">The model is done by <a class="reference external" href="http://www.thingiverse.com/thing:19782">Brojt</a>.
+It is licenced under the <a class="reference external" href="http://creativecommons.org/licenses/by-sa/3.0/">Attribution - Share Alike - Creative Commons license</a>.</p>
+</div>
+</div>
+<div class="section" id="other-enhancements">
+<h3>3.2.13. Other enhancements<a class="headerlink" href="#other-enhancements" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>The Document3D type is automatically selected if a CAD file is uploaded</li>
+<li>Navigate supports ECRs</li>
+<li>The <a class="reference internal" href="admin/applications/webdav/index.html#webdav-admin"><em>webdav application</em></a> is now compatible with Windows 7 client</li>
+<li>All comments have a permalink</li>
+<li>Histories and timeline record comments</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="what-s-new-for-administrators">
+<h2>3.3. What&#8217;s new for administrators<a class="headerlink" href="#what-s-new-for-administrators" title="Permalink to this headline">¶</a></h2>
+<p>OpenPLM now requires Django 1.5.
+Some dependencies and the settings file must be upgraded.
+Read the <a class="reference internal" href="admin/upgrade/upgrade-2.0.html"><em>instructions</em></a> before upgrading
+your installation.</p>
+<div class="section" id="customize-default-references">
+<h3>3.3.1. Customize default references<a class="headerlink" href="#customize-default-references" title="Permalink to this headline">¶</a></h3>
+<p>It is now possible to customize the default reference of parts and documents.
+Read <a class="reference internal" href="admin/references.html#admin-references"><em>References &#8211; how to customize generated references</em></a> for details on how to customize default
+references.</p>
+</div>
+<div class="section" id="new-application-richpage">
+<h3>3.3.2. New application: richpage<a class="headerlink" href="#new-application-richpage" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="admin/applications/richpage/index.html#richpage-admin"><em>richpage application</em></a> adds a new type
+of document, <em>Page</em> which has a dedicated tab to a formatted content.</p>
+</div>
+</div>
+<div class="section" id="what-s-new-for-developers">
+<h2>3.4. What&#8217;s new for developers<a class="headerlink" href="#what-s-new-for-developers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="django-1-5">
+<h3>3.4.1. Django 1.5<a class="headerlink" href="#django-1-5" title="Permalink to this headline">¶</a></h3>
+<p>Django 1.5 adds <em>custom user model</em>. OpenPLM still uses the User model
+provided by Django and a separated profile (<tt class="xref py py-class docutils literal"><span class="pre">UserProfile</span></tt>).
+To get the profile of a user instance, you must now access the
+<tt class="samp docutils literal"><em><span class="pre">user</span></em><span class="pre">.profile</span></tt> attribute instead of calling <tt class="samp docutils literal"><em><span class="pre">user</span></em><span class="pre">.get_profile()</span></tt>.</p>
+<p>Static files are now located in <tt class="samp docutils literal"><em><span class="pre">app</span></em><span class="pre">/static/</span></tt> directories
+instead of the <cite>media/</cite> directory.</p>
+<p>HttpResponse which takes a file or an iterator are now
+instances of <tt class="xref py py-class docutils literal"><span class="pre">StreamingHttpResponse</span></tt>.</p>
+<p>All DateTime fields are now timezone aware.</p>
+</div>
+<div class="section" id="rich-text-wiki-syntax">
+<h3>3.4.2. Rich text | Wiki syntax<a class="headerlink" href="#rich-text-wiki-syntax" title="Permalink to this headline">¶</a></h3>
+<p>You can now add rich text support to any TextField.
+<a class="reference internal" href="devel/richtext.html#devel-richtext"><em>Rich text | Wiki syntax</em></a> explains how to add this support and how
+to add its own syntax.</p>
+</div>
+<div class="section" id="modules">
+<h3>3.4.3. Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="devel/modules/utils.html#module-plmapp.utils" title="plmapp.utils"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.utils</span></tt></a> is now a package and the modules <a class="reference internal" href="devel/modules/utils/archive.html#module-plmapp.utils.archive" title="plmapp.utils.archive"><tt class="xref py py-mod docutils literal"><span class="pre">archive</span></tt></a>,
+<tt class="xref py py-mod docutils literal"><span class="pre">encoding</span></tt>, <tt class="xref py py-mod docutils literal"><span class="pre">unicodecsv</span></tt>, <a class="reference internal" href="devel/modules/utils/units.html#module-plmapp.utils.units" title="plmapp.utils.units"><tt class="xref py py-mod docutils literal"><span class="pre">units</span></tt></a> moved to this package.</p>
+<p>A new module, <a class="reference internal" href="devel/modules/utils/importing.html#module-plmapp.utils.importing" title="plmapp.utils.importing"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.utils.importing</span></tt></a> is available to import a function
+or a class from a string. It is based on the one provided by Mezzanine.</p>
+<p><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.base_views</span></tt> moved to <a class="reference internal" href="devel/modules/views.html#module-plmapp.views.base" title="plmapp.views.base"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.views.base</span></tt></a>.</p>
+<p>A lot of views moved from <a class="reference internal" href="devel/modules/views.html#module-plmapp.views.main" title="plmapp.views.main"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.views.main</span></tt></a> to <a class="reference internal" href="devel/modules/views.html#module-plmapp.views.group" title="plmapp.views.group"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.views.group</span></tt></a>,
+<a class="reference internal" href="devel/modules/views.html#module-plmapp.views.document" title="plmapp.views.document"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.views.document</span></tt></a>, <a class="reference internal" href="devel/modules/views.html#module-plmapp.views.part" title="plmapp.views.part"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.views.part</span></tt></a>,
+<a class="reference internal" href="devel/modules/views.html#module-plmapp.views.plmobject" title="plmapp.views.plmobject"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.views.plmobject</span></tt></a> or <a class="reference internal" href="devel/modules/views.html#module-plmapp.views.user" title="plmapp.views.user"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.views.user</span></tt></a>.</p>
+</div>
+<div class="section" id="http-api">
+<h3>3.4.4. HTTP API<a class="headerlink" href="#http-api" title="Permalink to this headline">¶</a></h3>
+<p>The <a class="reference internal" href="devel/http-api.html#module-http_api" title="http_api"><tt class="xref py py-mod docutils literal"><span class="pre">http_api</span></tt></a> has new routes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="devel/http-api.html#http_api.get" title="http_api.get"><tt class="xref py py-func docutils literal"><span class="pre">http_api.get()</span></tt></a></li>
+<li><a class="reference internal" href="devel/http-api.html#http_api.attached_documents" title="http_api.attached_documents"><tt class="xref py py-func docutils literal"><span class="pre">http_api.attached_documents()</span></tt></a></li>
+<li><a class="reference internal" href="devel/http-api.html#http_api.attached_parts" title="http_api.attached_parts"><tt class="xref py py-func docutils literal"><span class="pre">http_api.attached_parts()</span></tt></a></li>
+<li><a class="reference internal" href="devel/http-api.html#http_api.lock_files" title="http_api.lock_files"><tt class="xref py py-func docutils literal"><span class="pre">http_api.lock_files()</span></tt></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="references">
+<h3>3.4.5. References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h3>
+<p>The new module <a class="reference internal" href="devel/modules/references.html#module-plmapp.references" title="plmapp.references"><tt class="xref py py-mod docutils literal"><span class="pre">references</span></tt></a> adds functions to parse and generate
+a new reference for a part or a document.</p>
+</div>
+<div class="section" id="celery-tasks">
+<h3>3.4.6. Celery tasks<a class="headerlink" href="#celery-tasks" title="Permalink to this headline">¶</a></h3>
+<p>Task are now executed after the current database transaction.
+If the transaction failed, tasks are not executed.</p>
+</div>
+<div class="section" id="models">
+<h3>3.4.7. Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference internal" href="devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> has now a <a class="reference internal" href="devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.description" title="openPLM.plmapp.models.plmobject.PLMObject.description"><tt class="xref py py-attr docutils literal"><span class="pre">description</span></tt></a> field.
+If one of your models already has a such field, you should create
+a migration <em>before</em> upgrading your installation. The software
+application contains a migration that copies the content
+of an existing description field.</p>
+<p>Document subclasses may implement the <a class="reference internal" href="devel/modules/models.html#openPLM.plmapp.models.document.Document.get_creation_score" title="openPLM.plmapp.models.document.Document.get_creation_score"><tt class="xref py py-meth docutils literal"><span class="pre">Document.get_creation_score()</span></tt></a>
+classmethod. It is used to determinate which document type is chosen
+after an upload.</p>
+</div>
+</div>
+<div class="section" id="previous-versions">
+<h2>3.5. Previous versions<a class="headerlink" href="#previous-versions" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="whatsnew/whatsnew-1.2.html">3.5.1. What&#8217;s new in OpenPLM 1.2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="whatsnew/whatsnew-1.1.html">3.5.2. What&#8217;s new in OpenPLM 1.1</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="whatsnew/whatsnew-1.2.html" title="3.5.1. What’s new in OpenPLM 1.2"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="glossary.html" title="2. Glossary"
+             >previous</a> |</li>
+        <li><a href="index.html">openPLM 2.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

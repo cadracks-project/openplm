@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Publication &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="7. Specifications" href="index.html" />
+    <link rel="next" title="4. Restricted access" href="restricted_access.html" />
+    <link rel="prev" title="2. Lifecycle" href="lifecycle.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="restricted_access.html" title="4. Restricted access"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="2. Lifecycle"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Publication</a><ul>
+<li><a class="reference internal" href="#condition-to-publish-a-part-or-a-document">3.1. Condition to publish a part or a document</a></li>
+<li><a class="reference internal" href="#access">3.2. Access</a></li>
+<li><a class="reference internal" href="#visible-data">3.3. Visible data</a></li>
+<li><a class="reference internal" href="#unpublishing-a-plmobject">3.4. Unpublishing a plmobject</a></li>
+<li><a class="reference internal" href="#browsing-of-published-plmobject">3.5. Browsing of published plmobject</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="lifecycle.html"
+                        title="previous chapter">2. Lifecycle</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="restricted_access.html"
+                        title="next chapter">4. Restricted access</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/specs/publication.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/specs/publication.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="publication">
+<span id="publication-specs"></span><h1>3. Publication<a class="headerlink" href="#publication" title="Permalink to this headline">¶</a></h1>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>This document defines how a part or a document can be published to
+be accessible to anonymous user.</p>
+<div class="section" id="condition-to-publish-a-part-or-a-document">
+<h2>3.1. Condition to publish a part or a document<a class="headerlink" href="#condition-to-publish-a-part-or-a-document" title="Permalink to this headline">¶</a></h2>
+<p>A part or a document can be publish if and only if it is official.</p>
+<p>Only an user who belongs to the object&#8217;s group and who has the
+permission right to published an object can publish an object.
+The <em>permission right</em> can be set via the admin interface.</p>
+<p>An user who can publish a plmobject is a <em>publisher</em>.</p>
+<p>The interface should ask a confirmation and the user&#8217;s password before
+publishing a plmobject. This confirmation dialog should warn about the
+main consequence of a publication: a publish part or document is fully
+accessible to everyone, including anonymous users.</p>
+</div>
+<div class="section" id="access">
+<h2>3.2. Access<a class="headerlink" href="#access" title="Permalink to this headline">¶</a></h2>
+<p>A published plmobject can be accessed by all users, including
+anonymous users.</p>
+<p>The URL to access a published object must follow the following pattern:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="samp docutils literal"><span class="pre">/object/</span><em><span class="pre">type</span></em><span class="pre">/</span><em><span class="pre">reference</span></em><span class="pre">/</span><em><span class="pre">revision</span></em><span class="pre">/public/</span></tt></li>
+</ul>
+</div></blockquote>
+<p>An anonymous access to an unpublished object must redirect to the login page.</p>
+</div>
+<div class="section" id="visible-data">
+<h2>3.3. Visible data<a class="headerlink" href="#visible-data" title="Permalink to this headline">¶</a></h2>
+<p>The public page of a <strong>part</strong> shows the following data:</p>
+<blockquote>
+<div><ul class="simple">
+<li>its type</li>
+<li>its reference</li>
+<li>its revision</li>
+<li>its name</li>
+<li>its state</li>
+<li>its publication date</li>
+<li>all specific attributes that are marked as public</li>
+<li>all published document that are attached to this part</li>
+<li>all published related revisions</li>
+</ul>
+</div></blockquote>
+<p>The public page of a <strong>document</strong> shows the following data:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">its type</p>
+</li>
+<li><p class="first">its reference</p>
+</li>
+<li><p class="first">its revision</p>
+</li>
+<li><p class="first">its name</p>
+</li>
+<li><p class="first">its state</p>
+</li>
+<li><p class="first">its publication date</p>
+</li>
+<li><p class="first">all specific attributes that are marked as public</p>
+</li>
+<li><p class="first">all published part that are attached to this document</p>
+</li>
+<li><p class="first">all published related revisions</p>
+</li>
+<li><p class="first">its non deprecated files, for each file, the following data are available:</p>
+<blockquote>
+<div><ul class="simple">
+<li>its filename</li>
+<li>its size</li>
+<li>its thumbnail</li>
+<li>its content</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>The following data are <strong>NOT</strong> visible:</p>
+<blockquote>
+<div><ul class="simple">
+<li>all user data (owner, signers, notified users, creator...)</li>
+<li>all unpublished related revisions</li>
+<li>all related comments</li>
+<li>the history</li>
+<li>the lifecycle</li>
+<li>the group</li>
+<li>dates of creation and last modification</li>
+<li>all other data specific to a type</li>
+</ul>
+</div></blockquote>
+<p>A published plmobject stays visible when it is deprecated.</p>
+</div>
+<div class="section" id="unpublishing-a-plmobject">
+<h2>3.4. Unpublishing a plmobject<a class="headerlink" href="#unpublishing-a-plmobject" title="Permalink to this headline">¶</a></h2>
+<p>A publication can be undone by a publisher who belongs to the object&#8217;s group.</p>
+<p>The interface should ask a confirmation and the user&#8217;s password before unpublishing
+a plmobject.</p>
+</div>
+<div class="section" id="browsing-of-published-plmobject">
+<h2>3.5. Browsing of published plmobject<a class="headerlink" href="#browsing-of-published-plmobject" title="Permalink to this headline">¶</a></h2>
+<p>An anonymous user should be able to browse all published plmobject.
+He must not be able to see an unpublished object while browsing all
+objects.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="restricted_access.html" title="4. Restricted access"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="2. Lifecycle"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+{% block css %}
+<link rel="stylesheet" href="{{STATIC_URL}}css/import_csv.css" type="text/css" />
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+$(function(){
+    var help_block=$("#help_csv");
+    $("input#id_file").after(help_block);
+    help_block.removeAttr("style");
+});
+</script>
+{% endblock %}
+
+{% block content %}
+    <h3 class="hplm">{% trans "Import of a csv file" %}</h3>
+    {% with "/import/"|add:target|add:"/" as action %}
+        {% with csv_form as form %}
+            {% include "snippets/undo_form.html" %}
+        {% endwith %}
+    {% endwith %}
+
+    {% ifequal step 2 %}
+        {% if has_critical_error %}
+            <div class="errors">
+                <h4 class="hplm">{% trans "Error" %}</h4>
+                {% if errors %}
+                    <dl class="errors">
+                        {% for line, error in errors %}
+                            <dt class="errors">
+                            <span>
+                                {% blocktrans %} Line {{line}} {% endblocktrans%}
+                            </span>
+                            </dt>
+                            <dd class="errors">
+                            {{error|safe}}
+                            </dd>
+                        {% endfor %}
+                    </dl>
+                {% endif %}
+                {% if io_error %}
+                    {% trans "Error while reading the CSV file. Try upload a new file." %}
+                {% endif %}
+                {% if encoding_error %}
+                    {% trans "The given encoding seems wrong. Try upload a new file with the right encoding." %}
+                {% endif %}
+            </div>
+
+        {% else %}
+
+            {% with headers_formset.non_form_errors as errors%}
+                {{errors.as_ul }}
+            {% endwith%}
+            <form method="post" action=".">{% csrf_token %}
+                {{ headers_formset.management_form }}
+
+                <table class="Content">
+                    <thead>
+                        <tr class="Content">
+                            <th class="Content">{% trans "Field" %}</th>
+                            <th class="Content">{% trans "Header" %}</th>
+                            {% for row in preview.rows %}
+                                <th class="Content">{% trans "Row" %} {{ count|add:"1"}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in preview_data %}
+                            <tr class="Content">
+                                {% for value in row %}
+                                    <td class="Content">{{value}}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+                <input type="submit" class="tb-btn" value="{% trans "Validate" %}" name="_validate"/>
+                <input type="submit" class="tb-btn" value="{% trans "Undo" %}" name="_undo"/>
+
+            </form>
+        {% endif %}
+    {% endifequal %}
+    <span id="help_csv" style="display:none">
+        <span>
+            {% trans "Your csv file must have a column for each required field" %}.<br/>
+            {% trans "Examples and more precise descriptions are available in the"%}<a href="{{DOCUMENTATION_URL}}features/create.html#import-from-a-csv-file" target="_blank">{% trans "documentation" %}</a>.
+        </span>     
+    </span>
+
+
+{% endblock %}
+

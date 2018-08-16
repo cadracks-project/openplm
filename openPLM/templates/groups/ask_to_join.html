@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+{% block content %} 
+    {% if in_group %}
+        <p>{% trans "You are already in this group." %} </p>
+    {% else %}
+        <p>{% trans "Join this group ?" %} </p>
+        {% with ask_form as form %}
+            {% include "snippets/undo_form.html" %}
+         {% endwith %}
+    {% endif %}
+{% endblock %}
+
+

@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1. Part and document cloning: specifications &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="7. Specifications" href="index.html" />
+    <link rel="next" title="2. Lifecycle" href="lifecycle.html" />
+    <link rel="prev" title="7. Specifications" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="2. Lifecycle"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="7. Specifications"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1. Part and document cloning: specifications</a><ul>
+<li><a class="reference internal" href="#permissions">1.1. Permissions</a></li>
+<li><a class="reference internal" href="#cloneable-elements">1.2. Cloneable elements</a></li>
+<li><a class="reference internal" href="#cloning-process">1.3. Cloning process</a><ul>
+<li><a class="reference internal" href="#cloning-button">1.3.1. Cloning button</a></li>
+<li><a class="reference internal" href="#cloning-page">1.3.2. Cloning page</a><ul>
+<li><a class="reference internal" href="#creation-form">1.3.2.1. Creation form</a></li>
+<li><a class="reference internal" href="#links-forms">1.3.2.2. Links forms</a><ul>
+<li><a class="reference internal" href="#parts">1.3.2.2.1. Parts</a></li>
+<li><a class="reference internal" href="#documents">1.3.2.2.2. Documents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#object-creation">1.3.3. Object creation</a></li>
+<li><a class="reference internal" href="#errors-handling">1.3.4. Errors handling</a></li>
+<li><a class="reference internal" href="#implementation">1.3.5. Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">7. Specifications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lifecycle.html"
+                        title="next chapter">2. Lifecycle</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/specs/clone.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/specs/clone.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="part-and-document-cloning-specifications">
+<span id="clone-spec"></span><h1>1. Part and document cloning: specifications<a class="headerlink" href="#part-and-document-cloning-specifications" title="Permalink to this headline">¶</a></h1>
+<p>This document describes which parts and documents can be cloned,
+which data are copied and how an user should be able to clone
+a part.</p>
+<div class="section" id="permissions">
+<h2>1.1. Permissions<a class="headerlink" href="#permissions" title="Permalink to this headline">¶</a></h2>
+<p>A user who is a contributor and who can read (access to the attributes pages)
+can clone a part or a document.</p>
+</div>
+<div class="section" id="cloneable-elements">
+<h2>1.2. Cloneable elements<a class="headerlink" href="#cloneable-elements" title="Permalink to this headline">¶</a></h2>
+<p>All parts and documents may be cloned. Their state and lifecycle do not matter:
+even a cancelled object may be cloned.</p>
+<p>A new property <a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_cloneable" title="openPLM.plmapp.models.plmobject.PLMObject.is_cloneable"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.is_cloneable</span></tt></a> is available and returns True
+if the PLMObject can be cloned.
+The implementation of this property by <a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> must returns True.
+A custom part or document may override this property to exclude some plmobjects
+from the cloning process.</p>
+<p>All users and groups can <strong>NOT</strong> be cloned.
+All other data can not be cloned.</p>
+</div>
+<div class="section" id="cloning-process">
+<h2>1.3. Cloning process<a class="headerlink" href="#cloning-process" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="cloning-button">
+<h3>1.3.1. Cloning button<a class="headerlink" href="#cloning-button" title="Permalink to this headline">¶</a></h3>
+<p>A clone button can appear on the attributes page after the &#8220;Download as PDF&#8221; button.</p>
+<p>This clone button appears if:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the current user is a contributor</li>
+<li>the current user can read this object</li>
+<li>the call to <a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_cloneable" title="openPLM.plmapp.models.plmobject.PLMObject.is_cloneable"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.is_cloneable</span></tt></a> on the current object returns True</li>
+</ul>
+</div></blockquote>
+<p>A click on this clone button redirects to the URL
+<tt class="samp docutils literal"><span class="pre">/object/</span><em><span class="pre">type</span></em><span class="pre">/</span><em><span class="pre">reference</span></em><span class="pre">/</span><em><span class="pre">revision</span></em><span class="pre">/clone/</span></tt>.</p>
+</div>
+<div class="section" id="cloning-page">
+<h3>1.3.2. Cloning page<a class="headerlink" href="#cloning-page" title="Permalink to this headline">¶</a></h3>
+<p>The cloning page handles the URL <tt class="samp docutils literal"><span class="pre">/object/</span><em><span class="pre">type</span></em><span class="pre">/</span><em><span class="pre">reference</span></em><span class="pre">/</span><em><span class="pre">revision</span></em><span class="pre">/clone/</span></tt></p>
+<p>It must raises a <a class="reference internal" href="../devel/modules/exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if the user is not a contributor or
+can not read the object.</p>
+<p>This page is not accessible to a restricted account.</p>
+<p>This page must show at the beginning a message explaining that the current
+object will be cloned.</p>
+<p>Then it should put a creation form filled and a form to select
+Document-Part links and Parent-Child links which will be cloned.</p>
+<div class="section" id="creation-form">
+<h4>1.3.2.1. Creation form<a class="headerlink" href="#creation-form" title="Permalink to this headline">¶</a></h4>
+<p>A creation form must be filled to clone a plmobject.</p>
+<p>The type of this creation form is the type of the cloned plmobject.
+The user must not be able to change this type.</p>
+<p>This form must have a new reference.</p>
+<p>The revision field must be set to the default new revision.</p>
+<p>The lifecycle field should be set to the original lifecycle if it is not the
+&#8220;cancelled&#8221; lifecycle. If the cloned plmobject is cancelled, the lifecycle field
+must be set to the default lifecycle.
+The user may change this lifecycle to a &#8220;normal&#8221; lifecycle (not cancelled).</p>
+<p>If the user belongs to the plmobject&#8217;s group, the group field must be set to the
+original group.
+If the user does not belong to the plmobject&#8217;s group, the group field must be unset.
+Available group choices are the groups the user belongs to.</p>
+<p>All other creation fields (name, description...) are set from the cloned object.</p>
+</div>
+<div class="section" id="links-forms">
+<h4>1.3.2.2. Links forms<a class="headerlink" href="#links-forms" title="Permalink to this headline">¶</a></h4>
+<p>The second part of the cloning page contains forms to select which plmobjects links
+should be copied.</p>
+<div class="section" id="parts">
+<h5>1.3.2.2.1. Parts<a class="headerlink" href="#parts" title="Permalink to this headline">¶</a></h5>
+<p>If the cloned plmobject is a part, two forms (formsets) are available:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>A form to select which documents will be attached to the new part.
+This form should suggest documents suggested while revising a part
+(documents returned by <a class="reference internal" href="../devel/modules/controllers/controllers_part.html#plmapp.controllers.part.PartController.get_suggested_documents" title="plmapp.controllers.part.PartController.get_suggested_documents"><tt class="xref py py-meth docutils literal"><span class="pre">PartController.get_suggested_documents()</span></tt></a>.</li>
+<li>A form to select which children are added to the new part.
+This form should suggest children suggested while revising a part
+(current children as returned by <a class="reference internal" href="../devel/modules/controllers/controllers_part.html#plmapp.controllers.part.PartController.get_children" title="plmapp.controllers.part.PartController.get_children"><tt class="xref py py-meth docutils literal"><span class="pre">PartController.get_children()</span></tt></a></li>
+</ol>
+</div></blockquote>
+<p>A part cloning must not change current parent-child links, it must only
+create new links.
+So it should not modify links where the cloned part is the child.</p>
+</div>
+<div class="section" id="documents">
+<h5>1.3.2.2.2. Documents<a class="headerlink" href="#documents" title="Permalink to this headline">¶</a></h5>
+<p>If the cloned plmobject is a document, one form (formset) is available:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>A form to select which parts will be attached to the new documents.
+This form should suggest parts suggested while revising a document
+(parts returned by <a class="reference internal" href="../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.get_suggested_parts" title="plmapp.controllers.document.DocumentController.get_suggested_parts"><tt class="xref py py-meth docutils literal"><span class="pre">DocumentController.get_suggested_parts()</span></tt></a>.</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+</div>
+<div class="section" id="object-creation">
+<h3>1.3.3. Object creation<a class="headerlink" href="#object-creation" title="Permalink to this headline">¶</a></h3>
+<p>Once the user click on the create button, a new PLMObject is create
+using the controller associated to the object&#8217;s type.</p>
+<p>The owner and creator field are set to the current user.
+The dates of creation and last modification are the current date.</p>
+<p>Other fields are set according to the creation form.</p>
+<p>The state of the created object is the first state of its lifecycle.</p>
+<p>The signers are not copied, they are set like if the object was simply
+created.</p>
+<p>Notification links are not copied.</p>
+<p>Revision links are not copied.</p>
+<p>Parts-documents links and Document-parts link are copied according
+to the links forms.</p>
+<p>If the cloned plmobject is a document, all non deprecated files are copied,
+including their thumbnail, original filename and size.</p>
+</div>
+<div class="section" id="errors-handling">
+<h3>1.3.4. Errors handling<a class="headerlink" href="#errors-handling" title="Permalink to this headline">¶</a></h3>
+<p>If the creation form is invalid, the object must not be created and
+the cloning page must be reloaded with all errors notified.</p>
+<p>If an error happens while creating the links, the object must be deleted
+(or the database creation must be rollback) and all created files must be deleted.
+The creation page must be reloaded with an error message explaining that something
+wrong happens.</p>
+</div>
+<div class="section" id="implementation">
+<h3>1.3.5. Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<p>The cloning process must be implemented by a new method
+<a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.clone" title="plmapp.controllers.plmobject.PLMObjectController.clone"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.clone()</span></tt></a> whose signature is overridden by
+<a class="reference internal" href="../devel/modules/controllers/controllers_part.html#plmapp.controllers.part.PartController" title="plmapp.controllers.part.PartController"><tt class="xref py py-class docutils literal"><span class="pre">PartController</span></tt></a> and <a class="reference internal" href="../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController" title="plmapp.controllers.document.DocumentController"><tt class="xref py py-class docutils literal"><span class="pre">DocumentController</span></tt></a> to handle
+links creation and errors recovery.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="2. Lifecycle"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="7. Specifications"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

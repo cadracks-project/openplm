@@ -1,0 +1,297 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.3. Plugin for Thunderbird &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="2. List of plugins" href="plugins.html" />
+    <link rel="next" title="3. Features" href="features.html" />
+    <link rel="prev" title="2.2. Plugin for OpenOffice.org/LibreOffice" href="plugin_ooo.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="features.html" title="3. Features"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="plugin_ooo.html" title="2.2. Plugin for OpenOffice.org/LibreOffice"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="plugins.html" accesskey="U">2. List of plugins</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.3. Plugin for Thunderbird</a><ul>
+<li><a class="reference internal" href="#build-and-installation">2.3.1. Build and Installation</a><ul>
+<li><a class="reference internal" href="#get-the-sources">2.3.1.1. Get the sources</a></li>
+<li><a class="reference internal" href="#dependances">2.3.1.2. Dependances</a></li>
+<li><a class="reference internal" href="#build">2.3.1.3. Build</a></li>
+<li><a class="reference internal" href="#installation">2.3.1.4. Installation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#usage">2.3.2. Usage</a><ul>
+<li><a class="reference internal" href="#configuration">2.3.2.1. Configuration</a></li>
+<li><a class="reference internal" href="#login">2.3.2.2. Login</a></li>
+<li><a class="reference internal" href="#check-in-a-mail">2.3.2.3. Check-in a mail</a></li>
+<li><a class="reference internal" href="#create-a-new-document">2.3.2.4. Create a new document</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="plugin_ooo.html"
+                        title="previous chapter">2.2. Plugin for OpenOffice.org/LibreOffice</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="features.html"
+                        title="next chapter">3. Features</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/user/plugin_thunderbird.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/plugin_thunderbird.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="plugin-for-thunderbird">
+<h1>2.3. Plugin for Thunderbird<a class="headerlink" href="#plugin-for-thunderbird" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="build-and-installation">
+<h2>2.3.1. Build and Installation<a class="headerlink" href="#build-and-installation" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-the-sources">
+<h3>2.3.1.1. Get the sources<a class="headerlink" href="#get-the-sources" title="Permalink to this headline">¶</a></h3>
+<p>This plugin is available on the svn in the directory <tt class="file docutils literal"><span class="pre">trunk/plugins/thunderbird</span></tt>.</p>
+</div>
+<div class="section" id="dependances">
+<h3>2.3.1.2. Dependances<a class="headerlink" href="#dependances" title="Permalink to this headline">¶</a></h3>
+<p>Of course, you need Thunderbird, this plugin has been test with the versions 3.0 and
+3.1.</p>
+</div>
+<div class="section" id="build">
+<h3>2.3.1.3. Build<a class="headerlink" href="#build" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can skip this step, download this <a class="reference download internal" href="../_downloads/openplm.xpi"><tt class="xref download docutils literal"><span class="pre">file</span></tt></a>.
+Note that this file may not be up to date.</p>
+</div>
+<p>Just go in the <tt class="file docutils literal"><span class="pre">plugins/thunderbird</span></tt> directory and run the command <strong class="command">./build.sh</strong>.
+This shoul create a file named <tt class="file docutils literal"><span class="pre">openplm.xpi</span></tt>.</p>
+</div>
+<div class="section" id="installation">
+<h3>2.3.1.4. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Launch Thunderbird</p>
+</li>
+<li><p class="first">Launch the add-ons manager: menu <em class="menuselection">Tools ‣ Add-ons</em>.
+A dialog should appear:</p>
+<a class="reference internal image-reference" href="../_images/pl_th_em.png"><img alt="../_images/pl_th_em.png" src="../_images/pl_th_em.png" style="width: 811.8px; height: 494.1px;" /></a>
+</li>
+<li><p class="first">Then click on the <em class="guilabel">Install...</em> button and select the file <tt class="file docutils literal"><span class="pre">openplm.oxt</span></tt>.
+A dialog asking confirmation should appear:</p>
+<a class="reference internal image-reference" href="../_images/pl_th_em2.png"><img alt="../_images/pl_th_em2.png" src="../_images/pl_th_em2.png" style="width: 540.9px; height: 336.6px;" /></a>
+</li>
+<li><p class="first">Click on the <em class="guilabel">Install Now</em>.</p>
+</li>
+<li><p class="first">Restart Thunderbird</p>
+</li>
+<li><p class="first">Now, the plugin is installed. If the plugin is installed, a new submenu named <em class="guilabel">OpenPLM</em> should be present in the <em class="guilabel">File</em> menu.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="usage">
+<h2>2.3.2. Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuration">
+<h3>2.3.2.1. Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>First, you should specify where the server is located:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Open the dialog (menu <em class="menuselection">Tools &#8211; Add-ons</em>).</p>
+</li>
+<li><p class="first">Select the OpenPLM add-ons:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="../_images/pl_th_em3.png"><img alt="../_images/pl_th_em3.png" src="../_images/pl_th_em3.png" style="width: 811.8px; height: 494.1px;" /></a>
+</div></blockquote>
+</li>
+<li><p class="first">Click on the <em class="guilabel">Preferences</em> button. This dialog should appear:</p>
+<blockquote>
+<div><img alt="../_images/pl_th_conf.png" src="../_images/pl_th_conf.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Enter your server&#8217;s location and close the dialog.</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="login">
+<h3>2.3.2.2. Login<a class="headerlink" href="#login" title="Permalink to this headline">¶</a></h3>
+<p>Before checking-in a file, you sould login. Open the configuration
+dialog (menu <em class="menuselection">File ‣ OpenPLM ‣ Login</em>). This dialog should appear:</p>
+<blockquote>
+<div><img alt="../_images/pl_th_login.png" src="../_images/pl_th_login.png" />
+</div></blockquote>
+<p>Enter your username and your password and click on <em class="guilabel">Ok</em>.</p>
+</div>
+<div class="section" id="check-in-a-mail">
+<h3>2.3.2.3. Check-in a mail<a class="headerlink" href="#check-in-a-mail" title="Permalink to this headline">¶</a></h3>
+<p>You can save a mail on the server:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Select one or several mails</p>
+</li>
+<li><p class="first">Click on <em class="menuselection">File ‣ OpenPLM ‣ Check-in current mail</em>.
+This dialog should appear:</p>
+<img alt="../_images/pl_th_ci.png" src="../_images/pl_th_ci.png" />
+</li>
+<li><p class="first">Fill the search form and click on the <em class="guilabel">Search</em> button.</p>
+</li>
+<li><p class="first">Select your document, and click on <em class="guilabel">Ok</em></p>
+</li>
+<li><p class="first">Your mail has been had.</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="create-a-new-document">
+<h3>2.3.2.4. Create a new document<a class="headerlink" href="#create-a-new-document" title="Permalink to this headline">¶</a></h3>
+<p>You can create a new document from a mail:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Select one or several mails</p>
+</li>
+<li><p class="first">Click on <em class="menuselection">File ‣ OpenPLM ‣ Create a new document</em>.
+This dialog should appear:</p>
+<blockquote>
+<div><img alt="../_images/pl_th_create.png" src="../_images/pl_th_create.png" />
+</div></blockquote>
+</li>
+<li><p class="first">Fill the form</p>
+</li>
+<li><p class="first">Click on <em class="guilabel">Ok</em> to validate the creation.</p>
+</li>
+<li><p class="first">Your document has been created.</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="features.html" title="3. Features"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="plugin_ooo.html" title="2.2. Plugin for OpenOffice.org/LibreOffice"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="plugins.html" >2. List of plugins</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

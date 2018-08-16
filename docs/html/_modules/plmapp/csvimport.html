@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.csvimport &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/csvimport.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.csvimport</h1><div class="highlight"><pre>
+<span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">Tools to import data from a CSV file.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">transaction</span>
+<span class="kn">from</span> <span class="nn">django.forms.util</span> <span class="kn">import</span> <span class="n">ErrorList</span>
+<span class="kn">from</span> <span class="nn">django.utils.safestring</span> <span class="kn">import</span> <span class="n">mark_safe</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils.unicodecsv</span> <span class="kn">import</span> <span class="n">UnicodeReader</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">PLMObjectController</span><span class="p">,</span> <span class="n">UserController</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.tasks</span> <span class="kn">import</span> <span class="n">update_indexes</span>
+
+
+<span class="c"># function that replace spaces by an underscore</span>
+<span class="n">_to_underscore</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;\s+&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sub</span><span class="p">,</span> <span class="s">&quot;_&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CSVImportError"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImportError">[docs]</a><span class="k">class</span> <span class="nc">CSVImportError</span><span class="p">(</span><span class="ne">StandardError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Exception raised when an import of a CSV file fails.</span>
+
+<span class="sd">    .. attribute: errors</span>
+
+<span class="sd">        dictionary (line -&gt; :class:`~django.forms.util.ErrorList`) of all</span>
+<span class="sd">        detected errors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">errors</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="n">errors</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">as_text</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s">u&quot;CSVImportError:</span><span class="se">\n\t</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">details</span>
+</div>
+<div class="viewcode-block" id="Preview"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.Preview">[docs]</a><span class="k">class</span> <span class="nc">Preview</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Preview of a CSV file.</span>
+
+<span class="sd">    :param csv_file: the csv file being parsed</span>
+<span class="sd">    :type csv_file: a file like object</span>
+<span class="sd">    :param encoding: encoding of the file (`utf-8`, `ascii`, etc.)</span>
+<span class="sd">    :param known_headers: collection of headers that may be valid</span>
+
+<span class="sd">    .. attribute:: headers</span>
+
+<span class="sd">        headers of the CSV file</span>
+<span class="sd">    .. attribute:: guessed_headers</span>
+
+<span class="sd">        headers translated according to *known_headers*, an header that can</span>
+<span class="sd">        not be translated is replaced by `None`</span>
+<span class="sd">    .. attribute:: rows</span>
+
+<span class="sd">        first non-headers rows of the file (at most two rows)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csv_file</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">known_headers</span><span class="p">):</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">UnicodeReader</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">guessed_headers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_guess_headers</span><span class="p">(</span><span class="n">known_headers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rows</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">islice</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_guess_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">known_headers</span><span class="p">):</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">header</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers</span><span class="p">:</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">_to_underscore</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">if</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">known_headers</span><span class="p">:</span>
+                <span class="n">headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">headers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">headers</span>
+</div>
+<div class="viewcode-block" id="CSVImporter"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter">[docs]</a><span class="k">class</span> <span class="nc">CSVImporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract class to import data from a CSV file.</span>
+
+<span class="sd">    :param csv_file: file being imported</span>
+<span class="sd">    :type csv_file: a file like object</span>
+<span class="sd">    :param user: user who imports the file</span>
+<span class="sd">    :type user: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">    :param encoding: encoding of the file (`utf-8`, `ascii`, etc.)</span>
+
+<span class="sd">    For &quot;end users&quot;, this class has two useful methods:</span>
+
+<span class="sd">        * :meth:`get_preview` to generate a :class:`Preview` of the file</span>
+<span class="sd">        * :meth:`import_csv` to import the csv file</span>
+
+<span class="sd">    An implementation must overwrite the methods :meth:`get_headers_set` and</span>
+<span class="sd">    :meth:`parse_row` and redefine the attribute :attr:`REQUIRED_HEADERS`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">ABCMeta</span>
+
+    <span class="c">#: Headers that must be present in the csv file</span>
+    <span class="n">REQUIRED_HEADERS</span> <span class="o">=</span> <span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csv_file</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span> <span class="o">=</span> <span class="n">csv_file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="n">encoding</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inbulk_cache</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CSVImporter.get_headers_set"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.get_headers_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers_set</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a set of all possible headers.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            This method is abstract and must be implemented.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CSVImporter.get_headers"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.get_headers">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a sorted list of all possible headers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">]</span>
+        <span class="n">headers</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">get_headers_set</span><span class="p">()))</span>
+        <span class="k">return</span> <span class="n">headers</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CSVImporter.get_missing_headers_msg"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.get_missing_headers_msg">[docs]</a>    <span class="k">def</span> <span class="nf">get_missing_headers_msg</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a message explaining which headers are required.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">REQUIRED_HEADERS</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">u&quot;Missing headers: </span><span class="si">%s</span><span class="s"> are required.&quot;</span> <span class="o">%</span> <span class="n">headers</span>
+</div>
+<div class="viewcode-block" id="CSVImporter.get_preview"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.get_preview">[docs]</a>    <span class="k">def</span> <span class="nf">get_preview</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a :class:`Preview` of the csv file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Preview</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_headers_set</span><span class="p">())</span>
+</div>
+    <span class="nd">@transaction.commit_on_success</span>
+    <span class="k">def</span> <span class="nf">__do_import_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">UnicodeReader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">headers_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">h</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">h</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">headers</span><span class="p">))</span>
+        <span class="c"># checks that required columns are presents</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">REQUIRED_HEADERS</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers_dict</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">CSVImportError</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_missing_headers_msg</span><span class="p">()})</span>
+        <span class="c"># read the header</span>
+        <span class="n">reader</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">ErrorList</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c"># parse each row</span>
+        <span class="k">for</span> <span class="n">line</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">reader</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parse_row</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">store_errors</span><span class="p">(</span><span class="n">line</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CSVImportError</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_errors</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CSVImporter.import_csv"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.import_csv">[docs]</a>    <span class="k">def</span> <span class="nf">import_csv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">headers</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Imports the csv file. *headers* is the list of headers as given by the</span>
+<span class="sd">        user. Columns whose header is `None` are ignored.</span>
+<span class="sd">        *headers* must contains all values of :attr:`REQUIRED_HEADERS`.</span>
+
+<span class="sd">        If one or several errors occur (missing headers, row which can not be</span>
+<span class="sd">        parsed), a :exc:`CSVImportError` is raised with all detected errors.</span>
+
+<span class="sd">        :return: A list of :class:`.PLMObjectController` of all created objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># puts all stuff in a private method so we call tear_down only after</span>
+        <span class="c"># after a database commit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__do_import_csv</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tear_down</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span>
+</div>
+<div class="viewcode-block" id="CSVImporter.tear_down"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.tear_down">[docs]</a>    <span class="k">def</span> <span class="nf">tear_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called once *all* rows have been successfully parsed.</span>
+
+<span class="sd">        By default, this method sends all blocked mails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">unblock_mails</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="CSVImporter.store_errors"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.store_errors">[docs]</a>    <span class="k">def</span> <span class="nf">store_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="o">*</span><span class="n">errors</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Appends *errors* to the list of errors which occured at the line *line*.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_errors</span><span class="p">[</span><span class="n">line</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CSVImporter.get_value"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">header</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">headers_dict</span><span class="p">[</span><span class="n">header</span><span class="p">]]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="CSVImporter.get_values"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.get_values">[docs]</a>    <span class="k">def</span> <span class="nf">get_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="o">*</span><span class="n">headers</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">headers</span><span class="p">]</span>
+</div>
+    <span class="nd">@abstractmethod</span>
+<div class="viewcode-block" id="CSVImporter.parse_row"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.CSVImporter.parse_row">[docs]</a>    <span class="k">def</span> <span class="nf">parse_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called by :meth:`import_csv` for each row.</span>
+
+<span class="sd">        :param line: line number of current row, useful to store a list of</span>
+<span class="sd">                     errors</span>
+<span class="sd">        :type line: int</span>
+<span class="sd">        :param row: row being parsed.</span>
+<span class="sd">        :type row: list of unicode strings.</span>
+
+<span class="sd">        This method must be overwritten. Implementation can use the methods</span>
+<span class="sd">        :meth:`get_value`, :meth:`get_values`, and :meth:`store_errors` to</span>
+<span class="sd">        retrieve values and store detected errors.</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">            All :class:`.Controller` created should not send emails since an</span>
+<span class="sd">            error may occur and thus, all modifications would be cancelled.</span>
+<span class="sd">            To block mails, call :meth:`.Controller.block_mails`. You can</span>
+<span class="sd">            released all blocked mails by appending the controller to</span>
+<span class="sd">            :attr:`objects`. :meth:`import_csv` will send mails if no errors</span>
+<span class="sd">            occurred.</span>
+
+<span class="sd">            Example::</span>
+
+<span class="sd">                ctrl = get_obj(type, reference, revision, user)</span>
+<span class="sd">                ctrl.block_mails()</span>
+<span class="sd">                ...</span>
+<span class="sd">                if ok:</span>
+<span class="sd">                    self.objects.append(ctrl)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div></div>
+<div class="viewcode-block" id="PLMObjectsImporter"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.PLMObjectsImporter">[docs]</a><span class="k">class</span> <span class="nc">PLMObjectsImporter</span><span class="p">(</span><span class="n">CSVImporter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An :class:`CSVImporter` that creates :class:`PLMObject` from</span>
+<span class="sd">    a csv file.</span>
+
+<span class="sd">    The CSV must contain the following columns:</span>
+
+<span class="sd">        * type</span>
+<span class="sd">        * reference</span>
+<span class="sd">        * revision</span>
+<span class="sd">        * name</span>
+<span class="sd">        * group (name of the group, not its id)</span>
+<span class="sd">        * lifecycle (name of the lifecycle, not its id)</span>
+
+<span class="sd">    Moreover, it must have a column for each required field of defined types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c">#: Headers that must be present in the csv file</span>
+    <span class="n">REQUIRED_HEADERS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;group&quot;</span><span class="p">,</span> <span class="s">&quot;lifecycle&quot;</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PLMObjectsImporter.get_headers_set"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.PLMObjectsImporter.get_headers_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers_set</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a set of all possible headers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">get_creation_fields</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()))</span>
+</div>
+<div class="viewcode-block" id="PLMObjectsImporter.tear_down"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.PLMObjectsImporter.tear_down">[docs]</a>    <span class="k">def</span> <span class="nf">tear_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PLMObjectsImporter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">tear_down</span><span class="p">()</span>
+        <span class="n">instances</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+            <span class="n">instance</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">object</span>
+            <span class="n">instances</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">instance</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span>
+                    <span class="n">instance</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">instance</span><span class="o">.</span><span class="n">_get_pk_val</span><span class="p">()))</span>
+        <span class="n">update_indexes</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">instances</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectsImporter.parse_row"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.PLMObjectsImporter.parse_row">[docs]</a>    <span class="k">def</span> <span class="nf">parse_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called by :meth:`import_csv` for each row.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">import</span> <span class="n">get_creation_form</span>
+        <span class="n">type_</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span>
+            <span class="s">&quot;revision&quot;</span><span class="p">)</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">type_</span><span class="p">]</span>
+        <span class="n">group</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GroupInfo</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="s">&quot;group&quot;</span><span class="p">))</span>
+        <span class="n">lifecycle</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Lifecycle</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="s">&quot;lifecycle&quot;</span><span class="p">))</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">get_creation_form</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inbulk_cache</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="n">type_</span><span class="p">,</span>
+                <span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">group</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="s">&quot;reference&quot;</span> <span class="p">:</span> <span class="n">reference</span><span class="p">,</span>
+                <span class="s">&quot;revision&quot;</span> <span class="p">:</span> <span class="n">revision</span><span class="p">,</span>
+                <span class="s">&quot;auto&quot;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+                <span class="p">}</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">headers_dict</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">get_creation_form</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">inbulk_cache</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">inbulk_cache</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="p">(</span><span class="n">mark_safe</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span>
+                    <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">store_errors</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="o">*</span><span class="n">items</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">PLMObjectController</span><span class="o">.</span><span class="n">create_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="BOMImporter"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.BOMImporter">[docs]</a><span class="k">class</span> <span class="nc">BOMImporter</span><span class="p">(</span><span class="n">CSVImporter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A :class:`CSVImporter` that builds a bom from a CSV file.</span>
+
+<span class="sd">    The CSV must contain the following columns:</span>
+
+<span class="sd">        * parent-type</span>
+<span class="sd">        * parent-reference</span>
+<span class="sd">        * parent-revision</span>
+<span class="sd">        * child-type</span>
+<span class="sd">        * child-reference</span>
+<span class="sd">        * child-revision</span>
+<span class="sd">        * quantity</span>
+<span class="sd">        * order</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">REQUIRED_HEADERS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;parent-type&quot;</span><span class="p">,</span> <span class="s">&quot;parent-reference&quot;</span><span class="p">,</span> <span class="s">&quot;parent-revision&quot;</span><span class="p">,</span>
+                        <span class="s">&quot;child-type&quot;</span><span class="p">,</span> <span class="s">&quot;child-reference&quot;</span><span class="p">,</span> <span class="s">&quot;child-revision&quot;</span><span class="p">,</span>
+                        <span class="s">&quot;quantity&quot;</span><span class="p">,</span> <span class="s">&quot;order&quot;</span><span class="p">)</span>
+
+    <span class="n">HEADERS_SET</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">REQUIRED_HEADERS</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="BOMImporter.get_headers_set"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.BOMImporter.get_headers_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers_set</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">HEADERS_SET</span>
+</div>
+<div class="viewcode-block" id="BOMImporter.parse_row"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.BOMImporter.parse_row">[docs]</a>    <span class="k">def</span> <span class="nf">parse_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="n">get_obj</span>
+        <span class="n">ptype</span><span class="p">,</span> <span class="n">preference</span><span class="p">,</span> <span class="n">prevision</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">(</span><span class="n">row</span><span class="p">,</span>
+                <span class="o">*</span><span class="p">[</span><span class="s">&quot;parent-&quot;</span> <span class="o">+</span> <span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">)])</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">ptype</span><span class="p">,</span> <span class="n">preference</span><span class="p">,</span> <span class="n">prevision</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="n">ctype</span><span class="p">,</span> <span class="n">creference</span><span class="p">,</span> <span class="n">crevision</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">(</span><span class="n">row</span><span class="p">,</span>
+                <span class="o">*</span><span class="p">[</span><span class="s">&quot;child-&quot;</span> <span class="o">+</span> <span class="n">h</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">)])</span>
+        <span class="n">child</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">ctype</span><span class="p">,</span> <span class="n">creference</span><span class="p">,</span> <span class="n">crevision</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="n">parent</span><span class="o">.</span><span class="n">block_mails</span><span class="p">()</span>
+        <span class="n">parent</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">child</span><span class="o">.</span><span class="n">block_mails</span><span class="p">()</span>
+        <span class="n">child</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+        <span class="n">qty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="s">&quot;quantity&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">,</span> <span class="s">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">quantity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">qty</span><span class="p">)</span>
+        <span class="n">order</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="s">&quot;order&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot; &quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+
+        <span class="n">parent</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="UsersImporter"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.UsersImporter">[docs]</a><span class="k">class</span> <span class="nc">UsersImporter</span><span class="p">(</span><span class="n">CSVImporter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A :class:`CSVImporter` that sponsors users from a CSV file.</span>
+
+<span class="sd">    The CSV must contain the following columns:</span>
+
+<span class="sd">        * username</span>
+<span class="sd">        * first_name</span>
+<span class="sd">        * last_name</span>
+<span class="sd">        * email</span>
+<span class="sd">        * groups (multiple groups can be separeted by a &quot;/&quot;)</span>
+<span class="sd">        * language</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">REQUIRED_HEADERS</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;username&#39;</span><span class="p">,</span> <span class="s">&#39;first_name&#39;</span><span class="p">,</span> <span class="s">&#39;last_name&#39;</span><span class="p">,</span> <span class="s">&#39;email&#39;</span><span class="p">,</span> <span class="s">&#39;groups&#39;</span><span class="p">,</span><span class="s">&#39;language&#39;</span><span class="p">)</span>
+
+    <span class="n">HEADERS_SET</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">REQUIRED_HEADERS</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">csv_file</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctrl</span> <span class="o">=</span> <span class="n">UserController</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctrl</span><span class="o">.</span><span class="n">block_mails</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">UsersImporter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;id&quot;</span><span class="p">))</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="UsersImporter.get_headers_set"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.UsersImporter.get_headers_set">[docs]</a>    <span class="k">def</span> <span class="nf">get_headers_set</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">HEADERS_SET</span>
+</div>
+<div class="viewcode-block" id="UsersImporter.tear_down"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.UsersImporter.tear_down">[docs]</a>    <span class="k">def</span> <span class="nf">tear_down</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ctrl</span><span class="o">.</span><span class="n">unblock_mails</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="UsersImporter.parse_row"><a class="viewcode-back" href="../../devel/modules/csvimport.html#plmapp.csvimport.UsersImporter.parse_row">[docs]</a>    <span class="k">def</span> <span class="nf">parse_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">row</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">import</span> <span class="n">SponsorForm</span>
+        <span class="n">un</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">ln</span><span class="p">,</span> <span class="n">em</span><span class="p">,</span> <span class="n">grps</span><span class="p">,</span><span class="n">la</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_values</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">REQUIRED_HEADERS</span><span class="p">)</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">grp</span> <span class="ow">in</span> <span class="n">grps</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">groups</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groups</span><span class="p">[</span><span class="n">grp</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">store_errors</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s">u&quot;Invalid group:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">grp</span><span class="p">)</span>
+                <span class="k">return</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;sponsor&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s">&quot;username&quot;</span><span class="p">:</span> <span class="n">un</span><span class="p">,</span>
+                <span class="s">&quot;last_name&quot;</span><span class="p">:</span> <span class="n">ln</span><span class="p">,</span>
+                <span class="s">&quot;first_name&quot;</span><span class="p">:</span> <span class="n">fn</span><span class="p">,</span>
+                <span class="s">&quot;email&quot;</span> <span class="p">:</span> <span class="n">em</span><span class="p">,</span>
+                <span class="s">&quot;groups&quot;</span> <span class="p">:</span> <span class="n">groups</span><span class="p">,</span>
+                <span class="s">&quot;language&quot;</span> <span class="p">:</span> <span class="n">la</span><span class="p">,</span>
+                <span class="s">&quot;warned&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="p">}</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">SponsorForm</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">sponsor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">new_user</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">new_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">language</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;language&quot;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ctrl</span><span class="o">.</span><span class="n">sponsor</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_user</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="p">(</span><span class="n">mark_safe</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span>
+                    <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">store_errors</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="o">*</span><span class="n">items</span><span class="p">)</span>
+
+
+<span class="c">#: Dictionary (name -&gt; CSVImporter&#39;s subclass) of known :class:`CSVImporter`</span></div></div>
+<span class="n">IMPORTERS</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;csv&quot;</span> <span class="p">:</span> <span class="n">PLMObjectsImporter</span><span class="p">,</span> <span class="s">&quot;bom&quot;</span> <span class="p">:</span> <span class="n">BOMImporter</span><span class="p">,</span>
+        <span class="s">&quot;users&quot;</span> <span class="p">:</span> <span class="n">UsersImporter</span><span class="p">}</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,609 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0 &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Admin documentation" href="../index.html" />
+    <link rel="next" title="6. Developer documentation" href="../../devel/index.html" />
+    <link rel="prev" title="9. Rich text | wiki syntax" href="../richtext.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../devel/index.html" title="6. Developer documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../richtext.html" title="9. Rich text | wiki syntax"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0</a><ul>
+<li><a class="reference internal" href="#new-updated-dependencies">10.1. New/updated dependencies</a><ul>
+<li><a class="reference internal" href="#django-1-5">10.1.1. Django 1.5</a></li>
+<li><a class="reference internal" href="#celery-3-0-and-django-celery-3-0">10.1.2. Celery 3.0 and Django-Celery 3.0</a></li>
+<li><a class="reference internal" href="#south-0-7-6">10.1.3. South 0.7.6</a></li>
+<li><a class="reference internal" href="#psycopg2">10.1.4. psycopg2</a></li>
+<li><a class="reference internal" href="#haystack">10.1.5. Haystack</a></li>
+<li><a class="reference internal" href="#python-markdown">10.1.6. Python Markdown</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#settings">10.2. Settings</a><ul>
+<li><a class="reference internal" href="#required">10.2.1. Required</a></li>
+<li><a class="reference internal" href="#removed">10.2.2. Removed</a></li>
+<li><a class="reference internal" href="#optional">10.2.3. Optional</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#applications">10.3. Applications</a><ul>
+<li><a class="reference internal" href="#badges">10.3.1. Badges</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#commands">10.4. Commands</a></li>
+<li><a class="reference internal" href="#apache">10.5. Apache</a></li>
+<li><a class="reference internal" href="#celeryd">10.6. celeryd</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../richtext.html"
+                        title="previous chapter">9. Rich text | wiki syntax</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../../devel/index.html"
+                        title="next chapter">6. Developer documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/admin/upgrade/upgrade-2.0.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/upgrade/upgrade-2.0.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="upgrading-from-openplm-1-2-to-openplm-2-0">
+<h1>10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0<a class="headerlink" href="#upgrading-from-openplm-1-2-to-openplm-2-0" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Date:</th><td class="field-body">2013-08-07</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="../ht_3_upgrade.html#admin-upgrade"><em>How to upgrade an installation of OpenPLM</em></a></p>
+</div>
+<div class="section" id="new-updated-dependencies">
+<h2>10.1. New/updated dependencies<a class="headerlink" href="#new-updated-dependencies" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Before upgrading dependencies, you should save a list of
+installed versions. You can get one with the command
+<tt class="docutils literal"><span class="pre">pip</span> <span class="pre">freeze</span></tt>.</p>
+</div>
+<div class="section" id="django-1-5">
+<h3>10.1.1. Django 1.5<a class="headerlink" href="#django-1-5" title="Permalink to this headline">¶</a></h3>
+<p>OpenPLM 1.2 depends on Django 1.2 or Django 1.3,
+OpenPLM 2.0 requires Django 1.5.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">'django==1.5.2'</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="celery-3-0-and-django-celery-3-0">
+<h3>10.1.2. Celery 3.0 and Django-Celery 3.0<a class="headerlink" href="#celery-3-0-and-django-celery-3-0" title="Permalink to this headline">¶</a></h3>
+<p>OpenPLM 1.2 depends on Celery 2.3 or Celery 2.5,
+OpenPLM 2.0 is now compatible with Celery 3.0 which is the only version
+supported by OpenPLM.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">celery</span> <span class="pre">django-celery</span> <span class="pre">kombu</span></tt></li>
+</ul>
+</div></blockquote>
+<p>You should also install librabbitmq which is recommended by Celery to
+connect to RabbitMQ:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">librabbitmq</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="south-0-7-6">
+<h3>10.1.3. South 0.7.6<a class="headerlink" href="#south-0-7-6" title="Permalink to this headline">¶</a></h3>
+<p>South is used to migrate the database. You should always upgrade south
+before migrating a database:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">'south==0.7.6'</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="psycopg2">
+<h3>10.1.4. psycopg2<a class="headerlink" href="#psycopg2" title="Permalink to this headline">¶</a></h3>
+<p>You may need to upgrade to a newer version of psycopg2 (binding to postgres)
+if the following command fails:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">python</span> <span class="pre">-c</span> <span class="pre">'from</span> <span class="pre">psycopg2.extensions</span> <span class="pre">import</span> <span class="pre">ISQLQuote'</span></tt></li>
+</ul>
+</div></blockquote>
+<p>When it fails, it outputs something like:</p>
+<div class="highlight-python"><pre>Traceback (most recent call last):
+  File "&lt;string&gt;", line 1, in &lt;module&gt;
+ImportError: No module named psycopg2.extensions</pre>
+</div>
+<p>To install a newer version:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">libpq-dev</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">psycopg2</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="haystack">
+<h3>10.1.5. Haystack<a class="headerlink" href="#haystack" title="Permalink to this headline">¶</a></h3>
+<p>The required version of Haystack is still 1.2.7:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">'django-haystack==1.2.7'</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="python-markdown">
+<h3>10.1.6. Python Markdown<a class="headerlink" href="#python-markdown" title="Permalink to this headline">¶</a></h3>
+<p>You must install Python Markdown (version 2.2.1 or later)
+if you want to use Markdown as the syntax of comments and description fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-U</span> <span class="pre">Markdown</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="settings">
+<h2>10.2. Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="required">
+<h3>10.2.1. Required<a class="headerlink" href="#required" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt id="PROJECT_ROOT">
+<tt class="descname">PROJECT_ROOT</tt><a class="headerlink" href="#PROJECT_ROOT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the following line at the top of file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+
+<span class="n">PROJECT_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="ALLOWED_HOSTS">
+<tt class="descname">ALLOWED_HOSTS</tt><a class="headerlink" href="#ALLOWED_HOSTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>It must be set to a list of strings representing the host/domain names that this Django site can serve.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ALLOWED_HOSTS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s">&#39;.example.com&#39;</span><span class="p">,</span> <span class="c"># Allow domain and subdomains</span>
+    <span class="s">&#39;.example.com.&#39;</span><span class="p">,</span> <span class="c"># Also allow FQDN and subdomains</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/settings/#std:setting-ALLOWED_HOSTS" title="(in Django v1.7)"><tt class="docutils literal"><span class="pre">ALLOWED_HOSTS</span></tt></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="COMMENT_APPS">
+<tt class="descname">COMMENT_APPS</tt><a class="headerlink" href="#COMMENT_APPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">COMMENTS_APP</span> <span class="o">=</span> <span class="s">&quot;openPLM.plmapp&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="USE_TZ">
+<tt class="descname">USE_TZ</tt><a class="headerlink" href="#USE_TZ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">USE_TZ</span> <span class="o">=</span> <span class="bp">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="BROKER_URL">
+<tt class="descname">BROKER_URL</tt><a class="headerlink" href="#BROKER_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds the following lines after all <tt class="docutils literal"><span class="pre">BROKER_*</span></tt> lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">BROKER_URL</span> <span class="o">=</span> <span class="s">&quot;amqp://</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">@</span><span class="si">%s</span><span class="s">:</span><span class="si">%d</span><span class="s">/</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">BROKER_USER</span><span class="p">,</span>
+        <span class="n">BROKER_PASSWORD</span><span class="p">,</span> <span class="n">BROKER_HOST</span><span class="p">,</span> <span class="n">BROKER_PORT</span><span class="p">,</span> <span class="n">BROKER_VHOST</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">BROKER_USER</span><span class="p">,</span> <span class="n">BROKER_PASSWORD</span><span class="p">,</span> <span class="n">BROKER_HOST</span><span class="p">,</span> <span class="n">BROKER_PORT</span><span class="p">,</span> <span class="n">BROKER_VHOST</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="INSTALLED_APPS">
+<tt class="descname">INSTALLED_APPS</tt><a class="headerlink" href="#INSTALLED_APPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>The first installed applications must be:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.contrib.auth&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.contenttypes&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sites&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.admin&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.comments&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.humanize&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.staticfiles&#39;</span><span class="p">,</span>
+    <span class="s">&#39;djcelery&#39;</span><span class="p">,</span>
+    <span class="s">&#39;haystack&#39;</span><span class="p">,</span>
+    <span class="s">&#39;south&#39;</span><span class="p">,</span>
+    <span class="s">&#39;openPLM.plmapp&#39;</span><span class="p">,</span>
+    <span class="c"># your optional applications are set here</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="STATIC_ROOT">
+<tt class="descname">STATIC_ROOT</tt><a class="headerlink" href="#STATIC_ROOT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">STATIC_ROOT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">,</span> <span class="s">&quot;static&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="STATIC_URL">
+<tt class="descname">STATIC_URL</tt><a class="headerlink" href="#STATIC_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">STATIC_URL</span> <span class="o">=</span> <span class="s">&quot;/static/&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="TEMPLATE_LOADERS">
+<tt class="descname">TEMPLATE_LOADERS</tt><a class="headerlink" href="#TEMPLATE_LOADERS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_LOADERS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&quot;django.template.loaders.filesystem.Loader&quot;</span><span class="p">,</span>
+    <span class="s">&quot;django.template.loaders.app_directories.Loader&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>or (cached version):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_LOADERS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="s">&#39;django.template.loaders.cached.Loader&#39;</span><span class="p">,</span> <span class="p">(</span>
+        <span class="s">&quot;django.template.loaders.filesystem.Loader&quot;</span><span class="p">,</span>
+        <span class="s">&quot;django.template.loaders.app_directories.Loader&quot;</span><span class="p">,</span>
+    <span class="p">)),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="MIDDLEWARE_CLASSES">
+<tt class="descname">MIDDLEWARE_CLASSES</tt><a class="headerlink" href="#MIDDLEWARE_CLASSES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;openPLM.plmapp.middleware.locale.ProfileLocaleMiddleware&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="TEMPLATE_CONTEXT_PROCESSORS">
+<tt class="descname">TEMPLATE_CONTEXT_PROCESSORS</tt><a class="headerlink" href="#TEMPLATE_CONTEXT_PROCESSORS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">TEMPLATE_CONTEXT_PROCESSORS</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s">&quot;django.contrib.auth.context_processors.auth&quot;</span><span class="p">,</span>
+        <span class="s">&quot;django.core.context_processors.debug&quot;</span><span class="p">,</span>
+        <span class="s">&quot;django.core.context_processors.i18n&quot;</span><span class="p">,</span>
+        <span class="s">&quot;django.core.context_processors.media&quot;</span><span class="p">,</span>
+        <span class="s">&quot;django.core.context_processors.static&quot;</span><span class="p">,</span>
+        <span class="s">&quot;django.core.context_processors.request&quot;</span><span class="p">,</span>
+        <span class="s">&quot;django.contrib.messages.context_processors.messages&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="LOCALE_PATHS">
+<tt class="descname">LOCALE_PATHS</tt><a class="headerlink" href="#LOCALE_PATHS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Must be set to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">LOCALE_PATHS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PROJECT_ROOT</span><span class="p">,</span> <span class="s">&quot;locale&quot;</span><span class="p">),</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="removed">
+<h3>10.2.2. Removed<a class="headerlink" href="#removed" title="Permalink to this headline">¶</a></h3>
+<p>The settings <tt class="docutils literal"><span class="pre">AUTH_PROFILE_MODULE</span></tt> and <tt class="docutils literal"><span class="pre">ADMIN_MEDIA_PREFIX</span></tt> are no longer required
+and can be safely removed.</p>
+</div>
+<div class="section" id="optional">
+<h3>10.2.3. Optional<a class="headerlink" href="#optional" title="Permalink to this headline">¶</a></h3>
+<dl class="data">
+<dt>
+<tt class="descname">RICHTEXT_FILTER and RICHTEXT_WIDGET_CLASS</tt></dt>
+<dd><p>These settings set the wiki syntax used by comments and description fields.</p>
+<p>To enable the Markdown syntaxe, add the following lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RICHTEXT_FILTER</span> <span class="o">=</span> <span class="s">&#39;openPLM.plmapp.filters.markdown_filter&#39;</span>
+<span class="n">RICHTEXT_WIDGET_CLASS</span> <span class="o">=</span> <span class="s">&#39;openPLM.plmapp.widgets.MarkdownWidget&#39;</span>
+</pre></div>
+</div>
+<p>See <a class="reference internal" href="../richtext.html#richtext-admin"><em>Rich text | wiki syntax</em></a>.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="REFERENCE_PATTERNS">
+<tt class="descname">REFERENCE_PATTERNS</tt><a class="headerlink" href="#REFERENCE_PATTERNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>This setting describes how new document and part references are generated.
+See <a class="reference internal" href="../references.html#admin-references"><em>References &#8211; how to customize generated references</em></a>.</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="applications">
+<h2>10.3. Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="badges">
+<h3>10.3.1. Badges<a class="headerlink" href="#badges" title="Permalink to this headline">¶</a></h3>
+<p>If the badges application is installed, set the <tt class="docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></tt> setting to:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">MIDDLEWARE_CLASSES</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s">&#39;django.middleware.common.CommonMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.middleware.csrf.CsrfViewMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.sessions.middleware.SessionMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.auth.middleware.AuthenticationMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;django.contrib.messages.middleware.MessageMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;openPLM.plmapp.middleware.locale.ProfileLocaleMiddleware&#39;</span><span class="p">,</span>
+    <span class="s">&#39;openPLM.apps.badges.middleware.GlobalRequest&#39;</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="commands">
+<h2>10.4. Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
+<p>It is necessary to run the following commands to serve all static files:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">collectstatic</span> <span class="pre">--noinput</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="apache">
+<h2>10.5. Apache<a class="headerlink" href="#apache" title="Permalink to this headline">¶</a></h2>
+<p>Apache must serve the <tt class="docutils literal"><span class="pre">static/</span></tt> folder. It must also be able to write in the <tt class="docutils literal"><span class="pre">media/</span></tt> directory.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">www-data:www-data</span> <span class="pre">media/</span></tt></li>
+</ul>
+</div></blockquote>
+<p>Apache files look like:</p>
+<div class="highlight-apache"><div class="highlight"><pre><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> openplm.example.com
+    <span class="nb">DocumentRoot</span> <span class="sx">/var/www</span>
+
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/var/django/openPLM/trunk/openPLM/apache/django.wsgi</span>
+<span class="c"># required to enable webdav access </span>
+    <span class="nb">WSGIPassAuthorization</span> <span class="k">On</span> 
+
+    <span class="nt">&lt;Location</span> <span class="s">~ &quot;/media/(?!public)&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">WSGIAccessScript</span> <span class="sx">/var/django/openPLM/trunk/openPLM/apache/access_restricted.wsgi</span>
+    <span class="nt">&lt;/Location&gt;</span>
+
+    <span class="nb">Alias</span> <span class="sx">/static</span> <span class="sx">/var/django/openPLM/trunk/openPLM/static</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/static</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+    <span class="nb">Alias</span> <span class="sx">/media</span> <span class="sx">/var/django/openPLM/trunk/openPLM/media</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/media</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+<p>SSL:</p>
+<div class="highlight-apache"><div class="highlight"><pre><span class="nb">NameVirtualHost</span> *:80
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/var/django/openPLM/trunk/openPLM/apache/django.wsgi</span>
+    <span class="c"># required to enable webdav access </span>
+    <span class="nb">WSGIPassAuthorization</span> <span class="k">On</span> 
+
+    <span class="nt">&lt;Location</span> <span class="s">&quot;/admin&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">RewriteEngine</span> <span class="k">On</span>
+        <span class="nb">RewriteRule</span> (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    <span class="nt">&lt;/Location&gt;</span>
+    <span class="nt">&lt;Location</span> <span class="s">&quot;/static&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">RewriteEngine</span> <span class="k">On</span>
+        <span class="nb">RewriteRule</span> (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    <span class="nt">&lt;/Location&gt;</span>
+    <span class="nt">&lt;Location</span> <span class="s">&quot;/media&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">RewriteEngine</span> <span class="k">On</span>
+        <span class="nb">RewriteRule</span> (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    <span class="nt">&lt;/Location&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+<span class="nb">NameVirtualHost</span> *:443
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+
+    <span class="nb">SSLEngine</span> <span class="k">on</span>
+    <span class="nb">SSLCertificateFile</span>    <span class="sx">/etc/ssl/mycert.crt</span>
+    <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/etc/ssl/mykey.key</span>
+    <span class="nb">SSLVerifyClient</span> <span class="k">none</span>
+
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/var/django/openPLM/trunk/openPLM/apache/django.wsgi</span>
+    <span class="nt">&lt;Location</span> <span class="s">~ &quot;/media/(?!public)&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">WSGIAccessScript</span> <span class="sx">/var/django/openPLM/trunk/openPLM/apache/access_restricted.wsgi</span>
+    <span class="nt">&lt;/Location&gt;</span>
+    <span class="nb">Alias</span> <span class="sx">/static</span> <span class="sx">/var/django/openPLM/trunk/openPLM/static</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/static</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+    <span class="nb">Alias</span> <span class="sx">/media</span> <span class="sx">/var/django/openPLM/trunk/openPLM/media</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/media</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+<p>Ad the following lines if document3D application is installed (befor the <tt class="docutils literal"><span class="pre">&lt;Location</span> <span class="pre">/media&gt;</span></tt> line):</p>
+<div class="highlight-apache"><div class="highlight"><pre><span class="nt">&lt;Location</span> <span class="s">/media/3D</span><span class="nt">&gt;</span>
+    <span class="nb">WSGIAccessScript</span> <span class="sx">/var/django/openPLM/trunk/openPLM/apache/access.wsgi</span>
+<span class="nt">&lt;/Location&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="celeryd">
+<h2>10.6. celeryd<a class="headerlink" href="#celeryd" title="Permalink to this headline">¶</a></h2>
+<p>The init script (<tt class="file docutils literal"><span class="pre">/etc/init.d/celeryd</span></tt>) has been updated.
+It now creates the <tt class="file docutils literal"><span class="pre">/var/log/celery</span></tt> and <tt class="file docutils literal"><span class="pre">/var/run/celery</span></tt> directories on startup.</p>
+<p>You can copy the new file:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cp</span> <span class="pre">etc/init.d/celeryd</span> <span class="pre">/etc/default/celeryd</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../../devel/index.html" title="6. Developer documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../richtext.html" title="9. Rich text | wiki syntax"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

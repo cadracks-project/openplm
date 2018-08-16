@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+
+{% block content %}
+    <h3 class="hplm">{% trans "Data have been successfully imported." %}</h3>
+    <div>
+        <a href="/import/csv/">{% trans "Click here to import a new CSV file." %}</a>
+        <a href="/import/bom/">{% trans "Click here to import a new BOM." %}</a>
+        <a href="/import/users/">{% trans "Click here to sponsor more users." %}</a>
+    </div>
+{% endblock %}
+

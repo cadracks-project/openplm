@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags more_like_this humanize %}
+{% load comments %}
+
+{% block content %}
+    <div id="attributes-outer">
+        <div id="attributes">
+            <table class="Content">
+                {% for description, attribute, richtext in object_attributes %}
+                    <tr class="Content">
+                        <td class="Content description">{{description|capfirst}}</td>
+                        <td class="Content">
+                            {% if attribute.year %}
+                                {{ attribute|date:"DATETIME_FORMAT" }} — 
+                                {% blocktrans with attribute|timesince as time_since %}{{time_since}} ago{% endblocktrans %}
+                            {% elif richtext %}
+                                <div class="richtext">
+                                    {{ attribute|richtext_filter:obj }}
+                                </div>
+                            {% else %}
+                                {{attribute|linebreaks}}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            <div class="center">
+                {% if object_type == 'User' %}
+                    {% if obj.can_update_data %}
+                        <a class="tb-btn tb-btn-primary" href="/user/{{object_reference|urlencode }}/modify/">
+                            <i class="tb-icon-pencil tb-icon-white"></i>
+                            {% trans "Edit this information" %}
+                        </a>
+                    {% endif %}
+                    {% if is_owner %}
+                        <a class="tb-btn tb-btn-primary" href="/user/{{object_reference|urlencode }}/password/">{% trans "Change my password" %}</a>
+                    {% endif %}
+                {% elif is_owner and obj.is_editable %}
+                    <a class="tb-btn tb-btn-primary" 
+                        href="/object/{{object_type|urlencode }}/{{object_reference|urlencode }}/{{object_revision|urlencode }}/modify/">
+                        <i class="tb-icon-pencil tb-icon-white"></i>
+                        {% trans "Edit this information" %}
+                    </a>
+                {% endif %}
+                {% if can_generate_pdf and not restricted %}
+                    <a href="/pdf{{obj.plmobject_url}}attributes/" class="tb-btn">
+                        <i class="tb-icon-download-alt"></i>
+                        <span>{% trans "Download as PDF"%}</span>
+                    </a>
+                {% endif %}
+                {% if obj.can_clone %}
+                    <a href="{{obj.plmobject_url}}clone/" class="tb-btn">
+                        <span>{% trans "Clone" %}</span>
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+
+
+        {% if obj.is_part or obj.is_document %}
+            <div id="related_content">
+                <h3 class="hplm">{% trans "Similar contents" %} </h3>
+                <ul class="Result">
+                    {% more_like_this obj.object as related_content limit 5 %}
+                    {% with 1 as link_creation %}
+                        {% for result in related_content %}
+                            {% include "search/result.html" %}
+                        {% endfor %}
+                    {% endwith %}
+                </ul>
+            </div>
+        {% endif %}
+
+    </div>
+
+    {% if not restricted %}
+    <div id="comments">
+        <h3 class="hplm">{% trans "Comments" %}</h3>
+        <div class="comment_list">
+            {% get_comment_count for obj.object as comment_count %}
+            {% if comment_count %}
+                <p>
+                {% if comment_count == 1 %}
+                    {% blocktrans %}
+                        One comment has been posted.
+                    {% endblocktrans %}
+                {% else %}
+                    {% blocktrans %}
+                        {{ comment_count }} comments have been posted.
+                    {% endblocktrans %}
+                {% endif %}
+                </p>
+                <br/>
+
+                {% get_comment_list for obj.object as comment_list %}
+                <ul class="tb tb-media-list">
+                {% for comment in comment_list %}
+                    <li class="comment tb tb-media" id="comment-{{comment.id}}">
+                        <div class="tb-pull-left">
+                            <img class="avatar" src="{% avatar_url comment.user %}"/>
+                        </div>
+                    <div class="tb-media-object">
+                        <h4 class="tb-media-heading">
+                        <span class="posted-by">
+                            {% trans "Posted by:" %}
+                            <a href="/user/{{comment.user|urlencode }}/">{{ comment.user.get_full_name }}</a>
+                        </span>
+                        <span class="date">
+                            {% trans "Date:" %}
+                            {{ comment.submit_date|naturalday }},
+                            {{ comment.submit_date|naturaltime }}
+                        </span>
+                        <a class="permalink" href="#comment-{{comment.id}}" title="{% trans "Permalink"%}">#</a>
+                    </h4>
+                        <div class="comment_text tb-media-body richtext">
+                            {{ comment.comment|richtext_filter:obj }}
+                        </div>
+                        </div>
+                        </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>
+                {% trans "No comments have been posted yet." %}
+                </p>
+            {% endif %}
+        </div>
+        <div id="comment_form">
+
+            <h4 class="hplm">{% trans "Post a comment" %}</h4>
+
+            {% get_comment_form for obj.object as form %}
+            <div>
+                <form action="{% comment_form_target %}" method="post">
+                        {% csrf_token %}
+
+                        <input type="hidden" name="next" value="{{obj.plmobject_url}}attributes/" />
+
+                        {% for field in form %}
+                            {% if field.is_hidden %}
+                                {{ field }}
+                            {% else %}
+                                {% if field.errors %}
+                                    {{ field.errors }}
+                                {% endif %}
+                                <div
+                                    {% if field.errors %} class="error"{% endif %}
+                                    {% ifequal field.name "honeypot" %} style="display:none;"{% endifequal %}
+                                    {% ifequal field.name "name" %} style="display:none;"{% endifequal %}
+                                    {% ifequal field.name "email" %} style="display:none;"{% endifequal %}
+                                    {% ifequal field.name "url" %} style="display:none;"{% endifequal %}
+                                    {% ifequal field.name "title" %} style="display:none;"{% endifequal %}
+                                    >
+                                    {% if field.name == "name" or field.name == "email" %}
+                                        <input type="text"
+                                        id="id_{{field.name}}" name="{{field.name}}"
+                                        {% ifequal field.name "name" %}
+                                            max_length=50 value="{{request.user.get_full_name}}"
+                                        {% else %}
+                                            value="{{request.user.email}}"
+                                        {% endifequal %}
+                                        >
+                                    {% else %}
+                                        {{ field }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                        <div class="submit">
+                            <input type="submit" class="tb-btn tb-btn-primary" name="post" class="submit-post" value="{% trans "Post" %}" />
+                        </div>
+                        {{ form.media|safe }}
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    {% endif %}
+{% endblock %}
+
+

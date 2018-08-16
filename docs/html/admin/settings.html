@@ -1,0 +1,246 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. settings — Settings &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="5. Admin documentation" href="index.html" />
+    <link rel="next" title="3. Applications" href="applications.html" />
+    <link rel="prev" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0" href="upgrade/upgrade-2.0.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="applications.html" title="3. Applications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="upgrade/upgrade-2.0.html" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="upgrade/upgrade-2.0.html"
+                        title="previous chapter">10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="applications.html"
+                        title="next chapter">3. Applications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/settings.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/settings.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="settings-settings">
+<h1>2. <a class="reference internal" href="#module-settings" title="settings"><tt class="xref py py-mod docutils literal"><span class="pre">settings</span></tt></a> &#8212; Settings<a class="headerlink" href="#settings-settings" title="Permalink to this headline">¶</a></h1>
+<p>You can set a few variables in settings.py to adjust OpenPLM to your need.
+Here are the most common ones :</p>
+<span class="target" id="module-settings"></span><dl class="function">
+<dt id="settings.ugettext">
+<tt class="descclassname">settings.</tt><tt class="descname">ugettext</tt><big>(</big><em>s</em><big>)</big><a class="headerlink" href="#settings.ugettext" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="data">
+<dt id="settings.INSTALLED_APPS">
+<tt class="descclassname">settings.</tt><tt class="descname">INSTALLED_APPS</tt><em class="property"> = ('django.contrib.auth', 'django.contrib.contenttypes', 'django.contrib.sessions', 'django.contrib.sites', 'django.contrib.admin', 'django.contrib.comments', 'django.contrib.humanize', 'django.contrib.messages', 'django.contrib.staticfiles', 'djcelery', 'haystack', 'south', 'openPLM.plmapp', 'openPLM.apps.rss', 'openPLM.apps.pdfgen', 'openPLM.apps.cad', 'openPLM.apps.computer', 'openPLM.apps.cae', 'openPLM.apps.office')</em><a class="headerlink" href="#settings.INSTALLED_APPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>list of installed apps</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.ALLOWED_HOSTS">
+<tt class="descclassname">settings.</tt><tt class="descname">ALLOWED_HOSTS</tt><em class="property"> = ['www.example.com']</em><a class="headerlink" href="#settings.ALLOWED_HOSTS" title="Permalink to this definition">¶</a></dt>
+<dd><p>see <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/settings/#std:setting-ALLOWED_HOSTS" title="(in Django v1.7)"><tt class="xref std std-setting docutils literal"><span class="pre">ALLOWED_HOSTS</span></tt></a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.EMAIL_FAIL_SILENTLY">
+<tt class="descclassname">settings.</tt><tt class="descname">EMAIL_FAIL_SILENTLY</tt><em class="property"> = True</em><a class="headerlink" href="#settings.EMAIL_FAIL_SILENTLY" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if mails sending should fail silently. If False, all connection errors
+to the SMTP server will be logged by celery (<cite>/var/log/celery/*.log</cite>).</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.DOCUMENTS_DIR">
+<tt class="descclassname">settings.</tt><tt class="descname">DOCUMENTS_DIR</tt><em class="property"> = '/var/openPLM/docs/'</em><a class="headerlink" href="#settings.DOCUMENTS_DIR" title="Permalink to this definition">¶</a></dt>
+<dd><p>directory that stores documents. Make sure to use a trailing slash.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.THUMBNAILS_DIR">
+<tt class="descclassname">settings.</tt><tt class="descname">THUMBNAILS_DIR</tt><em class="property"> = '/var/django/openPLM/trunk/openPLM/media/thumbnails/'</em><a class="headerlink" href="#settings.THUMBNAILS_DIR" title="Permalink to this definition">¶</a></dt>
+<dd><p>directory that stores thumbnails. Make sure to use a trailing slash.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.THUMBNAILS_URL">
+<tt class="descclassname">settings.</tt><tt class="descname">THUMBNAILS_URL</tt><em class="property"> = '/media/thumbnails/'</em><a class="headerlink" href="#settings.THUMBNAILS_URL" title="Permalink to this definition">¶</a></dt>
+<dd><p>URL where thumbnails are located . Make sure to use a trailing slash.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.EMAIL_OPENPLM">
+<tt class="descclassname">settings.</tt><tt class="descname">EMAIL_OPENPLM</tt><em class="property"> = 'no-reply&#64;openplm.example.com'</em><a class="headerlink" href="#settings.EMAIL_OPENPLM" title="Permalink to this definition">¶</a></dt>
+<dd><p>expeditor&#8217;s mail used when sending notification emails</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.NEW_ACCOUNT_SUBJECT">
+<tt class="descclassname">settings.</tt><tt class="descname">NEW_ACCOUNT_SUBJECT</tt><em class="property"> = u'New account on OpenPLM'</em><a class="headerlink" href="#settings.NEW_ACCOUNT_SUBJECT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subject of a sponsor mail.
+It can be a valid django template string, two variables are available:
+<tt class="docutils literal"><span class="pre">new_user</span></tt> and <tt class="docutils literal"><span class="pre">sponsor</span></tt> (<tt class="xref py py-class docutils literal"><span class="pre">User</span></tt> instances)
+for example, it could be
+<tt class="docutils literal"><span class="pre">u&quot;Welcome</span> <span class="pre">{{new_user.get_full_name}},</span> <span class="pre">{{sponsor.get_full_name}}</span> <span class="pre">has</span> <span class="pre">sponsored</span> <span class="pre">you</span> <span class="pre">on</span> <span class="pre">OpenPLM&quot;</span></tt>.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.MAX_FILE_SIZE">
+<tt class="descclassname">settings.</tt><tt class="descname">MAX_FILE_SIZE</tt><em class="property"> = -1</em><a class="headerlink" href="#settings.MAX_FILE_SIZE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Max file size for documents in bytes, -1 means illimited</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.SESSION_COOKIE_SECURE">
+<tt class="descclassname">settings.</tt><tt class="descname">SESSION_COOKIE_SECURE</tt><em class="property"> = False</em><a class="headerlink" href="#settings.SESSION_COOKIE_SECURE" title="Permalink to this definition">¶</a></dt>
+<dd><p>set to True so that browsers ensure the cookie is only sent under an HTTPS connection</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.FORCE_HTTPS">
+<tt class="descclassname">settings.</tt><tt class="descname">FORCE_HTTPS</tt><em class="property"> = False</em><a class="headerlink" href="#settings.FORCE_HTTPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Force HTTPS connections</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.HIDE_EMAILS">
+<tt class="descclassname">settings.</tt><tt class="descname">HIDE_EMAILS</tt><em class="property"> = False</em><a class="headerlink" href="#settings.HIDE_EMAILS" title="Permalink to this definition">¶</a></dt>
+<dd><p>set to True to hide emails</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="settings.KEEP_ALL_FILES">
+<tt class="descclassname">settings.</tt><tt class="descname">KEEP_ALL_FILES</tt><em class="property"> = False</em><a class="headerlink" href="#settings.KEEP_ALL_FILES" title="Permalink to this definition">¶</a></dt>
+<dd><p>Never delete files. If a user deletes a file, the file is deprecated instead of being deleted.
+Warning, if set to True, OpenPLM may consume a lot of disk place.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="applications.html" title="3. Applications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="upgrade/upgrade-2.0.html" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

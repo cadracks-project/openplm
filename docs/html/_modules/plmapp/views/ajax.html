@@ -1,0 +1,426 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.views.ajax &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/views/ajax.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.views.ajax</h1><div class="highlight"><pre>
+<span class="c">#-!- coding:utf-8 -!-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Ajax views.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">urlparse</span>
+
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">user_passes_test</span>
+<span class="kn">from</span> <span class="nn">django.forms</span> <span class="kn">import</span> <span class="n">widgets</span>
+<span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">JSONEncoder</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.cache</span> <span class="kn">import</span> <span class="n">cache_page</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseForbidden</span>
+<span class="kn">from</span> <span class="nn">django.template.loader</span> <span class="kn">import</span> <span class="n">render_to_string</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">PLMObjectController</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">as</span> <span class="nn">forms</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="n">get_obj</span><span class="p">,</span> <span class="n">get_obj_by_id</span><span class="p">,</span> <span class="n">get_obj_from_form</span><span class="p">,</span> \
+        <span class="n">json_view</span><span class="p">,</span> <span class="n">get_navigate_data</span><span class="p">,</span> <span class="n">secure_required</span><span class="p">,</span> <span class="n">get_creation_view</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.filters</span> <span class="kn">import</span> <span class="n">richtext</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.navigate</span> <span class="kn">import</span> <span class="n">TIME_FORMAT</span>
+
+<span class="n">ajax_login_required</span> <span class="o">=</span> <span class="n">user_passes_test</span><span class="p">(</span><span class="k">lambda</span> <span class="n">u</span><span class="p">:</span> <span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">()</span>
+    <span class="ow">and</span> <span class="ow">not</span> <span class="n">u</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">))</span>
+
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_creation_form"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_creation_form">[docs]</a><span class="k">def</span> <span class="nf">ajax_creation_form</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple view which returns the html of a creation form with the data</span>
+<span class="sd">    of :attr:`request.GET` as initial values.</span>
+
+<span class="sd">    The request must contains a get parameter *type* with a valid type,</span>
+<span class="sd">    otherwise, a :class:`.HttpResponseForbidden` is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tf</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">TypeForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">tf</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">type_</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">type_</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_users_and_plmobjects</span><span class="p">()[</span><span class="n">type_</span><span class="p">]</span>
+        <span class="n">view</span> <span class="o">=</span> <span class="n">get_creation_view</span><span class="p">(</span><span class="n">cls</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">view</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&quot;reload&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">}</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">iteritems</span><span class="p">())</span>
+        <span class="k">if</span> <span class="s">&quot;pfiles&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+            <span class="n">initial</span><span class="p">[</span><span class="s">&quot;pfiles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">getlist</span><span class="p">(</span><span class="s">&quot;pfiles&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&quot;reference&quot;</span> <span class="ow">in</span> <span class="n">initial</span><span class="p">:</span>
+            <span class="c"># gets a new reference if the type switches from a part to a document</span>
+            <span class="c"># and vice versa, see ticket #99</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">initial</span><span class="p">[</span><span class="s">&quot;reference&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;DOC_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">type_</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_parts</span><span class="p">())</span> <span class="ow">or</span> \
+               <span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;PART_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">type_</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_documents</span><span class="p">()):</span>
+                <span class="k">del</span> <span class="n">initial</span><span class="p">[</span><span class="s">&quot;reference&quot;</span><span class="p">]</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_creation_form</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">cls</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&quot;reload&quot;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;form&quot;</span> <span class="p">:</span> <span class="n">form</span><span class="o">.</span><span class="n">as_table</span><span class="p">(),</span>
+                <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="n">type_</span><span class="p">,</span> <span class="s">&quot;form_media&quot;</span><span class="p">:</span> <span class="n">form</span><span class="o">.</span><span class="n">media</span><span class="o">.</span><span class="n">render</span><span class="p">(),</span> <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+
+
+</div>
+<span class="nd">@secure_required</span>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@cache_page</span><span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
+<div class="viewcode-block" id="ajax_autocomplete"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_autocomplete">[docs]</a><span class="k">def</span> <span class="nf">ajax_autocomplete</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Simple ajax view for JQquery.UI.autocomplete. This returns the possible</span>
+<span class="sd">    completions (in JSON format) for *field*. The request must contains</span>
+<span class="sd">    a get parameter named *term* which should be the string used to filter</span>
+<span class="sd">    the results. *obj_type* must be a valid typename.</span>
+
+<span class="sd">    :param str obj_type: a valid typename (like ``&quot;part&quot;``)</span>
+<span class="sd">    :param str field: a valid field (like ``&quot;name&quot;``)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;term&#39;</span><span class="p">):</span>
+       <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">content_type</span><span class="o">=</span><span class="s">&#39;text/plain&#39;</span><span class="p">)</span>
+    <span class="n">term</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;term&#39;</span><span class="p">)</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="mi">50</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_users_and_plmobjects</span><span class="p">()[</span><span class="n">obj_type</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="s">&quot;attributes&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cls</span><span class="p">(</span><span class="n">__fake__</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="n">cls</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">User</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;email&quot;</span><span class="p">,</span> <span class="s">&quot;first_name&quot;</span><span class="p">,</span> <span class="s">&quot;last_name&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;HIDE_EMAILS&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span> <span class="ow">and</span> <span class="n">field</span> <span class="o">==</span> <span class="s">&quot;email&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_all_field_names</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">__icontains&quot;</span> <span class="o">%</span> <span class="n">field</span> <span class="p">:</span> <span class="n">term</span><span class="p">})</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">field</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+    <span class="n">json</span> <span class="o">=</span> <span class="n">JSONEncoder</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[:</span><span class="n">limit</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;application/json&#39;</span><span class="p">)</span>
+</div>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_thumbnails"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_thumbnails">[docs]</a><span class="k">def</span> <span class="nf">ajax_thumbnails</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ajax view to get files and thumbnails of a document.</span>
+
+<span class="sd">    :param request: :class:`django.http.QueryDict`</span>
+<span class="sd">    :param obj_type: :attr:`.PLMObject.type`</span>
+<span class="sd">    :type obj_type: str</span>
+<span class="sd">    :param obj_ref: :attr:`.PLMObject.reference`</span>
+<span class="sd">    :type obj_ref: str</span>
+<span class="sd">    :param obj_revi: :attr:`.PLMObject.revision`</span>
+<span class="sd">    :type obj_revi: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="s">&quot;|&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">date</span><span class="p">:</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="o">*</span><span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">TIME_FORMAT</span><span class="p">)[:</span><span class="mi">6</span><span class="p">])</span>
+        <span class="n">fileset</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">documentfile_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ctime__lte</span><span class="o">=</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">end_time__gt</span><span class="o">=</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fileset</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">files</span>
+    <span class="n">missing_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">STATIC_URL</span><span class="p">,</span> <span class="s">&quot;img/image-missing.png&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fileset</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">url</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">missing_url</span>
+        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+            <span class="s">&quot;url&quot;</span><span class="p">:</span> <span class="s">&quot;/file/</span><span class="si">%d</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="n">f</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="s">&quot;img&quot;</span><span class="p">:</span> <span class="n">img</span><span class="p">,</span>
+            <span class="s">&quot;revision&quot;</span> <span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span>
+            <span class="s">&quot;deleted&quot;</span> <span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">deleted</span><span class="p">,</span>
+            <span class="s">&quot;deprecated&quot;</span> <span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">deprecated</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="n">files</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span>
+
+</div>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_navigate"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_navigate">[docs]</a><span class="k">def</span> <span class="nf">ajax_navigate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">context</span> <span class="o">=</span> <span class="n">get_navigate_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&quot;width&quot;</span> <span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;img_width&quot;</span><span class="p">],</span>
+            <span class="s">&quot;height&quot;</span> <span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;img_height&quot;</span><span class="p">],</span>
+            <span class="s">&quot;divs&quot;</span> <span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;map_areas&quot;</span><span class="p">],</span>
+            <span class="s">&quot;form&quot;</span> <span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;filter_object_form&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">as_ul</span><span class="p">(),</span>
+            <span class="s">&quot;edges&quot;</span> <span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;edges&quot;</span><span class="p">],</span>
+            <span class="s">&quot;add_buttons&quot;</span> <span class="p">:</span> <span class="n">render_to_string</span><span class="p">(</span><span class="s">&quot;navigate/add_buttons.html&quot;</span><span class="p">,</span> <span class="n">context</span><span class="p">),</span>
+            <span class="s">&quot;past&quot;</span> <span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;past&quot;</span><span class="p">],</span>
+            <span class="p">}</span>
+    <span class="k">return</span> <span class="n">data</span>
+</div>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_add_child"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_add_child">[docs]</a><span class="k">def</span> <span class="nf">ajax_add_child</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">part_id</span><span class="p">):</span>
+    <span class="n">part</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="n">part_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddChildForm</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddChildForm</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">part</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;quantity&quot;</span><span class="p">],</span>
+                           <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;order&quot;</span><span class="p">],</span>
+                           <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;unit&quot;</span><span class="p">],</span>
+                           <span class="o">**</span><span class="n">form</span><span class="o">.</span><span class="n">extensions</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&quot;result&quot;</span> <span class="p">:</span> <span class="s">&quot;ok&quot;</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&quot;result&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;error&quot;</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;invalid form&quot;</span>
+    <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">widgets</span><span class="o">.</span><span class="n">TextInput</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">):</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&#39;readonly&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;on&#39;</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s">&quot;parent&quot;</span> <span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;id&quot;</span> <span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                <span class="s">&quot;reference&quot;</span> <span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
+                <span class="s">&quot;revision&quot;</span> <span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="s">&quot;form&quot;</span> <span class="p">:</span> <span class="n">form</span><span class="o">.</span><span class="n">as_table</span><span class="p">()</span>
+           <span class="p">})</span>
+    <span class="k">return</span> <span class="n">data</span>
+</div>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_can_add_child"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_can_add_child">[docs]</a><span class="k">def</span> <span class="nf">ajax_can_add_child</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">part_id</span><span class="p">):</span>
+    <span class="n">part</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="n">part_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;can_add&quot;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">is_part</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddPartForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">child</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&quot;can_add&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">can_add_child</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+</div>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_attach"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_attach">[docs]</a><span class="k">def</span> <span class="nf">ajax_attach</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">plmobject_id</span><span class="p">):</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="n">plmobject_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">PLMObjectForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">PLMObjectForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">attached</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="s">&quot;attach_to_document&quot;</span><span class="p">):</span>
+                <span class="n">plmobject</span><span class="o">.</span><span class="n">attach_to_document</span><span class="p">(</span><span class="n">attached</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="s">&quot;attach_to_part&quot;</span><span class="p">):</span>
+                <span class="n">plmobject</span><span class="o">.</span><span class="n">attach_to_part</span><span class="p">(</span><span class="n">attached</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&quot;result&quot;</span> <span class="p">:</span> <span class="s">&quot;ok&quot;</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&quot;result&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;error&quot;</span>
+            <span class="n">data</span><span class="p">[</span><span class="s">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;invalid form&quot;</span>
+    <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">):</span>
+        <span class="n">form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&#39;readonly&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;on&#39;</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+            <span class="s">&quot;plmobject&quot;</span> <span class="p">:</span> <span class="p">{</span>
+                <span class="s">&quot;id&quot;</span> <span class="p">:</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                <span class="s">&quot;reference&quot;</span> <span class="p">:</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
+                <span class="s">&quot;revision&quot;</span> <span class="p">:</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span>
+                <span class="p">},</span>
+            <span class="s">&quot;form&quot;</span> <span class="p">:</span> <span class="n">form</span><span class="o">.</span><span class="n">as_table</span><span class="p">()</span>
+           <span class="p">})</span>
+    <span class="k">return</span> <span class="n">data</span>
+</div>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_can_attach"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_can_attach">[docs]</a><span class="k">def</span> <span class="nf">ajax_can_attach</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">plmobject_id</span><span class="p">):</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="n">plmobject_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;can_attach&quot;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="n">PLMObjectController</span><span class="p">)</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">PLMObjectForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">attached</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">attached</span><span class="o">.</span><span class="n">check_readable</span><span class="p">(</span><span class="bp">False</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="s">&quot;can_attach_document&quot;</span><span class="p">):</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&quot;can_attach&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">can_attach_document</span><span class="p">(</span><span class="n">attached</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="s">&quot;can_attach_part&quot;</span><span class="p">):</span>
+                    <span class="n">data</span><span class="p">[</span><span class="s">&quot;can_attach&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">can_attach_part</span><span class="p">(</span><span class="n">attached</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span>
+
+</div>
+<span class="nd">@ajax_login_required</span>
+<span class="nd">@json_view</span>
+<div class="viewcode-block" id="ajax_richtext_preview"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.ajax.ajax_richtext_preview">[docs]</a><span class="k">def</span> <span class="nf">ajax_richtext_preview</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ajax view to get an HTML preview of a raw content (in richtext</span>
+<span class="sd">    syntax).</span>
+
+<span class="sd">    GET paramerer:</span>
+
+<span class="sd">        ``content``</span>
+<span class="sd">            raw content to be rendered</span>
+
+<span class="sd">    This view returns a JSON response with one key, ``html``, the rendered</span>
+<span class="sd">    content that can be included in a div element.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&quot;content&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;create&quot;</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&quot;html&quot;</span><span class="p">:</span> <span class="n">richtext</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="bp">None</span><span class="p">)}</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">check_readable</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s">&quot;html&quot;</span><span class="p">:</span> <span class="n">richtext</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">obj</span><span class="p">)}</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

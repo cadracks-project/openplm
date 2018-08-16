@@ -1,0 +1,230 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.3.1. decomposers.base — Base classes for decomposers &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.3. decomposers — Utilities to decompose a part" href="../decomposers.html" />
+    <link rel="next" title="5.4. exceptions — Exceptions" href="../exceptions.html" />
+    <link rel="prev" title="5.3. decomposers — Utilities to decompose a part" href="../decomposers.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../exceptions.html" title="5.4. exceptions — Exceptions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../decomposers.html" title="5.3. decomposers — Utilities to decompose a part"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../decomposers.html" accesskey="U">5.3. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">decomposers</span></tt> &#8212; Utilities to decompose a part</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../decomposers.html"
+                        title="previous chapter">5.3. <tt class="docutils literal docutils literal docutils literal"><span class="pre">decomposers</span></tt> &#8212; Utilities to decompose a part</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../exceptions.html"
+                        title="next chapter">5.4. <tt class="docutils literal"><span class="pre">exceptions</span></tt> &#8212; Exceptions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/decomposers/decomposers_base.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/decomposers/decomposers_base.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.decomposers.base">
+<span id="decomposers-base-base-classes-for-decomposers"></span><h1>5.3.1. <tt class="xref py py-mod docutils literal"><span class="pre">decomposers.base</span></tt> &#8212; Base classes for decomposers<a class="headerlink" href="#module-plmapp.decomposers.base" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.decomposers.base.DecomposersManager">
+<em class="property">class </em><tt class="descclassname">plmapp.decomposers.base.</tt><tt class="descname">DecomposersManager</tt><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#DecomposersManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.DecomposersManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>The DecomposersManager has methods to register a <a class="reference internal" href="#plmapp.decomposers.base.Decomposer" title="plmapp.decomposers.base.Decomposer"><tt class="xref py py-class docutils literal"><span class="pre">Decomposer</span></tt></a>
+(a class helping to decompose a part) and to get a decomposition
+message that is displayed on the BOM page of a part.</p>
+<dl class="classmethod">
+<dt id="plmapp.decomposers.base.DecomposersManager.register">
+<em class="property">classmethod </em><tt class="descname">register</tt><big>(</big><em>decomposer</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#DecomposersManager.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.DecomposersManager.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers <em>decomposer</em>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.decomposers.base.DecomposersManager.count">
+<em class="property">classmethod </em><tt class="descname">count</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#DecomposersManager.count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.DecomposersManager.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of registered decomposers.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.decomposers.base.DecomposersManager.get_decomposition_message">
+<em class="property">classmethod </em><tt class="descname">get_decomposition_message</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#DecomposersManager.get_decomposition_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.DecomposersManager.get_decomposition_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a decomposition message to decompose <em>part</em>.</p>
+<p>Returns an empty string if no decomposer can decompose <em>part</em>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.decomposers.base.DecomposersManager.is_decomposable">
+<em class="property">classmethod </em><tt class="descname">is_decomposable</tt><big>(</big><em>part</em>, <em>msg=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#DecomposersManager.is_decomposable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.DecomposersManager.is_decomposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>part</em> is decomposable.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.decomposers.base.DecomposersManager.get_decomposable_parts">
+<em class="property">classmethod </em><tt class="descname">get_decomposable_parts</tt><big>(</big><em>part_ids</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#DecomposersManager.get_decomposable_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.DecomposersManager.get_decomposable_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all part of <em>part_ids</em> (an iterable of part ids) that
+are decomposable by the registered decomposers.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.decomposers.base.Decomposer">
+<em class="property">class </em><tt class="descclassname">plmapp.decomposers.base.</tt><tt class="descname">Decomposer</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#Decomposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.Decomposer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Interface of a decomposer. A decomposer is initialized with a part
+and has two methods: <a class="reference internal" href="#plmapp.decomposers.base.Decomposer.is_decomposable" title="plmapp.decomposers.base.Decomposer.is_decomposable"><tt class="xref py py-meth docutils literal"><span class="pre">is_decomposable()</span></tt></a> and <a class="reference internal" href="#plmapp.decomposers.base.Decomposer.get_message" title="plmapp.decomposers.base.Decomposer.get_message"><tt class="xref py py-meth docutils literal"><span class="pre">get_message()</span></tt></a></p>
+<p>The default constructor sets the <tt class="docutils literal"><span class="pre">part</span></tt> attribute with the given part.</p>
+<dl class="method">
+<dt id="plmapp.decomposers.base.Decomposer.is_decomposable">
+<tt class="descname">is_decomposable</tt><big>(</big><em>msg=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#Decomposer.is_decomposable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.Decomposer.is_decomposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the part is decomposable.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.decomposers.base.Decomposer.get_message">
+<tt class="descname">get_message</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#Decomposer.get_message"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.Decomposer.get_message" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a message (in html) that is displayed if the part is decomposable.</p>
+<p>The returned message should contains a link to decompose the part and should
+be explicit.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.decomposers.base.Decomposer.get_decomposable_parts">
+<tt class="descname">get_decomposable_parts</tt><big>(</big><em>part_ids</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/decomposers/base.html#Decomposer.get_decomposable_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.decomposers.base.Decomposer.get_decomposable_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all part of <em>part_ids</em> (an iterable of part ids) that
+are decomposable by this decomposer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../exceptions.html" title="5.4. exceptions — Exceptions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../decomposers.html" title="5.3. decomposers — Utilities to decompose a part"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../decomposers.html" >5.3. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">decomposers</span></tt> &#8212; Utilities to decompose a part</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

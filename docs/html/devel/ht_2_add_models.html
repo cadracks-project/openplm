@@ -1,0 +1,602 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2.1. How to add a model (single file) &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="2. List of how-to’s" href="how-tos.html" />
+    <link rel="next" title="2.2. How to add a model (django application)" href="ht_3_add_models2.html" />
+    <link rel="prev" title="2. List of how-to’s" href="how-tos.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ht_3_add_models2.html" title="2.2. How to add a model (django application)"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="how-tos.html" title="2. List of how-to’s"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="how-tos.html" accesskey="U">2. List of how-to&#8217;s</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2.1. How to add a model (single file)</a><ul>
+<li><a class="reference internal" href="#requirements">2.1.1. Requirements</a></li>
+<li><a class="reference internal" href="#add-a-file">2.1.2. Add a file</a></li>
+<li><a class="reference internal" href="#imports">2.1.3. Imports</a></li>
+<li><a class="reference internal" href="#first-class">2.1.4. First class</a></li>
+<li><a class="reference internal" href="#custom-fields">2.1.5. Custom fields</a><ul>
+<li><a class="reference internal" href="#adding-fields">2.1.5.1. Adding fields</a></li>
+<li><a class="reference internal" href="#selecting-which-fields-should-be-displayed">2.1.5.2. Selecting which fields should be displayed</a></li>
+<li><a class="reference internal" href="#other-methods-that-can-be-overridden">2.1.5.3. Other methods that can be overridden</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-complete-class-bicycle">2.1.6. The complete class Bicycle</a></li>
+<li><a class="reference internal" href="#the-admin-interface">2.1.7. The admin interface</a></li>
+<li><a class="reference internal" href="#syncdb">2.1.8. syncdb</a></li>
+<li><a class="reference internal" href="#controller">2.1.9. Controller</a></li>
+<li><a class="reference internal" href="#alltogether">2.1.10. Alltogether</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="how-tos.html"
+                        title="previous chapter">2. List of how-to&#8217;s</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ht_3_add_models2.html"
+                        title="next chapter">2.2. How to add a model (django application)</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/ht_2_add_models.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/ht_2_add_models.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-add-a-model-single-file">
+<h1>2.1. How to add a model (single file)<a class="headerlink" href="#how-to-add-a-model-single-file" title="Permalink to this headline">¶</a></h1>
+<p>This document describes how to add a model to openPLM.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This method is simple and easy if you just want to add one or several
+models. If you want to add a specific view, see <a class="reference internal" href="ht_3_add_models2.html#how-to-app"><em>How to add a model (django application)</em></a>.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>You should not use your production environment for development purpose.
+It&#8217;s recommanded to initiate a development environment:</p>
+<blockquote class="last">
+<div><ol class="arabic simple">
+<li>copy openPLM&#8217;s directory in another place</li>
+<li>use the <tt class="file docutils literal"><span class="pre">settings.py.sqlite</span></tt> as settings file (rename it
+<tt class="file docutils literal"><span class="pre">settings.py</span></tt>)</li>
+<li>run <strong class="command">./manage.py sql all</strong></li>
+<li>run <strong class="command">./manage.py syncdb</strong> (this should ask you if you want to
+create a superuser, accept it)</li>
+<li>edit the superuser profile (model UserProfile in the plmapp section)
+and set him as an administrator and a contributor</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="requirements">
+<h2>2.1.1. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Python</li>
+<li>Django models</li>
+</ul>
+</div>
+<div class="section" id="add-a-file">
+<h2>2.1.2. Add a file<a class="headerlink" href="#add-a-file" title="Permalink to this headline">¶</a></h2>
+<p>The first step is simple: just add a <tt class="file docutils literal"><span class="pre">.py</span></tt> file in <tt class="docutils literal"><span class="pre">openPLM/plmapp/customized_models</span></tt>
+directory. In this how-to, we will call it <tt class="file docutils literal"><span class="pre">bicycle.py</span></tt>. The name of the file
+must be a <a class="reference external" href="http://docs.python.org/reference/lexical_analysis.html#identifiers">valid Python module name</a>.</p>
+</div>
+<div class="section" id="imports">
+<h2>2.1.3. Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<p>Now you can edit your file, and add some useful imports:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">Part</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">PartController</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">get_next_revision</span>
+</pre></div>
+</td></tr></table></div>
+<p>First, we import <a class="reference external" href="http://docs.djangoproject.com/en/dev/topics/db/models/#django.db.models" title="(in Django v1.7)"><tt class="xref py py-mod docutils literal"><span class="pre">models</span></tt></a> and <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/admin/#django.contrib.admin" title="(in Django v1.7)"><tt class="xref py py-mod docutils literal"><span class="pre">admin</span></tt></a>.
+We need <em>models</em> to define our models, and we need <em>admin</em> to register our
+model and make it available on the admin interface.</p>
+<p>Next, we import some classes and functions from <tt class="xref py py-mod docutils literal"><span class="pre">openPLM.plmapp</span></tt>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> is the base class for models which describe a part;</li>
+<li><a class="reference internal" href="modules/controllers/controllers_part.html#plmapp.controllers.part.PartController" title="plmapp.controllers.part.PartController"><tt class="xref py py-class docutils literal"><span class="pre">PartController</span></tt></a> is the base class for part&#8217;s controller;</li>
+<li><a class="reference internal" href="modules/utils.html#plmapp.utils.get_next_revision" title="plmapp.utils.get_next_revision"><tt class="xref py py-func docutils literal"><span class="pre">get_next_revision()</span></tt></a> is an utility function.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="first-class">
+<h2>2.1.4. First class<a class="headerlink" href="#first-class" title="Permalink to this headline">¶</a></h2>
+<p>After the import, you can add a new class. The name of this class, would be the
+name displayed in the <em>type</em> field in search/creation pages.</p>
+<p>In our case, we call it <strong>Bicycle</strong>:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Bicycle</span><span class="p">(</span><span class="n">Part</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+</pre></div>
+</td></tr></table></div>
+<p>As you can see, this class contains another class called <strong>Meta</strong>. This is a
+mechanism from Django to customize some model options such as ordering option.
+Here, we set <tt class="docutils literal"><span class="pre">app_label</span></tt> to <tt class="docutils literal"><span class="pre">&quot;plmapp&quot;</span></tt> so that our model can be managed by
+Django.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">The Django documentation for <a class="reference external" href="http://docs.djangoproject.com/en/1.2/topics/db/models/#id3">Meta options</a></p>
+</div>
+</div>
+<div class="section" id="custom-fields">
+<h2>2.1.5. Custom fields<a class="headerlink" href="#custom-fields" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="adding-fields">
+<h3>2.1.5.1. Adding fields<a class="headerlink" href="#adding-fields" title="Permalink to this headline">¶</a></h3>
+<p>Now, we can add fields to our models. A field describe which data would be
+saved in the database.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Bicycle</span><span class="p">(</span><span class="n">Part</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="c"># bicycle fields</span>
+    <span class="n">nb_wheels</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="s">&quot;Number of wheels&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+</pre></div>
+</td></tr></table></div>
+<p>We add 3 fields:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>nb_wheels</dt>
+<dd><p class="first">as it says, the number of wheels</p>
+<p>This field is a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.PositiveIntegerField" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">PositiveIntegerField</span></tt></a>.
+As first argument, we give a more comprehensive name that would be
+displayed in the attributes page.</p>
+<p class="last">We also set a default value for this field with <tt class="docutils literal"><span class="pre">default=lambda:</span> <span class="pre">2</span></tt>.
+The <em>default</em> argument does not take a value but a function which does
+takes no argument and return a value. Here, we use a <a class="reference external" href="http://docs.python.org/tutorial/controlflow.html#lambda-forms">lambda expression</a>
+which always returns <em>2</em>.</p>
+</dd>
+<dt>color</dt>
+<dd><p class="first">the color of the bicycle</p>
+<p>This field is a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.CharField" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">CharField</span></tt></a>. With a CharField,
+you must define the <em>max_length</em> argument. This is the maximal number of
+characters that can be stored in the database for this field.</p>
+<p class="last">We also set <em>blank</em> to True, this means that this field can be empty
+in a form.</p>
+</dd>
+<dt>details</dt>
+<dd><p class="first">a field for quite long details</p>
+<p class="last">This field is a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/models/fields/#django.db.models.TextField" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">TextField</span></tt></a>. This is a field
+that is displayed with a textarea in forms.</p>
+</dd>
+</dl>
+</div></blockquote>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">The Django <a class="reference external" href="http://docs.djangoproject.com/en/1.2/ref/models/fields/#ref-models-fields">model field reference</a>
+for all types of field that can be used and their arguments</p>
+</div>
+</div>
+<div class="section" id="selecting-which-fields-should-be-displayed">
+<h3>2.1.5.2. Selecting which fields should be displayed<a class="headerlink" href="#selecting-which-fields-should-be-displayed" title="Permalink to this headline">¶</a></h3>
+<p>By default, the fields are not displayed. To select which fields should be
+displayed, you can override the method
+<tt class="xref py py-attr docutils literal"><span class="pre">attributes</span></tt> like in the example above:</p>
+<div class="highlight-python" id="prop-attr"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre>    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&quot;nb_wheels&quot;</span><span class="p">,</span> <span class="s">&quot;color&quot;</span><span class="p">,</span> <span class="s">&quot;details&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">attrs</span>
+</pre></div>
+</td></tr></table></div>
+<p><tt class="xref py py-attr docutils literal"><span class="pre">attributes</span></tt> is a read-only <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#property" title="(in Python v2.6)"><tt class="xref py py-func docutils literal"><span class="pre">property()</span></tt></a>. This property is a list
+of attributes, so all elements must be a valid field name. For example,
+<tt class="docutils literal"><span class="pre">&quot;spam&quot;</span></tt> is not valid since <em>spam</em> is not a field of <tt class="xref py py-class docutils literal"><span class="pre">Bicycle</span></tt>.
+The property should return attributes from the parent class (<tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt> in
+our case). That&#8217;s why we call <a class="reference external" href="http://docs.python.org/2.6/library/functions.html#super" title="(in Python v2.6)"><tt class="xref py py-func docutils literal"><span class="pre">super()</span></tt></a>. In our case, we extends Part
+attributes with <em>nb_wheels</em>, <em>color</em> and <em>details</em></p>
+</div>
+<div class="section" id="other-methods-that-can-be-overridden">
+<h3>2.1.5.3. Other methods that can be overridden<a class="headerlink" href="#other-methods-that-can-be-overridden" title="Permalink to this headline">¶</a></h3>
+<p>There are other methods that can be overridden to select attributes displayed
+in creation/modification forms.</p>
+<p>These methods are listed in <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.</p>
+<p>Here, we will excluded <em>details</em> from a creation form:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">excluded_creation_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">excluded_creation_fields</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s">&quot;details&quot;</span><span class="p">]</span>
+</pre></div>
+</td></tr></table></div>
+<p>This code is similar to <a class="reference internal" href="ht_3_add_models2.html#prop-attr"><em>the attributes property</em></a>. Nevertheless,
+<a class="reference internal" href="modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.excluded_creation_fields" title="openPLM.plmapp.models.plmobject.PLMObject.excluded_creation_fields"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObject.excluded_creation_fields()</span></tt></a> is a
+<a class="reference external" href="http://docs.python.org/2.6/library/functions.html#classmethod" title="(in Python v2.6)"><tt class="xref py py-func docutils literal"><span class="pre">classmethod()</span></tt></a> since we do not have a <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> when we build a
+creation form.</p>
+</div>
+</div>
+<div class="section" id="the-complete-class-bicycle">
+<h2>2.1.6. The complete class Bicycle<a class="headerlink" href="#the-complete-class-bicycle" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Bicycle</span><span class="p">(</span><span class="n">Part</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="c"># bicycle fields</span>
+    <span class="n">nb_wheels</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="s">&quot;Number of wheels&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+    <span class="c"># bicycle properties</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&quot;nb_wheels&quot;</span><span class="p">,</span> <span class="s">&quot;color&quot;</span><span class="p">,</span> <span class="s">&quot;details&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">attrs</span>
+
+    <span class="c"># excluded_creation_fields</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">excluded_creation_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">excluded_creation_fields</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s">&quot;details&quot;</span><span class="p">]</span>
+
+<span class="c"># end Bicycle</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="the-admin-interface">
+<h2>2.1.7. The admin interface<a class="headerlink" href="#the-admin-interface" title="Permalink to this headline">¶</a></h2>
+<p>To make our model available on the admin interface, we just have to add this line:</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">)</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+<div class="section" id="syncdb">
+<h2>2.1.8. syncdb<a class="headerlink" href="#syncdb" title="Permalink to this headline">¶</a></h2>
+<p>Now you can test your model. Run the following commands:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><strong class="command">manage.py sql plmapp</strong></li>
+<li><strong class="command">manage.py syncdb</strong></li>
+</ol>
+</div></blockquote>
+<p>The last command should output:</p>
+<div class="highlight-python"><pre>Installing json fixture 'initial_data' from absolute path.
+Installed 10 object(s) from 1 fixture(s)</pre>
+</div>
+<p>If there is an error, you will see something like this:</p>
+<div class="highlight-python"><pre>Exception in import_models bicycle &lt;type 'exceptions.AttributeError'&gt; 'module' object has no attribute 'register'
+Installing json fixture 'initial_data' from absolute path.
+Installed 10 object(s) from 1 fixture(s)</pre>
+</div>
+<p>(here, we have written <tt class="docutils literal"><span class="pre">admin.register</span></tt> instead of <tt class="docutils literal"><span class="pre">admin.site.register</span></tt>).</p>
+<p>Then you can run the server with the <strong class="command">./manage.py runserver localhost:8000</strong>.
+Open the url <a class="reference external" href="http://localhost:8000/home/">http://localhost:8000/home/</a> and try to create a bicycle.</p>
+</div>
+<div class="section" id="controller">
+<h2>2.1.9. Controller<a class="headerlink" href="#controller" title="Permalink to this headline">¶</a></h2>
+<p>The model describes only which data should be stored on the database and
+which attributes should be displayed/editable. You can change <em>how</em> the
+objects are manipulated by redefining the <a class="reference internal" href="modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a>
+of your model.</p>
+<p>In this tutorial, we will change the behaviour when a bicycle is revised.
+Here is the code.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">BicycleController</span><span class="p">(</span><span class="n">PartController</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">revise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_revision</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_revision</span> <span class="o">==</span> <span class="n">get_next_revision</span><span class="p">(</span><span class="n">get_next_revision</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">revision</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">            ----------------</span>
+<span class="s">            hello easter egg</span>
+<span class="s">            ----------------</span>
+<span class="s">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BicycleController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">revise</span><span class="p">(</span><span class="n">new_revision</span><span class="p">)</span>
+
+<span class="c"># end BicycleController</span>
+</pre></div>
+</td></tr></table></div>
+<p>As you can see, we create a class called <em>BicycleController</em> which inherits
+from <a class="reference internal" href="modules/controllers/controllers_part.html#plmapp.controllers.part.PartController" title="plmapp.controllers.part.PartController"><tt class="xref py py-class docutils literal"><span class="pre">PartController</span></tt></a>. A <em>PartController</em> is a controller which manages
+some specifities of the parts like their children. Since <em>Bicycle</em> inherits
+from <a class="reference internal" href="modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>, our controller inherits from <em>PartController</em>.
+If you name a controller like <tt class="samp docutils literal"><em><span class="pre">model</span></em><span class="pre">Controller</span></tt>, it will be associated
+to the model named <em>model</em>.</p>
+<p>In our case, we just override the method <a class="reference internal" href="modules/controllers/controllers_part.html#plmapp.controllers.part.PartController.revise" title="plmapp.controllers.part.PartController.revise"><tt class="xref py py-meth docutils literal"><span class="pre">PartController.revise()</span></tt></a> by
+adding a detail if the user forget a revision (for example, <em>c</em> instead of
+<em>b</em>). Of course, you can write what you want and, for example, not take
+care of <em>new_revision</em>.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last">mod:<cite>controllers</cite> and <a class="reference internal" href="modules/controllers.html#how-to-add-a-controller"><em>How to add a controller</em></a> for more
+details about controllers.</p>
+</div>
+</div>
+<div class="section" id="alltogether">
+<h2>2.1.10. Alltogether<a class="headerlink" href="#alltogether" title="Permalink to this headline">¶</a></h2>
+<p>The complete file is accessible <a class="reference download internal" href="../_downloads/bicycle.py"><tt class="xref download docutils literal"><span class="pre">here</span></tt></a>.</p>
+<div class="highlight-python"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49</pre></div></td><td class="code"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">Part</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">PartController</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">get_next_revision</span>
+<span class="c"># end of imports</span>
+
+<span class="c"># class Bicycle</span>
+<span class="k">class</span> <span class="nc">Bicycle</span><span class="p">(</span><span class="n">Part</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="c"># bicycle fields</span>
+    <span class="n">nb_wheels</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="s">&quot;Number of wheels&quot;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">details</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+    <span class="c"># bicycle properties</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">super</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&quot;nb_wheels&quot;</span><span class="p">,</span> <span class="s">&quot;color&quot;</span><span class="p">,</span> <span class="s">&quot;details&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">attrs</span>
+
+    <span class="c"># excluded_creation_fields</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">excluded_creation_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">excluded_creation_fields</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="s">&quot;details&quot;</span><span class="p">]</span>
+
+<span class="c"># end Bicycle</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">Bicycle</span><span class="p">)</span>
+
+<span class="c"># class BicycleController</span>
+<span class="k">class</span> <span class="nc">BicycleController</span><span class="p">(</span><span class="n">PartController</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">revise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_revision</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_revision</span> <span class="o">==</span> <span class="n">get_next_revision</span><span class="p">(</span><span class="n">get_next_revision</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">revision</span><span class="p">)):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">details</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">            ----------------</span>
+<span class="s">            hello easter egg</span>
+<span class="s">            ----------------</span>
+<span class="s">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">BicycleController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">revise</span><span class="p">(</span><span class="n">new_revision</span><span class="p">)</span>
+
+<span class="c"># end BicycleController</span>
+</pre></div>
+</td></tr></table></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ht_3_add_models2.html" title="2.2. How to add a model (django application)"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="how-tos.html" title="2. List of how-to’s"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="how-tos.html" >2. List of how-to&#8217;s</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

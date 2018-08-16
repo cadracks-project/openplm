@@ -1,0 +1,799 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.controllers.document &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/controllers/document.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.controllers.document</h1><div class="highlight"><pre>
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="kn">import</span> <span class="nn">Image</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">djcelery_transactions</span> <span class="kn">import</span> <span class="n">task</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">LockError</span><span class="p">,</span> <span class="n">UnlockError</span><span class="p">,</span> <span class="n">DeleteFileError</span><span class="p">,</span> <span class="n">PermissionError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers.plmobject</span> <span class="kn">import</span> <span class="n">PLMObjectController</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers.base</span> <span class="kn">import</span> <span class="n">get_controller</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.thumbnailers</span> <span class="kn">import</span> <span class="n">generate_thumbnail</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.files.formats</span> <span class="kn">import</span> <span class="n">native_to_standards</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.files.deletable</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_deletable_files</span><span class="p">,</span> <span class="n">ON_CHECKIN_SELECTORS</span><span class="p">,</span>
+        <span class="n">ON_DEPRECATE_SELECTORS</span><span class="p">,</span> <span class="n">ON_DELETE_SELECTORS</span><span class="p">,</span> <span class="n">ON_CANCEL_SELECTORS</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.tasks</span> <span class="kn">import</span> <span class="n">update_indexes</span>
+
+
+<span class="nd">@task</span>
+<span class="k">def</span> <span class="nf">delete_old_files</span><span class="p">(</span><span class="n">doc_file_pk</span><span class="p">,</span> <span class="n">selectors</span><span class="p">):</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">doc_file_pk</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">get_deletable_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="n">selectors</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mo">0700</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">deleted</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">deprecated</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="DocumentController"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController">[docs]</a><span class="k">class</span> <span class="nc">DocumentController</span><span class="p">(</span><span class="n">PLMObjectController</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A :class:`.PLMObjectController` which manages</span>
+<span class="sd">    :class:`.Document`</span>
+
+<span class="sd">    It provides methods to add or delete files, (un)lock them and attach a</span>
+<span class="sd">    :class:`.Document` to a :class:`.Part`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="DocumentController.create_from_form"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.create_from_form">[docs]</a>    <span class="k">def</span> <span class="nf">create_from_form</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">create_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">)</span><span class="o">.</span><span class="n">ACCEPT_FILES</span><span class="p">:</span>
+            <span class="n">private_files</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;pfiles&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">pf</span><span class="o">.</span><span class="n">creator</span> <span class="o">!=</span> <span class="n">user</span> <span class="k">for</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">private_files</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Not your file&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">pf</span> <span class="ow">in</span> <span class="n">private_files</span><span class="p">:</span>
+                <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                    <span class="nb">file</span><span class="o">=</span><span class="n">pf</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+                <span class="n">obj</span><span class="o">.</span><span class="n">handle_added_file</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+                <span class="n">generate_thumbnail</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="c"># django &lt; 1.2.5 deletes the file when pf is deleted</span>
+                <span class="n">pf</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+                <span class="n">pf</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="DocumentController.has_standard_related_locked"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.has_standard_related_locked">[docs]</a>    <span class="k">def</span> <span class="nf">has_standard_related_locked</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if :const:`settings.ENABLE_NATIVE_FILE_MANAGEMENT` is True</span>
+<span class="sd">        and exists a document that contains a standard locked file related to the</span>
+<span class="sd">        file we want to add.</span>
+
+<span class="sd">        We use it to avoid to add a native file while a related standard locked</span>
+<span class="sd">        file is present in the document.</span>
+
+<span class="sd">        :param new_filename: name of the added file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;ENABLE_NATIVE_FILE_MANAGEMENT&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">new_filename</span><span class="p">)</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">doc_files</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">locked</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">doc_files</span><span class="p">:</span>
+                <span class="n">standard</span><span class="p">,</span> <span class="n">standard_ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">standard</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">standard_ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">native_to_standards</span><span class="p">[</span><span class="n">ext</span><span class="p">]:</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="DocumentController.check_edit_files"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.check_edit_files">[docs]</a>    <span class="k">def</span> <span class="nf">check_edit_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_contributor</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_editable</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DocumentController.lock"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.lock">[docs]</a>    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Lock *doc_file* so that it can not be modified or deleted</span>
+<span class="sd">        if *doc_file* has a native related file this will be deprecated</span>
+
+<span class="sd">        :exceptions raised:</span>
+<span class="sd">            * :exc:`ValueError` if *doc_file*.document is not self.object</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+<span class="sd">            * :exc:`.LockError` if *doc_file* is already locked</span>
+<span class="sd">            * :exc:`ValueError` if *doc_file* has a native related file locked</span>
+
+<span class="sd">        :param doc_file:</span>
+<span class="sd">        :type doc_file: :class:`.DocumentFile`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_files</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad file&#39;s document&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">checkout_valid</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">LockError</span><span class="p">(</span><span class="s">&quot;Check-out impossible, native related file is locked&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">LockError</span><span class="p">(</span><span class="s">&quot;Check-out impossible,  file is deprecated&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span><span class="p">:</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;locked file in &quot;</span><span class="p">,</span>
+                             <span class="s">&quot;</span><span class="si">%s</span><span class="s"> locked by </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">))</span>
+
+            <span class="n">doc_to_deprecated</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">native_related</span>
+            <span class="k">if</span> <span class="n">doc_to_deprecated</span><span class="p">:</span>
+                <span class="n">doc_to_deprecated</span><span class="o">.</span><span class="n">deprecated</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="n">doc_to_deprecated</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;deprecated file in &quot;</span><span class="p">,</span>
+                                 <span class="s">&quot;file : </span><span class="si">%s</span><span class="s"> deprecated&quot;</span> <span class="o">%</span> <span class="n">doc_to_deprecated</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">LockError</span><span class="p">(</span><span class="s">&quot;File already locked&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentController.unlock"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.unlock">[docs]</a>    <span class="k">def</span> <span class="nf">unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unlock *doc_file* so that it can be modified or deleted</span>
+
+<span class="sd">        :exceptions raised:</span>
+<span class="sd">            * :exc:`ValueError` if *doc_file*.document is not self.object</span>
+<span class="sd">            * :exc:`plmapp.exceptions.UnlockError` if *doc_file* is already</span>
+<span class="sd">              unlocked or *doc_file.locker* is not the current user</span>
+
+<span class="sd">        :param doc_file:</span>
+<span class="sd">        :type doc_file: :class:`.DocumentFile`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad file&#39;s document&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnlockError</span><span class="p">(</span><span class="s">&quot;File already unlocked&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">locker</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">UnlockError</span><span class="p">(</span><span class="s">&quot;Bad user&quot;</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;unlocked file in &quot;</span><span class="p">,</span>
+                         <span class="s">&quot;file : </span><span class="si">%s</span><span class="s"> unlocked by </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="DocumentController.add_file"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.add_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">update_attributes</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">thumbnail</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds file *f* to the document. *f* should be a :class:`~django.core.files.File`</span>
+<span class="sd">        with an attribute *name* (like an :class:`UploadedFile`).</span>
+
+<span class="sd">        If *update_attributes* is True (the default), :meth:`handle_added_file`</span>
+<span class="sd">        will be called with *f* as parameter.</span>
+
+<span class="sd">        :return: the :class:`.DocumentFile` created.</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+<span class="sd">        :raises: :exc:`ValueError` if the file size is superior to</span>
+<span class="sd">                 :attr:`settings.MAX_FILE_SIZE`</span>
+<span class="sd">        :raises: :exc:`ValueError` if we try to add a native file while a relate standar file locked is present in the Document</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_files</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;File too big, max size : </span><span class="si">%d</span><span class="s"> bytes&quot;</span> <span class="o">%</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_standard_related_locked</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Native file has a standard related locked file.&quot;</span><span class="p">)</span>
+
+        <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                        <span class="nb">file</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">f</span><span class="p">),</span> <span class="n">document</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="s">&quot;no_index&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="c"># set read only file</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mo">0400</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;added file to &quot;</span><span class="p">,</span> <span class="s">&quot;file : </span><span class="si">%s</span><span class="s"> added&quot;</span> <span class="o">%</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">update_attributes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_added_file</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">thumbnail</span><span class="p">:</span>
+           <span class="n">generate_thumbnail</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">doc_file</span>
+</div>
+<div class="viewcode-block" id="DocumentController.add_thumbnail"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.add_thumbnail">[docs]</a>    <span class="k">def</span> <span class="nf">add_thumbnail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span> <span class="n">thumbnail_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets *thumnail_file* as the thumbnail of *doc_file*. *thumbnail_file*</span>
+<span class="sd">        should be a :class:`~django.core.files.File` with an attribute *name*</span>
+<span class="sd">        (like an :class:`UploadedFile`).</span>
+
+<span class="sd">        :exceptions raised:</span>
+<span class="sd">            * :exc:`ValueError` if *doc_file*.document is not self.object</span>
+<span class="sd">            * :exc:`ValueError` if the file size is superior to</span>
+<span class="sd">              :attr:`settings.MAX_FILE_SIZE`</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_files</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad file&#39;s document&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">thumbnail_file</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;File too big, max size : </span><span class="si">%d</span><span class="s"> bytes&quot;</span> <span class="o">%</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;File is deprecated&quot;</span><span class="p">)</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">thumbnail_file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">thumbnailfs</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">thumbnail_file</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">((</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span> <span class="n">Image</span><span class="o">.</span><span class="n">ANTIALIAS</span><span class="p">)</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentController.delete_file"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.delete_file">[docs]</a>    <span class="k">def</span> <span class="nf">delete_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes *doc_file*, the file attached to *doc_file* is physically</span>
+<span class="sd">        removed.</span>
+
+<span class="sd">        :exceptions raised:</span>
+<span class="sd">            * :exc:`ValueError` if *doc_file*.document is not self.object</span>
+<span class="sd">            * :exc:`plmapp.exceptions.DeleteFileError` if *doc_file* is</span>
+<span class="sd">              locked</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+
+<span class="sd">        :param doc_file: the file to be deleted</span>
+<span class="sd">        :type doc_file: :class:`.DocumentFile`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_files</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad file&#39;s document&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DeleteFileError</span><span class="p">(</span><span class="s">&quot;File is locked&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;File is deprecated&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">DOCUMENTS_DIR</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">DeleteFileError</span><span class="p">(</span><span class="s">&quot;Bad path : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_old_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="n">ON_DELETE_SELECTORS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;deleted file in &quot;</span><span class="p">,</span> <span class="s">&quot;file : </span><span class="si">%s</span><span class="s"> was deleted&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentController.handle_added_file"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.handle_added_file">[docs]</a>    <span class="k">def</span> <span class="nf">handle_added_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called when adding a file (method :meth:`add_file`) with</span>
+<span class="sd">        *updates_attributes* set to True.</span>
+
+<span class="sd">        This method may be overridden to updates attributes with data from</span>
+<span class="sd">        *doc_file*. The default implementation does nothing.</span>
+
+<span class="sd">        :param doc_file:</span>
+<span class="sd">        :type doc_file: :class:`.DocumentFile`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="DocumentController.attach_to_part"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.attach_to_part">[docs]</a>    <span class="k">def</span> <span class="nf">attach_to_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Links *part* (a :class:`.Part`) with</span>
+<span class="sd">        :attr:`~PLMObjectController.object`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_attach_part</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">PLMObjectController</span><span class="p">):</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">documentpartlink_document</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">ACTION_NAME</span><span class="p">,</span>
+                         <span class="s">&quot;</span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">) &lt;=&gt; </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">revision</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="DocumentController.detach_part"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.detach_part">[docs]</a>    <span class="k">def</span> <span class="nf">detach_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes link between *part* (a :class:`.Part`) and</span>
+<span class="sd">        :attr:`~PLMObjectController.object`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_attach_part</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">PLMObjectController</span><span class="p">):</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">object</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">documentpartlink_document</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">)</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;Undo - &quot;</span> <span class="o">+</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">ACTION_NAME</span><span class="p">,</span>
+                         <span class="s">&quot;</span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">) &lt;=&gt; </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">part</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">revision</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="DocumentController.get_attached_parts"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.get_attached_parts">[docs]</a>    <span class="k">def</span> <span class="nf">get_attached_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all parts attached to</span>
+<span class="sd">        :attr:`~PLMObjectController.object`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">documentpartlink_document</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentController.get_detachable_parts"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.get_detachable_parts">[docs]</a>    <span class="k">def</span> <span class="nf">get_detachable_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all attached parts the user can detach.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attached_parts</span><span class="p">()</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;parts&quot;</span><span class="p">):</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">part</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">can_detach_part</span><span class="p">(</span><span class="n">part</span><span class="p">):</span>
+                <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">links</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">documentpartlink_document</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">links</span><span class="p">)</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DocumentController.is_part_attached"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.is_part_attached">[docs]</a>    <span class="k">def</span> <span class="nf">is_part_attached</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if *part* is attached to the current document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">PLMObjectController</span><span class="p">):</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">object</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">documentpartlink_document</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">)</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DocumentController.check_attach_part"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.check_attach_part">[docs]</a>    <span class="k">def</span> <span class="nf">check_attach_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">detach</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="s">&quot;is_part&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">part</span><span class="o">.</span><span class="n">is_part</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not a part&quot;</span> <span class="o">%</span> <span class="n">part</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">PLMObjectController</span><span class="p">):</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="n">get_controller</span><span class="p">(</span><span class="n">part</span><span class="o">.</span><span class="n">type</span><span class="p">)(</span><span class="n">part</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="n">part</span><span class="o">.</span><span class="n">check_attach_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">detach</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentController.can_attach_part"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.can_attach_part">[docs]</a>    <span class="k">def</span> <span class="nf">can_attach_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if *part* can be attached to the current document.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">can_attach</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_attach_part</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+            <span class="n">can_attach</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">StandardError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">can_attach</span>
+</div>
+<div class="viewcode-block" id="DocumentController.can_detach_part"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.can_detach_part">[docs]</a>    <span class="k">def</span> <span class="nf">can_detach_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if *part* can be detached.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">can_detach</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_attach_part</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+            <span class="n">can_detach</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">StandardError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">can_detach</span>
+</div>
+<div class="viewcode-block" id="DocumentController.get_suggested_parts"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.get_suggested_parts">[docs]</a>    <span class="k">def</span> <span class="nf">get_suggested_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a QuerySet of parts a user may want to attach to</span>
+<span class="sd">        a future revision.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">attached_parts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attached_parts</span><span class="p">()</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;part&quot;</span><span class="p">,</span>
+                <span class="s">&quot;part__state&quot;</span><span class="p">,</span> <span class="s">&quot;part__lifecycle&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="s">&quot;part&quot;</span><span class="p">)</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">attached_parts</span><span class="p">:</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">part</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">new</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="n">part</span><span class="p">)</span><span class="o">.</span><span class="n">new</span>
+                <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">is_draft</span><span class="p">:</span>
+                    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+                <span class="k">while</span> <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">new</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="n">new</span><span class="p">)</span><span class="o">.</span><span class="n">new</span>
+                    <span class="k">if</span> <span class="n">new</span><span class="o">.</span><span class="n">is_draft</span><span class="p">:</span>
+                        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">part</span><span class="o">.</span><span class="n">is_deprecated</span><span class="p">:</span>
+                    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="n">qs</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">))</span>
+            <span class="n">qs</span> <span class="o">=</span> <span class="n">qs</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;reference&#39;</span><span class="p">,</span> <span class="s">&#39;revision&#39;</span><span class="p">,</span> <span class="s">&#39;name&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">qs</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DocumentController.revise"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.revise">[docs]</a>    <span class="k">def</span> <span class="nf">revise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_revision</span><span class="p">,</span> <span class="n">selected_parts</span><span class="o">=</span><span class="p">(),</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c"># same as PLMObjectController + duplicate files (and their thumbnails)</span>
+        <span class="n">rev</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">revise</span><span class="p">(</span><span class="n">new_revision</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">doc_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">get_available_name</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="n">new_doc</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">rev</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mo">0400</span><span class="p">)</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span>
+            <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">thumb</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+                <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">thumb_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">thumb</span><span class="p">)</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">thumb_path</span><span class="p">)</span>
+                <span class="n">new_doc</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">thumb_path</span><span class="p">)</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># attach the given parts</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">selected_parts</span><span class="p">:</span>
+            <span class="n">rev</span><span class="o">.</span><span class="n">documentpartlink_document</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">rev</span>
+</div>
+<div class="viewcode-block" id="DocumentController.checkin"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.checkin">[docs]</a>    <span class="k">def</span> <span class="nf">checkin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span> <span class="n">new_file</span><span class="p">,</span> <span class="n">update_attributes</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">thumbnail</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates *doc_file* with data from *new_file*. *doc_file*.thumbnail</span>
+<span class="sd">        is deleted if it is present.</span>
+
+<span class="sd">        :exceptions raised:</span>
+<span class="sd">            * :exc:`ValueError` if *doc_file*.document is not self.object</span>
+<span class="sd">            * :exc:`ValueError` if the file size is superior to</span>
+<span class="sd">              :attr:`settings.MAX_FILE_SIZE`</span>
+<span class="sd">            * :exc:`plmapp.exceptions.UnlockError` if *doc_file* is locked</span>
+<span class="sd">              but *doc_file.locker* is not the current user</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+
+<span class="sd">        :param doc_file:</span>
+<span class="sd">        :type doc_file: :class:`.DocumentFile`</span>
+<span class="sd">        :param new_file: file with new data, same parameter as *f*</span>
+<span class="sd">                         in :meth:`add_file`</span>
+<span class="sd">        :param update_attributes: True if :meth:`handle_added_file` should be</span>
+<span class="sd">                                  called</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_files</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad file&#39;s document&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span> <span class="o">!=</span> <span class="n">new_file</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Checkin document and document already in plm have different names&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">new_file</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;File too big, max size : </span><span class="si">%d</span><span class="s"> bytes&quot;</span> <span class="o">%</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">deprecated</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;File is deprecated&quot;</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">locked</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unlock</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">previous_revision</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">previous_revision</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">previous_revision</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">new_file</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">new_file</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">deprecated_df</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                    <span class="n">document</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                    <span class="n">deprecated</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                    <span class="n">size</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                    <span class="n">filename</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+                    <span class="nb">file</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">new_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="p">),</span>
+                    <span class="n">thumbnail</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                    <span class="n">ctime</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">ctime</span><span class="p">,</span>
+                    <span class="n">revision</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span>
+                    <span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">,</span>
+                    <span class="n">previous_revision</span><span class="o">=</span><span class="n">previous_revision</span><span class="p">,</span>
+                    <span class="n">last_revision</span><span class="o">=</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">thumbnailfs</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%d</span><span class="s">.png&quot;</span> <span class="o">%</span> <span class="n">deprecated_df</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">)</span>
+            <span class="n">deprecated_df</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">deprecated_df</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">deprecated_df</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># update the doc_file</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">new_file</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_file</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">new_file</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">previous_revision</span> <span class="o">=</span> <span class="n">deprecated_df</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">revision</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">ctime</span> <span class="o">=</span> <span class="n">now</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mo">0400</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># delete &quot;old&quot; files (not the document file)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_delete_old_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="n">ON_CHECKIN_SELECTORS</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;checked-in &quot;</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">update_attributes</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_added_file</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">thumbnail</span><span class="p">:</span>
+            <span class="n">generate_thumbnail</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_delete_old_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span> <span class="n">selectors</span><span class="p">):</span>
+        <span class="n">delete_old_files</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">pk</span><span class="p">,</span> <span class="n">selectors</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DocumentController.update_rel_part"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.update_rel_part">[docs]</a>    <span class="k">def</span> <span class="nf">update_rel_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formset</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Updates related part informations with data from *formset*</span>
+
+<span class="sd">        :param formset:</span>
+<span class="sd">        :type formset: a modelfactory_formset of</span>
+<span class="sd">                        :class:`~plmapp.forms.ModifyRelPartForm`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                <span class="n">document</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;document&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">document</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad document </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s"> expected)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">))</span>
+                <span class="n">delete</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;delete&quot;</span><span class="p">]</span>
+                <span class="n">part</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;part&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
+                    <span class="n">parts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parts</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">detach_part</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+                <span class="n">ids</span> <span class="o">=</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">documentpartlink_document</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">part__in</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DocumentController.update_file"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.update_file">[docs]</a>    <span class="k">def</span> <span class="nf">update_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formset</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Updates uploaded file informations with data from *formset*</span>
+
+<span class="sd">        :param formset:</span>
+<span class="sd">        :type formset: a modelfactory_formset of</span>
+<span class="sd">                        :class:`~plmapp.forms.ModifyFileForm`</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_files</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                <span class="n">document</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;document&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">document</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad document </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s"> expected)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">))</span>
+                <span class="n">delete</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;delete&quot;</span><span class="p">]</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentController.cancel"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cancels the object:</span>
+
+<span class="sd">            * calls :meth:`.PLMObjectController.cancel`</span>
+<span class="sd">            * removes all :class:`.DocumentPartLink` related to the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_attached_parts</span><span class="p">()</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delete_old_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="n">ON_CANCEL_SELECTORS</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentController.check_cancel"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.check_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">check_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">check_cancel</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="n">raise_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">res</span> <span class="p">:</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attached_parts</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span> <span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;This document is related to a part.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="DocumentController.clone"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">parts</span><span class="p">,</span> <span class="n">block_mails</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">no_index</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clones the object :</span>
+
+<span class="sd">            * calls :meth:`.PLMObjectController.clone`</span>
+<span class="sd">            * duplicates all :class:`.DocumentFile` in self.object</span>
+
+<span class="sd">        :param parts: list of :class:`.Part` selected to be attached to the new document</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_ctrl</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="p">,</span> <span class="n">no_index</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">doc_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">get_available_name</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">))</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+            <span class="n">new_doc</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="nb">file</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+                <span class="n">filename</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">document</span><span class="o">=</span><span class="n">new_ctrl</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span>
+            <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">:</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">thumb</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">new_doc</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ext</span><span class="p">)</span>
+                <span class="n">dirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">thumb_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">thumb</span><span class="p">)</span>
+                <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">thumbnail</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">thumb_path</span><span class="p">)</span>
+                <span class="n">new_doc</span><span class="o">.</span><span class="n">thumbnail</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">thumb_path</span><span class="p">)</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">locked</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">locker</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">new_doc</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">parts</span> <span class="p">:</span>
+            <span class="c"># attach the given parts</span>
+            <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+                <span class="n">models</span><span class="o">.</span><span class="n">DocumentPartLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">,</span>
+                    <span class="n">document</span><span class="o">=</span><span class="n">new_ctrl</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;to </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">) &quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">new_ctrl</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">new_ctrl</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">new_ctrl</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">new_ctrl</span><span class="o">.</span><span class="n">revision</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;cloned&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_ctrl</span>
+</div>
+<div class="viewcode-block" id="DocumentController.has_links"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.has_links">[docs]</a>    <span class="k">def</span> <span class="nf">has_links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return true if the document is attached to at least one part.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_attached_parts</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DocumentController.publish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.publish">[docs]</a>    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">publish</span><span class="p">()</span>
+        <span class="c"># publish all thumbnails</span>
+        <span class="n">input_dir</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">THUMBNAILS_DIR</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="s">&quot;public&quot;</span><span class="p">,</span> <span class="s">&quot;thumbnails&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;thumbnail&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">),</span>
+                       <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="DocumentController.unpublish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.unpublish">[docs]</a>    <span class="k">def</span> <span class="nf">unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">unpublish</span><span class="p">()</span>
+        <span class="c"># unpublish all thumbnails</span>
+        <span class="n">input_dir</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">THUMBNAILS_DIR</span>
+        <span class="n">output_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="s">&quot;public&quot;</span><span class="p">,</span> <span class="s">&quot;thumbnails&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;thumbnail&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                <span class="k">pass</span>
+</div>
+    <span class="k">def</span> <span class="nf">_deprecate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_deprecate</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">doc_file</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_delete_old_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="n">ON_DEPRECATE_SELECTORS</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_fast_reindex_files</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reindexes associated document files. Called after a promote</span>
+<span class="sd">        or a demote to update the state_class field of each file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;pk&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">app_label</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span>
+            <span class="n">module_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span>
+            <span class="n">update_indexes</span><span class="o">.</span><span class="n">delay</span><span class="p">([(</span><span class="n">app_label</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">pk</span><span class="p">)</span> <span class="k">for</span> <span class="n">pk</span> <span class="ow">in</span> <span class="n">files</span><span class="p">],</span>
+                <span class="n">fast_reindex</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DocumentController.promote"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.promote">[docs]</a>    <span class="k">def</span> <span class="nf">promote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">promote</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fast_reindex_files</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">r</span>
+</div>
+<div class="viewcode-block" id="DocumentController.demote"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_document.html#plmapp.controllers.document.DocumentController.demote">[docs]</a>    <span class="k">def</span> <span class="nf">demote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">demote</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fast_reindex_files</span><span class="p">()</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

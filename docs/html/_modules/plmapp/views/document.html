@@ -1,0 +1,628 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.views.document &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/views/document.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.views.document</h1><div class="highlight"><pre>
+<span class="c">#-!- coding:utf-8 -!-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">mimetypes</span> <span class="kn">import</span> <span class="n">guess_type</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">Http404</span><span class="p">,</span>
+                        <span class="n">HttpResponseForbidden</span><span class="p">,</span>
+                        <span class="n">HttpResponseBadRequest</span><span class="p">,</span> <span class="n">StreamingHttpResponse</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_exempt</span><span class="p">,</span> <span class="n">csrf_protect</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">as</span> <span class="nn">forms</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils.archive</span> <span class="kn">import</span> <span class="n">ARCHIVE_FORMATS</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_obj</span><span class="p">,</span> <span class="n">get_obj_from_form</span><span class="p">,</span> <span class="n">get_id_card_data</span><span class="p">,</span>
+    <span class="n">get_obj_by_id</span><span class="p">,</span> <span class="n">handle_errors</span><span class="p">,</span> <span class="n">get_generic_data</span><span class="p">,</span>  <span class="n">secure_required</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">UserController</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">r2r</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.filehandlers.progressbarhandler</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ProgressBarUploadHandler</span><span class="p">,</span>
+    <span class="n">get_upload_suffix</span><span class="p">)</span>
+
+
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_parts"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.display_parts">[docs]</a><span class="k">def</span> <span class="nf">display_parts</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attached parts view.</span>
+
+<span class="sd">    That view displays the parts attached to the selected object that must be a document.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/parts/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`documents/parts.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``parts``</span>
+<span class="sd">        a queryset of :class:`.DocumentPartLink` bound to the document</span>
+
+<span class="sd">    ``parts_formset``</span>
+<span class="sd">        a formset to detach parts</span>
+
+<span class="sd">    ``forms``</span>
+<span class="sd">        a dictionary (link_id -&gt; form) to get the form related to a link</span>
+<span class="sd">        (a part may not be &quot;detachable&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;get_attached_parts&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;object must be a document&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_rel_part_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">update_rel_part</span><span class="p">(</span><span class="n">formset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_rel_part_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="n">rforms</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">form</span><span class="p">)</span> <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">forms</span><span class="p">)</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_attached_parts</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;parts&#39;</span><span class="p">,</span>
+                <span class="s">&#39;parts&#39;</span><span class="p">:</span> <span class="n">parts</span><span class="p">,</span>
+                <span class="s">&#39;forms&#39;</span> <span class="p">:</span> <span class="n">rforms</span><span class="p">,</span>
+                <span class="s">&#39;parts_formset&#39;</span><span class="p">:</span> <span class="n">formset</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;as_table&quot;</span><span class="p">):</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_id_card_data</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;documents/parts.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="add_part"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.add_part">[docs]</a><span class="k">def</span> <span class="nf">add_part</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to attach a part to a document.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/parts/add/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`documents/parts_add.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``add_part_form``</span>
+<span class="sd">        a form to attach a part (:class:`.AddPartForm`)</span>
+
+<span class="sd">    ``link_creation``</span>
+<span class="sd">        Set to True</span>
+
+<span class="sd">    ``attach``</span>
+<span class="sd">        set to (*obj*, &quot;attach_part&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">add_part_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddPartForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_part_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">part_obj</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">add_part_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">attach_to_part</span><span class="p">(</span><span class="n">part_obj</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;The part has been successfully attached to the document.&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;parts/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">add_part_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddPartForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;link_creation&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="s">&#39;add_part_form&#39;</span><span class="p">:</span> <span class="n">add_part_form</span><span class="p">,</span>
+                <span class="s">&#39;attach&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;attach_part&quot;</span><span class="p">)</span> <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;documents/parts_add.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="delete_part"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.delete_part">[docs]</a><span class="k">def</span> <span class="nf">delete_part</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to detach a part referred by the POST parameter ``plmobject``.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/parts/delete/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">part_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&quot;plmobject&quot;</span><span class="p">])</span>
+        <span class="n">part</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="n">part_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">detach_part</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;The part {part.type}/{part.reference}/{part.revision} has been detached.&quot;</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">part</span><span class="o">=</span><span class="n">part</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;parts/&quot;</span><span class="p">)</span>
+
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_files"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.display_files">[docs]</a><span class="k">def</span> <span class="nf">display_files</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Files view.</span>
+
+<span class="sd">    That view displays files of the given document.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/files/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`documents/files.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``file_formset``</span>
+<span class="sd">        a formset to remove files</span>
+
+<span class="sd">    ``archive_formats``</span>
+<span class="sd">        list of available archive formats</span>
+
+<span class="sd">    ``add_file_form``</span>
+<span class="sd">        form to add a file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;files&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;object must be a document&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">:</span>
+            <span class="c"># from a browser where js is disabled</span>
+            <span class="k">return</span> <span class="n">add_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_file_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">update_file</span><span class="p">(</span><span class="n">formset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_file_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="n">add_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">()</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;files&#39;</span><span class="p">,</span>
+                <span class="s">&#39;file_formset&#39;</span><span class="p">:</span> <span class="n">formset</span><span class="p">,</span>
+                <span class="s">&#39;archive_formats&#39;</span> <span class="p">:</span> <span class="n">ARCHIVE_FORMATS</span><span class="p">,</span>
+                <span class="s">&#39;deprecated_files&#39;</span> <span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">deprecated_files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">last_revision__isnull</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+                <span class="s">&#39;add_file_form&#39;</span><span class="p">:</span> <span class="n">add_file_form</span><span class="p">,</span>
+               <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;documents/files.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="upload_and_create"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.upload_and_create">[docs]</a><span class="k">def</span> <span class="nf">upload_and_create</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;You are not a contributor&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">:</span>
+            <span class="c"># from a browser where js is disabled</span>
+            <span class="k">return</span> <span class="n">add_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;User&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="s">&quot;-&quot;</span><span class="p">)</span>
+    <span class="n">add_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+                <span class="s">&#39;add_file_form&#39;</span><span class="p">:</span> <span class="n">add_file_form</span><span class="p">,</span>
+                <span class="s">&#39;object_reference&#39;</span><span class="p">:</span> <span class="s">&quot;-&quot;</span><span class="p">,</span>
+                <span class="s">&#39;object_type&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Upload&quot;</span><span class="p">),</span>
+               <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;users/files.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_get_redirect_url</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">added_files</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">UserController</span><span class="p">):</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_best_document_type</span><span class="p">(</span><span class="n">added_files</span><span class="p">)</span>
+        <span class="n">pfiles</span> <span class="o">=</span> <span class="s">&quot;&amp;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;pfiles=</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">f</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">added_files</span><span class="p">)</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s">&quot;/object/create/?type=</span><span class="si">%s</span><span class="s">&amp;</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">pfiles</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;files/&quot;</span>
+    <span class="k">return</span> <span class="n">url</span>
+
+<span class="nd">@csrf_protect</span>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;..&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="add_file"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.add_file">[docs]</a><span class="k">def</span> <span class="nf">add_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    That view displays the form to upload a file.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This view show a simple form (no javascript) and is here</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/files/add/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`documents/files_add_noscript.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``add_file_form``</span>
+<span class="sd">        form to add a file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">add_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_file_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">added_files</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">added_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="n">fkey</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">_get_redirect_url</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">added_files</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">obj_type</span> <span class="o">!=</span> <span class="s">&quot;User&quot;</span> <span class="ow">and</span> <span class="s">&#39;file_name&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+            <span class="n">f_name</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;file_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">has_standard_related_locked</span><span class="p">(</span><span class="n">f_name</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;true:Native file has a standard related locked file.&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;false:&quot;</span><span class="p">)</span>
+        <span class="n">add_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">obj_type</span> <span class="o">==</span> <span class="s">&quot;User&quot;</span><span class="p">:</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;object_reference&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;-&quot;</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;object_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Upload&quot;</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;object_menu&quot;</span><span class="p">]</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;add_file_form&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">add_file_form</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;documents/files_add_noscript.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@csrf_exempt</span>
+<div class="viewcode-block" id="up_file"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.up_file">[docs]</a><span class="k">def</span> <span class="nf">up_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This view process the file(s) upload.</span>
+
+<span class="sd">    The upload is done asynchronously.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/files/up/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    :post params:</span>
+<span class="sd">        files</span>
+<span class="sd">            uploaded files</span>
+
+<span class="sd">    :get params:</span>
+<span class="sd">        list of pair (filename, id)</span>
+
+<span class="sd">    The response contains &quot;failed&quot; if the submitted form is not valid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">upload_handlers</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ProgressBarUploadHandler</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">_up_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+</div>
+<span class="nd">@csrf_protect</span>
+<span class="nd">@handle_errors</span>
+<span class="k">def</span> <span class="nf">_up_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">add_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_file_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">added_files</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">fkey</span><span class="p">,</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">added_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="n">fkey</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">_get_redirect_url</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">added_files</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;failed&quot;</span><span class="p">)</span>
+
+
+<span class="nd">@handle_errors</span>
+<span class="nd">@csrf_protect</span>
+<div class="viewcode-block" id="up_progress"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.up_progress">[docs]</a><span class="k">def</span> <span class="nf">up_progress</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Show upload progress for a given progress_id</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/files/_up/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    :get params:</span>
+<span class="sd">        X-Progress-ID</span>
+<span class="sd">            progress id to search</span>
+
+<span class="sd">        f_size</span>
+<span class="sd">            size of the original file</span>
+
+<span class="sd">    The response contains the uploaded size and a status :</span>
+
+<span class="sd">        * waiting if the corresponding file has not been created yet</span>
+
+<span class="sd">        * writing if the file is being written</span>
+
+<span class="sd">        * linking if the size of the uploaded file equals the size of the original</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">suffix</span> <span class="o">=</span> <span class="n">get_upload_suffix</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;X-Progress-ID&#39;</span><span class="p">])</span>
+    <span class="n">tempdir</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">FILE_UPLOAD_TEMP_DIR</span> <span class="ow">or</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">()</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempdir</span><span class="p">,</span> <span class="s">&quot;*&quot;</span> <span class="o">+</span> <span class="n">suffix</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ret</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="s">&quot;0:waiting&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ret</span> <span class="o">==</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&#39;f_size&#39;</span><span class="p">]:</span>
+            <span class="n">ret</span> <span class="o">+=</span> <span class="s">&quot;:linking&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ret</span> <span class="o">+=</span> <span class="s">&quot;:writing&quot;</span>
+    <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+
+</div>
+<span class="nd">@csrf_exempt</span>
+<div class="viewcode-block" id="get_checkin_file"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.get_checkin_file">[docs]</a><span class="k">def</span> <span class="nf">get_checkin_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">file_id_value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Process to the checkin asynchronously in order to show progress</span>
+<span class="sd">    when the checked-in file is uploaded.</span>
+
+<span class="sd">    Calls :func:`.checkin_file` .</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">request</span><span class="o">.</span><span class="n">upload_handlers</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ProgressBarUploadHandler</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">checkin_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span><span class="n">file_id_value</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../..&quot;</span><span class="p">)</span>
+<span class="nd">@csrf_protect</span>
+<div class="viewcode-block" id="checkin_file"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.checkin_file">[docs]</a><span class="k">def</span> <span class="nf">checkin_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">file_id_value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage html page for the files (:class:`DocumentFile`) checkin in the selected object.</span>
+<span class="sd">    It computes a context dictionary based on</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    :param file_id_value: :attr:`.DocumentFile.id`</span>
+<span class="sd">    :type file_id_value: str</span>
+<span class="sd">    :return: a :class:`django.http.HttpResponse`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">checkin_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">checkin_file_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">checkin</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">file_id_value</span><span class="p">),</span>
+                        <span class="n">request</span><span class="o">.</span><span class="n">FILES</span><span class="p">[</span><span class="s">&quot;filename&quot;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;files/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">checkin_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;add_file_form&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">checkin_file_form</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;documents/files_add_noscript.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="file_revisions"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.file_revisions">[docs]</a><span class="k">def</span> <span class="nf">file_revisions</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">docfile_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to download a document file.</span>
+
+<span class="sd">    :param request: :class:`django.http.QueryDict`</span>
+<span class="sd">    :param docfile_id: :attr:`.DocumentFile.id`</span>
+<span class="sd">    :type docfile_id: str</span>
+<span class="sd">    :return: a :class:`django.http.HttpResponse`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">docfile_id</span><span class="p">)</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
+            <span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">revision</span><span class="p">)</span>
+    <span class="n">last_revision</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">last_revision</span> <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">last_revision</span> <span class="k">else</span> <span class="n">doc_file</span>
+    <span class="n">doc_files</span> <span class="o">=</span> <span class="n">last_revision</span><span class="o">.</span><span class="n">older_files</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-revision&quot;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;last_revision&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_revision</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;doc_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">doc_files</span>
+    <span class="n">checkin_file_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddFileForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;add_file_form&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">checkin_file_form</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;action&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">files/checkin/</span><span class="si">%d</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">,</span> <span class="n">last_revision</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;documents/file_revisions.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="checkout_file"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.checkout_file">[docs]</a><span class="k">def</span> <span class="nf">checkout_file</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">docfile_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage html page for the files (:class:`DocumentFile`) checkout from the selected object.</span>
+<span class="sd">    It locks the :class:`DocumentFile` and, after, calls :func:`.views.download`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    :param docfile_id: :attr:`.DocumentFile.id`</span>
+<span class="sd">    :type docfile_id_value: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">docfile_id</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">lock</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">docfile_id</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="download"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.download">[docs]</a><span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">docfile_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to download a document file.</span>
+
+<span class="sd">    :param request: :class:`django.http.QueryDict`</span>
+<span class="sd">    :param docfile_id: :attr:`.DocumentFile.id`</span>
+<span class="sd">    :type docfile_id: str</span>
+<span class="sd">    :return: a :class:`django.http.HttpResponse`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">docfile_id</span><span class="p">)</span>
+    <span class="n">ctrl</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">ctrl</span><span class="o">.</span><span class="n">check_readable</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">serve</span><span class="p">(</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span> <span class="s">&quot;view&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+
+</div>
+<span class="nd">@secure_required</span>
+<div class="viewcode-block" id="public_download"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.public_download">[docs]</a><span class="k">def</span> <span class="nf">public_download</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">docfile_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to download a published document file.</span>
+
+<span class="sd">    It returns an :class: `HttpResponseForbidden` if the document is</span>
+<span class="sd">    not published.</span>
+
+<span class="sd">    :param request: :class:`django.http.QueryDict`</span>
+<span class="sd">    :param docfile_id: :attr:`.DocumentFile.id`</span>
+<span class="sd">    :type docfile_id: str</span>
+<span class="sd">    :return: a :class:`django.http.HttpResponse`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">docfile_id</span><span class="p">)</span>
+    <span class="n">ctrl</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_authenticated</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">published</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">check_restricted_readable</span><span class="p">(</span><span class="bp">False</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">published</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">serve</span><span class="p">(</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="serve"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.document.serve">[docs]</a><span class="k">def</span> <span class="nf">serve</span><span class="p">(</span><span class="n">ctrl</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">,</span> <span class="s">&quot;ignore&quot;</span><span class="p">)</span>
+    <span class="n">content_type</span> <span class="o">=</span> <span class="n">guess_type</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">False</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">content_type</span><span class="p">:</span>
+        <span class="n">content_type</span> <span class="o">=</span> <span class="s">&#39;application/octet-stream&#39;</span>
+    <span class="n">f</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">get_content_and_size</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">StreamingHttpResponse</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="n">content_type</span><span class="p">)</span>
+    <span class="n">response</span><span class="p">[</span><span class="s">&quot;Content-Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">view</span><span class="p">:</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;attachment; filename=&quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="n">name</span>
+    <span class="k">return</span> <span class="n">response</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

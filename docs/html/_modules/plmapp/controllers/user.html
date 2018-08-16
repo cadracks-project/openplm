@@ -1,0 +1,559 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.controllers.user &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/controllers/user.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.controllers.user</h1><div class="highlight"><pre>
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains a class called :class:`UserController` which</span>
+<span class="sd">provides a controller for :class:`~django.contrib.auth.models.User`.</span>
+<span class="sd">This class is similar to :class:`.PLMObjectController` but some methods</span>
+<span class="sd">from :class:`.PLMObjectController` are not defined.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.db.models.fields</span> <span class="kn">import</span> <span class="n">FieldDoesNotExist</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sites.models</span> <span class="kn">import</span> <span class="n">Site</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">Context</span><span class="p">,</span> <span class="n">Template</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.tasks</span> <span class="kn">import</span> <span class="n">update_index</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">generate_password</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">PermissionError</span><span class="p">,</span> <span class="n">DeleteFileError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers.base</span> <span class="kn">import</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">permission_required</span>
+
+<span class="n">NEW_ACCOUNT_SUBJECT</span> <span class="o">=</span> <span class="s">u&quot;New account on OpenPLM&quot;</span>
+
+<div class="viewcode-block" id="UserController"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController">[docs]</a><span class="k">class</span> <span class="nc">UserController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Object used to manage a :class:`~django.contrib.auth.models.User` and store his</span>
+<span class="sd">    modification in a history</span>
+
+<span class="sd">    :attributes:</span>
+<span class="sd">        .. attribute:: object</span>
+
+<span class="sd">            The :class:`~django.contrib.auth.models.User` managed by the controller</span>
+
+<span class="sd">    :param obj: managed object</span>
+<span class="sd">    :type obj: an instance of :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">    :param user: user who modify *obj*</span>
+<span class="sd">    :type user: :class:`~django.contrib.auth.models.User`</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This class does not inherit from :class:`.PLMObjectController`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">HISTORY</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">UserHistory</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="n">Controller</span><span class="o">.</span><span class="n">__slots__</span> <span class="o">+</span> <span class="p">(</span><span class="s">&quot;creator&quot;</span><span class="p">,</span> <span class="s">&quot;owner&quot;</span><span class="p">,)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">no_index</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">UserController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="p">,</span> <span class="n">no_index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">creator</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">obj</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="UserController.load"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">User</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">reference</span><span class="p">),</span> <span class="n">user</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="UserController.get_verbose_name"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.get_verbose_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_verbose_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a verbose name for *attr_name*.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            &gt;&gt;&gt; ctrl.get_verbose_name(&quot;rank&quot;)</span>
+<span class="sd">            u&#39;role in PLM&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">FieldDoesNotExist</span><span class="p">:</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="p">{</span>
+                     <span class="s">&quot;rank&quot;</span> <span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;role in PLM&quot;</span><span class="p">),</span>
+                     <span class="s">&quot;creator&quot;</span> <span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;creator&quot;</span><span class="p">),</span>
+                     <span class="s">&quot;owner&quot;</span> <span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)}</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">names</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attr_name</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">item</span>
+</div>
+<div class="viewcode-block" id="UserController.update_from_form"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.update_from_form">[docs]</a>    <span class="k">def</span> <span class="nf">update_from_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Updates :attr:`object` from data of *form*</span>
+
+<span class="sd">        This method raises :exc:`ValueError` if *form* is invalid.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_update_data</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">new_avatar</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">previous_avatar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">avatar</span><span class="o">.</span><span class="n">path</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">avatar</span> <span class="k">else</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">:</span>
+                <span class="c"># to an user who has not yet logged in,</span>
+                <span class="c"># it is quite surprising to receive a mail saying something</span>
+                <span class="c"># has been modified</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">block_mails</span><span class="p">()</span>
+            <span class="n">need_save</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;username&quot;</span><span class="p">,</span> <span class="s">&quot;avatar&quot;</span><span class="p">):</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="n">need_save</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">avatar</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;avatar&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">avatar</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">avatar</span> <span class="o">=</span> <span class="n">avatar</span>
+                <span class="n">need_save</span> <span class="o">=</span> <span class="n">new_avatar</span> <span class="o">=</span> <span class="bp">True</span>
+
+            <span class="k">if</span> <span class="n">need_save</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">new_avatar</span> <span class="ow">and</span> <span class="n">previous_avatar</span><span class="p">:</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">previous_avatar</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;form is invalid&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="UserController.check_update_data"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.check_update_data">[docs]</a>    <span class="k">def</span> <span class="nf">check_update_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">PermissionError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c"># its sponsor has permission to edit this form</span>
+            <span class="c"># if the user has not yet logged in</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">delegator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                    <span class="n">delegatee</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SPONSOR</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">last_login</span> <span class="o">&gt;=</span> <span class="n">link</span><span class="o">.</span><span class="n">ctime</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+</div>
+<div class="viewcode-block" id="UserController.can_update_data"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.can_update_data">[docs]</a>    <span class="k">def</span> <span class="nf">can_update_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># for templates</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_update_data</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">PermissionError</span><span class="p">:</span>
+            <span class="n">can</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">can</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="n">can</span>
+</div>
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c"># we override this method to make it to modify *object* directly</span>
+        <span class="c"># (or its profile)</span>
+        <span class="c"># if we modify *object*, we records the modification in **_histo*</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">)</span>
+            <span class="n">profile</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">profile</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">attr</span><span class="p">))</span> <span class="ow">and</span> \
+           <span class="ow">not</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slots__</span><span class="p">:</span>
+            <span class="n">obj2</span> <span class="o">=</span> <span class="n">obj</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="k">else</span> <span class="n">profile</span>
+            <span class="n">old_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">obj2</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="c"># since x.verbose_name is a proxy methods, we need to get a real</span>
+            <span class="c"># unicode object (with capitalize)</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">obj2</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="o">.</span><span class="n">verbose_name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">old_value</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">message</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%(field)s</span><span class="s"> : changes from &#39;</span><span class="si">%(old)s</span><span class="s">&#39; to &#39;</span><span class="si">%(new)s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> \
+                        <span class="p">{</span><span class="s">&quot;field&quot;</span> <span class="p">:</span> <span class="n">field</span><span class="p">,</span> <span class="s">&quot;old&quot;</span> <span class="p">:</span> <span class="n">old_value</span><span class="p">,</span> <span class="s">&quot;new&quot;</span> <span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_histo</span> <span class="o">+=</span> <span class="n">message</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">UserController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="c"># we override this method to get attributes from *object* directly</span>
+        <span class="c"># (or its profile)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">)</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">profile</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">and</span> \
+           <span class="ow">not</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slots__</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">attr</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__slots__</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+<div class="viewcode-block" id="UserController.save"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_history</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Saves :attr:`object` and records its history in the database.</span>
+<span class="sd">        If *with_history* is False, the history is not recorded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">UserController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">with_history</span><span class="p">)</span>
+        <span class="n">update_index</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="s">&quot;auth&quot;</span><span class="p">,</span> <span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="UserController.has_permission"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.has_permission">[docs]</a>    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="UserController.get_object_user_links"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.get_object_user_links">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_user_links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all :class:`.Part` attached to :attr:`object`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plmobjectuserlink_user</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</div>
+    <span class="nd">@permission_required</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">)</span>
+<div class="viewcode-block" id="UserController.delegate"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.delegate">[docs]</a>    <span class="k">def</span> <span class="nf">delegate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delegates role *role* to *user*.</span>
+
+<span class="sd">        Possible values for *role* are:</span>
+<span class="sd">            ``&#39;notified&#39;``</span>
+<span class="sd">                valid for all users</span>
+<span class="sd">            ``&#39;owner&#39;``</span>
+<span class="sd">                valid only for contributors and administrators</span>
+<span class="sd">            :samp:``&#39;sign_{x}_level&#39;``</span>
+<span class="sd">                valid only for contributors and administrators</span>
+<span class="sd">            ``&#39;sign*&#39;``</span>
+<span class="sd">                valid only for contributors and administrators, means all sign</span>
+<span class="sd">                roles that :attr:`object` has.</span>
+
+<span class="sd">        :raise: :exc:`.PermissionError` if *user* can not have the role *role*</span>
+<span class="sd">        :raise: :exc:`ValueError` if *user* is :attr:`object`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad delegatee (self)&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;User account is inactive&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;A restricted account can not delegate a right&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> can not have role </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_viewer</span> <span class="ow">and</span> <span class="n">role</span> <span class="o">!=</span> <span class="s">&#39;notified&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> can not have role </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_viewer</span> <span class="ow">and</span> <span class="n">role</span> <span class="o">!=</span> <span class="s">&#39;notified&#39;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> can not have role </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">role</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s">&quot;sign*&quot;</span><span class="p">:</span>
+            <span class="n">qset</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                        <span class="n">role__startswith</span><span class="o">=</span><span class="s">&quot;sign_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="s">&quot;role&quot;</span><span class="p">)</span>
+            <span class="n">roles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">role</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">qset</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">roles</span> <span class="o">=</span> <span class="p">[</span><span class="n">role</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">roles</span><span class="p">:</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">delegator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                        <span class="n">delegatee</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%(delegator)s</span><span class="s"> delegated the role </span><span class="si">%(role)s</span><span class="s"> to </span><span class="si">%(delegatee)s</span><span class="s">&quot;</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">details</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span> <span class="n">delegator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                                 <span class="n">delegatee</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">ACTION_NAME</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+</div>
+    <span class="nd">@permission_required</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">)</span>
+<div class="viewcode-block" id="UserController.remove_delegation"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.remove_delegation">[docs]</a>    <span class="k">def</span> <span class="nf">remove_delegation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delegation_link</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes a delegation (*delegation_link*). The delegator must be</span>
+<span class="sd">        :attr:`object`, otherwise a :exc:`ValueError` is raised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">delegation_link</span><span class="o">.</span><span class="n">delegator</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not the delegator of </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">))</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%(delegator)s</span><span class="s"> removed his delegation for the role </span><span class="si">%(role)s</span><span class="s"> to </span><span class="si">%(delegatee)s</span><span class="s">&quot;</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="n">details</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">delegation_link</span><span class="o">.</span><span class="n">role</span><span class="p">,</span> <span class="n">delegator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                                 <span class="n">delegatee</span><span class="o">=</span><span class="n">delegation_link</span><span class="o">.</span><span class="n">delegatee</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">ACTION_NAME</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+        <span class="n">delegation_link</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="UserController.get_user_delegation_links"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.get_user_delegation_links">[docs]</a>    <span class="k">def</span> <span class="nf">get_user_delegation_links</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns all delegatees of :attr:`object`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">delegationlink_delegator</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;role&quot;</span><span class="p">,</span> <span class="s">&quot;delegatee__username&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="UserController.get_sponsor_subject"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.get_sponsor_subject">[docs]</a>    <span class="k">def</span> <span class="nf">get_sponsor_subject</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_user</span><span class="p">):</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;NEW_ACCOUNT_SUBJECT&quot;</span><span class="p">,</span> <span class="n">NEW_ACCOUNT_SUBJECT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Template</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">Context</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">new_user</span><span class="o">=</span><span class="n">new_user</span><span class="p">,</span> <span class="n">sponsor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)))</span>
+</div>
+    <span class="nd">@permission_required</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">)</span>
+<div class="viewcode-block" id="UserController.sponsor"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.sponsor">[docs]</a>    <span class="k">def</span> <span class="nf">sponsor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_user</span><span class="p">,</span> <span class="n">is_contributor</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">restricted</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_contributor</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">is_contributor</span> <span class="ow">and</span> <span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;An restricted account can not be a contributor account&quot;</span><span class="p">)</span>
+        <span class="n">email</span> <span class="o">=</span> <span class="n">new_user</span><span class="o">.</span><span class="n">email</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># checks *email*</span>
+            <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">RESTRICT_EMAIL_TO_DOMAINS</span><span class="p">:</span>
+                <span class="c"># i don&#39;t know if a domain can contains a &#39;@&#39;</span>
+                <span class="n">domain</span> <span class="o">=</span> <span class="n">email</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s">&quot;@&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">domain</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Site</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;domain&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Email&#39;s domain not valid&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c"># restriction disabled if the setting is not set</span>
+            <span class="k">pass</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">generate_password</span><span class="p">()</span>
+        <span class="n">new_user</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">new_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">new_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span> <span class="o">=</span> <span class="n">is_contributor</span>
+        <span class="n">new_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span> <span class="o">=</span> <span class="n">restricted</span>
+        <span class="n">new_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="p">(</span><span class="n">delegator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">delegatee</span><span class="o">=</span><span class="n">new_user</span><span class="p">,</span>
+                <span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SPONSOR</span><span class="p">)</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;new_user&quot;</span> <span class="p">:</span> <span class="n">new_user</span><span class="p">,</span>
+                <span class="s">&quot;sponsor&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                <span class="s">&quot;password&quot;</span> <span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+               <span class="p">}</span>
+        <span class="n">update_index</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="s">&quot;auth&quot;</span><span class="p">,</span> <span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">new_user</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_mail</span><span class="p">(</span><span class="n">send_mail</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sponsor_subject</span><span class="p">(</span><span class="n">new_user</span><span class="p">),</span> <span class="p">[</span><span class="n">new_user</span><span class="p">],</span>
+                <span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;mails/new_account&quot;</span><span class="p">)</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">UserHistory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s">&quot;Create&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                <span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s">&quot;New user: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">new_user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">UserHistory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">action</span><span class="o">=</span><span class="s">&quot;Create&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                <span class="n">plmobject</span><span class="o">=</span><span class="n">new_user</span><span class="p">,</span> <span class="n">details</span><span class="o">=</span><span class="s">&quot;Account created&quot;</span><span class="p">)</span>
+</div>
+    <span class="nd">@permission_required</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">)</span>
+<div class="viewcode-block" id="UserController.resend_sponsor_mail"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.resend_sponsor_mail">[docs]</a>    <span class="k">def</span> <span class="nf">resend_sponsor_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_user</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">delegator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                <span class="n">delegatee</span><span class="o">=</span><span class="n">new_user</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SPONSOR</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You did not sponsored </span><span class="si">%s</span><span class="s">&quot;</span>
+                    <span class="o">%</span> <span class="n">new_user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="c"># checks that new_user did not logged on openPLM to not</span>
+        <span class="c"># reset its password</span>
+        <span class="k">if</span> <span class="n">new_user</span><span class="o">.</span><span class="n">last_login</span> <span class="o">&gt;=</span> <span class="n">link</span><span class="o">.</span><span class="n">ctime</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Can not resend a sponsor mail:&quot;</span>
+                    <span class="s">&quot;</span><span class="si">%s</span><span class="s"> has already logged on openPLM&quot;</span> <span class="o">%</span> <span class="n">new_user</span><span class="p">)</span>
+        <span class="c"># generate a new password</span>
+        <span class="n">password</span> <span class="o">=</span> <span class="n">generate_password</span><span class="p">()</span>
+        <span class="n">new_user</span><span class="o">.</span><span class="n">set_password</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
+        <span class="n">new_user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># send a mail</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;new_user&quot;</span> <span class="p">:</span> <span class="n">new_user</span><span class="p">,</span>
+                <span class="s">&quot;sponsor&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                <span class="s">&quot;password&quot;</span> <span class="p">:</span> <span class="n">password</span><span class="p">,</span>
+               <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_mail</span><span class="p">(</span><span class="n">send_mail</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sponsor_subject</span><span class="p">(</span><span class="n">new_user</span><span class="p">),</span> <span class="p">[</span><span class="n">new_user</span><span class="p">],</span>
+                <span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;mails/new_account&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="UserController.check_readable"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.check_readable">[docs]</a>    <span class="k">def</span> <span class="nf">check_readable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">raise_</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not see this user account&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="UserController.add_file"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.add_file">[docs]</a>    <span class="k">def</span> <span class="nf">add_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds private file *f*. *f* should be a :class:`~django.core.files.File`</span>
+<span class="sd">        with an attribute *name* (like an :class:`UploadedFile`).</span>
+
+<span class="sd">        :return: the :class:`.PrivateFile` created.</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">        :raises: :exc:`ValueError` if the file size is superior to</span>
+<span class="sd">                 :attr:`settings.MAX_FILE_SIZE`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_contributor</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">and</span> <span class="n">f</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;File too big, max size : </span><span class="si">%d</span><span class="s"> bytes&quot;</span> <span class="o">%</span> <span class="n">settings</span><span class="o">.</span><span class="n">MAX_FILE_SIZE</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">SEEK_END</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">doc_file</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PrivateFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+                        <span class="nb">file</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">docfs</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span><span class="n">f</span><span class="p">),</span> <span class="n">creator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="c"># set read only file</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="mo">0400</span><span class="p">)</span>
+        <span class="c"># no history!</span>
+        <span class="k">return</span> <span class="n">doc_file</span>
+</div>
+<div class="viewcode-block" id="UserController.delete_file"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.delete_file">[docs]</a>    <span class="k">def</span> <span class="nf">delete_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes *doc_file*, the file attached to *doc_file* is physically</span>
+<span class="sd">        removed.</span>
+
+<span class="sd">        :exceptions raised:</span>
+<span class="sd">            * :exc:`ValueError` if *doc_file*.creator is not self.object</span>
+<span class="sd">            * :exc:`plmapp.exceptions.DeleteFileError` if *doc_file* is</span>
+<span class="sd">              locked</span>
+<span class="sd">            * :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+
+<span class="sd">        :param doc_file: the file to be deleted</span>
+<span class="sd">        :type doc_file: :class:`.PrivateFile`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">creator</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Not your file&quot;</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">DOCUMENTS_DIR</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">DeleteFileError</span><span class="p">(</span><span class="s">&quot;Bad path : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">chmod</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="mo">0700</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">doc_file</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="UserController.update_file"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_user.html#plmapp.controllers.user.UserController.update_file">[docs]</a>    <span class="k">def</span> <span class="nf">update_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formset</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Updates uploaded file informations with data from *formset*</span>
+
+<span class="sd">        :param formset:</span>
+<span class="sd">        :type formset: a modelfactory_formset of</span>
+<span class="sd">                        :class:`~plmapp.forms.ModifyFileForm`</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">              :attr:`object`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                <span class="n">creator</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;creator&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">creator</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not your file&quot;</span><span class="p">)</span>
+                <span class="n">delete</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;delete&quot;</span><span class="p">]</span>
+                <span class="n">filename</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;id&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

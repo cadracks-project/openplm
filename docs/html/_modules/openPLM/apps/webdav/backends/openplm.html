@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.webdav.backends.openplm &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../../index.html" />
+    <link rel="up" title="openPLM.apps.webdav.backends" href="../backends.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../backends.html" accesskey="U">openPLM.apps.webdav.backends</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../../index.html">
+              <img class="logo" src="../../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/webdav/backends/openplm.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.webdav.backends.openplm</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">openPLM.webdav application</span>
+<span class="sd">Copyright 2012 LinObject</span>
+
+<span class="sd">Mostly inspired by webdav/backends/filesystem.py from:</span>
+<span class="sd">    django-webdav is a small WebDAV implementation for Django.</span>
+<span class="sd">    Copyright 2012 Peter Gebauer</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">xml.etree.ElementTree</span> <span class="kn">import</span> <span class="n">Element</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.core.files</span> <span class="kn">import</span> <span class="n">File</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.util</span> <span class="kn">import</span> <span class="n">format_http_datetime</span><span class="p">,</span> <span class="n">format_iso8601_datetime</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">Backend</span><span class="p">,</span> <span class="n">BackendItem</span><span class="p">,</span> <span class="n">PropertySet</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">BackendIOException</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">BackendResourceNotFoundException</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">get_all_documents</span><span class="p">,</span> <span class="n">Document</span><span class="p">,</span> <span class="n">DocumentFile</span><span class="p">,</span> <span class="n">docfs</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="n">get_obj</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;webdav&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="rfc3339_date"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.rfc3339_date">[docs]</a><span class="k">def</span> <span class="nf">rfc3339_date</span><span class="p">(</span><span class="n">date</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">date</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">):</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">date</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=-</span><span class="n">time</span><span class="o">.</span><span class="n">timezone</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">daylight</span><span class="p">:</span>
+        <span class="n">date</span> <span class="o">+=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">altzone</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&#39;%Y-%m-</span><span class="si">%d</span><span class="s">T%H:%M:%SZ&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="safe_copyfileobj"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.safe_copyfileobj">[docs]</a><span class="k">def</span> <span class="nf">safe_copyfileobj</span><span class="p">(</span><span class="n">fsrc</span><span class="p">,</span> <span class="n">fdst</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">16</span><span class="o">*</span><span class="mi">1024</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A version of shutil.copyfileobj that will not read more than &#39;size&#39; bytes.</span>
+<span class="sd">    This makes it safe from clients sending more than CONTENT_LENGTH bytes of</span>
+<span class="sd">    data in the body.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c"># from  django/core/handlers/wsgi.py</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">size</span><span class="p">:</span>
+        <span class="k">return</span>
+    <span class="k">while</span> <span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">buf</span> <span class="o">=</span> <span class="n">fsrc</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">size</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">buf</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">fdst</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+        <span class="n">size</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend">[docs]</a><span class="k">class</span> <span class="nc">OpenPLMBackend</span><span class="p">(</span><span class="n">Backend</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements a backend to browse/edit documents/files stored by openPLM.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+
+<div class="viewcode-block" id="OpenPLMBackend.get_doc"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.get_doc">[docs]</a>    <span class="k">def</span> <span class="nf">get_doc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">),</span> <span class="n">p</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">,</span> <span class="n">p</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_propfind"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_propfind">[docs]</a>    <span class="k">def</span> <span class="nf">dav_propfind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">property_list</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ctrl</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">now</span> <span class="o">=</span> <span class="n">now</span>
+
+        <span class="n">files</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="s">&quot;size&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s">&quot;locked&quot;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;locker&quot;</span> <span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+                  <span class="s">&quot;filename&quot;</span> <span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;is_dir&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&quot;ctime&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,</span>  <span class="s">&quot;mtime&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,}</span> <span class="p">]</span>
+        <span class="k">if</span> <span class="n">ctrl</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">depth</span> <span class="o">!=</span> <span class="s">&quot;0&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">filenames</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">get_all_documents</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">get_all_documents</span><span class="p">():</span>
+                    <span class="k">raise</span> <span class="n">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">qs</span> <span class="o">=</span> <span class="n">Document</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">filenames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">qs</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">t</span><span class="p">,</span> <span class="n">ref</span> <span class="o">=</span> <span class="n">p</span>
+                <span class="n">qs</span> <span class="o">=</span> <span class="n">Document</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;revision&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="n">filenames</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">qs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">filenames</span><span class="p">:</span>
+                    <span class="c"># in that case, it is not possible to have an empty folder</span>
+                    <span class="k">raise</span> <span class="n">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+                <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&quot;size&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span> <span class="s">&quot;locked&quot;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;locker&quot;</span> <span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+                    <span class="s">&quot;filename&quot;</span> <span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;is_dir&quot;</span> <span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">&quot;ctime&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,</span>  <span class="s">&quot;mtime&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,})</span>
+        <span class="k">elif</span> <span class="n">ctrl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">check_readable</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">p</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">df</span> <span class="o">=</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">except</span> <span class="n">DocumentFile</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span> <span class="p">{</span><span class="s">&quot;size&quot;</span><span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="s">&quot;locked&quot;</span> <span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">locked</span><span class="p">,</span> <span class="s">&quot;locker&quot;</span> <span class="p">:</span> <span class="n">df</span><span class="o">.</span><span class="n">locker</span><span class="p">,</span>
+                    <span class="s">&quot;filename&quot;</span> <span class="p">:</span> <span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;is_dir&quot;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">,</span> <span class="s">&quot;ctime&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,</span>  <span class="s">&quot;mtime&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,}]</span>
+
+            <span class="k">elif</span> <span class="n">depth</span> <span class="o">!=</span> <span class="s">&quot;0&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">f</span><span class="p">[</span><span class="s">&quot;is_dir&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">st</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">docfs</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s">&quot;file&quot;</span><span class="p">]))</span>
+                        <span class="n">f</span><span class="p">[</span><span class="s">&quot;ctime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">st_ctime</span><span class="p">)</span>
+                        <span class="n">f</span><span class="p">[</span><span class="s">&quot;mtime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">st</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+                        <span class="n">f</span><span class="p">[</span><span class="s">&quot;ctime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&quot;mtime&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">now</span>
+                    <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">props_ok</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">props_not_found</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">property_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}getcontentlength&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">f</span><span class="p">[</span><span class="s">&quot;is_dir&quot;</span><span class="p">]:</span>
+                        <span class="n">props_ok</span><span class="p">[</span><span class="s">&quot;{DAV:}getcontentlength&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="s">&quot;size&quot;</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}getlastmodified&quot;</span><span class="p">:</span>
+                    <span class="n">props_ok</span><span class="p">[</span><span class="s">&quot;{DAV:}getlastmodified&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">format_http_datetime</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s">&quot;mtime&quot;</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}creationdate&quot;</span><span class="p">:</span>
+                    <span class="n">props_ok</span><span class="p">[</span><span class="s">&quot;{DAV:}creationdate&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rfc3339_date</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s">&quot;ctime&quot;</span><span class="p">])</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}resourcetype&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="s">&quot;is_dir&quot;</span><span class="p">]:</span>
+                        <span class="n">props_ok</span><span class="p">[</span><span class="s">&quot;{DAV:}resourcetype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}collection&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">props_ok</span><span class="p">[</span><span class="s">&quot;{DAV:}resourcetype&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}checked-in&quot;</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}checked-out&quot;</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{http://apache.org/dav/props/}executable&quot;</span><span class="p">:</span>
+                    <span class="n">props_ok</span><span class="p">[</span><span class="s">&quot;{http://apache.org/dav/props/}executable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}supportedlock&quot;</span><span class="p">:</span>
+                    <span class="n">lockentries</span> <span class="o">=</span> <span class="p">[</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}lockentry&quot;</span><span class="p">),</span>
+                                   <span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}lockentry&quot;</span><span class="p">)]</span>
+                    <span class="n">scope</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}lockscope&quot;</span><span class="p">)</span>
+                    <span class="n">scope</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}exclusive&quot;</span><span class="p">))</span>
+                    <span class="n">lockentries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+                    <span class="n">type_</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}locktype&quot;</span><span class="p">)</span>
+                    <span class="n">type_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}write&quot;</span><span class="p">))</span>
+                    <span class="n">lockentries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
+                    <span class="n">scope</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}lockscope&quot;</span><span class="p">)</span>
+                    <span class="n">scope</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}shared&quot;</span><span class="p">))</span>
+                    <span class="n">lockentries</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+                    <span class="n">type_</span> <span class="o">=</span> <span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}locktype&quot;</span><span class="p">)</span>
+                    <span class="n">type_</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Element</span><span class="p">(</span><span class="s">&quot;{DAV:}write&quot;</span><span class="p">))</span>
+                    <span class="n">lockentries</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
+                    <span class="n">props_ok</span><span class="p">[</span><span class="s">&quot;{DAV:}supportedlock&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lockentries</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}displayname&quot;</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}ishidden&quot;</span><span class="p">:</span>
+                    <span class="n">props_ok</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">elif</span> <span class="n">prop</span> <span class="o">==</span> <span class="s">&quot;{DAV:}getcontenttype&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="s">&quot;is_dir&quot;</span><span class="p">]:</span>
+                        <span class="n">props_ok</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;httpd/unix-directory&quot;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;unsupported property &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="o">%</span><span class="n">prop</span><span class="p">)</span>
+                    <span class="n">props_not_found</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+
+            <span class="n">f</span> <span class="o">=</span> <span class="n">BackendItem</span><span class="p">(</span>
+                <span class="n">f</span><span class="p">[</span><span class="s">&quot;filename&quot;</span><span class="p">],</span>
+                <span class="n">f</span><span class="p">[</span><span class="s">&quot;is_dir&quot;</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">PropertySet</span><span class="p">(</span><span class="n">props_ok</span><span class="p">),</span>
+                 <span class="n">PropertySet</span><span class="p">(</span><span class="n">props_not_found</span><span class="p">,</span> <span class="s">&quot;404 Not Found&quot;</span><span class="p">)]</span>
+                <span class="p">)</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;returned contents of directory &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="o">%</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_set_properties"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_set_properties">[docs]</a>    <span class="k">def</span> <span class="nf">dav_set_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">properties</span><span class="p">):</span>
+        <span class="c"># TODO: really implement this method</span>
+        <span class="c"># dummy implementation required by the Windows client</span>
+        <span class="k">return</span> <span class="p">[]</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_remove_properties"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_remove_properties">[docs]</a>    <span class="k">def</span> <span class="nf">dav_remove_properties</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">property_names</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_mkcol"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_mkcol">[docs]</a>    <span class="k">def</span> <span class="nf">dav_mkcol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_get"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_get">[docs]</a>    <span class="k">def</span> <span class="nf">dav_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">check_readable</span><span class="p">()</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">f</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">get_content_and_size</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;opened file &#39;</span><span class="si">%s</span><span class="s">&#39; for reading&quot;</span><span class="o">%</span><span class="n">p</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">f</span>
+        <span class="k">except</span> <span class="ne">IOError</span><span class="p">,</span> <span class="n">ioe</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BackendIOException</span><span class="p">(</span><span class="n">ioe</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_head"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_head">[docs]</a>    <span class="k">def</span> <span class="nf">dav_head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">ctrl</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ctrl</span><span class="p">:</span>
+            <span class="n">ctrl</span><span class="o">.</span><span class="n">check_readable</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="n">BackendResourceNotFoundException</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_delete"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_delete">[docs]</a>    <span class="k">def</span> <span class="nf">dav_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span><span class="p">:</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">delete_file</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="k">raise</span> <span class="n">BackendIOException</span><span class="p">(</span><span class="s">&quot;Can not delete a directory&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_put"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_put">[docs]</a>    <span class="k">def</span> <span class="nf">dav_put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">readable</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">estimated_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_doc</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">and</span> <span class="n">p</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">BackendIOException</span><span class="p">()</span>
+            <span class="n">tmpdir</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">FILE_UPLOAD_TEMP_DIR</span>
+            <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s">&quot;r+w&quot;</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="n">tmpdir</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;opened file &#39;</span><span class="si">%s</span><span class="s">&#39; for writing&quot;</span><span class="o">%</span><span class="n">p</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">readable</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="k">while</span> <span class="n">data</span><span class="p">:</span>
+                    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                    <span class="n">data</span> <span class="o">=</span> <span class="n">readable</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">f2</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;rb&quot;</span><span class="p">),</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">d</span><span class="o">.</span><span class="n">checkin</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">f2</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">d</span><span class="o">.</span><span class="n">add_file</span><span class="p">(</span><span class="n">f2</span><span class="p">)</span>
+                <span class="k">return</span>
+
+        <span class="k">raise</span> <span class="n">BackendIOException</span><span class="p">(</span><span class="s">&quot;Can not add a file&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_copy"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_copy">[docs]</a>    <span class="k">def</span> <span class="nf">dav_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path1</span><span class="p">,</span> <span class="n">path2</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_move"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_move">[docs]</a>    <span class="k">def</span> <span class="nf">dav_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path1</span><span class="p">,</span> <span class="n">path2</span><span class="p">,</span> <span class="n">token1</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">token2</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_lock"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_lock">[docs]</a>    <span class="k">def</span> <span class="nf">dav_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_unlock"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_unlock">[docs]</a>    <span class="k">def</span> <span class="nf">dav_unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">owner</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="OpenPLMBackend.dav_get_lock"><a class="viewcode-back" href="../../../../../devel/applications/webdav/backends_openplm.html#openPLM.apps.webdav.backends.openplm.OpenPLMBackend.dav_get_lock">[docs]</a>    <span class="k">def</span> <span class="nf">dav_get_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../backends.html" >openPLM.apps.webdav.backends</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

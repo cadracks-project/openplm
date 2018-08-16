@@ -1,0 +1,403 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.3.5. document3D.STP_converter_WebGL — models for openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.3. Document3D" href="index.html" />
+    <link rel="next" title="6.3.6. document3D.generate3D — models for openPLM" href="generate3D.html" />
+    <link rel="prev" title="6.3.4. document3D.arborescense — models for openPLM" href="arborescense.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="generate3D.html" title="6.3.6. document3D.generate3D — models for openPLM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="arborescense.html" title="6.3.4. document3D.arborescense — models for openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="arborescense.html"
+                        title="previous chapter">6.3.4. <tt class="docutils literal"><span class="pre">document3D.arborescense</span></tt> &#8212; models for openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="generate3D.html"
+                        title="next chapter">6.3.6. <tt class="docutils literal"><span class="pre">document3D.generate3D</span></tt> &#8212; models for openPLM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/document3D/STP_converter_WebGL.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/document3D/STP_converter_WebGL.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="document3d-stp-converter-webgl-models-for-openplm">
+<h1>6.3.5. <tt class="xref py py-mod docutils literal"><span class="pre">document3D.STP_converter_WebGL</span></tt> &#8212; models for openPLM<a class="headerlink" href="#document3d-stp-converter-webgl-models-for-openplm" title="Permalink to this headline">¶</a></h1>
+<p>Habla sobre los modelos</p>
+<span class="target" id="module-openPLM.apps.document3D.STP_converter_WebGL"></span><dl class="class">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.StepImporter">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.STP_converter_WebGL.</tt><tt class="descname">StepImporter</tt><big>(</big><em>file_path</em>, <em>id=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#StepImporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.StepImporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>file_path</strong> &#8211; Path of the file <strong>.stp</strong> to analyzing</li>
+<li><strong>id</strong> &#8211; For the generation of the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>, <strong>id</strong> is assigned like product.doc_id for every node of <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>. For the generation of the files of geometry <strong>.geo</strong>, <strong>id</strong> , together with an index generated by the class, are used to identify the content of every file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Generates from a path of <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> <strong>.stp</strong>:</p>
+<p>-A set of files <strong>.geo</strong> that represents the geometry of the different simple products that are useful to realize the visualization 3D across the web browser.</p>
+<p>-A structure of information that represents the arborescencse of the different assemblies,represented in a  <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> . (Including his spatial location and orientation and his label of reference (<tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt>))</p>
+<p>This class is invoked from three different subprocesses related to the functionality of pythonOCC(generate3D.py , generateComposition.py , generateDecomposition.py).</p>
+<dl class="method">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.StepImporter.compute_geometries">
+<tt class="descname">compute_geometries</tt><big>(</big><em>root_path</em>, <em>pov_dir</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#StepImporter.compute_geometries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.StepImporter.compute_geometries" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>root_path</strong> &#8211; Path where to store the files <strong>.geo</strong> generated</td>
+</tr>
+</tbody>
+</table>
+<p>When we generate a new <a class="reference internal" href="#openPLM.apps.document3D.STP_converter_WebGL.StepImporter" title="openPLM.apps.document3D.STP_converter_WebGL.StepImporter"><tt class="xref py py-class docutils literal"><span class="pre">StepImporter</span></tt></a> we will refill a list(<strong>shapes_simples</strong>) whit the <a class="reference internal" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape" title="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape"><tt class="xref py py-class docutils literal"><span class="pre">SimpleShape</span></tt></a> contained in the file <strong>.stp</strong></p>
+<p>For each <a class="reference internal" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape" title="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape"><tt class="xref py py-class docutils literal"><span class="pre">SimpleShape</span></tt></a> in the list <strong>shapes_simples</strong>:</p>
+<blockquote>
+<div>We call the method <tt class="xref py py-func docutils literal"><span class="pre">write_geometries()</span></tt> to generate a file <strong>.geo</strong> representative of its geometry,the content of the file is identified by the index+1 (&gt;0) of the position of the <a class="reference internal" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape" title="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape"><tt class="xref py py-class docutils literal"><span class="pre">SimpleShape</span></tt></a> in the list of <strong>SimpleShapes</strong>  and by the attribue id of <a class="reference internal" href="#openPLM.apps.document3D.STP_converter_WebGL.StepImporter" title="openPLM.apps.document3D.STP_converter_WebGL.StepImporter"><tt class="xref py py-class docutils literal"><span class="pre">StepImporter</span></tt></a></div></blockquote>
+<p>Returns the list of the path of the generated <strong>.geo</strong> files</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.StepImporter.generate_product_arbre">
+<tt class="descname">generate_product_arbre</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#StepImporter.generate_product_arbre"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.StepImporter.generate_product_arbre" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> relative to the assemblies of the file <strong>.stp</strong>, for every node of the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> it includes a label (<tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt>) that represents and identifies the node , openPLM can only work whit a single root <strong>.stp</strong> files</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.STP_converter_WebGL.</tt><tt class="descname">SimpleShape</tt><big>(</big><em>name</em>, <em>TopoDS_Shape</em>, <em>color</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#SimpleShape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class used to represent a simple shape geometry (not assembly)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of geometry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape.TopoDS_Shape">
+<tt class="descname">TopoDS_Shape</tt><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape.TopoDS_Shape" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-class docutils literal"><span class="pre">OCC.TopoDS.TopoDS_Shape</span></tt> that contains the geometry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape.color">
+<tt class="descname">color</tt><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape.color" title="Permalink to this definition">¶</a></dt>
+<dd><p><tt class="xref py py-class docutils literal"><span class="pre">OCC.Quantity.Quantity_Color</span></tt> that contains information about color of geometry</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.expand_product">
+<tt class="descclassname">openPLM.apps.document3D.STP_converter_WebGL.</tt><tt class="descname">expand_product</tt><big>(</big><em>shape_tool</em>, <em>product</em>, <em>shapes_simples</em>, <em>deep</em>, <em>doc_id</em>, <em>product_root</em>, <em>product_id</em>, <em>file_path</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#expand_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.expand_product" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>shape_tool</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">OCC.XCAFDoc.XCAFDoc_ShapeTool</span></tt></li>
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that will be expanded</li>
+<li><strong>shapes_simples</strong> &#8211; list of <a class="reference internal" href="#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape" title="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape"><tt class="xref py py-class docutils literal"><span class="pre">SimpleShape</span></tt></a></li>
+<li><strong>deep</strong> &#8211; Depth of the node that we explore</li>
+<li><strong>doc_id</strong> &#8211; id that references a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> of which we are generating the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a></li>
+<li><strong>product_root</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> root of the arborescense</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>We are going to expand a <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> (<strong>product</strong>) from the <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt> who identifies it (<strong>product</strong>.label_reference)</p>
+<p>If the <strong>product</strong> is an assembly:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">We generate the <strong>list</strong> of the <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt> that define it</p>
+</li>
+<li><p class="first">for each <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt> in <strong>list</strong>:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">We generate a new <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">document3D.classes.Link</span></tt></a>  or if two or more <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt> of the list are partner, add an occurrence extra to the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">document3D.classes.Link</span></tt></a> that already was generated</p>
+</li>
+<li><p class="first">The <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">document3D.classes.Link</span></tt></a> is going to point at a new <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> or, if the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> is already present in <strong>product_root</strong>, at the already definite product</p>
+</li>
+<li><p class="first">If the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">document3D.classes.Link</span></tt></a> pointed at a new <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> we need to expand it</p>
+<blockquote>
+<div><ul class="simple">
+<li>The atribute <strong>label_reference</strong> of the new <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> should be the <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt></li>
+<li>We expand the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> in a recursive call of method</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+<p>Else the <strong>product</strong> is a simple shape:</p>
+<blockquote>
+<div><ul class="simple">
+<li>We look in the list of <strong>shapes_simples</strong> for his partner</li>
+<li>We set the attribute <strong>product</strong>.geometry like the index+1 (&gt;0) of the position of his partner in the list of <strong>SimpleShape</strong></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.get_matrix">
+<tt class="descclassname">openPLM.apps.document3D.STP_converter_WebGL.</tt><tt class="descname">get_matrix</tt><big>(</big><em>location</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#get_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.get_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts <em>location</em> in an array ([x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4])</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="8%" />
+<col width="15%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>x1</td>
+<td>x2</td>
+<td>x3</td>
+<td>x4</td>
+<td>x</td>
+<td>=</td>
+<td>x&#8217;</td>
+</tr>
+<tr class="row-even"><td>y1</td>
+<td>y2</td>
+<td>y3</td>
+<td>y4</td>
+<td>y</td>
+<td>=</td>
+<td>y&#8217;</td>
+</tr>
+<tr class="row-odd"><td>z1</td>
+<td>z2</td>
+<td>z3</td>
+<td>z4</td>
+<td>z</td>
+<td>=</td>
+<td>z&#8217;</td>
+</tr>
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>=</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location</strong> (<tt class="xref py py-class docutils literal"><span class="pre">OCC.TopLoc.TopLoc_Location</span></tt>) &#8211; location</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.get_label_name">
+<tt class="descclassname">openPLM.apps.document3D.STP_converter_WebGL.</tt><tt class="descname">get_label_name</tt><big>(</big><em>lab</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#get_label_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.get_label_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the name of a <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt> (<strong>lab</strong>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>lab</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.set_label_name">
+<tt class="descclassname">openPLM.apps.document3D.STP_converter_WebGL.</tt><tt class="descname">set_label_name</tt><big>(</big><em>label</em>, <em>name</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#set_label_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.set_label_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the name of a <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt> (<strong>label</strong>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt></li>
+<li><strong>name</strong> &#8211; new name for a <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.STP_converter_WebGL.find_color">
+<tt class="descclassname">openPLM.apps.document3D.STP_converter_WebGL.</tt><tt class="descname">find_color</tt><big>(</big><em>label</em>, <em>color_tool</em>, <em>shape_tool</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/STP_converter_WebGL.html#find_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.STP_converter_WebGL.find_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the color of a <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt> (<strong>label</strong>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>label</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">OCC.TDF.TDF_Label</span></tt></li>
+<li><strong>shape_tool</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">OCC.XCAFDoc.XCAFDoc_ShapeTool</span></tt></li>
+<li><strong>color_tool</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">OCC.XCAFDoc.XCAFDoc_ColorTool</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="generate3D.html" title="6.3.6. document3D.generate3D — models for openPLM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="arborescense.html" title="6.3.4. document3D.arborescense — models for openPLM"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

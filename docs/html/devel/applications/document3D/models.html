@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.3.1. document3D.models — models for openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.3. Document3D" href="index.html" />
+    <link rel="next" title="6.3.2. document3D.classes — models for openPLM" href="classes.html" />
+    <link rel="prev" title="6.3. Document3D" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="classes.html" title="6.3.2. document3D.classes — models for openPLM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6.3. Document3D"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">6.3. Document3D</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="classes.html"
+                        title="next chapter">6.3.2. <tt class="docutils literal docutils literal"><span class="pre">document3D.classes</span></tt> &#8212; models for openPLM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/document3D/models.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/document3D/models.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-openPLM.apps.document3D.models">
+<span id="document3d-models-models-for-openplm"></span><h1>6.3.1. <tt class="xref py py-mod docutils literal"><span class="pre">document3D.models</span></tt> &#8212; models for openPLM<a class="headerlink" href="#module-openPLM.apps.document3D.models" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="openPLM.apps.document3D.models.Document3D">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">Document3D</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.document.Document</span></tt></a></p>
+<p>Model which allows to treat <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> <strong>.stp</strong>  attached to  <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> for his later <strong>visualization</strong> and <strong>decomposition</strong>. It extends <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> with the attribute/tab 3D</p>
+<blockquote>
+<div><dl class="attribute">
+<dt id="openPLM.apps.document3D.models.Document3D.PartDecompose">
+<tt class="descname">PartDecompose</tt><a class="headerlink" href="#openPLM.apps.document3D.models.Document3D.PartDecompose" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> has been <em>decomposed</em>, <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> from which we generate the <strong>decomposition</strong></p>
+</dd></dl>
+
+</div></blockquote>
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.models.Document3D.menu_items">
+<tt class="descname">menu_items</tt><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3D.menu_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3D.menu_items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Tab 3D</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.document3D.models.Document3D.get_content_and_size">
+<tt class="descname">get_content_and_size</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3D.get_content_and_size"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3D.get_content_and_size" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_file</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> which contains the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+<p>Returns the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> related to the  <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>doc_file</strong>) and his <em>size</em></p>
+<p>If the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> contains in the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>doc_file</strong>) is a <strong>.stp</strong> and was <em>decomposed</em> , this function calls a subprocess( <tt class="xref py py-meth docutils literal"><span class="pre">composer()</span></tt> ) to rebuild the .stp <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.models.Document3D.documents_related">
+<tt class="descname">documents_related</tt><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3D.documents_related"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3D.documents_related" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> has been decomposed, it returns a list with all the <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> that form part of the decomposition,
+and for every <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> for ONLY ONE level of depth</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.models.generate_relations_BD">
+<tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">generate_relations_BD</tt><big>(</big><em>doc_file</em>, <em>temp_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#generate_relations_BD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.generate_relations_BD" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function used when we add a new <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> <strong>.stp</strong> in a <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a>
+This function associates a series of files with classes <a class="reference internal" href="#openPLM.apps.document3D.models.ArbreFile" title="openPLM.apps.document3D.models.ArbreFile"><tt class="xref py py-class docutils literal"><span class="pre">ArbreFile</span></tt></a> and <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a>
+and this classes to a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>. The files were generated before the call to this function,
+their paths are known thanks to the information supplied in the temporary file(Every line of this file represents
+a file, the beginning of every line indicates the type of file)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>doc_file</strong> &#8211; object which will be updated</li>
+<li><strong>temp_file</strong> &#8211; <tt class="xref py py-class docutils literal"><span class="pre">tempfile</span></tt> that contains the path of the generated <strong>.geo</strong> and <strong>.arb</strong> files</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.models.Document3DController">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">Document3DController</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3DController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3DController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.controllers.document.DocumentController</span></tt></p>
+<p>A <tt class="xref py py-class docutils literal"><span class="pre">DocumentController</span></tt> which manages
+<a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a></p>
+<p>It provides methods to deprecate and to manage (<strong>visualization3D</strong> and <strong>decomposition</strong>)files STEP.</p>
+<dl class="method">
+<dt id="openPLM.apps.document3D.models.Document3DController.handle_added_file">
+<tt class="descname">handle_added_file</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3DController.handle_added_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3DController.handle_added_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>If a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> .stp is set like the file of a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>doc_file</strong>) added to a <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> , a special treatment (<tt class="xref py py-meth docutils literal"><span class="pre">handle_step_file()</span></tt>) is begun (Only one file STEP allowed for each <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> )</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.document3D.models.Document3DController.delete_file">
+<tt class="descname">delete_file</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3DController.delete_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3DController.delete_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>We erase also the classes <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a> and <a class="reference internal" href="#openPLM.apps.document3D.models.ArbreFile" title="openPLM.apps.document3D.models.ArbreFile"><tt class="xref py py-class docutils literal"><span class="pre">ArbreFile</span></tt></a> associated with the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>doc_file</strong>)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.document3D.models.Document3DController.deprecate_file">
+<tt class="descname">deprecate_file</tt><big>(</big><em>doc_file</em>, <em>by_decomposition=False</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3DController.deprecate_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3DController.deprecate_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>A file can be depreciated for diverse motives, (when a file STEP is decomposed,
+when exists a native file associate to one file STEP and we realize a brute check-out of the STEP , the native will be deprecated , ...)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_file</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> which will be deprecated</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.document3D.models.Document3DController.get_product">
+<tt class="descname">get_product</tt><big>(</big><em>doc_file</em>, <em>recursive=False</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Document3DController.get_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Document3DController.get_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> associated to <em>doc_file</em>.
+If <em>recursive</em> is True, it returns a complet product, built by browsing
+the BOM of the attached part, if it has been decomposed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.models.GeometryFile">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">GeometryFile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#GeometryFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.GeometryFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Link between <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that contains a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> <strong>.stp</strong> present in a <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> and a file <strong>.geo</strong> that represents his geometry
+A <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> can have zero or many <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a> associated , to identify the different <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a> attached to one <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> we use the
+attribute index. (<strong>index</strong> should be <strong>&gt;=1</strong>)</p>
+<p>The information contained in the file <strong>.geo</strong> will allow to generate the  3D view of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></p>
+<blockquote>
+<div><dl class="attribute">
+<dt id="openPLM.apps.document3D.models.GeometryFile.stp">
+<tt class="descname">stp</tt><a class="headerlink" href="#openPLM.apps.document3D.models.GeometryFile.stp" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> of relation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.models.GeometryFile.file">
+<tt class="descname">file</tt><a class="headerlink" href="#openPLM.apps.document3D.models.GeometryFile.file" title="Permalink to this definition">¶</a></dt>
+<dd><p>file <strong>.geo</strong></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.models.GeometryFile.index">
+<tt class="descname">index</tt><a class="headerlink" href="#openPLM.apps.document3D.models.GeometryFile.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>to identify the different <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a> attached to one <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>  (&gt;=1)</p>
+</dd></dl>
+
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.models.delete_GeometryFiles">
+<tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">delete_GeometryFiles</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#delete_GeometryFiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.delete_GeometryFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Physically deletes (<em>.geo</em> files) and logically deletes <tt class="xref py py-class docutils literal"><span class="pre">GeometryFiles</span></tt> associated
+to <em>doc_file</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_file</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.models.ArbreFile">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">ArbreFile</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#ArbreFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.ArbreFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.db.models.base.Model</span></tt></p>
+<p>Link between <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that contains a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> <strong>.stp</strong> present in a <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> and  a file <strong>.arb</strong> that represents his arborescense
+A <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STEP have one <a class="reference internal" href="#openPLM.apps.document3D.models.ArbreFile" title="openPLM.apps.document3D.models.ArbreFile"><tt class="xref py py-class docutils literal"><span class="pre">ArbreFile</span></tt></a> associated</p>
+<p>The information contained in the file <strong>.arb</strong> will allow to generate the  3D view and the decomposition of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></p>
+<blockquote>
+<div><dl class="attribute">
+<dt id="openPLM.apps.document3D.models.ArbreFile.stp">
+<tt class="descname">stp</tt><a class="headerlink" href="#openPLM.apps.document3D.models.ArbreFile.stp" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> of relation</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.models.ArbreFile.file">
+<tt class="descname">file</tt><a class="headerlink" href="#openPLM.apps.document3D.models.ArbreFile.file" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> <strong>.arb</strong></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.models.ArbreFile.decomposable">
+<tt class="descname">decomposable</tt><a class="headerlink" href="#openPLM.apps.document3D.models.ArbreFile.decomposable" title="Permalink to this definition">¶</a></dt>
+<dd><p>this attribute indicates if the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> can be decompose</p>
+</dd></dl>
+
+</div></blockquote>
+<dl class="classmethod">
+<dt id="openPLM.apps.document3D.models.ArbreFile.create_from_product">
+<em class="property">classmethod </em><tt class="descname">create_from_product</tt><big>(</big><em>product</em>, <em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#ArbreFile.create_from_product"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.ArbreFile.create_from_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new ArbreFile from product. Its content is seririalized to
+a new <em>..arb</em> file.</p>
+<p>Returns the created ArbreFile.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.models.delete_ArbreFile">
+<tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">delete_ArbreFile</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#delete_ArbreFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.delete_ArbreFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Erase physical (file <strong>.arb</strong>) and logically the <a class="reference internal" href="#openPLM.apps.document3D.models.ArbreFile" title="openPLM.apps.document3D.models.ArbreFile"><tt class="xref py py-class docutils literal"><span class="pre">ArbreFile</span></tt></a> associated with a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>doc_file</strong>)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_file</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.models.Location_link">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">Location_link</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#Location_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.Location_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.models.link.ParentChildLinkExtension</span></tt></a></p>
+<p>Extend <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension" title="openPLM.plmapp.models.link.ParentChildLinkExtension"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkExtension</span></tt></a>
+Represents the matrix of transformation (rotation and translation) and the name of one relation between assemblies.
+When a file STEP is decomposed in Parts a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> is generated between the Parts
+and each of these <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> could have attached one or more <a class="reference internal" href="#openPLM.apps.document3D.models.Location_link" title="openPLM.apps.document3D.models.Location_link"><tt class="xref py py-class docutils literal"><span class="pre">Location_link</span></tt></a></p>
+<p>Defines a non-persistent transformation in 3D space</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="8%" />
+<col width="15%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>x1</td>
+<td>x2</td>
+<td>x3</td>
+<td>x4</td>
+<td>x</td>
+<td>=</td>
+<td>x&#8217;</td>
+</tr>
+<tr class="row-even"><td>y1</td>
+<td>y2</td>
+<td>y3</td>
+<td>y4</td>
+<td>y</td>
+<td>=</td>
+<td>y&#8217;</td>
+</tr>
+<tr class="row-odd"><td>z1</td>
+<td>z2</td>
+<td>z3</td>
+<td>z4</td>
+<td>z</td>
+<td>=</td>
+<td>z&#8217;</td>
+</tr>
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>=</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.models.generate_extra_location_links">
+<tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">generate_extra_location_links</tt><big>(</big><em>link</em>, <em>pcl</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#generate_extra_location_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.generate_extra_location_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates all <a class="reference internal" href="#openPLM.apps.document3D.models.Location_link" title="openPLM.apps.document3D.models.Location_link"><tt class="xref py py-class docutils literal"><span class="pre">Location_link</span></tt></a> bound to <em>link and *pcl</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>link</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Link" title="openPLM.apps.document3D.classes.Link"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.document3D.classes.Link</span></tt></a> which will be used to create <a class="reference internal" href="#openPLM.apps.document3D.models.Location_link" title="openPLM.apps.document3D.models.Location_link"><tt class="xref py py-class docutils literal"><span class="pre">Location_link</span></tt></a></li>
+<li><strong>ParentChildLink</strong> &#8211; Parent child link that is extended</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.models.update_root_BD">
+<tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">update_root_BD</tt><big>(</big><em>new_stp_file</em>, <em>stp_file</em>, <em>ctrl</em>, <em>product</em>, <em>file</em>, <em>name</em>, <em>part</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#update_root_BD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.update_root_BD" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>stp_file</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that was decomposed (will be deprecated)</li>
+<li><strong>new_stp_file</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that will replace the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that was decomposed</li>
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents the arborescense of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that was decomposed</li>
+<li><strong>part</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> attached to the <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> that contains the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that was decomposed</li>
+<li><strong>ctrl</strong> &#8211; <a class="reference internal" href="#openPLM.apps.document3D.models.Document3DController" title="openPLM.apps.document3D.models.Document3DController"><tt class="xref py py-class docutils literal"><span class="pre">Document3DController</span></tt></a> that contains the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> that was decomposed</li>
+<li><strong>file</strong> &#8211; <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> that contains the new file .stp root</li>
+<li><strong>name</strong> &#8211; name for the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (new_stp_file)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Updates a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>stp_file</strong>) that was used like root in a decomposition , deprecating it and replacing by a new <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>new_stp_file</strong>)</p>
+<p>This update consists in:</p>
+<blockquote>
+<div><p>Connect the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>new_stp_file</strong>) to the <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> (<strong>ctrl.object</strong>)</p>
+<p>Generate a new <a class="reference internal" href="#openPLM.apps.document3D.models.ArbreFile" title="openPLM.apps.document3D.models.ArbreFile"><tt class="xref py py-class docutils literal"><span class="pre">ArbreFile</span></tt></a> for the <strong>new_stp_file</strong> (<strong>product</strong>.doc_id and <strong>product</strong>.doc_path related to the <strong>new_stp_file</strong>)</p>
+<p>Fix the attribute PartDecompose of the <a class="reference internal" href="#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> (<strong>ctrl</strong>.object) to the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> (<strong>part</strong>)</p>
+<p>Deprecate the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>stp_file</strong>)</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.models.update_child_files_BD">
+<tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">update_child_files_BD</tt><big>(</big><em>product</em>, <em>user</em>, <em>old_product</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#update_child_files_BD"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.update_child_files_BD" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents a sub-arborescense of the file <strong>.stp</strong> that was decomposed UPDATE whit the news doc_id and doc_path generating in the bomb-child</li>
+<li><strong>old_product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents a sub-arborescense ORIGINAL of the file <strong>.stp</strong> that was decomposed</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Updates a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STEP that WAS NOT root in a decomposition, to know which <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> to update we use the attribute <strong>product</strong>.doc_id of the arborescense(<strong>product</strong>)</p>
+<p>This update consists in:</p>
+<blockquote>
+<div><p>Generate a new <a class="reference internal" href="#openPLM.apps.document3D.models.ArbreFile" title="openPLM.apps.document3D.models.ArbreFile"><tt class="xref py py-class docutils literal"><span class="pre">ArbreFile</span></tt></a> for each  <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STEP present in the arborescense(<strong>product</strong>)</p>
+<p>Generate news <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a> for the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STEP (Copies of the GeometryFiles of the root <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (Identified for <strong>old_product</strong>.doc_id))</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.models.copy_geometry">
+<tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">copy_geometry</tt><big>(</big><em>product</em>, <em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#copy_geometry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.copy_geometry" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents a sub-arborescense original of the file step that was decompose</li>
+<li><strong>doc_file</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> for which the files <strong>.geo</strong> that generated</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Copy the content of all <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a> (determined by his index(<strong>product</strong>.geometry)) present in the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> (<strong>product</strong>) and his childrens  for a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>doc_file</strong>) generating and connecting news entitys <a class="reference internal" href="#openPLM.apps.document3D.models.GeometryFile" title="openPLM.apps.document3D.models.GeometryFile"><tt class="xref py py-class docutils literal"><span class="pre">GeometryFile</span></tt></a></p>
+<p>To differentiate the content of a file <strong>.geo</strong> we use the combination index (determined by <strong>product</strong>.geometry) more id (<strong>product</strong>.doc_id)</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.models.handle_step_file">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">handle_step_file</tt><big>(</big><em>doc_file_pk</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#handle_step_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.handle_step_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a proxy to an object that has not yet been evaulated.</p>
+<p><tt class="xref py py-class docutils literal"><span class="pre">Proxy</span></tt> will evaluate the object each time, while the
+promise will only evaluate it once.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.models.decomposer_all">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.models.</tt><tt class="descname">decomposer_all</tt><big>(</big><em>stp_file_pk</em>, <em>arbre</em>, <em>part_pk</em>, <em>native_related_pk</em>, <em>user_pk</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/models.html#decomposer_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.models.decomposer_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a proxy to an object that has not yet been evaulated.</p>
+<p><tt class="xref py py-class docutils literal"><span class="pre">Proxy</span></tt> will evaluate the object each time, while the
+promise will only evaluate it once.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="classes.html" title="6.3.2. document3D.classes — models for openPLM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6.3. Document3D"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

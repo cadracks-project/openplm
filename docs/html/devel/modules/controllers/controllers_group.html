@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1.7. controllers.group — Controllers for groups &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.1. controllers — Controllers" href="../controllers.html" />
+    <link rel="next" title="5.1.8. controllers.part — Controllers for parts" href="controllers_part.html" />
+    <link rel="prev" title="5.1.6. controllers.document — Controllers for documents" href="controllers_document.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_part.html" title="5.1.8. controllers.part — Controllers for parts"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="controllers_document.html" title="5.1.6. controllers.document — Controllers for documents"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" accesskey="U">5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="controllers_document.html"
+                        title="previous chapter">5.1.6. <tt class="docutils literal docutils literal docutils literal"><span class="pre">controllers.document</span></tt> &#8212; Controllers for documents</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controllers_part.html"
+                        title="next chapter">5.1.8. <tt class="docutils literal"><span class="pre">controllers.part</span></tt> &#8212; Controllers for parts</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/controllers/controllers_group.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/controllers/controllers_group.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.controllers.group">
+<span id="controllers-group-controllers-for-groups"></span><h1>5.1.7. <tt class="xref py py-mod docutils literal"><span class="pre">controllers.group</span></tt> &#8212; Controllers for groups<a class="headerlink" href="#module-plmapp.controllers.group" title="Permalink to this headline">¶</a></h1>
+<p>This module contains a class called <a class="reference internal" href="#plmapp.controllers.group.GroupController" title="plmapp.controllers.group.GroupController"><tt class="xref py py-class docutils literal"><span class="pre">GroupController</span></tt></a> which
+provides a controller for <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">Group</span></tt></a>.
+This class is similar to <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> but some methods
+from <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> are not defined.</p>
+<dl class="class">
+<dt id="plmapp.controllers.group.GroupController">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.group.</tt><tt class="descname">GroupController</tt><big>(</big><em>obj</em>, <em>user</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.controllers.base.Controller</span></tt></p>
+<p>Object used to manage a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">Group</span></tt></a> and store his
+modification in a history</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes :</th><td class="field-body"><dl class="first attribute">
+<dt id="plmapp.controllers.group.GroupController.object">
+<tt class="descname">object</tt><a class="headerlink" href="#plmapp.controllers.group.GroupController.object" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">Group</span></tt></a> managed by the controller</p>
+</dd></dl>
+
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>obj</strong> (an instance of <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">Group</span></tt></a>) &#8211; managed object</li>
+<li><strong>user</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.Group" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">Group</span></tt></a>) &#8211; user who modify <em>obj</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class does not inherit from <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a>.</p>
+</div>
+<dl class="attribute">
+<dt id="plmapp.controllers.group.GroupController.HISTORY">
+<tt class="descname">HISTORY</tt><a class="headerlink" href="#plmapp.controllers.group.GroupController.HISTORY" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">GroupHistory</span></tt></p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.group.GroupController.create">
+<em class="property">classmethod </em><tt class="descname">create</tt><big>(</big><em>name</em>, <em>description</em>, <em>user</em>, <em>data={}</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.create"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.create" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.group.GroupController.create_from_form">
+<em class="property">classmethod </em><tt class="descname">create_from_form</tt><big>(</big><em>form</em>, <em>user</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.create_from_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.create_from_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a <tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt> from <em>form</em> and associates <em>user</em>
+as the creator/owner of the PLMObject.</p>
+<p>This method raises <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>form</em> is invalid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>form</strong> &#8211; a django form associated to a model</li>
+<li><strong>user</strong> &#8211; user who creates/owns the object</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.group.GroupController.load">
+<em class="property">classmethod </em><tt class="descname">load</tt><big>(</big><em>type</em>, <em>reference</em>, <em>revision</em>, <em>user</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.has_permission">
+<tt class="descname">has_permission</tt><big>(</big><em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.has_permission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.has_permission" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.update_users">
+<tt class="descname">update_users</tt><big>(</big><em>formset</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.update_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.update_users" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates users with data from <em>formset</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formset</strong> (a formset_factory of
+<a class="reference internal" href="../forms.html#plmapp.forms.ModifyUserForm" title="plmapp.forms.ModifyUserForm"><tt class="xref py py-class docutils literal"><span class="pre">ModifyUserForm</span></tt></a>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.group.GroupController.object" title="plmapp.controllers.group.GroupController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.add_user">
+<tt class="descname">add_user</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.add_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.add_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permission required: <cite>owner</cite></p>
+<p>Asks <em>user</em> to join the group.</p>
+<p>An email is sent to <em>user</em> so that he can validate its inscription.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if user&#8217;s email is empty.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.ask_to_join">
+<tt class="descname">ask_to_join</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.ask_to_join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.ask_to_join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asks to join the group.</p>
+<p>An email is sent to the group&#8217;s owner so that he can validate the
+inscription.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the owner&#8217;s email is empty.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.accept_invitation">
+<tt class="descname">accept_invitation</tt><big>(</big><em>invitation</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.accept_invitation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.accept_invitation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Accepts an invitation.</p>
+<p>If the owner sent <em>invitation</em>, it checks that <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is the
+guest and adds him to the group.</p>
+<p>If the guest sent <em>invitation</em>, it checks that <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is the
+owner and adds the guest to the group.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.send_invitation_to_owner">
+<tt class="descname">send_invitation_to_owner</tt><big>(</big><em>invitation</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.send_invitation_to_owner"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.send_invitation_to_owner" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a mail to the owner asking him to accept the invitation
+to join the group.</p>
+<p>This method can be called to resend an invitation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the invitation&#8217;s state is not
+<tt class="xref py py-attr docutils literal"><span class="pre">Invitation.PENDING</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.send_invitation_to_guest">
+<tt class="descname">send_invitation_to_guest</tt><big>(</big><em>invitation</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.send_invitation_to_guest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.send_invitation_to_guest" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a mail to the guest asking him to accept the invitation
+to join the group.</p>
+<p>This method can be called to resend an invitation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the invitation&#8217;s state is not
+<tt class="xref py py-attr docutils literal"><span class="pre">Invitation.PENDING</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.refuse_invitation">
+<tt class="descname">refuse_invitation</tt><big>(</big><em>invitation</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.refuse_invitation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.refuse_invitation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Refuses an invitation.</p>
+<p>If the owner sent <em>invitation</em>, it checks that <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is the
+guest and <em>invitation</em> is marked as refused.</p>
+<p>If the guest sent <em>invitation</em>, it checks that <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is the
+owner and <em>invitation</em> is marked as refused.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.save">
+<tt class="descname">save</tt><big>(</big><em>with_history=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves <a class="reference internal" href="#plmapp.controllers.group.GroupController.object" title="plmapp.controllers.group.GroupController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> and records its history in the database.
+If <em>with_history</em> is False, the history is not recorded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.get_attached_parts">
+<tt class="descname">get_attached_parts</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.get_attached_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.get_attached_parts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.get_attached_documents">
+<tt class="descname">get_attached_documents</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.get_attached_documents"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.get_attached_documents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.group.GroupController.check_readable">
+<tt class="descname">check_readable</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/group.html#GroupController.check_readable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.group.GroupController.check_readable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">object</tt></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_part.html" title="5.1.8. controllers.part — Controllers for parts"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="controllers_document.html" title="5.1.6. controllers.document — Controllers for documents"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" >5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

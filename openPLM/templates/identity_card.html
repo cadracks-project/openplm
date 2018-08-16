@@ -1,0 +1,60 @@
+{% load i18n plmapp_tags highlight humanize %}
+
+{% is_object_readable %}
+<div class="identity_card ic-{{type}} {% if not is_object_readable and suffix_url != "public/" %}unreadable{% endif %}">
+    {% if detach_objects %}
+        <div class="detach-form">
+            <form method="POST" action="./delete/">{% csrf_token %}
+                <input type="hidden" name="plmobject" value="{{object.id}}"/>
+                <button type="submit" class="tb-btn tb-btn-mini"><i class="tb-icon-remove icon-remove"></i> {%trans "Detach" %}</button>
+            </form>
+        </div>
+    {% endif %}
+    {% if not hide_links %}
+        {% if is_object_readable or suffix_url == "public/" %}
+            <a href="{% block object_url %}{{object.plmobject_url}}{{ suffix_url }}{% endblock %}">
+            {% endif %}
+        {% endif %}
+
+        <div class="id_title">
+            {% block id_title %}
+                <p>
+                <span class="type">{{object.type}}</span>
+                <br/>
+                <span class="reference">{{object.reference}}</span>
+                <span class="tb-pull-right revision">{{object.revision}}</span>
+                </p>
+            {% endblock %}
+        </div>
+        <div class="id_thumbnail">
+            {% block thumbnail %}
+                <div class="id_thumbnail_inner">
+                    <img src="{% block thumbnail_url %}{% endblock %}"/>
+                </div>
+            {% endblock %}
+        </div>
+        <div class="id_details">
+
+            {% block id_details %}
+                <p>
+                <span class="name">{{object.name}}</span>
+                </p>
+                <p>
+                <span class="state">{{object.state_id}}</span>
+                </p>
+                {% if sort == "recently-added" and not restricted %}
+                    <p>
+                    <span class="sort">
+                        {% blocktrans with object.ctime|naturaltime as ctime %}created {{ctime}}{% endblocktrans %}
+                    </span>
+                    </p>
+                {% endif %}
+            {% endblock %}
+        </div>
+        {% if not hide_links %}
+            {% if is_object_readable or suffix_url == "public/" %}
+            </a>
+        {% endif %}
+    {% endif %}
+</div>
+

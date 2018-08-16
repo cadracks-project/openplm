@@ -1,0 +1,83 @@
+{% load i18n plmapp_tags %}
+<div>
+    <table class="Content">
+        <thead>
+            <tr class="Content">
+                {% if display_group %}
+                    <th class="Content"> {% trans "Group" %} </th>
+                {% endif %}
+                <th class="Content"> {% trans "Username" %} </th>
+                <th class="Content"> {% trans "First name" %} </th>
+                <th class="Content"> {% trans "Last name" %} </th>
+                <th class="Content"> {% trans "Date of the invitation" %} </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for inv in pending_invitations %}
+                <tr class="Content">
+                    {% if display_group %}
+                        <td class="Content">
+                            <a href="{{ inv.group.plmobject_url }}">
+                                {{ inv.group.name }}
+                            </a>
+                        </td>
+                    {% endif %}
+                    {% with inv.guest as guest %}
+                        <td class="Content"> 
+                            <a href="/user/{{guest.username|urlencode }}/">
+                                {{ guest.username }}
+                            </a>
+                        </td>
+                        <td class="Content"> {{ guest.first_name }} </td>
+                        <td class="Content"> {{ guest.last_name }} </td>
+                    {% endwith %}
+                    <td class="Content"> {{ inv.ctime|date:"r" }} </td>
+                    {# allow valid user to resend the invitation #}
+                    {% if inv.guest_asked and inv.guest == user or not inv.guest_asked and inv.owner == user%}
+                        <td class="Content">
+                            <form method="POST" action=
+                            {% if prefix %}
+                            "{{inv.group.plmobject_url}}invitation/send/{{inv.pk}}/"
+                            {% else %}
+                            "../invitation/send/{{inv.pk}}/"
+                            {% endif %}
+                            >{% csrf_token %}
+                                <input type="submit" name="Send"
+                                class="tb-btn"
+                                value="{% trans "Resend" %}"/>
+                            </form>
+                        </td>
+                    {% endif %}
+                    {# allow valid user to accept/refuse the invitation #}
+                    {% if inv.guest_asked and inv.owner == user or not inv.guest_asked and inv.guest == user %}
+                        <td class="Content">
+                            <a href=
+                            {% if prefix %}
+                            "{{inv.group.plmobject_url}}invitation/accept/{{inv.pk}}/" 
+                            {% else %}
+                            "../invitation/accept/{{inv.pk}}/" 
+                            {% endif %}
+                            class="tb-btn" >
+                                <span class="ui-button-text">{% trans "Accept" %}</span>
+                            </a>
+                        </td>
+                        <td class="Content">
+                            <a href=
+                            {% if prefix %}
+                            "{{inv.group.plmobject_url}}invitation/refuse/{{inv.pk}}/" 
+                            {% else %}
+                            "../invitation/refuse/{{inv.pk}}/"
+                            {% endif %}
+                             class="tb-btn" >
+                                <span class="ui-button-text">{% trans "Refuse" %}</span>
+                            </a>
+                        </td>
+                    {% endif %}
+
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+

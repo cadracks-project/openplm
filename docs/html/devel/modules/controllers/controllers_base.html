@@ -1,0 +1,339 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1.5. controllers.base — Base class for controllers &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.1. controllers — Controllers" href="../controllers.html" />
+    <link rel="next" title="5.1.6. controllers.document — Controllers for documents" href="controllers_document.html" />
+    <link rel="prev" title="5.1. controllers — Controllers" href="../controllers.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_document.html" title="5.1.6. controllers.document — Controllers for documents"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../controllers.html" title="5.1. controllers — Controllers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" accesskey="U">5.1. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../controllers.html"
+                        title="previous chapter">5.1. <tt class="docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controllers_document.html"
+                        title="next chapter">5.1.6. <tt class="docutils literal"><span class="pre">controllers.document</span></tt> &#8212; Controllers for documents</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/controllers/controllers_base.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/controllers/controllers_base.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.controllers.base">
+<span id="controllers-base-base-class-for-controllers"></span><h1>5.1.5. <tt class="xref py py-mod docutils literal"><span class="pre">controllers.base</span></tt> &#8212; Base class for controllers<a class="headerlink" href="#module-plmapp.controllers.base" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.controllers.base.MetaController">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.base.</tt><tt class="descname">MetaController</tt><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#MetaController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.MetaController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">type</span></tt></p>
+<p>Metaclass used to register a controller and get a controller associated
+to a type (see <a class="reference internal" href="#plmapp.controllers.base.get_controller" title="plmapp.controllers.base.get_controller"><tt class="xref py py-meth docutils literal"><span class="pre">get_controller()</span></tt></a>).</p>
+<p>See <a class="reference internal" href="../controllers.html#how-to-add-a-controller"><em>How to add a controller</em></a> for more explanations.</p>
+<dl class="attribute">
+<dt id="plmapp.controllers.base.MetaController.controllers_dict">
+<tt class="descname">controllers_dict</tt><em class="property"> = {}</em><a class="headerlink" href="#plmapp.controllers.base.MetaController.controllers_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict&lt;type_name(str) : Controller(like <tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt>)&gt;</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.base.MetaController.get_controller">
+<em class="property">classmethod </em><tt class="descname">get_controller</tt><big>(</big><em>type_name</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#MetaController.get_controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.MetaController.get_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the controller (subclass of <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a>)
+associated to <em>type_name</em> (a string).</p>
+<p>For example, <tt class="docutils literal"><span class="pre">get_controller(&quot;Part&quot;)</span></tt> will return the class
+<a class="reference internal" href="controllers_part.html#plmapp.controllers.part.PartController" title="plmapp.controllers.part.PartController"><tt class="xref py py-class docutils literal"><span class="pre">PartController</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="plmapp.controllers.base.get_controller">
+<tt class="descclassname">plmapp.controllers.base.</tt><tt class="descname">get_controller</tt><em class="property"> = &lt;bound method type.get_controller of &lt;class 'plmapp.controllers.base.MetaController'&gt;&gt;</em><a class="headerlink" href="#plmapp.controllers.base.get_controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>shortcut for <a class="reference internal" href="#plmapp.controllers.base.MetaController.get_controller" title="plmapp.controllers.base.MetaController.get_controller"><tt class="xref py py-meth docutils literal"><span class="pre">MetaController.get_controller()</span></tt></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.controllers.base.permission_required">
+<tt class="descclassname">plmapp.controllers.base.</tt><tt class="descname">permission_required</tt><big>(</big><em>func=None</em>, <em>role='owner'</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#permission_required"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.permission_required" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator for methods of <tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt> which
+raises <a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">PLMObjectController._user</span></tt>
+has not the role <em>role</em></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.controllers.base.Controller">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.base.</tt><tt class="descname">Controller</tt><big>(</big><em>obj</em>, <em>user</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#plmapp.controllers.base.Controller.object" title="plmapp.controllers.base.Controller.object"><tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></a></p>
+<p>Object used to manage a <tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt> and store his
+modification in a history</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Attributes :</th><td class="field-body"><dl class="first attribute">
+<dt id="plmapp.controllers.base.Controller.object">
+<tt class="descname">object</tt><a class="headerlink" href="#plmapp.controllers.base.Controller.object" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a> managed by the controller</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.base.Controller._user">
+<tt class="descname">_user</tt><a class="headerlink" href="#plmapp.controllers.base.Controller._user" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a> who modifies <tt class="docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>obj</strong> (a subinstance of <a class="reference internal" href="../models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>) &#8211; managed object</li>
+<li><strong>user</strong> (<a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/contrib/auth/#django.contrib.auth.models.User" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></a>) &#8211; user who modifies <em>obj</em></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="plmapp.controllers.base.Controller.HISTORY">
+<tt class="descname">HISTORY</tt><a class="headerlink" href="#plmapp.controllers.base.Controller.HISTORY" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <tt class="xref py py-class docutils literal"><span class="pre">AbstractHistory</span></tt></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt>
+<tt class="descname">object</tt></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.controllers.base.Controller.load">
+<em class="property">classmethod </em><tt class="descname">load</tt><big>(</big><em>type</em>, <em>reference</em>, <em>revision</em>, <em>user</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.save">
+<tt class="descname">save</tt><big>(</big><em>with_history=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves <a class="reference internal" href="#plmapp.controllers.base.Controller.object" title="plmapp.controllers.base.Controller.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> and records its history in the database.
+If <em>with_history</em> is False, the history is not recorded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.get_verbose_name">
+<tt class="descname">get_verbose_name</tt><big>(</big><em>attr_name</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.get_verbose_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.get_verbose_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a verbose name for <em>attr_name</em>.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ctrl</span><span class="o">.</span><span class="n">get_verbose_name</span><span class="p">(</span><span class="s">&quot;ctime&quot;</span><span class="p">)</span>
+<span class="go">u&#39;date of creation&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.update_from_form">
+<tt class="descname">update_from_form</tt><big>(</big><em>form</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.update_from_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.update_from_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <a class="reference internal" href="#plmapp.controllers.base.Controller.object" title="plmapp.controllers.base.Controller.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> from data of <em>form</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>form</em> is invalid.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.base.Controller._user" title="plmapp.controllers.base.Controller._user"><tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt></a> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.base.Controller.object" title="plmapp.controllers.base.Controller.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a>.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.base.Controller.object" title="plmapp.controllers.base.Controller.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.check_permission">
+<tt class="descname">check_permission</tt><big>(</big><em>role</em>, <em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.check_permission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.check_permission" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks if <a class="reference internal" href="#plmapp.controllers.base.Controller._user" title="plmapp.controllers.base.Controller._user"><tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt></a> has permissions implied by <em>role</em>.
+For example, <em>role</em> can be <em>owner</em> or <em>notified</em>.</p>
+<p>If the check succeeds, <strong>True</strong> is returned. Otherwise, if <em>raise_</em> is
+<strong>True</strong> (the default), a <a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> is raised and if
+<em>raise_</em> is <strong>False</strong>, <strong>False</strong> is returned.</p>
+<div class="admonition-implementation-details admonition">
+<p class="first admonition-title">Implementation details</p>
+<p class="last">This method keeps a cache, so that you dont have to worry about
+multiple calls to this method.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.clear_permissions_cache">
+<tt class="descname">clear_permissions_cache</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.clear_permissions_cache"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.clear_permissions_cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.has_permission">
+<tt class="descname">has_permission</tt><big>(</big><em>role</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.has_permission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.has_permission" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.check_contributor">
+<tt class="descname">check_contributor</tt><big>(</big><em>user=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.check_contributor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.check_contributor" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method checks if <em>user</em> is a contributor. If not, it raises
+<a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a>.</p>
+<p>If <em>user</em> is None (the default), <a class="reference internal" href="#plmapp.controllers.base.Controller._user" title="plmapp.controllers.base.Controller._user"><tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt></a> is used.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.check_editable">
+<tt class="descname">check_editable</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.check_editable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.check_editable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.block_mails">
+<tt class="descname">block_mails</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.block_mails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.block_mails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Blocks mails sending. Call <a class="reference internal" href="#plmapp.controllers.base.Controller.unblock_mails" title="plmapp.controllers.base.Controller.unblock_mails"><tt class="xref py py-meth docutils literal"><span class="pre">unblock_mails()</span></tt></a> to send blocked mails.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.base.Controller.unblock_mails">
+<tt class="descname">unblock_mails</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.unblock_mails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.unblock_mails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unblock mails sending. This sends all previously blocked mails.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.base.Controller.histories">
+<tt class="descname">histories</tt><a class="reference internal" href="../../../_modules/plmapp/controllers/base.html#Controller.histories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.base.Controller.histories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_document.html" title="5.1.6. controllers.document — Controllers for documents"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../controllers.html" title="5.1. controllers — Controllers"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" >5.1. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

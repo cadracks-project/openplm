@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.19. widgets — Form widgets &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="6. Applications" href="../applications.html" />
+    <link rel="prev" title="5.18. views — Views" href="views.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../applications.html" title="6. Applications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="views.html" title="5.18. views — Views"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="views.html"
+                        title="previous chapter">5.18. <tt class="docutils literal docutils literal docutils literal"><span class="pre">views</span></tt> &#8212; Views</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../applications.html"
+                        title="next chapter">6. Applications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/widgets.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/widgets.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.widgets">
+<span id="widgets-form-widgets"></span><h1>5.19. <tt class="xref py py-mod docutils literal"><span class="pre">widgets</span></tt> &#8212; Form widgets<a class="headerlink" href="#module-plmapp.widgets" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.widgets.JQueryAutoComplete">
+<em class="property">class </em><tt class="descclassname">plmapp.widgets.</tt><tt class="descname">JQueryAutoComplete</tt><big>(</big><em>source</em>, <em>options={}</em>, <em>attrs={}</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/widgets.html#JQueryAutoComplete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.widgets.JQueryAutoComplete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.widgets.TextInput</span></tt></p>
+<dl class="method">
+<dt id="plmapp.widgets.JQueryAutoComplete.render_js">
+<tt class="descname">render_js</tt><big>(</big><em>field_id</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/widgets.html#JQueryAutoComplete.render_js"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.widgets.JQueryAutoComplete.render_js" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.widgets.JQueryAutoComplete.render">
+<tt class="descname">render</tt><big>(</big><em>name</em>, <em>value=None</em>, <em>attrs=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/widgets.html#JQueryAutoComplete.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.widgets.JQueryAutoComplete.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.widgets.JQueryAutoComplete.media">
+<tt class="descname">media</tt><a class="headerlink" href="#plmapp.widgets.JQueryAutoComplete.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.widgets.MarkdownWidget">
+<em class="property">class </em><tt class="descclassname">plmapp.widgets.</tt><tt class="descname">MarkdownWidget</tt><a class="reference internal" href="../../_modules/plmapp/widgets.html#MarkdownWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.widgets.MarkdownWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">django.forms.widgets.Textarea</span></tt></p>
+<dl class="class">
+<dt id="plmapp.widgets.MarkdownWidget.Media">
+<em class="property">class </em><tt class="descname">Media</tt><a class="reference internal" href="../../_modules/plmapp/widgets.html#MarkdownWidget.Media"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.widgets.MarkdownWidget.Media" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="plmapp.widgets.MarkdownWidget.Media.css">
+<tt class="descname">css</tt><em class="property"> = {'all': ('css/jquery.markedit.css',)}</em><a class="headerlink" href="#plmapp.widgets.MarkdownWidget.Media.css" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.widgets.MarkdownWidget.Media.js">
+<tt class="descname">js</tt><em class="property"> = ('js/showdown.js', 'js/jquery.markedit.js')</em><a class="headerlink" href="#plmapp.widgets.MarkdownWidget.Media.js" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.widgets.MarkdownWidget.media">
+<tt class="descclassname">MarkdownWidget.</tt><tt class="descname">media</tt><a class="headerlink" href="#plmapp.widgets.MarkdownWidget.media" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../applications.html" title="6. Applications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="views.html" title="5.18. views — Views"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

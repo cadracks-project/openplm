@@ -1,0 +1,639 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.plmapp.models.plmobject &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="openPLM.plmapp.models" href="../models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" accesskey="U">openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/plmapp/models/plmobject.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.plmapp.models.plmobject</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">django.db.models.query</span> <span class="kn">import</span> <span class="n">QuerySet</span>
+<span class="kn">from</span> <span class="nn">django.forms.util</span> <span class="kn">import</span> <span class="n">ErrorList</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.utils.encoding</span> <span class="kn">import</span> <span class="n">iri_to_uri</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">conditional_escape</span> <span class="k">as</span> <span class="n">esc</span>
+<span class="kn">from</span> <span class="nn">django.utils.safestring</span> <span class="kn">import</span> <span class="n">mark_safe</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_noop</span><span class="p">,</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">level_to_sign_str</span><span class="p">,</span> <span class="n">memoize_noarg</span>
+<span class="kn">from</span> <span class="nn">.iobject</span> <span class="kn">import</span> <span class="n">IObject</span>
+<span class="kn">from</span> <span class="nn">.lifecycle</span> <span class="kn">import</span> <span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Lifecycle</span><span class="p">,</span> <span class="n">LifecycleStates</span><span class="p">,</span>
+        <span class="n">get_default_lifecycle</span><span class="p">,</span> <span class="n">get_default_state</span><span class="p">,</span> <span class="n">get_cancelled_lifecycle</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.group</span> <span class="kn">import</span> <span class="n">GroupInfo</span>
+
+
+<span class="c"># PLMobjects</span>
+<span class="k">def</span> <span class="nf">cache_lifecycle_stuff</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+<div class="viewcode-block" id="cache_lifecycle_stuff"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.cache_lifecycle_stuff">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A decorator that caches the result of *func*.</span>
+
+<span class="sd">    *func* must take one argument: a :class:`.PLMObject` and</span>
+<span class="sd">    its returned value should only depends on the state and the</span>
+<span class="sd">    lifecycle of the given PLMObject (and not its type).</span>
+
+<span class="sd">    The maximum cache size will be the number of</span>
+<span class="sd">    :class:`.LifecycleStates`. Each key of the cache is</span>
+<span class="sd">    a tuple (state&#39;s name, lifecycle&#39;s name).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">plmobject</span><span class="p">):</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">plmobject</span><span class="o">.</span><span class="n">state_id</span><span class="p">,</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">lifecycle_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">func</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">plmobject</span><span class="p">)</span>
+            <span class="n">func</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="n">value</span>
+    <span class="n">func</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">+=</span> <span class="s">&quot;&quot;&quot;</span>
+
+<span class="s">        .. note::</span>
+
+<span class="s">            The result of this function is cached with :func:`._cache_lifecycle_stuff`.</span>
+<span class="s">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<span class="k">class</span> <span class="nc">PLMObjectQuerySet</span><span class="p">(</span><span class="n">QuerySet</span><span class="p">):</span></div>
+<div class="viewcode-block" id="PLMObjectQuerySet"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObjectQuerySet">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A :class:`QuerySet` with extra methods to filter results by their state.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">officials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObjectQuerySet.officials"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObjectQuerySet.officials">[docs]</a>        <span class="sd">&quot;&quot;&quot; Retrieves only official :class:`PLMObject`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="n">F</span><span class="p">(</span><span class="s">&quot;lifecycle__official_state&quot;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">exclude_cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+<div class="viewcode-block" id="PLMObjectQuerySet.exclude_cancelled"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObjectQuerySet.exclude_cancelled">[docs]</a>        <span class="sd">&quot;&quot;&quot; Excludes cancelled :class:`PLMObject`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">lifecycle</span><span class="o">=</span><span class="n">get_cancelled_lifecycle</span><span class="p">())</span>
+
+
+<span class="k">class</span> <span class="nc">PLMObjectManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span></div></div>
+<div class="viewcode-block" id="PLMObjectManager"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObjectManager">[docs]</a>    <span class="sd">&quot;&quot;&quot; Manager for :class:`PLMObject`.</span>
+<span class="sd">    Uses a :class:`PLMObjectQuerySet`.&quot;&quot;&quot;</span>
+
+    <span class="n">use_for_related_fields</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PLMObjectQuerySet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">officials</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObjectManager.officials"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObjectManager.officials">[docs]</a>        <span class="sd">&quot;&quot;&quot; Retrieves only official :class:`PLMObject`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">officials</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">exclude_cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+<div class="viewcode-block" id="PLMObjectManager.exclude_cancelled"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObjectManager.exclude_cancelled">[docs]</a>        <span class="sd">&quot;&quot;&quot; Excludes cancelled :class:`PLMObject`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">exclude_cancelled</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">AbstractPLMObject</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span></div></div>
+<div class="viewcode-block" id="AbstractPLMObject"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.AbstractPLMObject">[docs]</a>    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Abstract model that redefines the :attr:`PLMObject.objects` manager.</span>
+
+<span class="sd">    This model is abstract so that child classes inherits</span>
+<span class="sd">    the manager.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">PLMObjectManager</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">PLMObject</span><span class="p">(</span><span class="n">AbstractPLMObject</span><span class="p">):</span></div>
+<div class="viewcode-block" id="PLMObject"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Base class for :class:`.Part` and :class:`.Document`.</span>
+
+<span class="sd">    A PLMObject is identified by a triplet reference/type/revision</span>
+
+<span class="sd">    :key attributes:</span>
+<span class="sd">        .. attribute:: reference</span>
+
+<span class="sd">            Reference of the :class:`.PLMObject`, for example ``YLTG00``</span>
+<span class="sd">        .. attribute:: type</span>
+
+<span class="sd">            Type of the :class:`.PLMObject`, for example ``Game``</span>
+<span class="sd">        .. attribute:: revision</span>
+
+<span class="sd">            Revision of the :class:`.PLMObject`, for example ``a``</span>
+
+<span class="sd">    :other attributes:</span>
+<span class="sd">        .. attribute:: name</span>
+
+<span class="sd">            Name of the product, for example ``Game of life``</span>
+<span class="sd">        .. attribute:: creator</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who created the :class:`.PLMObject`</span>
+<span class="sd">        .. attribute:: creator</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who owns the :class:`.PLMObject`</span>
+<span class="sd">        .. attribute:: ctime</span>
+
+<span class="sd">            date of creation of the object (default value : current time)</span>
+<span class="sd">        .. attribute:: mtime</span>
+
+<span class="sd">            date of last modification of the object (automatically field at each save)</span>
+<span class="sd">        .. attribute:: lifecycle</span>
+
+<span class="sd">            :class:`.Lifecycle` of the object</span>
+<span class="sd">        .. attribute:: state</span>
+
+<span class="sd">            Current :class:`.State` of the object</span>
+<span class="sd">        .. attribute:: group</span>
+
+<span class="sd">            :class:`.GroupInfo` that owns the object</span>
+<span class="sd">        .. attribute:: published</span>
+
+<span class="sd">            .. versionadded:: 1.1</span>
+
+<span class="sd">            True if the object is published (accessible to anonymous user)</span>
+<span class="sd">        .. attribute:: reference_number</span>
+
+<span class="sd">            .. versionadded:: 1.1</span>
+
+<span class="sd">            number found in the reference if it matches ``PART_|DOC_\d+``</span>
+
+<span class="sd">        .. attribute:: description</span>
+
+<span class="sd">            .. versionadded:: 2.0</span>
+
+<span class="sd">            a short description of the object. This field is optional</span>
+<span class="sd">            and is a richtext field.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This class is abstract, to create a PLMObject, see :class:`.Part` and</span>
+<span class="sd">        :class:`.Document`.</span>
+
+<span class="sd">    .. versionchanged:: 1.1</span>
+<span class="sd">        :attr:`.published` and :attr:`.reference_number` added.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># key attributes</span>
+    <span class="n">reference</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;reference&quot;</span><span class="p">),</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                 <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Required. 50 characters or fewer. Letters, numbers , except #, ?, / and .. characters&quot;</span><span class="p">))</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">),</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">revision</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;revision&quot;</span><span class="p">),</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+    <span class="c"># hidden field to get a valid new reference</span>
+    <span class="n">reference_number</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">IntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c"># other attributes</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">),</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                            <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;Name of the product&quot;</span><span class="p">))</span>
+
+    <span class="n">description</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;description&quot;</span><span class="p">),</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">description</span><span class="o">.</span><span class="n">richtext</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="n">creator</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;creator&quot;</span><span class="p">),</span>
+                                <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_creator&quot;</span><span class="p">)</span>
+    <span class="n">owner</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">),</span>
+                              <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_owner&quot;</span><span class="p">)</span>
+    <span class="n">ctime</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;date of creation&quot;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">,</span>
+                                 <span class="n">auto_now_add</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">mtime</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;date of last modification&quot;</span><span class="p">),</span> <span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">GroupInfo</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;group&quot;</span><span class="p">),</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_group&quot;</span><span class="p">)</span>
+
+    <span class="c"># state and lifecycle</span>
+    <span class="n">lifecycle</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Lifecycle</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;lifecycle&quot;</span><span class="p">),</span>
+                                  <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;+&quot;</span><span class="p">,</span>
+                                  <span class="n">default</span><span class="o">=</span><span class="n">get_default_lifecycle</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">),</span>
+                              <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;+&quot;</span><span class="p">,</span>
+                              <span class="n">default</span><span class="o">=</span><span class="n">get_default_state</span><span class="p">)</span>
+
+    <span class="n">published</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">BooleanField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;published&quot;</span><span class="p">),</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="c"># keys in the database</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;reference&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">,</span> <span class="s">&#39;revision&#39;</span><span class="p">),)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c"># little hack:</span>
+        <span class="c"># get_creation_fields is a class method but it needs to create</span>
+        <span class="c"># an instance, this hack avoids calls to default value functions</span>
+        <span class="k">if</span> <span class="s">&quot;__fake__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_promotion_errors</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plmobject_url</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s">&lt;</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">revision</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">title</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">attrs</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">esc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">revision</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_title</span> <span class="o">=</span> <span class="n">mark_safe</span><span class="p">(</span><span class="s">u&#39;&#39;&#39;&lt;span class=&quot;name&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/span&gt; (&lt;span class=&quot;type&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/span&gt; // &lt;span class=&quot;reference&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/span&gt;</span>
+<span class="s"> // &lt;span class=&quot;revision&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/span&gt;)&#39;&#39;&#39;</span> <span class="o">%</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_title</span>
+
+    <span class="k">def</span> <span class="nf">_is_promotable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject._is_promotable"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject._is_promotable">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if the object&#39;s state is the last state of its lifecycle.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_promotion_errors</span> <span class="o">=</span> <span class="n">ErrorList</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">last_state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_promotion_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&quot;The object is at its last state.&quot;</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">is_promotable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+<div class="viewcode-block" id="PLMObject.is_promotable"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_promotable">[docs]</a>        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if object is promotable</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This method is abstract and raises :exc:`.NotImplementedError`.</span>
+<span class="sd">            This method must be overriden.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_promotion_errors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+<div class="viewcode-block" id="PLMObject._get_promotion_errors"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject._get_promotion_errors">[docs]</a>        <span class="sd">&quot;&quot;&quot; Returns an :class:`.ErrorList` of promotion errors.</span>
+<span class="sd">        Calls :meth:`.is_promotable()` if it has not already been called.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_promotion_errors</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_promotable</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_promotion_errors</span>
+    <span class="n">promotion_errors</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">_get_promotion_errors</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_cloneable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_cloneable"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_cloneable">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Return true by default. This property may be overriden</span>
+<span class="sd">        by custom Part or Document</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">is_editable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_editable"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_editable">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        True if the object is not in a non editable state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_draft</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">approvals</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+
+    <span class="nd">@property</span></div>
+    <span class="nd">@cache_lifecycle_stuff</span>
+    <span class="k">def</span> <span class="nf">is_proposed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_proposed"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_proposed">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        True if the object is in a state prior to the official state</span>
+<span class="sd">        but not draft.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_draft</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">lcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">lifecyclestates_set</span><span class="o">.</span><span class="n">only</span><span class="p">(</span><span class="s">&quot;rank&quot;</span><span class="p">)</span>
+        <span class="n">current_rank</span> <span class="o">=</span> <span class="n">lcs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="n">rank</span>
+        <span class="n">official_rank</span> <span class="o">=</span> <span class="n">lcs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">official_state</span><span class="p">)</span><span class="o">.</span><span class="n">rank</span>
+        <span class="k">return</span> <span class="n">current_rank</span> <span class="o">&lt;</span> <span class="n">official_rank</span>
+
+    <span class="nd">@property</span></div>
+    <span class="nd">@cache_lifecycle_stuff</span>
+    <span class="k">def</span> <span class="nf">is_cancelled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_cancelled"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_cancelled">[docs]</a>        <span class="sd">&quot;&quot;&quot; True if the object is cancelled. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span> <span class="o">==</span> <span class="n">get_cancelled_lifecycle</span><span class="p">()</span>
+
+    <span class="nd">@property</span></div>
+    <span class="nd">@cache_lifecycle_stuff</span>
+    <span class="k">def</span> <span class="nf">is_deprecated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_deprecated"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_deprecated">[docs]</a>        <span class="sd">&quot;&quot;&quot; True if the object is deprecated. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">last_state</span>
+
+    <span class="nd">@property</span></div>
+    <span class="nd">@cache_lifecycle_stuff</span>
+    <span class="k">def</span> <span class="nf">is_official</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_official"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_official">[docs]</a>        <span class="s">u&quot;Returns True if object is official.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">official_state</span>
+
+    <span class="nd">@property</span></div>
+    <span class="nd">@cache_lifecycle_stuff</span>
+    <span class="k">def</span> <span class="nf">is_draft</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_draft"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_draft">[docs]</a>        <span class="sd">u&quot;&quot;&quot; Returns True if the object is a draft. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">first_state</span>
+
+    <span class="nd">@cache_lifecycle_stuff</span></div>
+    <span class="k">def</span> <span class="nf">get_current_sign_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.get_current_sign_level"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.get_current_sign_level">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the current sign level that a user must have to promote this</span>
+<span class="sd">        object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="n">LifecycleStates</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                            <span class="n">lifecycle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="p">)</span><span class="o">.</span><span class="n">rank</span>
+        <span class="k">return</span> <span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">rank</span><span class="p">)</span>
+
+    <span class="nd">@cache_lifecycle_stuff</span></div>
+    <span class="k">def</span> <span class="nf">get_previous_sign_level</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.get_previous_sign_level"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.get_previous_sign_level">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the current sign level that a user must have to demote this</span>
+<span class="sd">        object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">rank</span> <span class="o">=</span> <span class="n">LifecycleStates</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                            <span class="n">lifecycle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="p">)</span><span class="o">.</span><span class="n">rank</span>
+        <span class="k">return</span> <span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">rank</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">is_part</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_part"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_part">[docs]</a>        <span class="sd">&quot;&quot;&quot; True if the plmobject is a part.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">openPLM.plmapp.models.part</span> <span class="kn">import</span> <span class="n">Part</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">get_all_plmobjects</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">],</span> <span class="n">Part</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">is_document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.is_document"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_document">[docs]</a>        <span class="sd">&quot;&quot;&quot; True if the plmobject is a document.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">openPLM.plmapp.models.document</span> <span class="kn">import</span> <span class="n">Document</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="ow">in</span> <span class="n">get_all_plmobjects</span><span class="p">():</span>
+            <span class="k">return</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">],</span> <span class="n">Document</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.attributes"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.attributes">[docs]</a>        <span class="s">u&quot;Attributes to display in `Attributes view`&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">,</span>
+                <span class="s">&quot;creator&quot;</span><span class="p">,</span> <span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="s">&quot;group&quot;</span><span class="p">,</span> <span class="s">&quot;ctime&quot;</span><span class="p">,</span> <span class="s">&quot;mtime&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">published_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.published_attributes"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.published_attributes">[docs]</a>        <span class="sd">u&quot;&quot;&quot;.. versionadded:: 1.1</span>
+
+<span class="sd">        Attributes that are visible to everyone if the object has been published.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,]</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">menu_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.menu_items"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.menu_items">[docs]</a>        <span class="s">&quot;Menu items to choose a view&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;attributes&quot;</span><span class="p">),</span> <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;lifecycle&quot;</span><span class="p">),</span>
+                <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;revisions&quot;</span><span class="p">),</span> <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;history&quot;</span><span class="p">),</span>
+               <span class="p">]</span>
+
+    <span class="nd">@classmethod</span></div>
+    <span class="k">def</span> <span class="nf">excluded_creation_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.excluded_creation_fields"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.excluded_creation_fields">[docs]</a>        <span class="s">&quot;Returns fields which should not be available in a creation form&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="s">&quot;creator&quot;</span><span class="p">,</span> <span class="s">&quot;ctime&quot;</span><span class="p">,</span> <span class="s">&quot;mtime&quot;</span><span class="p">,</span> <span class="s">&quot;state&quot;</span><span class="p">]</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">plmobject_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plmobject_url</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="s">u&quot;/object/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/</span><span class="si">%s</span><span class="s">/&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">revision</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_plmobject_url</span> <span class="o">=</span> <span class="n">iri_to_uri</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_plmobject_url</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_creation_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.get_creation_fields"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.get_creation_fields">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns fields which should be displayed in a creation form.</span>
+
+<span class="sd">        By default, it returns :attr:`.attributes` less attributes returned by</span>
+<span class="sd">        :meth:`.excluded_creation_fields`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;group&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">,</span> <span class="s">&quot;lifecycle&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">]</span>
+        <span class="n">excludes</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">excluded_creation_fields</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">cls</span><span class="p">(</span><span class="n">__fake__</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">excludes</span> <span class="ow">and</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+                <span class="n">fields</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fields</span>
+
+    <span class="nd">@classmethod</span></div>
+    <span class="k">def</span> <span class="nf">excluded_modification_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.excluded_modification_fields"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.excluded_modification_fields">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns fields which should not be available in a modification form</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">),</span> <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;reference&quot;</span><span class="p">),</span>
+                <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;revision&quot;</span><span class="p">),</span>
+                <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;ctime&quot;</span><span class="p">),</span> <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;creator&quot;</span><span class="p">),</span>
+                <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">),</span> <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;ctime&quot;</span><span class="p">),</span>
+                <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;mtime&quot;</span><span class="p">),</span> <span class="n">ugettext_noop</span><span class="p">(</span><span class="s">&quot;group&quot;</span><span class="p">)]</span>
+
+    <span class="nd">@classmethod</span></div>
+    <span class="k">def</span> <span class="nf">get_modification_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+<div class="viewcode-block" id="PLMObject.get_modification_fields"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.get_modification_fields">[docs]</a>        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns fields which should be displayed in a modification form</span>
+
+<span class="sd">        By default, it returns :attr:`.attributes` less attributes returned by</span>
+<span class="sd">        :meth:`.excluded_modification_fields`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">cls</span><span class="p">(</span><span class="n">__fake__</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">excluded_modification_fields</span><span class="p">():</span>
+                <span class="n">fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">fields</span>
+
+    <span class="k">def</span> <span class="nf">get_leaf_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
+        <span class="k">return</span> <span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">]</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_current_signer_role</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">lcl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">lcl</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_current_signers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_signer_role</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_approvers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_deprecated</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">approvals</span><span class="o">.</span><span class="n">none</span><span class="p">()</span>
+        <span class="n">lcl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">()</span>
+        <span class="n">next_state</span> <span class="o">=</span> <span class="n">lcl</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">approvers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">approvals</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">current_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                <span class="n">next_state</span><span class="o">=</span><span class="n">next_state</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">approvers</span>
+
+
+<span class="k">def</span> <span class="nf">get_all_subclasses</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span></div>
+    <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">d</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="s">&quot;_deferred&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="n">d</span><span class="p">[</span><span class="n">base</span><span class="o">.</span><span class="n">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">base</span>
+    <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">base</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">():</span>
+        <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+
+<span class="nd">@memoize_noarg</span>
+<span class="k">def</span> <span class="nf">get_all_plmobjects</span><span class="p">():</span>
+<div class="viewcode-block" id="get_all_plmobjects"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.plmobject.get_all_plmobjects">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dict&lt;name, class&gt; of all available :class:`.PLMObject` subclasses</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="n">res</span><span class="p">[</span><span class="s">&quot;Group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">GroupInfo</span>
+    <span class="k">del</span> <span class="n">res</span><span class="p">[</span><span class="s">&quot;PLMObject&quot;</span><span class="p">]</span>
+    <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">IObject</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">res</span><span class="p">[</span><span class="s">&quot;IObject&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="nd">@memoize_noarg</span></div>
+<span class="k">def</span> <span class="nf">get_all_users_and_plmobjects</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="n">get_all_subclasses</span><span class="p">(</span><span class="n">IObject</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">res</span><span class="p">[</span><span class="s">&quot;IObject&quot;</span><span class="p">]</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_all_plmobjects</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+
+<span class="k">def</span> <span class="nf">get_all_subclasses_with_level</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="s">&quot;=&quot;</span> <span class="o">+</span> <span class="n">level</span>
+    <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">__name__</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">:</span>
+        <span class="n">lst</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">base</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span><span class="n">level</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span> <span class="o">+</span> <span class="n">base</span><span class="o">.</span><span class="n">__name__</span><span class="p">))</span>
+    <span class="n">subclasses</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
+    <span class="n">subclasses</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">subclasses</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="s">&quot;_deferred&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">get_all_subclasses_with_level</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">lst</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_subclasses</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">__name__</span><span class="p">))</span>
+        <span class="n">subclasses</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">__subclasses__</span><span class="p">()</span>
+        <span class="n">subclasses</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cls</span> <span class="ow">in</span> <span class="n">subclasses</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="s">&quot;_deferred&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="n">populate</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">l</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">populate</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r</span>
+
+<span class="nd">@memoize_noarg</span>
+<span class="k">def</span> <span class="nf">get_all_users_and_plmobjects_with_level</span><span class="p">():</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">get_all_subclasses_with_level</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="s">&quot;&gt;&quot;</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ichoices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">get_all_subclasses_with_level</span><span class="p">(</span><span class="n">IObject</span><span class="p">,</span> <span class="n">ichoices</span><span class="p">,</span> <span class="s">&quot;&gt;&quot;</span><span class="p">)</span>
+    <span class="k">del</span> <span class="n">ichoices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">choices</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">ichoices</span><span class="p">)</span>
+    <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">))</span>
+    <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&quot;User&quot;</span><span class="p">,</span> <span class="s">&quot;User&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">choices</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" >openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

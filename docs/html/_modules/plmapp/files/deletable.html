@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.files.deletable &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/files/deletable.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.files.deletable</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. versionadded:: 1.2</span>
+
+<span class="sd">Module to select which files should be deleted (physically removed) after:</span>
+
+<span class="sd">    * a checkin of a :class:`.DocumentFile`</span>
+<span class="sd">    * a deletion of a :class:`.DocumentFile`</span>
+<span class="sd">    * a cancellation of a :class:`.Document`</span>
+<span class="sd">    * a deprecation of a :class:`.Document`</span>
+
+<span class="sd">Each case can have a different behaviour specified by:</span>
+
+<span class="sd">    * :const:`ON_CHECKIN_SELECTORS`</span>
+<span class="sd">    * :const:`ON_DELETE_SELECTORS`</span>
+<span class="sd">    * :const:`ON_CANCEL_SELECTORS`</span>
+<span class="sd">    * :const:`ON_DEPRECATE_SELECTORS`</span>
+
+<span class="sd">These constants are lists of tuples (*test*, *selector*) where:</span>
+
+<span class="sd">    * *test* is a function that takes a :class:`.DocumentFile` and</span>
+<span class="sd">      returns True if *selector* applies to the given file</span>
+<span class="sd">    * *selector* is an instance of :class:`Selector` which returns</span>
+<span class="sd">      a list of :class:`.DocumentFile` to be deleted.</span>
+
+<span class="sd">They can be given to :func:`get_deletable_files` to retrieve the list of</span>
+<span class="sd">:class:`.DocumentFile` to delete.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">fnmatch</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Q</span><span class="p">,</span> <span class="n">Sum</span>
+
+<span class="k">class</span> <span class="nc">Selector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of :class:`.DocumentFile` to delete.</span>
+
+<span class="sd">        :param doc_file: the last revision of the file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="KeepLastNFiles"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.KeepLastNFiles">[docs]</a><span class="k">class</span> <span class="nc">KeepLastNFiles</span><span class="p">(</span><span class="n">Selector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A selector which keeps only the last *count* revisions</span>
+<span class="sd">    (last one include).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="n">count</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="n">rev</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">revision</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span>
+        <span class="k">return</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">older_files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deleted</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">revision__lte</span><span class="o">=</span><span class="n">rev</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="KeepAllFiles"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.KeepAllFiles">[docs]</a><span class="k">class</span> <span class="nc">KeepAllFiles</span><span class="p">(</span><span class="n">Selector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A selector which keeps all files: :meth:`~KeepAllFiles.get_deletable_files`</span>
+<span class="sd">    always returns an empty list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+</div>
+<div class="viewcode-block" id="DeleteAllFiles"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.DeleteAllFiles">[docs]</a><span class="k">class</span> <span class="nc">DeleteAllFiles</span><span class="p">(</span><span class="n">Selector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A selector which returns all undeleted files.</span>
+<span class="sd">    </span>
+<span class="sd">    If *include_last_revision* is True, the given document file is also</span>
+<span class="sd">    included in the returned list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_last_revision</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include_last_revision</span> <span class="o">=</span> <span class="n">include_last_revision</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_last_revision</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">doc_file</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">return</span> <span class="n">files</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">older_files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deleted</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="MaximumTotalSize"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.MaximumTotalSize">[docs]</a><span class="k">class</span> <span class="nc">MaximumTotalSize</span><span class="p">(</span><span class="n">Selector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A selector which ensures that the size of files related to a revision </span>
+<span class="sd">    does not exceed *max_size*.</span>
+
+<span class="sd">    :param max_size: maximum size in bytes</span>
+<span class="sd">    :param order: ordering field used to select which files must be deleted</span>
+<span class="sd">                  if the total size exceeds *max_size*</span>
+
+<span class="sd">    Possible values for *order* are:</span>
+
+<span class="sd">        ``revision``</span>
+<span class="sd">            first deletes the most recent revisions</span>
+<span class="sd">        ``-revision``</span>
+<span class="sd">            first deletes the oldest revisions</span>
+<span class="sd">        ``size``</span>
+<span class="sd">            first deletes the biggest files</span>
+<span class="sd">        ``-size``</span>
+<span class="sd">            first deletes the smallest files</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_size</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s">&quot;revision&quot;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span> <span class="o">=</span> <span class="n">max_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">order</span> <span class="o">=</span> <span class="n">order</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="n">available_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_size</span> <span class="o">-</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">older_files</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">older_files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deleted</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">available_size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">older_files</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="n">older_files</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">Sum</span><span class="p">(</span><span class="s">&quot;size&quot;</span><span class="p">))[</span><span class="s">&quot;size__sum&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">total</span> <span class="ow">and</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="n">available_size</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">older_files</span><span class="p">):</span>
+                <span class="n">total</span> <span class="o">-=</span> <span class="n">df</span><span class="o">.</span><span class="n">size</span>
+                <span class="k">if</span> <span class="n">total</span> <span class="o">&lt;=</span> <span class="n">available_size</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">older_files</span><span class="p">[:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[]</span>
+</div>
+<div class="viewcode-block" id="MaxPerDate"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.MaxPerDate">[docs]</a><span class="k">class</span> <span class="nc">MaxPerDate</span><span class="p">(</span><span class="n">Selector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A selector which keeps at most *maximum* per *frequency*</span>
+<span class="sd">    (``day``, ``month``, ``year``).</span>
+
+<span class="sd">    If the number of revisions exceeds *maximum*, most recent revisions</span>
+<span class="sd">    are first deleted.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">maximum</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span> <span class="o">=</span> <span class="n">frequency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maximum</span> <span class="o">=</span> <span class="n">maximum</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">Q</span><span class="p">(</span><span class="n">ctime__year</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">ctime</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="n">deleted</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;day&quot;</span><span class="p">,</span> <span class="s">&quot;month&quot;</span><span class="p">):</span>
+            <span class="n">query</span> <span class="o">&amp;=</span> <span class="n">Q</span><span class="p">(</span><span class="n">ctime__month</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">ctime</span><span class="o">.</span><span class="n">month</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">frequency</span> <span class="o">==</span> <span class="s">&quot;day&quot;</span><span class="p">:</span>
+            <span class="n">query</span> <span class="o">&amp;=</span> <span class="n">Q</span><span class="p">(</span><span class="n">ctime__day</span><span class="o">=</span><span class="n">doc_file</span><span class="o">.</span><span class="n">ctime</span><span class="o">.</span><span class="n">day</span><span class="p">)</span>
+        <span class="c"># delete most recent files</span>
+        <span class="k">return</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">older_files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;revision&quot;</span><span class="p">)[</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+</div>
+<div class="viewcode-block" id="Modulo"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.Modulo">[docs]</a><span class="k">class</span> <span class="nc">Modulo</span><span class="p">(</span><span class="n">Selector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A selector which only keeps revisions if the revision modulo *number* equals to</span>
+<span class="sd">    *modulo*.</span>
+
+<span class="sd">    For example, ``Modulo(4, 1)`` keeps a revision of four, and the intial revision is</span>
+<span class="sd">    kept.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">modulo</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_extra</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;revision </span><span class="si">%%</span><span class="s"> </span><span class="si">%d</span><span class="s"> != </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">number</span><span class="p">,</span> <span class="n">modulo</span><span class="p">)]</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">older_files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deleted</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">extra</span><span class="p">(</span><span class="n">where</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_extra</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="YoungerThan"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.YoungerThan">[docs]</a><span class="k">class</span> <span class="nc">YoungerThan</span><span class="p">(</span><span class="n">Selector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A selector which deletes too frequent updates.</span>
+
+<span class="sd">    A revision is deleted if the difference between the date of creation of</span>
+<span class="sd">    the last revision and its creation time is lesser than *timedelta*</span>
+<span class="sd">    (a :class:`.datetime.timedelta` object).</span>
+
+<span class="sd">    If *incremental* is True (the default), only the previous revision is tested.</span>
+<span class="sd">    This behaviour should be used after a checkin.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">incremental</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timedelta</span> <span class="o">=</span> <span class="n">timedelta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span> <span class="o">=</span> <span class="n">incremental</span>
+
+    <span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">ctime</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">timedelta</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">incremental</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">previous_revision</span><span class="o">.</span><span class="n">ctime</span> <span class="o">&gt;</span> <span class="n">time</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">doc_file</span><span class="o">.</span><span class="n">previous_revision</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">older_files</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ctime__gt</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="pattern"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.pattern">[docs]</a><span class="k">def</span> <span class="nf">pattern</span><span class="p">(</span><span class="o">*</span><span class="n">patterns</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a function which takes a :class:`.DocumentFile` and returns</span>
+<span class="sd">    True if its filename matches one of the given patterns (like ``*.txt``).</span>
+<span class="sd">    patterns are not case sensitive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">df</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span><span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">filename</span><span class="o">.</span><span class="n">lower</span><span class="p">(),</span> <span class="n">pat</span><span class="p">)</span> <span class="k">for</span> <span class="n">pat</span> <span class="ow">in</span> <span class="n">patterns</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="yes"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.yes">[docs]</a><span class="k">def</span> <span class="nf">yes</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="s">&quot;A simple function that always returns True&quot;</span>
+    <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="get_deletable_files"><a class="viewcode-back" href="../../../devel/modules/files/deletable.html#plmapp.files.deletable.get_deletable_files">[docs]</a><span class="k">def</span> <span class="nf">get_deletable_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">,</span> <span class="n">selectors</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the list of :class:`.DocumentFile` to delete.</span>
+
+<span class="sd">    Returns an empty list if :const:`settings.KEEP_ALL_FILES` is True.</span>
+<span class="sd">    </span>
+<span class="sd">    :param doc_file: the last revision of the file</span>
+<span class="sd">    :param selectors: list of tuples (*test*, *selector*) to determine which</span>
+<span class="sd">        selectors should be called</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;KEEP_ALL_FILES&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">test</span><span class="p">,</span> <span class="n">selector</span> <span class="ow">in</span> <span class="n">selectors</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">test</span><span class="p">(</span><span class="n">doc_file</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">selector</span><span class="o">.</span><span class="n">get_deletable_files</span><span class="p">(</span><span class="n">doc_file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[]</span>
+
+<span class="c">#: default selectors called after a checkin</span></div>
+<span class="n">ON_CHECKIN_SELECTORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="c">#(pattern(&quot;*.txt&quot;), KeepAllFiles()),</span>
+    <span class="p">(</span><span class="n">yes</span><span class="p">,</span> <span class="n">KeepLastNFiles</span><span class="p">(</span><span class="mi">10</span><span class="p">)),</span>
+<span class="p">]</span>
+
+<span class="c">#: default selectors called after a deletion</span>
+<span class="n">ON_DELETE_SELECTORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">yes</span><span class="p">,</span> <span class="n">DeleteAllFiles</span><span class="p">(</span><span class="bp">True</span><span class="p">)),</span>
+<span class="p">]</span>
+
+<span class="c">#: default selectors called after a deprecation</span>
+<span class="n">ON_DEPRECATE_SELECTORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">yes</span><span class="p">,</span> <span class="n">DeleteAllFiles</span><span class="p">(</span><span class="bp">False</span><span class="p">)),</span>
+<span class="p">]</span>
+
+<span class="c">#: default selectors called after a cancellation</span>
+<span class="n">ON_CANCEL_SELECTORS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">yes</span><span class="p">,</span> <span class="n">DeleteAllFiles</span><span class="p">(</span><span class="bp">False</span><span class="p">)),</span>
+<span class="p">]</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

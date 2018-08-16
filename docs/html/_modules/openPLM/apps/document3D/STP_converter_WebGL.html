@@ -1,0 +1,520 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.document3D.STP_converter_WebGL &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/document3D/STP_converter_WebGL.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.document3D.STP_converter_WebGL</h1><div class="highlight"><pre>
+<span class="c">##Copyright 2008-2011 Thomas Paviot (tpaviot@gmail.com)</span>
+<span class="c">##</span>
+<span class="c">##This file is part of pythonOCC.</span>
+<span class="c">##</span>
+<span class="c">##pythonOCC is free software: you can redistribute it and/or modify</span>
+<span class="c">##it under the terms of the GNU Lesser General Public License as published by</span>
+<span class="c">##the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">##(at your option) any later version.</span>
+<span class="c">##</span>
+<span class="c">##pythonOCC is distributed in the hope that it will be useful,</span>
+<span class="c">##but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">##MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">##GNU Lesser General Public License for more details.</span>
+<span class="c">##</span>
+<span class="c">##You should have received a copy of the GNU Lesser General Public License</span>
+<span class="c">##along with pythonOCC.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+
+
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">OCC.STEPCAFControl</span> <span class="kn">import</span> <span class="n">STEPCAFControl_Reader</span>
+<span class="kn">from</span> <span class="nn">OCC</span> <span class="kn">import</span> <span class="n">XCAFApp</span><span class="p">,</span> <span class="n">TDocStd</span><span class="p">,</span> <span class="n">XCAFDoc</span>
+<span class="kn">from</span> <span class="nn">OCC.TCollection</span> <span class="kn">import</span> <span class="n">TCollection_ExtendedString</span><span class="p">,</span> <span class="n">TCollection_AsciiString</span>
+<span class="kn">from</span> <span class="nn">OCC.TDF</span> <span class="kn">import</span> <span class="n">TDF_LabelSequence</span><span class="p">,</span> <span class="n">TDF_Tool</span><span class="p">,</span> <span class="n">TDF_Label</span>
+<span class="kn">from</span> <span class="nn">OCC.Utils.Topology</span> <span class="kn">import</span> <span class="n">Topo</span>
+<span class="kn">from</span> <span class="nn">OCC.TDataStd</span> <span class="kn">import</span> <span class="n">Handle_TDataStd_Name</span><span class="p">,</span> <span class="n">TDataStd_Name_GetID</span>
+<span class="kn">from</span> <span class="nn">OCC.Quantity</span> <span class="kn">import</span> <span class="n">Quantity_Color</span>
+<span class="kn">from</span> <span class="nn">OCC.Bnd</span> <span class="kn">import</span> <span class="n">Bnd_Box</span>
+<span class="kn">from</span> <span class="nn">OCC.TopLoc</span> <span class="kn">import</span> <span class="n">TopLoc_Location</span>
+<span class="kn">from</span> <span class="nn">OCC.BRepMesh</span> <span class="kn">import</span> <span class="n">BRepMesh_Mesh</span>
+<span class="kn">from</span> <span class="nn">OCC.BRepBndLib</span> <span class="kn">import</span> <span class="n">BRepBndLib_Add</span>
+<span class="kn">from</span> <span class="nn">OCC.BRep</span> <span class="kn">import</span> <span class="n">BRep_Tool_Triangulation</span>
+<span class="kn">from</span> <span class="nn">mesh</span> <span class="kn">import</span> <span class="n">GeometryWriter</span><span class="p">,</span> <span class="n">get_mesh_precision</span>
+<span class="kn">from</span> <span class="nn">classes</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Link</span><span class="p">,</span> <span class="n">Product</span><span class="p">,</span> <span class="n">TransformationMatrix</span><span class="p">,</span>  <span class="n">search_assembly</span><span class="p">,</span>
+        <span class="n">get_available_name</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">OCC.GarbageCollector</span> <span class="kn">import</span> <span class="n">garbage</span>
+
+
+<span class="k">def</span> <span class="nf">new_collect_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj_deleted</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_kill_pointed</span><span class="p">()</span>
+
+<span class="n">garbage</span><span class="o">.</span><span class="n">collect_object</span><span class="o">=</span><span class="n">new_collect_object</span>
+
+
+<div class="viewcode-block" id="StepImporter"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.StepImporter">[docs]</a><span class="k">class</span> <span class="nc">StepImporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    :param file_path: Path of the file **.stp** to analyzing</span>
+<span class="sd">    :param id: For the generation of the :class:`.Product`, **id** is assigned like product.doc_id for every node of :class:`.Product`. For the generation of the files of geometry **.geo**, **id** , together with an index generated by the class, are used to identify the content of every file</span>
+
+
+
+<span class="sd">    Generates from a path of :class:`~django.core.files.File` **.stp**:</span>
+
+
+<span class="sd">    -A set of files **.geo** that represents the geometry of the different simple products that are useful to realize the visualization 3D across the web browser.</span>
+
+<span class="sd">    -A structure of information that represents the arborescencse of the different assemblies,represented in a  :class:`.Product` . (Including his spatial location and orientation and his label of reference (:class:`.OCC.TDF.TDF_Label`))</span>
+
+
+<span class="sd">    This class is invoked from three different subprocesses related to the functionality of pythonOCC(generate3D.py , generateComposition.py , generateDecomposition.py).</span>
+
+<span class="sd">   &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">file_path</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapes_simples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_product</span><span class="o">=</span><span class="bp">None</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileName</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span> <span class="o">=</span> <span class="n">STEPCAFControl_Reader</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span><span class="o">.</span><span class="n">ReadFile</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">OCCReadingStepError</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span> <span class="o">=</span> <span class="n">TDocStd</span><span class="o">.</span><span class="n">Handle_TDocStd_Document</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">XCAFApp</span><span class="o">.</span><span class="n">GetApplication</span><span class="p">()</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">NewDocument</span><span class="p">(</span><span class="n">TCollection_ExtendedString</span><span class="p">(</span><span class="s">&quot;MDTV-XCAF&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span><span class="o">.</span><span class="n">Transfer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_shape_tool</span> <span class="o">=</span> <span class="n">XCAFDoc</span><span class="o">.</span><span class="n">XCAFDoc_DocumentTool_ShapeTool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Main</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_colors_tool</span> <span class="o">=</span> <span class="n">XCAFDoc</span><span class="o">.</span><span class="n">XCAFDoc_DocumentTool_ColorTool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Main</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_shape_tool</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_tool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">h_colors_tool</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">Length</span><span class="p">()):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">IsSimpleShape</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+                <span class="n">compShape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+                <span class="n">t</span> <span class="o">=</span> <span class="n">Topo</span><span class="p">(</span><span class="n">compShape</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="n">get_label_name</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+                    <span class="n">color</span> <span class="o">=</span> <span class="n">find_color</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_tool</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">shapes_simples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SimpleShape</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">compShape</span><span class="p">,</span> <span class="n">color</span><span class="p">))</span>
+
+        <span class="n">roots</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetFreeShapes</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thumbnail_valid</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">roots</span><span class="o">.</span><span class="n">Length</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">roots</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">Topo</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">number_of_vertices</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">bbox</span> <span class="o">=</span> <span class="n">Bnd_Box</span><span class="p">()</span>
+                <span class="n">gap</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">bbox</span><span class="o">.</span><span class="n">SetGap</span><span class="p">(</span><span class="n">gap</span><span class="p">)</span>
+
+                <span class="n">BRepMesh_Mesh</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">get_mesh_precision</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">faces_iterator</span> <span class="o">=</span> <span class="n">Topo</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">faces</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">F</span> <span class="ow">in</span> <span class="n">faces_iterator</span><span class="p">:</span>
+                    <span class="n">face_location</span> <span class="o">=</span> <span class="n">TopLoc_Location</span><span class="p">()</span>
+                    <span class="n">BRep_Tool_Triangulation</span><span class="p">(</span><span class="n">F</span><span class="p">,</span> <span class="n">face_location</span><span class="p">)</span>
+                <span class="n">BRepBndLib_Add</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">bbox</span><span class="p">)</span>
+                <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">z_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span><span class="p">,</span> <span class="n">z_max</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span>
+                <span class="n">diagonal</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">z_max</span> <span class="o">-</span> <span class="n">z_min</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">diagonal</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="mf">200.</span> <span class="o">/</span> <span class="n">diagonal</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">trans</span> <span class="o">=</span> <span class="p">((</span><span class="n">x_max</span> <span class="o">-</span> <span class="n">x_min</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">-</span> <span class="n">x_max</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="n">y_max</span> <span class="o">-</span> <span class="n">y_min</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">-</span> <span class="n">y_max</span><span class="p">,</span>
+                                  <span class="p">(</span><span class="n">z_max</span> <span class="o">-</span> <span class="n">z_min</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">-</span> <span class="n">z_max</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">thumbnail_valid</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="n">ws</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span><span class="o">.</span><span class="n">Reader</span><span class="p">()</span><span class="o">.</span><span class="n">WS</span><span class="p">()</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">Clear</span><span class="p">()</span>
+
+<div class="viewcode-block" id="StepImporter.compute_geometries"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.StepImporter.compute_geometries">[docs]</a>    <span class="k">def</span> <span class="nf">compute_geometries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">root_path</span><span class="p">,</span> <span class="n">pov_dir</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        :param root_path: Path where to store the files **.geo** generated</span>
+
+<span class="sd">        When we generate a new :class:`.StepImporter` we will refill a list(**shapes_simples**) whit the :class:`.SimpleShape` contained in the file **.stp**</span>
+
+<span class="sd">        For each :class:`.SimpleShape` in the list **shapes_simples**:</span>
+
+<span class="sd">            We call the method :func:`.write_geometries` to generate a file **.geo** representative of its geometry,the content of the file is identified by the index+1 (&gt;0) of the position of the :class:`.SimpleShape` in the list of **SimpleShapes**  and by the attribue id of :class:`.StepImporter`</span>
+
+<span class="sd">        Returns the list of the path of the generated **.geo** files</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">files_index</span><span class="o">=</span><span class="s">&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">povs</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapes_simples</span><span class="p">):</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">get_available_name</span><span class="p">(</span><span class="n">root_path</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">fileName</span><span class="o">+</span><span class="s">&quot;.geo&quot;</span><span class="p">)</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_path</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+            <span class="n">identifier</span><span class="o">=</span><span class="s">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;_&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">GeometryWriter</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+            <span class="n">pov_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pov_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s">&quot;.inc&quot;</span><span class="p">))</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">write_geometries</span><span class="p">(</span><span class="n">identifier</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">pov_filename</span><span class="p">)</span>
+            <span class="n">files_index</span><span class="o">+=</span><span class="s">&quot;GEO:&quot;</span><span class="o">+</span><span class="n">name</span><span class="o">+</span><span class="s">&quot; , &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+            <span class="k">if</span> <span class="n">writer</span><span class="o">.</span><span class="n">triangle_count</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">povs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot;.inc&quot;</span><span class="p">),</span> <span class="n">identifier</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">files_index</span>
+</div>
+<div class="viewcode-block" id="StepImporter.generate_product_arbre"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.StepImporter.generate_product_arbre">[docs]</a>    <span class="k">def</span> <span class="nf">generate_product_arbre</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Generates a :class:`.Product` relative to the assemblies of the file **.stp**, for every node of the :class:`.Product` it includes a label (:class:`.OCC.TDF.TDF_Label`) that represents and identifies the node , openPLM can only work whit a single root **.stp** files</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">roots</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetFreeShapes</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">roots</span><span class="o">.</span><span class="n">Length</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">MultiRootError</span>
+
+        <span class="n">deep</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">product_id</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="n">roots</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">get_label_name</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">deep</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">product_id</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+        <span class="n">product_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">expand_product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">main_product</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shapes_simples</span><span class="p">,</span>
+                      <span class="n">deep</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_product</span><span class="p">,</span> <span class="n">product_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">main_product</span>
+
+</div></div>
+<div class="viewcode-block" id="SimpleShape"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape">[docs]</a><span class="k">class</span> <span class="nc">SimpleShape</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class used to represent a simple shape geometry (not assembly)</span>
+
+<span class="sd">    :model attributes:</span>
+
+<span class="sd">    .. attribute:: name</span>
+
+<span class="sd">        Name of geometry</span>
+
+<span class="sd">    .. attribute:: TopoDS_Shape</span>
+
+<span class="sd">        :class:`.OCC.TopoDS.TopoDS_Shape` that contains the geometry</span>
+
+<span class="sd">    .. attribute:: color</span>
+
+<span class="sd">        :class:`.OCC.Quantity.Quantity_Color` that contains information about color of geometry</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span><span class="n">TopoDS_Shape</span><span class="p">,</span><span class="n">color</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">TopoDS_Shape</span> <span class="c">#OCC.TopoDS.TopoDS_Shape</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
+
+</div>
+<div class="viewcode-block" id="expand_product"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.expand_product">[docs]</a><span class="k">def</span> <span class="nf">expand_product</span><span class="p">(</span><span class="n">shape_tool</span><span class="p">,</span><span class="n">product</span><span class="p">,</span><span class="n">shapes_simples</span><span class="p">,</span><span class="n">deep</span><span class="p">,</span><span class="n">doc_id</span><span class="p">,</span><span class="n">product_root</span><span class="p">,</span><span class="n">product_id</span><span class="p">,</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param shape_tool: :class:`.OCC.XCAFDoc.XCAFDoc_ShapeTool`</span>
+<span class="sd">    :param product: :class:`.Product` that will be expanded</span>
+<span class="sd">    :param shapes_simples: list of :class:`.SimpleShape`</span>
+<span class="sd">    :param deep: Depth of the node that we explore</span>
+<span class="sd">    :param doc_id: id that references a :class:`.DocumentFile` of which we are generating the :class:`.Product`</span>
+<span class="sd">    :param product_root: :class:`.Product` root of the arborescense</span>
+
+
+<span class="sd">    We are going to expand a :class:`.Product` (**product**) from the :class:`.OCC.TDF.TDF_Label` who identifies it (**product**.label_reference)</span>
+
+
+<span class="sd">    If the **product** is an assembly:</span>
+
+<span class="sd">        * We generate the **list** of the :class:`.OCC.TDF.TDF_Label` that define it</span>
+
+<span class="sd">        * for each :class:`.OCC.TDF.TDF_Label` in **list**:</span>
+
+<span class="sd">            - We generate a new :class:`.document3D.classes.Link`  or if two or more :class:`.OCC.TDF.TDF_Label` of the list are partner, add an occurrence extra to the :class:`.document3D.classes.Link` that already was generated</span>
+
+<span class="sd">            - The :class:`.document3D.classes.Link` is going to point at a new :class:`.Product` or, if the :class:`.Product` is already present in **product_root**, at the already definite product</span>
+
+<span class="sd">            - If the :class:`.document3D.classes.Link` pointed at a new :class:`.Product` we need to expand it</span>
+
+<span class="sd">                * The atribute **label_reference** of the new :class:`.Product` should be the :class:`.OCC.TDF.TDF_Label`</span>
+
+<span class="sd">                * We expand the :class:`.Product` in a recursive call of method</span>
+
+
+<span class="sd">    Else the **product** is a simple shape:</span>
+
+<span class="sd">       * We look in the list of **shapes_simples** for his partner</span>
+
+<span class="sd">       * We set the attribute **product**.geometry like the index+1 (&gt;0) of the position of his partner in the list of **SimpleShape**</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">shape_tool</span><span class="o">.</span><span class="n">IsAssembly</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">):</span>
+        <span class="n">l_c</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+        <span class="n">shape_tool</span><span class="o">.</span><span class="n">GetComponents</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">,</span><span class="n">l_c</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l_c</span><span class="o">.</span><span class="n">Length</span><span class="p">()):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="n">l_c</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">shape_tool</span><span class="o">.</span><span class="n">IsReference</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+                <span class="n">label_reference</span><span class="o">=</span><span class="n">TDF_Label</span><span class="p">()</span>
+                <span class="n">shape_tool</span><span class="o">.</span><span class="n">GetReferredShape</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">label_reference</span><span class="p">)</span>
+                <span class="n">reference_found</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">matrix</span> <span class="o">=</span> <span class="n">TransformationMatrix</span><span class="p">(</span><span class="n">get_matrix</span><span class="p">(</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetLocation</span><span class="p">(</span><span class="n">label</span><span class="p">)</span><span class="o">.</span><span class="n">Transformation</span><span class="p">()))</span>
+                <span class="n">shape</span> <span class="o">=</span> <span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">label_reference</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">)</span><span class="o">.</span><span class="n">IsPartner</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+                        <span class="n">link</span><span class="o">.</span><span class="n">add_occurrence</span><span class="p">(</span><span class="n">get_label_name</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">matrix</span><span class="p">)</span>
+                        <span class="n">reference_found</span> <span class="o">=</span> <span class="bp">True</span>
+                        <span class="k">break</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">reference_found</span><span class="p">:</span>
+                    <span class="n">new_product</span> <span class="o">=</span> <span class="n">Product</span><span class="p">(</span><span class="n">get_label_name</span><span class="p">(</span><span class="n">label_reference</span><span class="p">),</span> <span class="n">deep</span><span class="p">,</span>
+                                          <span class="n">label_reference</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">product_id</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">file_path</span><span class="p">)</span>
+                    <span class="n">product_assembly</span> <span class="o">=</span> <span class="n">search_assembly</span><span class="p">(</span><span class="n">new_product</span><span class="p">,</span> <span class="n">product_root</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">product_assembly</span><span class="p">:</span>
+                        <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Link</span><span class="p">(</span><span class="n">product_assembly</span><span class="p">))</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Link</span><span class="p">(</span><span class="n">new_product</span><span class="p">))</span>
+                        <span class="n">product_id</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">expand_product</span><span class="p">(</span><span class="n">shape_tool</span><span class="p">,</span> <span class="n">new_product</span><span class="p">,</span> <span class="n">shapes_simples</span><span class="p">,</span>
+                            <span class="n">deep</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">doc_id</span><span class="p">,</span> <span class="n">product_root</span><span class="p">,</span><span class="n">product_id</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+
+
+                    <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">add_occurrence</span><span class="p">(</span><span class="n">get_label_name</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="n">matrix</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">compShape</span> <span class="o">=</span> <span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shapes_simples</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">compShape</span><span class="o">.</span><span class="n">IsPartner</span><span class="p">(</span><span class="n">shapes_simples</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+                <span class="n">product</span><span class="o">.</span><span class="n">set_geometry</span><span class="p">(</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="c">#to avoid index==0</span>
+
+</div>
+<div class="viewcode-block" id="get_matrix"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.get_matrix">[docs]</a><span class="k">def</span> <span class="nf">get_matrix</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts *location* in an array ([x1, x2, x3, x4, y1, y2, y3, y4, z1, z2, z3, z4])</span>
+
+<span class="sd">    == == == == == = ==</span>
+<span class="sd">    x1 x2 x3 x4  x = x&#39;</span>
+<span class="sd">    y1 y2 y3 y4  y = y&#39;</span>
+<span class="sd">    z1 z2 z3 z4  z = z&#39;</span>
+<span class="sd">    0  0  0  1   1 = 1</span>
+<span class="sd">    == == == == == = ==</span>
+
+<span class="sd">    :param location: location</span>
+<span class="sd">    :type location: :class:`.OCC.TopLoc.TopLoc_Location`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">VectorialPart</span><span class="p">()</span>
+    <span class="n">gp</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">X</span><span class="p">()</span>
+    <span class="n">x2</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Y</span><span class="p">()</span>
+    <span class="n">x3</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Z</span><span class="p">()</span>
+    <span class="n">x4</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">Transforms</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">gp</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">X</span><span class="p">()</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Y</span><span class="p">()</span>
+    <span class="n">y3</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Z</span><span class="p">()</span>
+    <span class="n">y4</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">Transforms</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">gp</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">Row</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">X</span><span class="p">()</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Y</span><span class="p">()</span>
+    <span class="n">z3</span> <span class="o">=</span> <span class="n">gp</span><span class="o">.</span><span class="n">Z</span><span class="p">()</span>
+    <span class="n">z4</span> <span class="o">=</span> <span class="n">location</span><span class="o">.</span><span class="n">Transforms</span><span class="p">()[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x3</span><span class="p">,</span> <span class="n">x4</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">y3</span><span class="p">,</span> <span class="n">y4</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">z3</span><span class="p">,</span> <span class="n">z4</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="get_label_name"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.get_label_name">[docs]</a><span class="k">def</span> <span class="nf">get_label_name</span><span class="p">(</span><span class="n">lab</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Returns the name of a :class:`.OCC.TDF.TDF_Label` (**lab**)</span>
+
+<span class="sd">    :param lab: :class:`.OCC.TDF.TDF_Label`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="n">TCollection_AsciiString</span><span class="p">()</span>
+    <span class="n">TDF_Tool</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">lab</span><span class="p">,</span><span class="n">entry</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">Handle_TDataStd_Name</span><span class="p">()</span>
+    <span class="n">lab</span><span class="o">.</span><span class="n">FindAttribute</span><span class="p">(</span><span class="n">TDataStd_Name_GetID</span><span class="p">(),</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">n</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">Get</span><span class="p">()</span><span class="o">.</span><span class="n">PrintToString</span><span class="p">(),</span><span class="n">errors</span><span class="o">=</span><span class="s">&#39;ignore&#39;</span><span class="p">)</span><span class="c">#.decode(&quot;latin-1&quot;)</span>
+
+</div>
+<div class="viewcode-block" id="set_label_name"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.set_label_name">[docs]</a><span class="k">def</span> <span class="nf">set_label_name</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Sets the name of a :class:`.OCC.TDF.TDF_Label` (**label**)</span>
+
+<span class="sd">    :param label: :class:`.OCC.TDF.TDF_Label`</span>
+<span class="sd">    :param name: new name for a :class:`.OCC.TDF.TDF_Label`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="n">TCollection_AsciiString</span><span class="p">()</span>
+    <span class="n">TDF_Tool</span><span class="o">.</span><span class="n">Entry</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">Handle_TDataStd_Name</span><span class="p">()</span>
+    <span class="n">label</span><span class="o">.</span><span class="n">FindAttribute</span><span class="p">(</span><span class="n">TDataStd_Name_GetID</span><span class="p">(),</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">n</span><span class="o">=</span><span class="n">N</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+    <span class="n">n</span><span class="o">.</span><span class="n">Set</span><span class="p">(</span><span class="n">TCollection_ExtendedString</span><span class="p">(</span><span class="n">name</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;latin-1&quot;</span><span class="p">)))</span>
+
+</div>
+<div class="viewcode-block" id="find_color"><a class="viewcode-back" href="../../../../devel/applications/document3D/STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.find_color">[docs]</a><span class="k">def</span> <span class="nf">find_color</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">color_tool</span><span class="p">,</span> <span class="n">shape_tool</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Gets the color of a :class:`.OCC.TDF.TDF_Label` (**label**)</span>
+
+<span class="sd">    :param label: :class:`.OCC.TDF.TDF_Label`</span>
+<span class="sd">    :param shape_tool: :class:`.OCC.XCAFDoc.XCAFDoc_ShapeTool`</span>
+<span class="sd">    :param color_tool: :class:`.OCC.XCAFDoc.XCAFDoc_ColorTool`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">Quantity_Color</span><span class="p">()</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">color_tool</span><span class="o">.</span><span class="n">GetInstanceColor</span><span class="p">(</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">or</span>
+        <span class="n">color_tool</span><span class="o">.</span><span class="n">GetInstanceColor</span><span class="p">(</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">or</span>
+        <span class="n">color_tool</span><span class="o">.</span><span class="n">GetInstanceColor</span><span class="p">(</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">label</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">color_tool</span><span class="o">.</span><span class="n">SetInstanceColor</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">color_tool</span><span class="o">.</span><span class="n">GetColor</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">or</span>
+        <span class="n">color_tool</span><span class="o">.</span><span class="n">GetColor</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">or</span>
+        <span class="n">color_tool</span><span class="o">.</span><span class="n">GetColor</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">c</span><span class="p">)):</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShape</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">color_tool</span><span class="o">.</span><span class="n">SetInstanceColor</span><span class="p">(</span><span class="n">shape</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">c</span>
+
+    <span class="k">return</span> <span class="bp">False</span>
+
+</div>
+<span class="k">class</span> <span class="nc">MultiRootError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;OpenPLM does not support files step with multiple roots&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">OCCReadingStepError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;PythonOCC could not read the file&quot;</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

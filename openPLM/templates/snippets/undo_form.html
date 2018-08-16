@@ -1,0 +1,19 @@
+{% load i18n plmapp_tags %}
+{% if form.is_multipart %}
+
+<form id="fileupload" enctype="multipart/form-data" method="post" action="{{action|default:"."}}" {{ form_attributes }}>{% csrf_token %}
+{% else %}
+    <form method="post" action="{{action|default:"."}}"  {{ form_attributes }}>{% csrf_token %}
+{% endif %}
+    <table class="Content">
+        {{ form }}
+        <tr>
+            <td>
+            </td>
+            <td>
+                <input type="submit" class="tb-btn tb-btn-success" value="{% trans "Validate" %}" name="_validate"/>
+               <input type="submit" class="tb-btn" value="{% trans "Cancel" %}" name="_undo"/>
+            </td>
+        </tr>
+    </table>
+</form>

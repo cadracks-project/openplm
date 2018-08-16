@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.6.1. webdav.backends — Backend base class &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.6. webdav – WebDAV" href="index.html" />
+    <link rel="next" title="6.6.2. webdav.backends.openplm — OpenPLM Backend" href="backends_openplm.html" />
+    <link rel="prev" title="6.6. webdav – WebDAV" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="backends_openplm.html" title="6.6.2. webdav.backends.openplm — OpenPLM Backend"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6.6. webdav – WebDAV"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.6. webdav &#8211; WebDAV</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">6.6. webdav &#8211; WebDAV</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="backends_openplm.html"
+                        title="next chapter">6.6.2. <tt class="docutils literal"><span class="pre">webdav.backends.openplm</span></tt> &#8212; OpenPLM Backend</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/webdav/backends.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/webdav/backends.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-openPLM.apps.webdav.backends">
+<span id="webdav-backends-backend-base-class"></span><h1>6.6.1. <tt class="xref py py-mod docutils literal"><span class="pre">webdav.backends</span></tt> &#8212; Backend base class<a class="headerlink" href="#module-openPLM.apps.webdav.backends" title="Permalink to this headline">¶</a></h1>
+<p>django-webdav is a small WebDAV implementation for Django.
+Copyright 2012 Peter Gebauer</p>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<dl class="exception">
+<dt id="openPLM.apps.webdav.backends.BackendException">
+<em class="property">exception </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">BackendException</tt><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openPLM.apps.webdav.backends.BackendIOException">
+<em class="property">exception </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">BackendIOException</tt><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendIOException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendIOException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.apps.webdav.backends.BackendException" title="openPLM.apps.webdav.backends.BackendException"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.webdav.backends.BackendException</span></tt></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openPLM.apps.webdav.backends.BackendStorageException">
+<em class="property">exception </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">BackendStorageException</tt><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendStorageException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendStorageException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.apps.webdav.backends.BackendException" title="openPLM.apps.webdav.backends.BackendException"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.webdav.backends.BackendException</span></tt></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openPLM.apps.webdav.backends.BackendResourceNotFoundException">
+<em class="property">exception </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">BackendResourceNotFoundException</tt><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendResourceNotFoundException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendResourceNotFoundException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.apps.webdav.backends.BackendException" title="openPLM.apps.webdav.backends.BackendException"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.webdav.backends.BackendException</span></tt></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="openPLM.apps.webdav.backends.BackendLockException">
+<em class="property">exception </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">BackendLockException</tt><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendLockException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendLockException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#openPLM.apps.webdav.backends.BackendException" title="openPLM.apps.webdav.backends.BackendException"><tt class="xref py py-class docutils literal"><span class="pre">openPLM.apps.webdav.backends.BackendException</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.webdav.backends.BackendLock">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">BackendLock</tt><big>(</big><em>path</em>, <em>token</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendLock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendLock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Used for the WebDav backend locking mechanisms.</p>
+<dl class="classmethod">
+<dt id="openPLM.apps.webdav.backends.BackendLock.from_dict">
+<em class="property">classmethod </em><tt class="descname">from_dict</tt><big>(</big><em>d</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendLock.from_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendLock.from_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.BackendLock.to_dict">
+<tt class="descname">to_dict</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendLock.to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendLock.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.webdav.backends.PropertySet">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">PropertySet</tt><big>(</big><em>props={}</em>, <em>status='200 OK'</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#PropertySet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.PropertySet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/2.6/library/stdtypes.html#dict" title="(in Python v2.6)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.webdav.backends.BackendItem">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">BackendItem</tt><big>(</big><em>name</em>, <em>is_collection=False</em>, <em>property_sets=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.BackendItem.add_properties">
+<tt class="descname">add_properties</tt><big>(</big><em>props={}</em>, <em>status='200 OK'</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#BackendItem.add_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.BackendItem.add_properties" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.webdav.backends.Backend">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.webdav.backends.</tt><tt class="descname">Backend</tt><big>(</big><em>configuration</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Abstract files backend class.</p>
+<dl class="attribute">
+<dt id="openPLM.apps.webdav.backends.Backend.LOCK_EX">
+<tt class="descname">LOCK_EX</tt><em class="property"> = 1</em><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.LOCK_EX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.webdav.backends.Backend.LOCK_SH">
+<tt class="descname">LOCK_SH</tt><em class="property"> = 2</em><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.LOCK_SH" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.apps.webdav.backends.Backend.validate_config">
+<em class="property">classmethod </em><tt class="descname">validate_config</tt><big>(</big><em>config</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.validate_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.validate_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Validator for a specific backend. Config is a dictionary.
+Override to validate specific values in that dictionary.
+Raises django.core.exceptions.ValidationError if it fails.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.apps.webdav.backends.Backend.get_category">
+<em class="property">classmethod </em><tt class="descname">get_category</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.get_category"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.get_category" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override. Return a string with the category name.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="openPLM.apps.webdav.backends.Backend.get_name">
+<em class="property">classmethod </em><tt class="descname">get_name</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.get_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.get_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override. Return proper human readable name as string.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.get_acl">
+<tt class="descname">get_acl</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.get_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.get_acl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an empty WebDavAcl instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.set_acl">
+<tt class="descname">set_acl</tt><big>(</big><em>path</em>, <em>acl</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.set_acl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.set_acl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write WebDavAcl instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_propfind">
+<tt class="descname">dav_propfind</tt><big>(</big><em>path</em>, <em>property_names=</em><span class="optional">[</span><span class="optional">]</span><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_propfind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_propfind" title="Permalink to this definition">¶</a></dt>
+<dd><p>The property_names argument can be used to specify which properties
+to return with the BackendItems. Empty list (default) means ALL
+properties.
+Return a list of BackendItem instances found in the specified path
+collection. Always include the resource specified in path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_set_properties">
+<tt class="descname">dav_set_properties</tt><big>(</big><em>path</em>, <em>properties</em>, <em>token=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_set_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_set_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set properties (dictionary) for resource.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_remove_properties">
+<tt class="descname">dav_remove_properties</tt><big>(</big><em>path</em>, <em>property_names</em>, <em>token=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_remove_properties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_remove_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove properties (list of names) from resource.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_mkcol">
+<tt class="descname">dav_mkcol</tt><big>(</big><em>path</em>, <em>token=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_mkcol"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_mkcol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new collection for resource.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_get">
+<tt class="descname">dav_get</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return readable file object.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_head">
+<tt class="descname">dav_head</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_head"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_head" title="Permalink to this definition">¶</a></dt>
+<dd><p>Not sure yet! FIXME!!!</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_delete">
+<tt class="descname">dav_delete</tt><big>(</big><em>path</em>, <em>token=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes the resource.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_put">
+<tt class="descname">dav_put</tt><big>(</big><em>path</em>, <em>readable</em>, <em>token=None</em>, <em>estimated_size=0</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_put"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_put" title="Permalink to this definition">¶</a></dt>
+<dd><p>Upload data using file object. (or any object with read method)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_copy">
+<tt class="descname">dav_copy</tt><big>(</big><em>from_path</em>, <em>to_path</em>, <em>token=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies a resource from one path to another.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_move">
+<tt class="descname">dav_move</tt><big>(</big><em>from_path</em>, <em>to_path</em>, <em>token1=None</em>, <em>token2=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Movies a resource from one path to another.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_lock">
+<tt class="descname">dav_lock</tt><big>(</big><em>path</em>, <em>token=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locks the resource, exclusive or shared, depth infinite or not.
+Must support the following keyword arguments:
+owner (str), exclusive (bool), infinite (bool) and timeout (int).
+Returns a BackendLock instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_unlock">
+<tt class="descname">dav_unlock</tt><big>(</big><em>path</em>, <em>token</em>, <em>owner=None</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_unlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlocks the resource.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.webdav.backends.Backend.dav_get_lock">
+<tt class="descname">dav_get_lock</tt><big>(</big><em>path</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/backends.html#Backend.dav_get_lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.backends.Backend.dav_get_lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a BackendLock instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="backends_openplm.html" title="6.6.2. webdav.backends.openplm — OpenPLM Backend"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6.6. webdav – WebDAV"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.6. webdav &#8211; WebDAV</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

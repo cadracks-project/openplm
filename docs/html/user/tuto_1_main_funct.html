@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.1. Main functions of openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="1. List of Tutorials" href="tutorials.html" />
+    <link rel="next" title="1.2. Functions related to PLM objects : PART / DOCUMENT" href="tuto_2_plmobject.html" />
+    <link rel="prev" title="1. List of Tutorials" href="tutorials.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tuto_2_plmobject.html" title="1.2. Functions related to PLM objects : PART / DOCUMENT"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="1. List of Tutorials"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" accesskey="U">1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.1. Main functions of openPLM</a><ul>
+<li><a class="reference internal" href="#requirements">1.1.1. Requirements</a></li>
+<li><a class="reference internal" href="#home-page">1.1.2. Home page</a></li>
+<li><a class="reference internal" href="#search">1.1.3. Search</a></li>
+<li><a class="reference internal" href="#navigate">1.1.4. Navigate</a></li>
+<li><a class="reference internal" href="#create">1.1.5. Create</a></li>
+<li><a class="reference internal" href="#study">1.1.6. Study</a></li>
+<li><a class="reference internal" href="#browse">1.1.7. Browse</a></li>
+<li><a class="reference internal" href="#common-parts">1.1.8. Common Parts</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tutorials.html"
+                        title="previous chapter">1. List of Tutorials</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tuto_2_plmobject.html"
+                        title="next chapter">1.2. Functions related to PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/user/tuto_1_main_funct.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/tuto_1_main_funct.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="main-functions-of-openplm">
+<h1>1.1. Main functions of openPLM<a class="headerlink" href="#main-functions-of-openplm" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the main concepts and the main functions of openPLM,
+the first genuine open source PLM.</p>
+<div class="section" id="requirements">
+<h2>1.1.1. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>OpenPLM is a full web application i.e. you just need a web browser.
+We advise you to use a decent browser, like Mozilla Firefox,
+Google Chrome, Opera or any browsers based on Webkit or Gecko.</p>
+<p>In OpenPLM there are four main types of objects:</p>
+<ul class="simple">
+<li>User</li>
+<li>Group</li>
+<li>Part</li>
+<li>Document</li>
+</ul>
+<p>The parts and documents are named according to the following convention:
+<em>type//ref//rev//name</em></p>
+<blockquote>
+<div><dl class="docutils">
+<dt>type</dt>
+<dd>refers to the type of the object (<tt class="docutils literal"><span class="pre">Part</span></tt>, <tt class="docutils literal"><span class="pre">Document</span></tt>, <tt class="docutils literal"><span class="pre">Document3D</span></tt>...)</dd>
+<dt>ref</dt>
+<dd>refers to the reference of the object (usually written as <tt class="docutils literal"><span class="pre">PART_1759</span></tt> or <tt class="docutils literal"><span class="pre">DOC_0051</span></tt>)</dd>
+<dt>rev</dt>
+<dd>refers to the revision number of the object (<tt class="docutils literal"><span class="pre">a</span></tt>, <tt class="docutils literal"><span class="pre">1.2</span></tt> or <tt class="docutils literal"><span class="pre">A.a.1</span></tt>...)</dd>
+<dt>name</dt>
+<dd>refers to the name of the object (may be empty)</dd>
+</dl>
+</div></blockquote>
+</div>
+<div class="section" id="home-page">
+<span id="func-home"></span><h2>1.1.2. Home page<a class="headerlink" href="#home-page" title="Permalink to this headline">¶</a></h2>
+<p>You have 5 main features:</p>
+<p>1- Search for objects</p>
+<p>2- Navigate with link between objects</p>
+<p>3- Creation of objects</p>
+<p>4- Study an object (access to the object information)</p>
+<p>5- Browse objects</p>
+<p>Screenshot:</p>
+<div class="figure align-center">
+<img alt="../_images/Capture_openPLM_home.png" src="../_images/Capture_openPLM_home.png" style="width: 100%;" />
+<p class="caption">Home page</p>
+</div>
+<p>As shown on the example, your pending invitations (sent and received) are displayed on the home page.</p>
+</div>
+<div class="section" id="search">
+<span id="func-search"></span><h2>1.1.3. Search<a class="headerlink" href="#search" title="Permalink to this headline">¶</a></h2>
+<p>The search block is divided in two blocks:</p>
+<p>1- The search block where you enter your request</p>
+<p>2- The block where results are displayed</p>
+<p>First, you need to select the type of object you want to look for.</p>
+<p>Then, you can fill the form if you want to refine your research with:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">a set of words, OpenPLM will search for objects, of which attributes contains all the given words</p>
+</li>
+<li><dl class="first docutils">
+<dt>advanced queries:</dt>
+<dd><ul class="first last">
+<li><dl class="first docutils">
+<dt>attribute=data</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">name=test</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">name:test</span></tt></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>attribute:data OR query</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">type=document3D</span> <span class="pre">OR</span> <span class="pre">type=design</span></tt></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>attribute:data AND query</dt>
+<dd><ul class="first last simple">
+<li><tt class="docutils literal"><span class="pre">name=test</span> <span class="pre">AND</span> <span class="pre">(type=document3D</span> <span class="pre">OR</span> <span class="pre">type=design)</span></tt></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+<p>OpenPLM will highlight results according to the query.</p>
+<p>Example:</p>
+<div class="figure align-center">
+<img alt="../_images/Capture_openPLM_search.png" src="../_images/Capture_openPLM_search.png" style="width: 100%;" />
+<p class="caption">Search example</p>
+<div class="legend">
+As you can see, an empty query matches all objects.
+Here, all parts are returned, including their sub-types (here Assembly, SinglePart, RAM, ... ).</div>
+</div>
+</div>
+<div class="section" id="navigate">
+<h2>1.1.4. Navigate<a class="headerlink" href="#navigate" title="Permalink to this headline">¶</a></h2>
+<p>Objects and their links are represented in a graph.</p>
+<p>Each box represent an object:</p>
+<ul class="simple">
+<li>Pink is for users</li>
+<li>Blue for parts</li>
+<li>Purple for documents</li>
+</ul>
+<p>Example:</p>
+<img alt="../_images/Capture_openPLM_navigate.png" src="../_images/Capture_openPLM_navigate.png" style="width: 100%;" />
+</div>
+<div class="section" id="create">
+<h2>1.1.5. Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h2>
+<p>You can create an object by filling the form displayed.</p>
+<p>Other ways to create objects are proposed under the form creation.</p>
+<p>Example:</p>
+<img alt="../_images/Capture_openPLM_create.png" src="../_images/Capture_openPLM_create.png" style="width: 100%;" />
+</div>
+<div class="section" id="study">
+<h2>1.1.6. Study<a class="headerlink" href="#study" title="Permalink to this headline">¶</a></h2>
+<p>Reaching &#8220;Study&#8221; from the Home page shows the history of the objects related to the user.</p>
+<p>The &#8220;Study&#8221; page contains tabs from where you can :</p>
+<ul class="simple">
+<li>access to informations of an object, user or group</li>
+<li>modify an object</li>
+</ul>
+<p>Example:</p>
+<div class="figure">
+<img alt="../_images/Capture_openPLM_study.png" src="../_images/Capture_openPLM_study.png" style="width: 100%;" />
+<p class="caption">Study</p>
+<div class="legend">
+<p>The possible actions and displayed informations in &#8220;Study&#8221; view are describes here :</p>
+<ul class="simple">
+<li><a class="reference internal" href="tuto_2_plmobject.html#en-plmobject-func"><em>Functions related to PLM objects : PART / DOCUMENT</em></a></li>
+<li><a class="reference internal" href="tuto_3_user.html#en-user-func"><em>Functions related to USER</em></a></li>
+<li><a class="reference internal" href="tuto_4_group.html#en-group-func"><em>Functions related to GROUPS</em></a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="browse">
+<h2>1.1.7. Browse<a class="headerlink" href="#browse" title="Permalink to this headline">¶</a></h2>
+<p>The &#8220;Browse&#8221; page displays all objects, groups and users available in your OpenPLM.
+You can filter the results according to their type, status and you can change
+the sorting order.</p>
+<p>Example:</p>
+<img alt="../_images/Capture_openPLM_browse.png" src="../_images/Capture_openPLM_browse.png" style="width: 100%;" />
+</div>
+<div class="section" id="common-parts">
+<h2>1.1.8. Common Parts<a class="headerlink" href="#common-parts" title="Permalink to this headline">¶</a></h2>
+<p><strong>The header</strong></p>
+<p>It contains:</p>
+<blockquote>
+<div><ul class="simple">
+<li>User&#8217;s name (if the user is logged)</li>
+<li>Today&#8217;s date and hour</li>
+<li>Button to choose the language</li>
+<li>Link to log out (or login)</li>
+<li>Link to get help</li>
+</ul>
+</div></blockquote>
+<p><strong>The toolbar</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Buttons to reach different views</li>
+<li>A history of objects reached during your session</li>
+</ul>
+</div></blockquote>
+<p>If you place your mouse over an object in the history, the corresponding menu will be shown.</p>
+<p>Once you are logged in, the header and the toolbar appears in all views.
+Except in &#8220;Home&#8221; page, where only the header appears.</p>
+<div class="figure">
+<img alt="../_images/Capture_openPLM_header.png" src="../_images/Capture_openPLM_header.png" style="width: 100%;" />
+<p class="caption">Header and toolbar</p>
+</div>
+<p><strong>The left panel</strong></p>
+<p>It can be showed or hidden. This left panel is a search
+area with the same structure as the SEARCH view described higher</p>
+<p>Depending on the current object and the current page this panel can have extra functions.</p>
+<p>This panel does not appear in the home page and the &#8220;Search&#8221; page.</p>
+<img alt="../_images/Capture_openPLM_leftpanel.png" src="../_images/Capture_openPLM_leftpanel.png" style="width: 100%;" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tuto_2_plmobject.html" title="1.2. Functions related to PLM objects : PART / DOCUMENT"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tutorials.html" title="1. List of Tutorials"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" >1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.16.3. thumbnailers.magick — thumbnailer for image files (ImageMagick) &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.16. thumbnailers — Utilities to generate a thumbnail from a file" href="../thumbnailers.html" />
+    <link rel="next" title="5.16.4. thumbnailers.odf — Thumbnailer for OpenDocument files" href="thumbnailers_odf.html" />
+    <link rel="prev" title="5.16.2. thumbnailers.jfif — Thumbnailer for files containing a JPEG thumbnail" href="thumbnailers_jfif.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers_odf.html" title="5.16.4. thumbnailers.odf — Thumbnailer for OpenDocument files"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers_jfif.html" title="5.16.2. thumbnailers.jfif — Thumbnailer for files containing a JPEG thumbnail"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../thumbnailers.html" accesskey="U">5.16. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">thumbnailers</span></tt> &#8212; Utilities to generate a thumbnail from a file</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="thumbnailers_jfif.html"
+                        title="previous chapter">5.16.2. <tt class="docutils literal docutils literal docutils literal"><span class="pre">thumbnailers.jfif</span></tt> &#8212; Thumbnailer for files containing a JPEG thumbnail</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="thumbnailers_odf.html"
+                        title="next chapter">5.16.4. <tt class="docutils literal"><span class="pre">thumbnailers.odf</span></tt> &#8212; Thumbnailer for OpenDocument files</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/thumbnailers/thumbnailers_magick.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/thumbnailers/thumbnailers_magick.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.thumbnailers.magickthumbnailer">
+<span id="thumbnailers-magick-thumbnailer-for-image-files-imagemagick"></span><h1>5.16.3. <tt class="xref py py-mod docutils literal"><span class="pre">thumbnailers.magick</span></tt> &#8212; thumbnailer for image files (ImageMagick)<a class="headerlink" href="#module-plmapp.thumbnailers.magickthumbnailer" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="plmapp.thumbnailers.magickthumbnailer.limit_resources">
+<tt class="descclassname">plmapp.thumbnailers.magickthumbnailer.</tt><tt class="descname">limit_resources</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/thumbnailers/magickthumbnailer.html#limit_resources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.thumbnailers.magickthumbnailer.limit_resources" title="Permalink to this definition">¶</a></dt>
+<dd><p>Limits the process execution time to 60 seconds.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.thumbnailers.magickthumbnailer.magick_thumbnailer">
+<tt class="descclassname">plmapp.thumbnailers.magickthumbnailer.</tt><tt class="descname">magick_thumbnailer</tt><big>(</big><em>input_path</em>, <em>original_filename</em>, <em>output_path</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/thumbnailers/magickthumbnailer.html#magick_thumbnailer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.thumbnailers.magickthumbnailer.magick_thumbnailer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thumbnailer that calls <strong class="command">convert</strong> (from ImageMagick) to generate
+a thumbnail.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="plmapp.thumbnailers.magickthumbnailer.FORMATS">
+<tt class="descclassname">plmapp.thumbnailers.magickthumbnailer.</tt><tt class="descname">FORMATS</tt><em class="property"> = ('.3fr', '.a', '.ai', '.art', '.arw', '.avi', '.avs', '.b', '.bgr', '.bgra', '.bmp', '.brg', '.c', '.cal', '.cals', '.caption', '.cin', '.cmyk', '.cmyka', '.cr2', '.crw', '.cur', '.cut', '.dcm', '.dcr', '.dcx', '.dds', '.dfont', '.djvu', '.dng', '.dot', '.dpx', '.epdf', '.epi', '.eps', '.epsf', '.epsi', '.ept', '.ept2', '.ept3', '.erf', '.exr', '.fax', '.fits', '.fractal', '.fts', '.g', '.g3', '.gbr', '.gif', '.gif87', '.gradient', '.gray', '.grb', '.group4', '.hald', '.hrz', '.icb', '.ico', '.icon', '.inline', '.ipl', '.j2c', '.jng', '.jp2', '.jpc', '.jpeg', '.jpg', '.jpx', '.k', '.k25', '.kdc', '.label', '.m', '.m2v', '.m4v', '.map', '.mat', '.miff', '.mng', '.mono', '.mov', '.mp4', '.mpc', '.mpeg', '.mpg', '.mrw', '.msl', '.msvg', '.mtv', '.mvg', '.nef', '.null', '.o', '.orf', '.otb', '.otf', '.pal', '.palm', '.pam', '.pattern', '.pbm', '.pcd', '.pcds', '.pcl', '.pct', '.pcx', '.pdb', '.pdf', '.pdfa', '.pef', '.pes', '.pfa', '.pfb', '.pfm', '.pgm', '.pgx', '.picon', '.pict', '.pix', '.pjpeg', '.plasma', '.png', '.png24', '.png32', '.png8', '.pnm', '.ppm', '.ps', '.psb', '.psd', '.ptif', '.pwp', '.r', '.raf', '.ras', '.rbg', '.rgb', '.rgba', '.rgbo', '.rla', '.rle', '.scr', '.sct', '.sfw', '.sgi', '.sr2', '.srf', '.stegano', '.sun', '.svg', '.svgz', '.text', '.tga', '.tiff', '.tile', '.tim', '.ttc', '.ttf', '.txt', '.uyvy', '.vda', '.vicar', '.vid', '.viff', '.vst', '.wbmp', '.wmf', '.wmv', '.wmz', '.wpg', '.x', '.x3f', '.xbm', '.xc', '.xcf', '.xpm', '.xps', '.xv', '.xwd', '.y', '.ycbcr', '.ycbcra', '.yuv')</em><a class="headerlink" href="#plmapp.thumbnailers.magickthumbnailer.FORMATS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supported formats (if all ImageMagick decoders are installed)</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers_odf.html" title="5.16.4. thumbnailers.odf — Thumbnailer for OpenDocument files"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers_jfif.html" title="5.16.2. thumbnailers.jfif — Thumbnailer for files containing a JPEG thumbnail"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../thumbnailers.html" >5.16. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">thumbnailers</span></tt> &#8212; Utilities to generate a thumbnail from a file</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

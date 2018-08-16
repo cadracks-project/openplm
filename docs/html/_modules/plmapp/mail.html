@@ -1,0 +1,340 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.mail &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/mail.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.mail</h1><div class="highlight"><pre>
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains a function :func:`send_mail` which can be used to notify</span>
+<span class="sd">users about a changement in a :class:`.PLMObject`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+
+<span class="kn">import</span> <span class="nn">kjbuckets</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">translation</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">EmailMultiAlternatives</span>
+<span class="kn">from</span> <span class="nn">django.db.models</span> <span class="kn">import</span> <span class="n">Model</span><span class="p">,</span> <span class="n">Q</span>
+<span class="kn">from</span> <span class="nn">django.template.loader</span> <span class="kn">import</span> <span class="n">render_to_string</span>
+<span class="kn">from</span> <span class="nn">django.db.models.loading</span> <span class="kn">import</span> <span class="n">get_model</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sites.models</span> <span class="kn">import</span> <span class="n">Site</span>
+<span class="kn">from</span> <span class="nn">djcelery_transactions</span> <span class="kn">import</span> <span class="n">task</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">UserProfile</span><span class="p">,</span>
+        <span class="n">DelegationLink</span><span class="p">,</span> <span class="n">ROLE_OWNER</span><span class="p">,</span> <span class="n">ROLE_SIGN</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_recipients"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.get_recipients">[docs]</a><span class="k">def</span> <span class="nf">get_recipients</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">users</span><span class="p">):</span>
+    <span class="n">recipients</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;users&quot;</span><span class="p">):</span>
+        <span class="n">manager</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">()</span>
+        <span class="n">roles_filter</span> <span class="o">=</span> <span class="n">Q</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">role</span> <span class="ow">in</span> <span class="n">roles</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">ROLE_SIGN</span><span class="p">:</span>
+                <span class="n">roles_filter</span> <span class="o">|=</span> <span class="n">Q</span><span class="p">(</span><span class="n">role__startswith</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">roles_filter</span> <span class="o">|=</span> <span class="n">Q</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">manager</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">roles_filter</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">())</span>
+        <span class="n">recipients</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">roles_filter</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;role&quot;</span><span class="p">)</span>\
+                <span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;role&quot;</span><span class="p">,</span> <span class="s">&quot;delegator&quot;</span><span class="p">,</span> <span class="s">&quot;delegatee&quot;</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">role</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">links</span><span class="p">,</span> <span class="n">itemgetter</span><span class="p">(</span><span class="mi">0</span><span class="p">)):</span>
+            <span class="n">gr</span> <span class="o">=</span> <span class="n">kjbuckets</span><span class="o">.</span><span class="n">kjGraph</span><span class="p">(</span><span class="nb">tuple</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">group</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+                <span class="n">recipients</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">gr</span><span class="o">.</span><span class="n">reachable</span><span class="p">(</span><span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="n">roles</span> <span class="o">==</span> <span class="p">[</span><span class="n">ROLE_OWNER</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;owner&quot;</span><span class="p">):</span>
+            <span class="n">recipients</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">owner_id</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">User</span><span class="p">):</span>
+            <span class="n">recipients</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">recipients</span>
+</div>
+<div class="viewcode-block" id="convert_users"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.convert_users">[docs]</a><span class="k">def</span> <span class="nf">convert_users</span><span class="p">(</span><span class="n">users</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">users</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">users</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="s">&quot;id&quot;</span><span class="p">):</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">users</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">users</span>
+</div>
+<div class="viewcode-block" id="CT"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.CT">[docs]</a><span class="k">class</span> <span class="nc">CT</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;app_label&quot;</span><span class="p">,</span> <span class="s">&quot;module_name&quot;</span><span class="p">,</span> <span class="s">&quot;pk&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app_label</span><span class="p">,</span> <span class="n">module_name</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app_label</span> <span class="o">=</span> <span class="n">app_label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span> <span class="o">=</span> <span class="n">module_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pk</span> <span class="o">=</span> <span class="n">pk</span>
+
+    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">app_label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span>
+                    <span class="n">module_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span>
+                    <span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app_label</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;app_label&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;module_name&quot;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pk</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s">&quot;pk&quot;</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="CT.from_object"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.CT.from_object">[docs]</a>    <span class="k">def</span> <span class="nf">from_object</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CT.get_object"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.CT.get_object">[docs]</a>    <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">model_class</span> <span class="o">=</span> <span class="n">get_model</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app_label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">module_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">model_class</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="serialize"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.serialize">[docs]</a><span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Model</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CT</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">new_ctx</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">new_ctx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">serialize</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_ctx</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">serialize</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="unserialize"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.unserialize">[docs]</a><span class="k">def</span> <span class="nf">unserialize</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">CT</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_object</span><span class="p">()</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+        <span class="n">new_ctx</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">new_ctx</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">unserialize</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_ctx</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">unserialize</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">obj</span>
+</div>
+<span class="nd">@task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;openPLM.plmapp.mail.do_send_histories_mail&quot;</span><span class="p">,</span><span class="n">ignore_result</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">do_send_histories_mail</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">last_action</span><span class="p">,</span> <span class="n">histories</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="p">(),</span>
+              <span class="n">users</span><span class="o">=</span><span class="p">(),</span> <span class="n">template</span><span class="o">=</span><span class="s">&quot;mails/history&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sends a mail to users who have role *role* for *plmobject*.</span>
+
+<span class="sd">    :param plmobject: object which was modified</span>
+<span class="sd">    :type plmobject: :class:`.PLMObject`</span>
+<span class="sd">    :param str roles: list of roles of the users who should be notified</span>
+<span class="sd">    :param str last_action: type of modification</span>
+<span class="sd">    :param str histories: list of :class:`.AbstractHistory`</span>
+<span class="sd">    :param user: user who made the modification</span>
+<span class="sd">    :type user: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">    :param blacklist: list of emails whose no mail should be sent (empty by default).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">unserialize</span><span class="p">(</span><span class="n">plmobject</span><span class="p">)</span>
+    <span class="n">recipients</span> <span class="o">=</span> <span class="n">get_recipients</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">users</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">recipients</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">unserialize</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="s">&quot;[PLM] &quot;</span> <span class="o">+</span> <span class="nb">unicode</span><span class="p">(</span><span class="n">plmobject</span><span class="p">)</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&quot;last_action&quot;</span> <span class="p">:</span> <span class="n">last_action</span><span class="p">,</span>
+                <span class="s">&quot;histories&quot;</span> <span class="p">:</span> <span class="n">histories</span><span class="p">,</span>
+                <span class="s">&quot;plmobject&quot;</span> <span class="p">:</span> <span class="n">plmobject</span><span class="p">,</span>
+                <span class="s">&quot;user&quot;</span> <span class="p">:</span> <span class="n">user</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="n">do_send_mail</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">recipients</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">blacklist</span><span class="p">)</span>
+
+<span class="nd">@task</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;openPLM.plmapp.mail.do_send_mail&quot;</span><span class="p">,</span> <span class="n">ignore_result</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">do_send_mail</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">recipients</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="p">()):</span>
+    <span class="k">if</span> <span class="n">recipients</span><span class="p">:</span>
+        <span class="n">lang_to_email</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">recipients</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">recipient</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;profile__language&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">recipients</span><span class="o">.</span><span class="n">pop</span><span class="p">())</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">recipient</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">recipient</span><span class="o">.</span><span class="n">email</span> <span class="ow">or</span> <span class="n">recipient</span><span class="o">.</span><span class="n">email</span> <span class="ow">in</span> <span class="n">blacklist</span><span class="p">:</span>
+                <span class="k">return</span>
+            <span class="n">lang_to_email</span><span class="p">[</span><span class="n">recipient</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">language</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">recipient</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">qs</span> <span class="o">=</span> <span class="n">UserProfile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__in</span><span class="o">=</span><span class="n">recipients</span><span class="p">,</span>
+                    <span class="n">user__is_active</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">user__email</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">lang</span><span class="p">,</span> <span class="n">email</span> <span class="ow">in</span> <span class="n">qs</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;language&quot;</span><span class="p">,</span> <span class="s">&quot;user__email&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">email</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">blacklist</span><span class="p">:</span>
+                    <span class="n">lang_to_email</span><span class="p">[</span><span class="n">lang</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">lang_to_email</span><span class="p">:</span>
+                <span class="k">return</span>
+
+        <span class="n">ctx</span> <span class="o">=</span> <span class="n">unserialize</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;site&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Site</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_current</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">lang</span><span class="p">,</span> <span class="n">emails</span> <span class="ow">in</span> <span class="n">lang_to_email</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">translation</span><span class="o">.</span><span class="n">activate</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
+            <span class="n">html_content</span> <span class="o">=</span> <span class="n">render_to_string</span><span class="p">(</span><span class="n">template</span> <span class="o">+</span> <span class="s">&quot;.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">)</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">render_to_string</span><span class="p">(</span><span class="n">template</span> <span class="o">+</span> <span class="s">&quot;.txt&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">))</span>
+            <span class="n">subj_translation</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="n">subject</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">EmailMultiAlternatives</span><span class="p">(</span><span class="n">subj_translation</span><span class="p">,</span> <span class="n">message</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+                <span class="n">settings</span><span class="o">.</span><span class="n">EMAIL_OPENPLM</span><span class="p">,</span> <span class="n">bcc</span><span class="o">=</span><span class="n">emails</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">attach_alternative</span><span class="p">(</span><span class="n">html_content</span><span class="p">,</span> <span class="s">&quot;text/html&quot;</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">fail_silently</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;EMAIL_FAIL_SILENTLY&quot;</span><span class="p">,</span> <span class="bp">True</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">lang_to_email</span><span class="p">:</span>
+            <span class="n">translation</span><span class="o">.</span><span class="n">deactivate</span><span class="p">()</span>
+
+<div class="viewcode-block" id="send_mail"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.send_mail">[docs]</a><span class="k">def</span> <span class="nf">send_mail</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">recipients</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="p">()):</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">serialize</span><span class="p">(</span><span class="n">ctx</span><span class="p">)</span>
+    <span class="n">do_send_mail</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">convert_users</span><span class="p">(</span><span class="n">recipients</span><span class="p">),</span>
+            <span class="n">ctx</span><span class="p">,</span> <span class="n">template</span><span class="p">,</span> <span class="n">blacklist</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="send_histories_mail"><a class="viewcode-back" href="../../devel/modules/mail.html#plmapp.mail.send_histories_mail">[docs]</a><span class="k">def</span> <span class="nf">send_histories_mail</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">last_action</span><span class="p">,</span> <span class="n">histories</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="p">(),</span>
+              <span class="n">users</span><span class="o">=</span><span class="p">(),</span> <span class="n">template</span><span class="o">=</span><span class="s">&quot;mails/history&quot;</span><span class="p">):</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">CT</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">plmobject</span><span class="p">)</span>
+    <span class="n">histories</span> <span class="o">=</span> <span class="n">serialize</span><span class="p">(</span><span class="n">histories</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">CT</span><span class="o">.</span><span class="n">from_object</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="n">do_send_histories_mail</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="n">plmobject</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">last_action</span><span class="p">,</span> <span class="n">histories</span><span class="p">,</span>
+            <span class="n">user</span><span class="p">,</span> <span class="n">blacklist</span><span class="p">,</span> <span class="n">convert_users</span><span class="p">(</span><span class="n">users</span><span class="p">),</span> <span class="n">template</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

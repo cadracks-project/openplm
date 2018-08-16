@@ -1,0 +1,568 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.templatetags.plmapp_tags &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/templatetags/plmapp_tags.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.templatetags.plmapp_tags</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">template</span>
+<span class="kn">from</span> <span class="nn">django.db.models.fields</span> <span class="kn">import</span> <span class="n">FieldDoesNotExist</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">Group</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">resolve_variable</span>
+
+<span class="kn">from</span> <span class="nn">haystack.models</span> <span class="kn">import</span> <span class="n">SearchResult</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DocumentController</span><span class="p">,</span> <span class="n">PartController</span><span class="p">,</span>
+        <span class="n">UserController</span><span class="p">,</span> <span class="n">GroupController</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.filters</span> <span class="kn">import</span> <span class="n">richtext</span><span class="p">,</span> <span class="n">plaintext</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">get_pages_num</span>
+
+
+<span class="n">register</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">Library</span><span class="p">()</span>
+
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="can_add"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.can_add">[docs]</a><span class="k">def</span> <span class="nf">can_add</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Test if an object can be linked to the current object.</span>
+
+<span class="sd">    :param obj: object to test</span>
+<span class="sd">    :type obj: it can be an instance of :class:`.DocumentFile`, :class:`.Part` or :class:`.UserController`</span>
+
+<span class="sd">    :param arg: arguments here are the current object and the action for link creation</span>
+
+<span class="sd">    :return: True if the action can be processed on the current object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c"># TODO: replace this with the callable (cur_obj.can_attach_document...)</span>
+    <span class="n">cur_obj</span><span class="p">,</span> <span class="n">action</span> <span class="o">=</span> <span class="n">arg</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">document</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">action</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&quot;attach_doc&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cur_obj</span><span class="o">.</span><span class="n">can_attach_document</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&quot;attach_part&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cur_obj</span><span class="o">.</span><span class="n">can_attach_part</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&quot;add_child&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cur_obj</span><span class="o">.</span><span class="n">can_add_child2</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&quot;add_alternate&quot;</span><span class="p">:</span>
+        <span class="c"># FIXME: can_add_alternate is slow</span>
+        <span class="c"># something like can_add_chil2 could improve performance (less queries)</span>
+        <span class="k">return</span> <span class="n">cur_obj</span><span class="o">.</span><span class="n">can_add_alternate</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&quot;delegate&quot;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;add_&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">action</span> <span class="o">!=</span> <span class="s">&quot;add_reader&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">UserController</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cur_obj</span><span class="p">,</span> <span class="s">&quot;check_in_group&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+                <span class="k">if</span> <span class="n">cur_obj</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">action</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;add_&quot;</span><span class="p">):</span>
+                        <span class="n">role</span> <span class="o">=</span> <span class="n">action</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+                        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_viewer</span> <span class="ow">and</span> <span class="n">role</span> <span class="o">!=</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_NOTIFIED</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="bp">False</span>
+                        <span class="k">return</span> <span class="ow">not</span> <span class="n">cur_obj</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span>
+                            <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="n">action</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;delegate-reader&quot;</span><span class="p">,</span> <span class="s">&quot;add_reader&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">UserController</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">action</span> <span class="o">==</span> <span class="s">&quot;add_reader&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="ow">not</span> <span class="n">cur_obj</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span>
+                            <span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+                <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="can_add_type"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.can_add_type">[docs]</a><span class="k">def</span> <span class="nf">can_add_type</span><span class="p">(</span><span class="n">parent_type</span><span class="p">,</span> <span class="n">child_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used in Bom View.</span>
+
+<span class="sd">    :param parent_type: Type of the parent, the current part</span>
+<span class="sd">    :param child_type: type of the object that may be added as child</span>
+
+<span class="sd">    :return: True if child_type is a type of object that can be added to parent_type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">part_types</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_parts</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">parent_type</span> <span class="ow">in</span> <span class="n">part_types</span> <span class="ow">and</span> <span class="n">child_type</span> <span class="ow">in</span> <span class="n">part_types</span>
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="can_link"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.can_link">[docs]</a><span class="k">def</span> <span class="nf">can_link</span><span class="p">(</span><span class="n">current_type</span><span class="p">,</span> <span class="n">suggested_type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Used in Doc-Parts views.</span>
+
+<span class="sd">    :param current_type: type of the current object (part or document)</span>
+<span class="sd">    :param suggested_type: type of the object that may be attached to the current one</span>
+
+<span class="sd">    :return: True if current_type is a type of object that can be attached to current_type object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">doc_types</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_documents</span><span class="p">()</span>
+    <span class="n">part_types</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_parts</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">current_type</span> <span class="ow">in</span> <span class="n">doc_types</span> <span class="ow">and</span> <span class="n">suggested_type</span> <span class="ow">in</span> <span class="n">part_types</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="p">(</span><span class="n">current_type</span> <span class="ow">in</span> <span class="n">part_types</span> <span class="ow">and</span> <span class="n">suggested_type</span> <span class="ow">in</span> <span class="n">doc_types</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="key"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.key">[docs]</a><span class="k">def</span> <span class="nf">key</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">key_name</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">key_name</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">TEMPLATE_STRING_IF_INVALID</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+<span class="n">key</span> <span class="o">=</span> <span class="n">register</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;key&#39;</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+<div class="viewcode-block" id="indice"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.indice">[docs]</a><span class="k">def</span> <span class="nf">indice</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">l</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+</div>
+<span class="n">indice</span> <span class="o">=</span> <span class="n">register</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;indice&#39;</span><span class="p">,</span> <span class="n">indice</span><span class="p">)</span>
+
+<div class="viewcode-block" id="attr"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.attr">[docs]</a><span class="k">def</span> <span class="nf">attr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">,</span> <span class="n">settings</span><span class="o">.</span><span class="n">TEMPLATE_STRING_IF_INVALID</span><span class="p">)</span></div>
+<span class="n">attr</span> <span class="o">=</span> <span class="n">register</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s">&#39;attr&#39;</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="plainattr"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.plainattr">[docs]</a><span class="k">def</span> <span class="nf">plainattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">):</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s">&quot;richtext&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">plaintext</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">FieldDoesNotExist</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">v</span>
+
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="is_plmobject"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.is_plmobject">[docs]</a><span class="k">def</span> <span class="nf">is_plmobject</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns True if the object behind *result* is an instance of :class:`.PLMObject`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">)</span>
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="is_documentfile"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.is_documentfile">[docs]</a><span class="k">def</span> <span class="nf">is_documentfile</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns True if the object behind *result* is an instance of :class:`.DocumentFile`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">)</span>
+</div>
+<span class="nd">@models.cache_lifecycle_stuff</span>
+<div class="viewcode-block" id="get_state_class"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.get_state_class">[docs]</a><span class="k">def</span> <span class="nf">get_state_class</span><span class="p">(</span><span class="n">plmobject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the state class (&quot;cancelled&quot;, &quot;draft&quot;, &quot;proposed&quot;, &quot;official&quot;,</span>
+<span class="sd">    or &quot;deprecated&quot;) of *plmobject*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">state</span><span class="p">,</span> <span class="n">lifecycle</span> <span class="o">=</span> <span class="p">(</span><span class="n">plmobject</span><span class="o">.</span><span class="n">state_id</span><span class="p">,</span> <span class="n">plmobject</span><span class="o">.</span><span class="n">lifecycle_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">lifecycle</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">get_cancelled_lifecycle</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;cancelled&quot;</span>
+    <span class="n">lc</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Lifecycle</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">lifecycle</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">lc</span><span class="o">.</span><span class="n">official_state_id</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;official&quot;</span>
+    <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">lc</span><span class="o">.</span><span class="n">first_state</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;draft&quot;</span>
+    <span class="k">if</span> <span class="n">state</span> <span class="o">==</span> <span class="n">lc</span><span class="o">.</span><span class="n">last_state</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s">&quot;deprecated&quot;</span>
+    <span class="k">return</span> <span class="s">&quot;proposed&quot;</span>
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="result_class"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.result_class">[docs]</a><span class="k">def</span> <span class="nf">result_class</span><span class="p">(</span><span class="n">result</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a css class according to result.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">state_class</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">.</span><span class="n">state_class</span>
+    <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="p">)):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">state_id</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">state</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">lifecycle_id</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">lifecycle</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">state_id</span> <span class="ow">and</span> <span class="n">result</span><span class="o">.</span><span class="n">lifecycle_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;state-&quot;</span> <span class="o">+</span> <span class="n">get_state_class</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+<span class="c"># yes, this is a really bad way to detect an email</span>
+<span class="c"># but we may have to hide something like user@&lt;em&gt;domain&lt;/em&gt;</span>
+<span class="c"># it is only use to hide an email</span></div>
+<span class="n">_email_rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;\b[\w.&gt;_&lt;%+-]+@[\w_&lt;&gt;-]+(\.[\w_&gt;&lt;-]+)+\b&quot;</span><span class="p">)</span>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="hide_emails"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.hide_emails">[docs]</a><span class="k">def</span> <span class="nf">hide_emails</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns *text* with all emails removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+    <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;HIDE_EMAILS&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">_email_rx</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+
+<span class="c"># from http://djangosnippets.org/snippets/2428/ by naktinis</span>
+</div>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The tag generates a parameter string in form &#39;?param1=val1&amp;param2=val2&#39;.</span>
+<span class="sd">The parameter list is generated by taking all parameters from current</span>
+<span class="sd">request.GET and optionally overriding them by providing parameters to the tag.</span>
+
+<span class="sd">This is a cleaned up version of http://djangosnippets.org/snippets/2105/. It</span>
+<span class="sd">solves a couple of issues, namely:</span>
+<span class="sd"> * parameters are optional</span>
+<span class="sd"> * parameters can have values from request, e.g. request.GET.foo</span>
+<span class="sd"> * native parsing methods are used for better compatibility and readability</span>
+<span class="sd"> * shorter tag name</span>
+
+<span class="sd">Usage: place this code in your appdir/templatetags/add_get_parameter.py</span>
+<span class="sd">In template:</span>
+<span class="sd">{% load add_get_parameter %}</span>
+<span class="sd">&lt;a href=&quot;{% add_get param1=&#39;const&#39; param2=variable_in_context %}&quot;&gt;</span>
+<span class="sd">Link with modified params</span>
+<span class="sd">&lt;/a&gt;</span>
+
+<span class="sd">It&#39;s required that you have &#39;django.core.context_processors.request&#39; in</span>
+<span class="sd">TEMPLATE_CONTEXT_PROCESSORS</span>
+
+<span class="sd">Original version&#39;s URL: http://django.mar.lt/2010/07/add-get-parameter-tag.html</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="AddGetParameter"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.AddGetParameter">[docs]</a><span class="k">class</span> <span class="nc">AddGetParameter</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">variables</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="n">variables</span>
+
+<div class="viewcode-block" id="AddGetParameter.render"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.AddGetParameter.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">resolve_variable</span><span class="p">(</span><span class="s">&#39;request&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">var</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">context</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+        <span class="k">return</span> <span class="s">&#39;?</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>  <span class="n">params</span><span class="o">.</span><span class="n">urlencode</span><span class="p">()</span>
+
+</div></div>
+<span class="nd">@register.tag</span>
+<div class="viewcode-block" id="add_get"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.add_get">[docs]</a><span class="k">def</span> <span class="nf">add_get</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split_contents</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&#39;=&#39;</span> <span class="ow">in</span> <span class="n">pair</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">values</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">compile_filter</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parser</span><span class="o">.</span><span class="n">compile_filter</span><span class="p">(</span><span class="n">pair</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">AddGetParameter</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">variables</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="AddSearchParameter"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.AddSearchParameter">[docs]</a><span class="k">class</span> <span class="nc">AddSearchParameter</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span> <span class="o">=</span> <span class="n">values</span>
+
+<div class="viewcode-block" id="AddSearchParameter.render"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.AddSearchParameter.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">resolve_variable</span><span class="p">(</span><span class="s">&#39;request&#39;</span><span class="p">,</span> <span class="n">context</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s">&quot;type&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;all&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&quot;q&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&quot;q&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;search_query&quot;</span><span class="p">,</span> <span class="s">&quot;*&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&quot;search_official&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&quot;search_official&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;search_official&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">params</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">resolve</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&#39;?</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span>  <span class="n">params</span><span class="o">.</span><span class="n">urlencode</span><span class="p">()</span>
+
+</div></div>
+<span class="nd">@register.tag</span>
+<div class="viewcode-block" id="add_search"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.add_search">[docs]</a><span class="k">def</span> <span class="nf">add_search</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split_contents</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">values</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">pair</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">:</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">pair</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;=&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">values</span><span class="p">[</span><span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">compile_filter</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">AddSearchParameter</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+
+
+</div>
+<span class="nd">@register.inclusion_tag</span><span class="p">(</span><span class="s">&#39;snippets/pagination.html&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="show_pages_bar"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.show_pages_bar">[docs]</a><span class="k">def</span> <span class="nf">show_pages_bar</span><span class="p">(</span><span class="n">page</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+            <span class="s">&quot;objects&quot;</span> <span class="p">:</span> <span class="n">page</span><span class="p">,</span>
+            <span class="s">&quot;request&quot;</span> <span class="p">:</span> <span class="n">request</span><span class="p">,</span>
+            <span class="s">&quot;pages&quot;</span> <span class="p">:</span> <span class="n">get_pages_num</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">paginator</span><span class="o">.</span><span class="n">num_pages</span><span class="p">,</span> <span class="n">page</span><span class="o">.</span><span class="n">number</span><span class="p">),</span>
+            <span class="p">}</span>
+
+</div>
+<div class="viewcode-block" id="IsObjectReadableNode"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.IsObjectReadableNode">[docs]</a><span class="k">class</span> <span class="nc">IsObjectReadableNode</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">Node</span><span class="p">):</span>
+<div class="viewcode-block" id="IsObjectReadableNode.render"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.IsObjectReadableNode.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;object&quot;</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;request&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">user</span>
+            <span class="n">context</span><span class="p">[</span><span class="s">&quot;is_object_readable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_readable</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="n">context</span><span class="p">[</span><span class="s">&quot;is_object_readable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="s">&#39;&#39;</span>
+</div></div>
+<div class="viewcode-block" id="do_is_object_readable"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.do_is_object_readable">[docs]</a><span class="k">def</span> <span class="nf">do_is_object_readable</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tag_name</span><span class="p">,</span> <span class="o">=</span> <span class="n">token</span><span class="o">.</span><span class="n">split_contents</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">template</span><span class="o">.</span><span class="n">TemplateSyntaxError</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%r</span><span class="s"> tag requires no arguments&quot;</span> <span class="o">%</span> <span class="n">token</span><span class="o">.</span><span class="n">contents</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">IsObjectReadableNode</span><span class="p">()</span></div>
+<span class="n">register</span><span class="o">.</span><span class="n">tag</span><span class="p">(</span><span class="s">&#39;is_object_readable&#39;</span><span class="p">,</span> <span class="n">do_is_object_readable</span><span class="p">)</span>
+
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="is_readable"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.is_readable">[docs]</a><span class="k">def</span> <span class="nf">is_readable</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="c"># plmobjects are readable if:</span>
+    <span class="c">#  * they are official, deprecated or cancelled</span>
+    <span class="c">#  * user is their owner</span>
+    <span class="c">#  * user is in their group</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_official</span> <span class="ow">or</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_deprecated</span> <span class="ow">or</span> <span class="n">obj</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">owner_id</span> <span class="o">==</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s">&quot;group_ids&quot;</span><span class="p">):</span>
+            <span class="c"># cache group ids as it may be used to test another object</span>
+            <span class="c"># in the page</span>
+            <span class="n">user</span><span class="o">.</span><span class="n">group_ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">group_id</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">group_ids</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">SearchResult</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_plmobject</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">or</span> <span class="n">is_documentfile</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s">&quot;group_names&quot;</span><span class="p">):</span>
+                <span class="n">user</span><span class="o">.</span><span class="n">group_names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">is_plmobject</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="n">state_class</span> <span class="o">=</span> <span class="n">result_class</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">state_class</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;state-official&quot;</span><span class="p">,</span> <span class="s">&quot;state-deprecated&quot;</span><span class="p">,</span> <span class="s">&quot;state-cancelled&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">owner</span> <span class="o">==</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">group</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">gr</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;group__name&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span> <span class="c"># deleted object, not yet unindexed</span>
+                    <span class="k">return</span> <span class="bp">False</span>
+                <span class="k">return</span> <span class="n">gr</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">group_names</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">group</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">group_names</span>
+        <span class="k">elif</span> <span class="n">is_documentfile</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">group</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">group</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">group_names</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># the document may be official, deprecated...</span>
+                    <span class="n">s</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">document_id</span><span class="p">)</span>
+                            <span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;state&quot;</span><span class="p">,</span> <span class="s">&quot;lifecycle&quot;</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">obj</span><span class="o">.</span><span class="n">state_id</span> <span class="o">=</span> <span class="n">s</span>
+                    <span class="n">obj</span><span class="o">.</span><span class="n">lifecycle_id</span> <span class="o">=</span> <span class="n">l</span>
+                    <span class="k">return</span> <span class="n">get_state_class</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;official&quot;</span><span class="p">,</span> <span class="s">&quot;deprecated&quot;</span><span class="p">,</span>
+                            <span class="s">&quot;cancelled&quot;</span><span class="p">)</span>
+            <span class="c"># document file indexed before the revision [1848]</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">object</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span> <span class="c"># deleted object</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">document</span>
+            <span class="k">return</span> <span class="n">is_readable</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+
+    <span class="c"># other objects: readable</span>
+    <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="main_type"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.main_type">[docs]</a><span class="k">def</span> <span class="nf">main_type</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">UserController</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="s">&quot;user&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Part</span><span class="p">,</span> <span class="n">PartController</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;is_part&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;part&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Document</span><span class="p">,</span> <span class="n">DocumentController</span><span class="p">))</span> <span class="ow">or</span>
+        <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;is_document&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="s">&quot;document&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">Group</span><span class="p">,</span> <span class="n">GroupController</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="s">&quot;group&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;has_key&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="s">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">obj</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_parts</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s">&quot;part&quot;</span>
+        <span class="k">if</span> <span class="n">obj</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_documents</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s">&quot;document&quot;</span>
+        <span class="k">return</span> <span class="n">obj</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+
+
+</div>
+<span class="nd">@register.inclusion_tag</span><span class="p">(</span><span class="s">&#39;snippets/confirmation_form.html&#39;</span><span class="p">,</span> <span class="n">takes_context</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<div class="viewcode-block" id="confirm"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.confirm">[docs]</a><span class="k">def</span> <span class="nf">confirm</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">action_label</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">btn_classes</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">&quot;action&quot;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span>
+        <span class="s">&quot;action_label&quot;</span><span class="p">:</span> <span class="n">action_label</span><span class="p">,</span>
+        <span class="s">&quot;msg&quot;</span><span class="p">:</span> <span class="n">msg</span><span class="p">,</span>
+        <span class="s">&quot;action_url&quot;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;action_url&quot;</span><span class="p">],</span>
+        <span class="s">&quot;password_form&quot;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s">&quot;password_form&quot;</span><span class="p">],</span>
+        <span class="s">&quot;btn_classes&quot;</span><span class="p">:</span> <span class="n">btn_classes</span><span class="p">,</span>
+    <span class="p">}</span>
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="richtext_filter"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.richtext_filter">[docs]</a><span class="k">def</span> <span class="nf">richtext_filter</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This template filter takes a string value and passes it through the</span>
+<span class="sd">    function specified by the RICHTEXT_FILTER setting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">richtext</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="plaintext_filter"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.plaintext_filter">[docs]</a><span class="k">def</span> <span class="nf">plaintext_filter</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">obj</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This template filter takes a string value and passes it through the</span>
+<span class="sd">    function specified by the RICHTEXT_PLAIN_FILTER setting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">plaintext</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+
+</div>
+<span class="nd">@register.simple_tag</span>
+<div class="viewcode-block" id="avatar_url"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.avatar_url">[docs]</a><span class="k">def</span> <span class="nf">avatar_url</span><span class="p">(</span><span class="n">user</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;profile&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+    <span class="k">if</span> <span class="n">profile</span> <span class="ow">and</span> <span class="n">profile</span><span class="o">.</span><span class="n">avatar</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">profile</span><span class="o">.</span><span class="n">avatar</span><span class="o">.</span><span class="n">url</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">settings</span><span class="o">.</span><span class="n">STATIC_URL</span> <span class="o">+</span> <span class="s">&quot;img/icon_user.png&quot;</span>
+
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="normalize_language_code"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.normalize_language_code">[docs]</a><span class="k">def</span> <span class="nf">normalize_language_code</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">code</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">,</span> <span class="s">&quot;-&quot;</span><span class="p">)</span>
+</div>
+<span class="nd">@register.filter</span>
+<div class="viewcode-block" id="fix_rendered_result"><a class="viewcode-back" href="../../../devel/modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.fix_rendered_result">[docs]</a><span class="k">def</span> <span class="nf">fix_rendered_result</span><span class="p">(</span><span class="n">rendered_text</span><span class="p">):</span>
+    <span class="c"># ugly hack to fix invalid rendered content</span>
+    <span class="c"># it replaces &lt;a ..&quot;/&gt;&lt;span ...&lt;/a&gt; with &lt;a ..&quot;&lt;span .. &lt;/a&gt;</span>
+    <span class="k">return</span> <span class="n">rendered_text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;&quot;/&gt;&lt;span&#39;</span><span class="p">,</span> <span class="s">&#39;&quot;&gt;&lt;span&gt;&#39;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

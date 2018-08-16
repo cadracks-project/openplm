@@ -1,0 +1,223 @@
+.feature_block{
+    position: relative;
+    z-index: 1;
+}
+
+.feature_block img{
+    width:100%;
+}
+
+.feature_block .marker{
+    position: absolute;
+    background: url("../img/focus.png") no-repeat scroll center top transparent;
+    background-position: 75% 75%;
+    background-size: 50%;
+    height: 32px;
+    width: 32px;
+    cursor: help;
+    display: block;
+    z-index: 10;
+}
+
+.marker .info{
+    position: absolute;
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+    border-radius: 4px;
+    color: white;
+    font-size: small;
+    font-weight: bold;
+    top: 100%;
+    display:none;
+    padding: 20%;
+    background-color:#82979f;
+}
+.marker:hover {
+    z-index: 100;
+    cursor: help;
+}
+
+.marker:hover .info{
+    display:inline;
+    min-width: 200px;
+    position:absolute;
+}
+#create_type{
+    top: 23%;
+    left: 40%;
+}
+
+#create_ref{
+    top: 29%;
+    left: 55%;
+}
+
+#create_rev{
+    top: 42%;
+    left: 54%;
+}
+
+#create_cycle{
+    top: 46%;
+    left: 65%;
+}
+
+#create_group{
+    top: 59%;
+    left: 39%;
+}
+
+#create_import{
+    top: 78%;
+    left: 45%;
+}
+#navigate_current{
+    top: 5%;
+    left: 66%;
+}
+
+#navigate_box{
+    top: 29%;
+    left: 65%;
+}
+
+#navigate_options{
+    top: 24%;
+    left: 94%;
+}
+
+#navigate_left{
+    top: 15%;
+    left: 18%;
+}
+
+#navigate_add{
+    top: 15%;
+    left: 46%;
+}
+
+#study_doc_files{
+    top: 15%;
+    left: 25%;
+}
+
+#study_doc_add{
+    top: 22%;
+    left: 27%;
+}
+
+#study_doc_create_link{
+    top: 22%;
+    left: 52%;
+}
+
+#study_doc_disconnect{
+    top: 22%;
+    left: 61%;
+}
+
+#study_doc_3D{
+    top: 15%;
+    left: 57.5%;
+}
+
+#study_doc_list{
+    top:28%;
+    left:64%;
+}
+
+#docpart_add_panel{
+    top: 18%;
+    left: 23%;
+}
+
+#docpart_add{
+    top: 34%;
+    left: 43%;
+}
+
+#study_part_add{
+    top: 33%;
+    left: 37%;
+}
+
+#study_part_create_link{
+    top: 33%;
+    left: 64%;
+}
+
+#study_part_disconnect{
+    top: 33%;
+    left: 73%;
+}
+
+#study_part_left{
+    top: 15%;
+    left: 15%;
+}
+
+#study_part_addchild{
+    top: 23%;
+    left: 27%;
+}
+
+#study_part_createchild{
+    top: 23%;
+    left: 42%;
+}
+
+#study_part_editchild{
+    top: 23%;
+    left: 47%;
+}
+
+#study_part_dispchild{
+    top: 27%;
+    left: 30%;
+}
+
+#study_part_genchild{
+    top: 54%;
+    left: 94%;
+}
+
+#study_part_rundisp{
+    top: 50%;
+    left: 27%;
+}
+
+#partpart_add_panel{
+    top: 17%;
+    left: 20%;
+}
+
+#partpart_add{
+    top: 36%;
+    left: 39%;
+}
+
+#browse_type_filter{
+    top: 17%;
+    left: 13%;
+}
+
+#browse_sort{
+    top: 43%;
+    left: 13%;
+}
+
+#browse_options{
+    top: 55%;
+    left: 13%;
+}
+
+#browse_results{
+    top: 16%;
+    left: 52%;
+}
+
+#browse_id_card{
+    top: 43%;
+    left: 26%;
+}

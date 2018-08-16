@@ -1,0 +1,541 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1.6. controllers.document — Controllers for documents &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.1. controllers — Controllers" href="../controllers.html" />
+    <link rel="next" title="5.1.7. controllers.group — Controllers for groups" href="controllers_group.html" />
+    <link rel="prev" title="5.1.5. controllers.base — Base class for controllers" href="controllers_base.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_group.html" title="5.1.7. controllers.group — Controllers for groups"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="controllers_base.html" title="5.1.5. controllers.base — Base class for controllers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" accesskey="U">5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="controllers_base.html"
+                        title="previous chapter">5.1.5. <tt class="docutils literal docutils literal docutils literal"><span class="pre">controllers.base</span></tt> &#8212; Base class for controllers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controllers_group.html"
+                        title="next chapter">5.1.7. <tt class="docutils literal"><span class="pre">controllers.group</span></tt> &#8212; Controllers for groups</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/controllers/controllers_document.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/controllers/controllers_document.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.controllers.document">
+<span id="controllers-document-controllers-for-documents"></span><h1>5.1.6. <tt class="xref py py-mod docutils literal"><span class="pre">controllers.document</span></tt> &#8212; Controllers for documents<a class="headerlink" href="#module-plmapp.controllers.document" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.controllers.document.DocumentController">
+<em class="property">class </em><tt class="descclassname">plmapp.controllers.document.</tt><tt class="descname">DocumentController</tt><big>(</big><em>obj</em>, <em>user</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.controllers.plmobject.PLMObjectController</span></tt></p>
+<p>A <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> which manages
+<a class="reference internal" href="../models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a></p>
+<p>It provides methods to add or delete files, (un)lock them and attach a
+<a class="reference internal" href="../models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a> to a <a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>.</p>
+<dl class="classmethod">
+<dt id="plmapp.controllers.document.DocumentController.create_from_form">
+<em class="property">classmethod </em><tt class="descname">create_from_form</tt><big>(</big><em>form</em>, <em>user</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.create_from_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.create_from_form" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.has_standard_related_locked">
+<tt class="descname">has_standard_related_locked</tt><big>(</big><em>new_filename</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.has_standard_related_locked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.has_standard_related_locked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <tt class="xref py py-const docutils literal"><span class="pre">settings.ENABLE_NATIVE_FILE_MANAGEMENT</span></tt> is True
+and exists a document that contains a standard locked file related to the
+file we want to add.</p>
+<p>We use it to avoid to add a native file while a related standard locked
+file is present in the document.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_filename</strong> &#8211; name of the added file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.check_edit_files">
+<tt class="descname">check_edit_files</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.check_edit_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.check_edit_files" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.lock">
+<tt class="descname">lock</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.lock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.lock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Lock <em>doc_file</em> so that it can not be modified or deleted
+if <em>doc_file</em> has a native related file this will be deprecated</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Exceptions raised:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>doc_file</em>.document is not self.object</li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.LockError" title="plmapp.exceptions.LockError"><tt class="xref py py-exc docutils literal"><span class="pre">LockError</span></tt></a> if <em>doc_file</em> is already locked</li>
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>doc_file</em> has a native related file locked</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first last"><strong>doc_file</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>) &#8211; </p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.unlock">
+<tt class="descname">unlock</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.unlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.unlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unlock <em>doc_file</em> so that it can be modified or deleted</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Exceptions raised:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>doc_file</em>.document is not self.object</li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.UnlockError" title="plmapp.exceptions.UnlockError"><tt class="xref py py-exc docutils literal"><span class="pre">plmapp.exceptions.UnlockError</span></tt></a> if <em>doc_file</em> is already
+unlocked or <em>doc_file.locker</em> is not the current user</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first last"><strong>doc_file</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>) &#8211; </p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.add_file">
+<tt class="descname">add_file</tt><big>(</big><em>f</em>, <em>update_attributes=True</em>, <em>thumbnail=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.add_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.add_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds file <em>f</em> to the document. <em>f</em> should be a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a>
+with an attribute <em>name</em> (like an <tt class="xref py py-class docutils literal"><span class="pre">UploadedFile</span></tt>).</p>
+<p>If <em>update_attributes</em> is True (the default), <a class="reference internal" href="#plmapp.controllers.document.DocumentController.handle_added_file" title="plmapp.controllers.document.DocumentController.handle_added_file"><tt class="xref py py-meth docutils literal"><span class="pre">handle_added_file()</span></tt></a>
+will be called with <em>f</em> as parameter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the <a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> created.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the file size is superior to
+<a class="reference internal" href="../../../admin/settings.html#settings.MAX_FILE_SIZE" title="settings.MAX_FILE_SIZE"><tt class="xref py py-attr docutils literal"><span class="pre">settings.MAX_FILE_SIZE</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if we try to add a native file while a relate standar file locked is present in the Document</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.add_thumbnail">
+<tt class="descname">add_thumbnail</tt><big>(</big><em>doc_file</em>, <em>thumbnail_file</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.add_thumbnail"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.add_thumbnail" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets <em>thumnail_file</em> as the thumbnail of <em>doc_file</em>. <em>thumbnail_file</em>
+should be a <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> with an attribute <em>name</em>
+(like an <tt class="xref py py-class docutils literal"><span class="pre">UploadedFile</span></tt>).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Exceptions raised:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first last simple">
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>doc_file</em>.document is not self.object</li>
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the file size is superior to
+<a class="reference internal" href="../../../admin/settings.html#settings.MAX_FILE_SIZE" title="settings.MAX_FILE_SIZE"><tt class="xref py py-attr docutils literal"><span class="pre">settings.MAX_FILE_SIZE</span></tt></a></li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.delete_file">
+<tt class="descname">delete_file</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.delete_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.delete_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes <em>doc_file</em>, the file attached to <em>doc_file</em> is physically
+removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Exceptions raised:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>doc_file</em>.document is not self.object</li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.DeleteFileError" title="plmapp.exceptions.DeleteFileError"><tt class="xref py py-exc docutils literal"><span class="pre">plmapp.exceptions.DeleteFileError</span></tt></a> if <em>doc_file</em> is
+locked</li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first last"><strong>doc_file</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>) &#8211; the file to be deleted</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.handle_added_file">
+<tt class="descname">handle_added_file</tt><big>(</big><em>doc_file</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.handle_added_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.handle_added_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called when adding a file (method <a class="reference internal" href="#plmapp.controllers.document.DocumentController.add_file" title="plmapp.controllers.document.DocumentController.add_file"><tt class="xref py py-meth docutils literal"><span class="pre">add_file()</span></tt></a>) with
+<em>updates_attributes</em> set to True.</p>
+<p>This method may be overridden to updates attributes with data from
+<em>doc_file</em>. The default implementation does nothing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_file</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.attach_to_part">
+<tt class="descname">attach_to_part</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.attach_to_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.attach_to_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Links <em>part</em> (a <a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>) with
+<tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.detach_part">
+<tt class="descname">detach_part</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.detach_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.detach_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes link between <em>part</em> (a <a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a>) and
+<tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.get_attached_parts">
+<tt class="descname">get_attached_parts</tt><big>(</big><em>time=None</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.get_attached_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.get_attached_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all parts attached to
+<tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.get_detachable_parts">
+<tt class="descname">get_detachable_parts</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.get_detachable_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.get_detachable_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all attached parts the user can detach.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.is_part_attached">
+<tt class="descname">is_part_attached</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.is_part_attached"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.is_part_attached" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>part</em> is attached to the current document.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.check_attach_part">
+<tt class="descname">check_attach_part</tt><big>(</big><em>part</em>, <em>detach=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.check_attach_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.check_attach_part" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.can_attach_part">
+<tt class="descname">can_attach_part</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.can_attach_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.can_attach_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>part</em> can be attached to the current document.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.can_detach_part">
+<tt class="descname">can_detach_part</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.can_detach_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.can_detach_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if <em>part</em> can be detached.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.get_suggested_parts">
+<tt class="descname">get_suggested_parts</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.get_suggested_parts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.get_suggested_parts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a QuerySet of parts a user may want to attach to
+a future revision.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.revise">
+<tt class="descname">revise</tt><big>(</big><em>new_revision</em>, <em>selected_parts=()</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.revise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.revise" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.checkin">
+<tt class="descname">checkin</tt><big>(</big><em>doc_file</em>, <em>new_file</em>, <em>update_attributes=True</em>, <em>thumbnail=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.checkin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.checkin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates <em>doc_file</em> with data from <em>new_file</em>. <em>doc_file</em>.thumbnail
+is deleted if it is present.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Exceptions raised:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"><ul class="first simple">
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>doc_file</em>.document is not self.object</li>
+<li><tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the file size is superior to
+<a class="reference internal" href="../../../admin/settings.html#settings.MAX_FILE_SIZE" title="settings.MAX_FILE_SIZE"><tt class="xref py py-attr docutils literal"><span class="pre">settings.MAX_FILE_SIZE</span></tt></a></li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.UnlockError" title="plmapp.exceptions.UnlockError"><tt class="xref py py-exc docutils literal"><span class="pre">plmapp.exceptions.UnlockError</span></tt></a> if <em>doc_file</em> is locked
+but <em>doc_file.locker</em> is not the current user</li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></li>
+<li><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>doc_file</strong> (<a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>) &#8211; </li>
+<li><strong>new_file</strong> &#8211; file with new data, same parameter as <em>f</em>
+in <a class="reference internal" href="#plmapp.controllers.document.DocumentController.add_file" title="plmapp.controllers.document.DocumentController.add_file"><tt class="xref py py-meth docutils literal"><span class="pre">add_file()</span></tt></a></li>
+<li><strong>update_attributes</strong> &#8211; True if <a class="reference internal" href="#plmapp.controllers.document.DocumentController.handle_added_file" title="plmapp.controllers.document.DocumentController.handle_added_file"><tt class="xref py py-meth docutils literal"><span class="pre">handle_added_file()</span></tt></a> should be
+called</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.update_rel_part">
+<tt class="descname">update_rel_part</tt><big>(</big><em>formset</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.update_rel_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.update_rel_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates related part informations with data from <em>formset</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formset</strong> (a modelfactory_formset of
+<a class="reference internal" href="../forms.html#plmapp.forms.ModifyRelPartForm" title="plmapp.forms.ModifyRelPartForm"><tt class="xref py py-class docutils literal"><span class="pre">ModifyRelPartForm</span></tt></a>) &#8211; </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.update_file">
+<tt class="descname">update_file</tt><big>(</big><em>formset</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.update_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.update_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates uploaded file informations with data from <em>formset</em></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>formset</strong> (a modelfactory_formset of
+<tt class="xref py py-class docutils literal"><span class="pre">ModifyFileForm</span></tt>) &#8211; </td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <tt class="xref py py-attr docutils literal"><span class="pre">_user</span></tt> is not the owner of
+<a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="../exceptions.html#plmapp.exceptions.PermissionError" title="plmapp.exceptions.PermissionError"><tt class="xref py py-exc docutils literal"><span class="pre">PermissionError</span></tt></a> if <a class="reference internal" href="#plmapp.controllers.document.DocumentController.object" title="plmapp.controllers.document.DocumentController.object"><tt class="xref py py-attr docutils literal"><span class="pre">object</span></tt></a> is not editable.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.cancel">
+<tt class="descname">cancel</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.cancel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cancels the object:</p>
+<ul class="simple">
+<li>calls <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.cancel" title="plmapp.controllers.plmobject.PLMObjectController.cancel"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.cancel()</span></tt></a></li>
+<li>removes all <a class="reference internal" href="../models.html#openPLM.plmapp.models.link.DocumentPartLink" title="openPLM.plmapp.models.link.DocumentPartLink"><tt class="xref py py-class docutils literal"><span class="pre">DocumentPartLink</span></tt></a> related to the object</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.check_cancel">
+<tt class="descname">check_cancel</tt><big>(</big><em>raise_=True</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.check_cancel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.check_cancel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.clone">
+<tt class="descname">clone</tt><big>(</big><em>form</em>, <em>user</em>, <em>parts</em>, <em>block_mails=False</em>, <em>no_index=False</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.clone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clones the object :</p>
+<blockquote>
+<div><ul class="simple">
+<li>calls <a class="reference internal" href="controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.clone" title="plmapp.controllers.plmobject.PLMObjectController.clone"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.clone()</span></tt></a></li>
+<li>duplicates all <a class="reference internal" href="../models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> in self.object</li>
+</ul>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parts</strong> &#8211; list of <a class="reference internal" href="../models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> selected to be attached to the new document</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.has_links">
+<tt class="descname">has_links</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.has_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.has_links" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return true if the document is attached to at least one part.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.publish">
+<tt class="descname">publish</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.publish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.publish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.unpublish">
+<tt class="descname">unpublish</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.unpublish"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.unpublish" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.promote">
+<tt class="descname">promote</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.promote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.promote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.controllers.document.DocumentController.demote">
+<tt class="descname">demote</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/controllers/document.html#DocumentController.demote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.controllers.document.DocumentController.demote" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.controllers.document.DocumentController.object">
+<tt class="descname">object</tt><a class="headerlink" href="#plmapp.controllers.document.DocumentController.object" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers_group.html" title="5.1.7. controllers.group — Controllers for groups"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="controllers_base.html" title="5.1.5. controllers.base — Base class for controllers"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../controllers.html" >5.1. <tt class="docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

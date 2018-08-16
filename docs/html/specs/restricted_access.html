@@ -1,0 +1,225 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>4. Restricted access &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="7. Specifications" href="index.html" />
+    <link rel="next" title="5. Revisions" href="revisions.html" />
+    <link rel="prev" title="3. Publication" href="publication.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="revisions.html" title="5. Revisions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="3. Publication"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">4. Restricted access</a><ul>
+<li><a class="reference internal" href="#restricted-account">4.1. Restricted Account</a></li>
+<li><a class="reference internal" href="#accessible-parts-and-documents">4.2. Accessible parts and documents</a></li>
+<li><a class="reference internal" href="#inaccessible-contents">4.3. Inaccessible contents</a></li>
+<li><a class="reference internal" href="#accessible-contents">4.4. Accessible contents</a></li>
+<li><a class="reference internal" href="#rights-delegation">4.5. Rights delegation</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="publication.html"
+                        title="previous chapter">3. Publication</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="revisions.html"
+                        title="next chapter">5. Revisions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/specs/restricted_access.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/specs/restricted_access.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="restricted-access">
+<span id="rest-account-specs"></span><h1>4. Restricted access<a class="headerlink" href="#restricted-access" title="Permalink to this headline">¶</a></h1>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>This document describes which contents can be accessed by an user
+who has restricted access rights.</p>
+<div class="section" id="restricted-account">
+<h2>4.1. Restricted Account<a class="headerlink" href="#restricted-account" title="Permalink to this headline">¶</a></h2>
+<p>A restricted account has the <tt class="docutils literal"><span class="pre">restricted</span></tt> field of its profile set to
+True.</p>
+<p>A restricted account can neither be a contributor nor an administrator.</p>
+<p>A restricted account can not be in a group.</p>
+</div>
+<div class="section" id="accessible-parts-and-documents">
+<h2>4.2. Accessible parts and documents<a class="headerlink" href="#accessible-parts-and-documents" title="Permalink to this headline">¶</a></h2>
+<p>Published parts and documents are accessible.</p>
+<p>Public pages of parts and documents which reading access has been given by
+their owner are accessible.</p>
+<p>All members of the object&#8217;s group can give access to an object if its state
+is official.</p>
+<p>All members of the object&#8217;s group can remove access to an object whatever
+its state.</p>
+</div>
+<div class="section" id="inaccessible-contents">
+<h2>4.3. Inaccessible contents<a class="headerlink" href="#inaccessible-contents" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>API</li>
+<li>Search results</li>
+<li>Navigate</li>
+<li>Groups</li>
+<li>User pages</li>
+<li>Object pages excepted public pages</li>
+<li>Create pages (create, import, sponsor)</li>
+<li>Comments</li>
+<li>Ajax views</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="accessible-contents">
+<h2>4.4. Accessible contents<a class="headerlink" href="#accessible-contents" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li>Public pages</li>
+<li>Public download</li>
+<li>User&#8217;s attributes page of the logged user (without comments)</li>
+<li>Parts-DOC-CAD page of the logged user</li>
+<li>Change password page</li>
+<li>Browse: only accessible parts and documents</li>
+<li>Home page: only the browse and study buttons are enabled.</li>
+<li>Thumbnails (an administrator may deny this access)</li>
+</ul>
+</div></blockquote>
+<p>Contents that are not in this list are inaccessible.</p>
+</div>
+<div class="section" id="rights-delegation">
+<h2>4.5. Rights delegation<a class="headerlink" href="#rights-delegation" title="Permalink to this headline">¶</a></h2>
+<p>A restricted account can not delegate its rights.</p>
+<p>An user (restricted or not) can not delegate its rights to a restricted account.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="revisions.html" title="5. Revisions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="3. Publication"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >7. Specifications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

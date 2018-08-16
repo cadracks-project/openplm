@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.1. controllers — Controllers &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.1.5. controllers.base — Base class for controllers" href="controllers/controllers_base.html" />
+    <link rel="prev" title="5. Modules (openPLM.plmapp package)" href="../modules.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers/controllers_base.html" title="5.1.5. controllers.base — Base class for controllers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../modules.html" title="5. Modules (openPLM.plmapp package)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5.1. <tt class="docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a><ul>
+<li><a class="reference internal" href="#introduction">5.1.1. Introduction</a></li>
+<li><a class="reference internal" href="#how-to-use-this-module">5.1.2. How to use this module</a></li>
+<li><a class="reference internal" href="#how-to-add-a-controller">5.1.3. How to add a controller</a></li>
+<li><a class="reference internal" href="#classes-and-functions">5.1.4. Classes and functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../modules.html"
+                        title="previous chapter">5. Modules (<tt class="docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="controllers/controllers_base.html"
+                        title="next chapter">5.1.5. <tt class="docutils literal"><span class="pre">controllers.base</span></tt> &#8212; Base class for controllers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/controllers.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/controllers.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-controllers"></span><div class="section" id="module-plmapp.controllers">
+<span id="controllers-controllers"></span><h1>5.1. <a class="reference internal" href="#module-controllers" title="controllers"><tt class="xref py py-mod docutils literal"><span class="pre">controllers</span></tt></a> &#8212; Controllers<a class="headerlink" href="#module-plmapp.controllers" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>5.1.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This module contains utilities to manage a <a class="reference internal" href="models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>.
+It provides a new class, <a class="reference internal" href="controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a>, which can be used to
+modify its attributes, promote/demote/revise it...</p>
+<p>All modifications are recorded in a history.</p>
+</div>
+<div class="section" id="how-to-use-this-module">
+<h2>5.1.2. How to use this module<a class="headerlink" href="#how-to-use-this-module" title="Permalink to this headline">¶</a></h2>
+<p>The controller for a <tt class="docutils literal"><span class="pre">PLMObject</span></tt> is <tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt>.
+All subclasses of <tt class="docutils literal"><span class="pre">PLMObject</span></tt> may have their own controller to add
+functionalities or redefined default behaviors.</p>
+<p>To get a suitable controller for a <tt class="docutils literal"><span class="pre">PLMObject</span></tt> instances use
+<a class="reference internal" href="controllers/controllers_base.html#plmapp.controllers.base.get_controller" title="plmapp.controllers.base.get_controller"><tt class="xref py py-func docutils literal"><span class="pre">get_controller()</span></tt></a>.
+For example, <cite>get_controller(&#8216;Part&#8217;)</cite> returns <a class="reference internal" href="controllers/controllers_part.html#plmapp.controllers.part.PartController" title="plmapp.controllers.part.PartController"><tt class="xref py py-class docutils literal"><span class="pre">PartController</span></tt></a>.</p>
+<p>If you have a <tt class="docutils literal"><span class="pre">PLMObject</span></tt> and an User, you can instanciate a controller.
+For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="c"># obj is a PLMObject and user an User</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller_cls</span> <span class="o">=</span> <span class="n">get_controller</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span> <span class="o">=</span> <span class="n">controller_cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then you can modify/access the attributes of the <tt class="docutils literal"><span class="pre">PLMObject</span></tt> and save the
+modifications:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;New Name&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">controller</span><span class="o">.</span><span class="n">attributes</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">user</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># as with django models, you should call *save* to register modifications</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can also promote/demote the <tt class="docutils literal"><span class="pre">PLMObject</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;draft&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">promote</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;official&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">demote</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">controller</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span>
+<span class="go">&#39;draft&#39;</span>
+</pre></div>
+</div>
+<p>There are also two classmethods which can help to create a new <tt class="docutils literal"><span class="pre">PLMobject</span></tt>:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref py py-meth docutils literal"><span class="pre">create()</span></tt></li>
+<li><tt class="xref py py-meth docutils literal"><span class="pre">create_from_form()</span></tt></li>
+</ul>
+</div></blockquote>
+<p>This two methods return an instance of <tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt> (or one of
+its subclasses).</p>
+<p>Moreover, the method <tt class="xref py py-meth docutils literal"><span class="pre">create_from_form()</span></tt> can be used
+to update informations from a form created with
+<a class="reference internal" href="forms.html#plmapp.forms.get_modification_form" title="plmapp.forms.get_modification_form"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.forms.get_modification_form()</span></tt></a>.</p>
+</div>
+<div class="section" id="how-to-add-a-controller">
+<span id="id1"></span><h2>5.1.3. How to add a controller<a class="headerlink" href="#how-to-add-a-controller" title="Permalink to this headline">¶</a></h2>
+<p>If you add a new model which inherits from <a class="reference internal" href="models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a>
+or one of its subclasses, you may want to add your own controller.</p>
+<p>You just have to declare a class which inherits (directly or not) from
+<a class="reference internal" href="controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a>. To associate this class with your models, there
+are two possibilities:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">if your class has an attribute <em>MANAGED_TYPE</em>, its value (a class)
+will be used.
+For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="n">PLMObjectController</span><span class="p">):</span>
+    <span class="n">MANAGED_TYPE</span> <span class="o">=</span> <span class="n">MyPart</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p><em>MyController</em> will be associated to <em>MyPart</em> and
+<tt class="docutils literal"><span class="pre">get_controller(&quot;MyPart&quot;)</span></tt> will return <em>MyController</em>.</p>
+</li>
+<li><p class="first">if <em>MANAGED_TYPE</em> is not defined, the name class will be used: for
+example, <em>MyPartController</em> will be associated to <em>MyPart</em>. The rule
+is simple, it is just the name of the model followed by &#8220;Controller&#8221;.
+The model may not be defined when the controller is written.</p>
+</li>
+</ul>
+</div></blockquote>
+<p>If a controller exploits none of theses possibilities, it will still
+work but it will not be associated to a type and will not be used by existing
+views.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This association is possible without any registration because
+<a class="reference internal" href="controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a> metaclass is <a class="reference internal" href="controllers/controllers_base.html#plmapp.controllers.base.MetaController" title="plmapp.controllers.base.MetaController"><tt class="xref py py-class docutils literal"><span class="pre">MetaController</span></tt></a>.</p>
+</div>
+<p>If your controller has its own attributes, you must redefine the variable
+<tt class="docutils literal"><span class="pre">__slots__</span></tt> and add its attributes:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyController</span><span class="p">(</span><span class="n">PLMObjectController</span><span class="p">):</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="n">PLMObjectController</span><span class="o">.</span><span class="n">__slots__</span> <span class="o">+</span> <span class="p">(</span><span class="s">&quot;my_attr&quot;</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MyController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">my_attr</span> <span class="o">=</span> <span class="s">&quot;value&quot;</span>
+</pre></div>
+</div>
+<p>By default, a controller inherits its <tt class="docutils literal"><span class="pre">__slots__</span></tt> attribute from its parent
+(this is set by <a class="reference internal" href="controllers/controllers_base.html#plmapp.controllers.base.MetaController" title="plmapp.controllers.base.MetaController"><tt class="xref py py-class docutils literal"><span class="pre">MetaController</span></tt></a>).</p>
+</div>
+<div class="section" id="classes-and-functions">
+<h2>5.1.4. Classes and functions<a class="headerlink" href="#classes-and-functions" title="Permalink to this headline">¶</a></h2>
+<p>This module defines several classes, here is a summary:</p>
+<blockquote>
+<div><ul>
+<li><dl class="first docutils">
+<dt>metaclasses:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="controllers/controllers_base.html#plmapp.controllers.base.MetaController" title="plmapp.controllers.base.MetaController"><tt class="xref py py-class docutils literal"><span class="pre">MetaController</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><tt class="xref py py-class docutils literal"><span class="pre">namedtuple</span></tt> :</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="controllers/controllers_part.html#plmapp.controllers.part.Child" title="plmapp.controllers.part.Child"><tt class="xref py py-class docutils literal"><span class="pre">Child</span></tt></a></li>
+<li><a class="reference internal" href="controllers/controllers_part.html#plmapp.controllers.part.Parent" title="plmapp.controllers.part.Parent"><tt class="xref py py-class docutils literal"><span class="pre">Parent</span></tt></a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p class="first">controllers:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head"><p class="first last">Type</p>
+</th>
+<th class="head"><p class="first last">Controller</p>
+</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><p class="first last"><a class="reference internal" href="models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+</td>
+<td><p class="first last"><a class="reference internal" href="controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController" title="plmapp.controllers.plmobject.PLMObjectController"><tt class="xref py py-class docutils literal"><span class="pre">PLMObjectController</span></tt></a></p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><a class="reference internal" href="models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></p>
+</td>
+<td><p class="first last"><a class="reference internal" href="controllers/controllers_part.html#plmapp.controllers.part.PartController" title="plmapp.controllers.part.PartController"><tt class="xref py py-class docutils literal"><span class="pre">PartController</span></tt></a></p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last"><a class="reference internal" href="models.html#openPLM.plmapp.models.document.Document" title="openPLM.plmapp.models.document.Document"><tt class="xref py py-class docutils literal"><span class="pre">Document</span></tt></a></p>
+</td>
+<td><p class="first last"><a class="reference internal" href="controllers/controllers_document.html#plmapp.controllers.document.DocumentController" title="plmapp.controllers.document.DocumentController"><tt class="xref py py-class docutils literal"><span class="pre">DocumentController</span></tt></a></p>
+</td>
+</tr>
+<tr class="row-odd"><td><p class="first last"><tt class="xref py py-class docutils literal"><span class="pre">User</span></tt></p>
+</td>
+<td><p class="first last"><a class="reference internal" href="controllers/controllers_user.html#plmapp.controllers.user.UserController" title="plmapp.controllers.user.UserController"><tt class="xref py py-class docutils literal"><span class="pre">UserController</span></tt></a></p>
+</td>
+</tr>
+<tr class="row-even"><td><p class="first last"><a class="reference internal" href="models.html#openPLM.plmapp.models.group.GroupInfo" title="openPLM.plmapp.models.group.GroupInfo"><tt class="xref py py-class docutils literal"><span class="pre">GroupInfo</span></tt></a></p>
+</td>
+<td><p class="first last"><a class="reference internal" href="controllers/controllers_group.html#plmapp.controllers.group.GroupController" title="plmapp.controllers.group.GroupController"><tt class="xref py py-class docutils literal"><span class="pre">GroupController</span></tt></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</li>
+<li><dl class="first docutils">
+<dt>functions:</dt>
+<dd><p class="first last"><a class="reference internal" href="controllers/controllers_base.html#plmapp.controllers.base.get_controller" title="plmapp.controllers.base.get_controller"><tt class="xref py py-func docutils literal"><span class="pre">get_controller()</span></tt></a></p>
+</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="controllers/controllers_base.html">5.1.5. <tt class="docutils literal"><span class="pre">controllers.base</span></tt> &#8212; Base class for controllers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers/controllers_document.html">5.1.6. <tt class="docutils literal"><span class="pre">controllers.document</span></tt> &#8212; Controllers for documents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers/controllers_group.html">5.1.7. <tt class="docutils literal"><span class="pre">controllers.group</span></tt> &#8212; Controllers for groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers/controllers_part.html">5.1.8. <tt class="docutils literal"><span class="pre">controllers.part</span></tt> &#8212; Controllers for parts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers/controllers_plmobject.html">5.1.9. <tt class="docutils literal"><span class="pre">controllers.plmobject</span></tt> &#8212; Controllers for plmobjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="controllers/controllers_user.html">5.1.10. <tt class="docutils literal"><span class="pre">controllers.user</span></tt> &#8212; Controllers for users</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="controllers/controllers_base.html" title="5.1.5. controllers.base — Base class for controllers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../modules.html" title="5. Modules (openPLM.plmapp package)"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

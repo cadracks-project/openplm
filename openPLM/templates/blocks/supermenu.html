@@ -1,0 +1,92 @@
+{% load i18n plmapp_tags %}
+
+<div id="supermenu">
+    {# Search #}
+    <div class="menurow">
+        <div class="{% if restricted %} disabled {% endif %}"> 
+            {% if not restricted %}
+                <form id="inline_search_form" method="get" action="/search/">
+                    <input type="text" name="q" size="30" style="padding: 0.4em;">
+                    <input type="hidden" name="type" value="all">
+                    <input type="submit" id="search_button" class="tb-btn tb-btn-primary tb-btn-large" value="{% trans "Search "%}" style="margin-top:-4px;background-image: url(../static/img/menuitem_home.png);background-position: center center; box-shadow: 2px 2px 5px #000000;">
+                </form>
+            {% else %}
+                <div class="tooltip">
+                    {% trans "Search" %}
+                    <span class="triangle">&nbsp;</span>
+                    <span class="info">{% trans "Restricted account, search not available." %}</span>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    
+    {# Navigate, homepage, Browse #}
+    <div class="menurow">
+        <div class="menuitem {% if restricted %} disabled {% endif %}"> 
+            {% if not restricted %}
+                <a class="tooltip" href="/user/{{user|urlencode }}/navigate/">
+                    {% trans "Navigate" %}
+                    <span class="triangle">&nbsp;</span>
+                    <span class="info">{% trans "Graphically explore your parts and documents." %}</span>
+                </a>
+            {% else %}
+                <div class="tooltip">
+                    {% trans "Navigate" %}
+                    <span class="triangle">&nbsp;</span>
+                    <span class="info">{% trans "Restricted account, navigate not available." %}</span>
+                </div>
+
+            {% endif %}
+        </div>
+        
+        <div class="menuitem" id="mi_homepage"> 
+        </div>
+        
+        <div class="menuitem"> 
+            <a class="tooltip" href="/browse/object/">
+                {% trans "Browse" %}
+                <span class="triangle">&nbsp;</span>
+                <span class="info">{% trans "Browse all parts, groups, users and documents." %}</span>
+            </a>
+        </div>
+    </div>
+    
+    {# Create, Study #}
+    <div class="menurow">
+
+        <div class="menuitem {% if not is_contributor %} disabled {% endif %}" style="margin-right:2em;i"> 
+            {% if is_contributor %}
+                <a class="tooltip" href="/user/{{user|urlencode}}/files/">
+                    {% trans "Upload" %}
+                    <span class="triangle">&nbsp;</span>
+                    <span class="info">{% trans "Upload one or more files and create a document" %}</span>
+                </a>
+            {% else %}
+                <div class="tooltip">
+                    {% trans "Upload" %}
+                    <span class="triangle">&nbsp;</span>
+                    <span class="info">{% trans "You can not upload a file since you are not a contributor." %}</span>
+                </div>
+            {% endif %}
+
+        </div>
+        <div class="menuitem {% if not is_contributor %} disabled {% endif %}" style="margin-left:2em"> 
+            {% if is_contributor %}
+                <a class="tooltip" href="/object/create/?type={{ctype}}">
+                    {% trans "Create" %}
+                    <span class="triangle">&nbsp;</span>
+                    <span class="info">{% trans "Create a new part, a new document or a new group." %}</span>
+                </a>
+            {% else %}
+                <div class="tooltip">
+                    {% trans "Create" %}
+                    <span class="triangle">&nbsp;</span>
+                    <span class="info">{% trans "You can not create a part or document since you are not a contributor." %}</span>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>

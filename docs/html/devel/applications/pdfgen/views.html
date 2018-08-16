@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.5.1. pdfgen.views — views for pdfgen &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.5. pdfgen – PDF outputs" href="index.html" />
+    <link rel="next" title="6.6. webdav – WebDAV" href="../webdav/index.html" />
+    <link rel="prev" title="6.5. pdfgen – PDF outputs" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../webdav/index.html" title="6.6. webdav – WebDAV"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6.5. pdfgen – PDF outputs"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.5. pdfgen &#8211; PDF outputs</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">6.5. pdfgen &#8211; PDF outputs</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../webdav/index.html"
+                        title="next chapter">6.6. webdav &#8211; WebDAV</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/pdfgen/views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/pdfgen/views.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-openPLM.apps.pdfgen.views">
+<span id="pdfgen-views-views-for-pdfgen"></span><h1>6.5.1. <tt class="xref py py-mod docutils literal"><span class="pre">pdfgen.views</span></tt> &#8212; views for pdfgen<a class="headerlink" href="#module-openPLM.apps.pdfgen.views" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="openPLM.apps.pdfgen.views.StreamedPdfFileWriter">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">StreamedPdfFileWriter</tt><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#StreamedPdfFileWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.StreamedPdfFileWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">pyPdf.pdf.PdfFileWriter</span></tt></p>
+<p>Iterable <tt class="xref py py-class docutils literal"><span class="pre">PdfFileWriter</span></tt> (from pyPDF).</p>
+<p>Usage:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pdf_file</span> <span class="o">=</span> <span class="n">StreamedPdfFileWriter</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># add contents</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">pdf_file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># set response headers</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.fetch_resources">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">fetch_resources</tt><big>(</big><em>uri</em>, <em>rel</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#fetch_resources"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.fetch_resources" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.render_to_pdf">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">render_to_pdf</tt><big>(</big><em>template_src</em>, <em>context_dict</em>, <em>filename</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#render_to_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.render_to_pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.attributes">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">attributes</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>View that returns the object&#8217;s attributes as a PDF file.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.pdfgen.views.StateHistory">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">StateHistory</tt><a class="headerlink" href="#openPLM.apps.pdfgen.views.StateHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>StateHistory(date, user, state)</p>
+<dl class="attribute">
+<dt id="openPLM.apps.pdfgen.views.StateHistory.date">
+<tt class="descname">date</tt><a class="headerlink" href="#openPLM.apps.pdfgen.views.StateHistory.date" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.pdfgen.views.StateHistory.state">
+<tt class="descname">state</tt><a class="headerlink" href="#openPLM.apps.pdfgen.views.StateHistory.state" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.pdfgen.views.StateHistory.user">
+<tt class="descname">user</tt><a class="headerlink" href="#openPLM.apps.pdfgen.views.StateHistory.user" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.get_state_histories">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">get_state_histories</tt><big>(</big><em>ctrl</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#get_state_histories"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.get_state_histories" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.download_merged_pdf">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">download_merged_pdf</tt><big>(</big><em>obj</em>, <em>files</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#download_merged_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.download_merged_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a HTTPResponse that contains all PDF files merged into a
+single PDF file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.select_pdf_document">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">select_pdf_document</tt><big>(</big><em>request</em>, <em>ctx</em>, <em>obj</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#select_pdf_document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.select_pdf_document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Views to select pdf files to download.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.pdfgen.views.FakeLink">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">FakeLink</tt><big>(</big><em>id</em>, <em>child</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#FakeLink"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.FakeLink" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.select_pdf_part">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">select_pdf_part</tt><big>(</big><em>request</em>, <em>ctx</em>, <em>obj</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#select_pdf_part"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.select_pdf_part" title="Permalink to this definition">¶</a></dt>
+<dd><p>View helper to select pdf files to download.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.select_pdf">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">select_pdf</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#select_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.select_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>View to download a merged pdf file that contains all pdf files.</p>
+<p>Redirects to <a class="reference internal" href="#openPLM.apps.pdfgen.views.select_pdf_part" title="openPLM.apps.pdfgen.views.select_pdf_part"><tt class="xref py py-func docutils literal"><span class="pre">select_pdf_part()</span></tt></a> or <a class="reference internal" href="#openPLM.apps.pdfgen.views.select_pdf_document" title="openPLM.apps.pdfgen.views.select_pdf_document"><tt class="xref py py-func docutils literal"><span class="pre">select_pdf_document()</span></tt></a>
+according to the type of the object.</p>
+<p>Raises <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if the object is not a part or a document.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.pdfgen.views.bom_pdf">
+<tt class="descclassname">openPLM.apps.pdfgen.views.</tt><tt class="descname">bom_pdf</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/pdfgen/views.html#bom_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.pdfgen.views.bom_pdf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../webdav/index.html" title="6.6. webdav – WebDAV"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="6.5. pdfgen – PDF outputs"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.5. pdfgen &#8211; PDF outputs</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

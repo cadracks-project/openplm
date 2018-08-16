@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.5.1. What’s new in OpenPLM 1.2 &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="3. What’s new in OpenPLM 2.0" href="../whatsnew-2.0.html" />
+    <link rel="next" title="3.5.2. What’s new in OpenPLM 1.1" href="whatsnew-1.1.html" />
+    <link rel="prev" title="3. What’s new in OpenPLM 2.0" href="../whatsnew-2.0.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="whatsnew-1.1.html" title="3.5.2. What’s new in OpenPLM 1.1"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../whatsnew-2.0.html" title="3. What’s new in OpenPLM 2.0"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../whatsnew-2.0.html" accesskey="U">3. What&#8217;s new in OpenPLM 2.0</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.5.1. What&#8217;s new in OpenPLM 1.2</a><ul>
+<li><a class="reference internal" href="#introduction">3.5.1.1. Introduction</a></li>
+<li><a class="reference internal" href="#what-s-new-for-users">3.5.1.2. What&#8217;s new for users</a><ul>
+<li><a class="reference internal" href="#navigate">3.5.1.2.1. Navigate</a><ul>
+<li><a class="reference internal" href="#new-style">3.5.1.2.1.1. New style</a></li>
+<li><a class="reference internal" href="#revisions-management">3.5.1.2.1.2. Revisions management</a></li>
+<li><a class="reference internal" href="#switch-to-study-mode">3.5.1.2.1.3. Switch to study mode</a></li>
+<li><a class="reference internal" href="#small-user-experience-improvements">3.5.1.2.1.4. Small User Experience improvements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#upload-and-create">3.5.1.2.2. Upload and create</a></li>
+<li><a class="reference internal" href="#lifecycle">3.5.1.2.3. Lifecycle</a></li>
+<li><a class="reference internal" href="#bom">3.5.1.2.4. BOM</a><ul>
+<li><a class="reference internal" href="#comparison">3.5.1.2.4.1. Comparison</a></li>
+<li><a class="reference internal" href="#attached-documents">3.5.1.2.4.2. Attached documents</a></li>
+<li><a class="reference internal" href="#alternate-links">3.5.1.2.4.3. Alternate links</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#files">3.5.1.2.5. Files</a></li>
+<li><a class="reference internal" href="#change-management">3.5.1.2.6. Change management</a></li>
+<li><a class="reference internal" href="#badges">3.5.1.2.7. Badges</a></li>
+<li><a class="reference internal" href="#miscellaneous-enhancements">3.5.1.2.8. Miscellaneous enhancements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#what-s-new-for-administrators">3.5.1.3. What&#8217;s new for administrators</a><ul>
+<li><a class="reference internal" href="#documentation">3.5.1.3.1. Documentation</a></li>
+<li><a class="reference internal" href="#new-settings">3.5.1.3.2. New settings</a></li>
+<li><a class="reference internal" href="#minor-file-revisions">3.5.1.3.3. Minor file revisions</a></li>
+<li><a class="reference internal" href="#new-application-badges">3.5.1.3.4. New application: badges</a></li>
+<li><a class="reference internal" href="#new-application-calendrier">3.5.1.3.5. New application: calendrier</a></li>
+<li><a class="reference internal" href="#new-application-ecr-change-management">3.5.1.3.6. New application: ecr: change management</a></li>
+<li><a class="reference internal" href="#optional-lifecycles">3.5.1.3.7. Optional lifecycles</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#previous-versions">3.5.1.4. Previous versions</a><ul>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../whatsnew-2.0.html"
+                        title="previous chapter">3. What&#8217;s new in OpenPLM 2.0</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="whatsnew-1.1.html"
+                        title="next chapter">3.5.2. What&#8217;s new in OpenPLM 1.1</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/whatsnew/whatsnew-1.2.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/whatsnew/whatsnew-1.2.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="whatsnew-1-2"></span><div class="section" id="what-s-new-in-openplm-1-2">
+<h1>3.5.1. What&#8217;s new in OpenPLM 1.2<a class="headerlink" href="#what-s-new-in-openplm-1-2" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>3.5.1.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>OpenPLM is a product oriented PLM solution.
+A product oriented PLM (Product Lifecycle Management) solution unifies
+all activities of the company in an ECM which structures data around the product.
+OpenPLM features a full web and user-friendly interface.
+OpenPLM is Free and Open Source Software.
+This means that all our work is free to use, modify and redistribute.</p>
+<p>Since the last version, released 5 month ago, lots of changes have been made
+in OpenPLM 1.2.
+Some noteworthy highlights:</p>
+<blockquote>
+<div><ul class="simple">
+<li>It is now easier to upload files and create documents</li>
+<li>Several enhancements to the navigate feature</li>
+<li>Engineering Change Requests</li>
+<li>Alternate part links</li>
+</ul>
+</div></blockquote>
+<img alt="../_images/intro.png" class="align-center" src="../_images/intro.png" style="width: 64%;" />
+</div>
+<div class="section" id="what-s-new-for-users">
+<h2>3.5.1.2. What&#8217;s new for users<a class="headerlink" href="#what-s-new-for-users" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="navigate">
+<h3>3.5.1.2.1. Navigate<a class="headerlink" href="#navigate" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="new-style">
+<h4>3.5.1.2.1.1. New style<a class="headerlink" href="#new-style" title="Permalink to this headline">¶</a></h4>
+<p>Nodes have been redesigned. You can now see more information about
+a part or a document. It should also be easier to determinate if
+a node represents a part or a document.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><div class="first last figure align-center">
+<img alt="../_images/navigate_2.png" src="../_images/navigate_2.png" />
+<p class="caption">Document</p>
+</div>
+</td>
+<td><div class="first last figure align-center">
+<img alt="../_images/navigate_3.png" src="../_images/navigate_3.png" />
+<p class="caption">Part</p>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="revisions-management">
+<h4>3.5.1.2.1.2. Revisions management<a class="headerlink" href="#revisions-management" title="Permalink to this headline">¶</a></h4>
+<p>Two links to the previous and next revisions are now displayed:</p>
+<div class="figure">
+<img alt="../_images/navigate_1.png" src="../_images/navigate_1.png" />
+</div>
+</div>
+<div class="section" id="switch-to-study-mode">
+<h4>3.5.1.2.1.3. Switch to study mode<a class="headerlink" href="#switch-to-study-mode" title="Permalink to this headline">¶</a></h4>
+<p>Now, you can directly inspect one of the elements displayed in navigate:</p>
+<div class="figure">
+<img alt="../_images/navigate_4.png" src="../_images/navigate_4.png" />
+</div>
+</div>
+<div class="section" id="small-user-experience-improvements">
+<h4>3.5.1.2.1.4. Small User Experience improvements<a class="headerlink" href="#small-user-experience-improvements" title="Permalink to this headline">¶</a></h4>
+<blockquote>
+<div><ul class="simple">
+<li>Zoom factor stays when switching from one object to another.</li>
+<li>You can drag graph by clicking wherever you want in the graph.</li>
+<li>You can navigate at a previous date</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="upload-and-create">
+<h3>3.5.1.2.2. Upload and create<a class="headerlink" href="#upload-and-create" title="Permalink to this headline">¶</a></h3>
+<p>You can now upload a file (or more) and create a new document
+in a few clicks.</p>
+<div>
+    <br/>
+    <video width="700" height="375" controls="controls">
+      <source src="_downloads/upload.webm" type="video/webm" />
+      Upload of a file
+    </video>
+</div><p><a class="reference download internal" href="../_downloads/upload.webm"><tt class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">the</span> <span class="pre">video</span></tt></a></p>
+</div>
+<div class="section" id="lifecycle">
+<h3>3.5.1.2.3. Lifecycle<a class="headerlink" href="#lifecycle" title="Permalink to this headline">¶</a></h3>
+<p>It is now possible to asked several signers to promote or demote
+a part or document.
+The owner can be one of the first signers and he can easily warn other
+users when he think its work is ready.</p>
+<div class="figure">
+<img alt="../_images/lifecycle_1.png" src="../_images/lifecycle_1.png" />
+</div>
+</div>
+<div class="section" id="bom">
+<h3>3.5.1.2.4. BOM<a class="headerlink" href="#bom" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="comparison">
+<h4>3.5.1.2.4.1. Comparison<a class="headerlink" href="#comparison" title="Permalink to this headline">¶</a></h4>
+<p>You can compare a BOM at two different dates.</p>
+</div>
+<div class="section" id="attached-documents">
+<h4>3.5.1.2.4.2. Attached documents<a class="headerlink" href="#attached-documents" title="Permalink to this headline">¶</a></h4>
+<p>You can visualize a complete multi-level BOM including all attached documents:</p>
+<div class="figure">
+<img alt="../_images/bom_1.png" src="../_images/bom_1.png" />
+</div>
+</div>
+<div class="section" id="alternate-links">
+<h4>3.5.1.2.4.3. Alternate links<a class="headerlink" href="#alternate-links" title="Permalink to this headline">¶</a></h4>
+<p>It is possible to create a set of alternate parts.
+Each usage of a part can be replaced by one of its alternate.
+It is possible to include alternate parts in all BOM.</p>
+<p>OpenPLM prevents incoherent situations (like a part parent
+of one of its alternate) when BOM are built.</p>
+</div>
+</div>
+<div class="section" id="files">
+<h3>3.5.1.2.5. Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h3>
+<p>You can access to all uploaded versions of one file:</p>
+<div class="figure">
+<img alt="../_images/files_1.png" src="../_images/files_1.png" />
+</div>
+</div>
+<div class="section" id="change-management">
+<h3>3.5.1.2.6. Change management<a class="headerlink" href="#change-management" title="Permalink to this headline">¶</a></h3>
+<p>If your administrator enables them, you will be able to create
+ECR (Engineering Change Requests) to request a change bound to
+several parts and documents.</p>
+</div>
+<div class="section" id="badges">
+<h3>3.5.1.2.7. Badges<a class="headerlink" href="#badges" title="Permalink to this headline">¶</a></h3>
+<p>If your administrator enables them, you will win badges by using OpenPLM ☺.</p>
+</div>
+<div class="section" id="miscellaneous-enhancements">
+<h3>3.5.1.2.8. Miscellaneous enhancements<a class="headerlink" href="#miscellaneous-enhancements" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>When creating a part or a document, the group is set to the
+last selected group</li>
+<li>It is possible to choose the group of a new revision</li>
+<li>For each part and document, similar contents are displayed on
+the attributes page</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="what-s-new-for-administrators">
+<h2>3.5.1.3. What&#8217;s new for administrators<a class="headerlink" href="#what-s-new-for-administrators" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="documentation">
+<h3>3.5.1.3.1. Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>A new how-to, <a class="reference internal" href="../admin/ht_3_upgrade.html#admin-upgrade"><em>How to upgrade an installation of OpenPLM</em></a>, is available.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="new-settings">
+<h3>3.5.1.3.2. New settings<a class="headerlink" href="#new-settings" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../admin/settings.html#settings.EMAIL_FAIL_SILENTLY" title="settings.EMAIL_FAIL_SILENTLY"><tt class="xref py py-const docutils literal"><span class="pre">EMAIL_FAIL_SILENTLY</span></tt></a></li>
+<li><a class="reference internal" href="../admin/settings.html#settings.KEEP_ALL_FILES" title="settings.KEEP_ALL_FILES"><tt class="xref py py-const docutils literal"><span class="pre">KEEP_ALL_FILES</span></tt></a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="minor-file-revisions">
+<h3>3.5.1.3.3. Minor file revisions<a class="headerlink" href="#minor-file-revisions" title="Permalink to this headline">¶</a></h3>
+<p>A notable change of this version is the ability of openPLM to keep
+old minor revision of all files (all check-ins).
+You can configure which files are kept, see <a class="reference internal" href="../devel/modules/files/deletable.html#module-plmapp.files.deletable" title="plmapp.files.deletable"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.files.deletable</span></tt></a>.</p>
+</div>
+<div class="section" id="new-application-badges">
+<h3>3.5.1.3.4. New application: badges<a class="headerlink" href="#new-application-badges" title="Permalink to this headline">¶</a></h3>
+<p>A new application, <a class="reference internal" href="../admin/applications/badges/index.html#badges-admin"><em>badges</em></a> can be installed.
+It adds badges ala StackOverflow.</p>
+</div>
+<div class="section" id="new-application-calendrier">
+<h3>3.5.1.3.5. New application: calendrier<a class="headerlink" href="#new-application-calendrier" title="Permalink to this headline">¶</a></h3>
+<p>A new application, <a class="reference internal" href="../admin/applications/calendrier/index.html#calendrier-admin"><em>calendrier</em></a> can be installed.
+It adds a calendar view of the timeline and histories pages and an ICal feed
+for each object.</p>
+</div>
+<div class="section" id="new-application-ecr-change-management">
+<h3>3.5.1.3.6. New application: ecr: change management<a class="headerlink" href="#new-application-ecr-change-management" title="Permalink to this headline">¶</a></h3>
+<p>A new application, <a class="reference internal" href="../admin/applications/ecr/index.html#ecr-admin"><em>ecr</em></a> can be installed.
+It adds Engineering Change Request objects.</p>
+</div>
+<div class="section" id="optional-lifecycles">
+<h3>3.5.1.3.7. Optional lifecycles<a class="headerlink" href="#optional-lifecycles" title="Permalink to this headline">¶</a></h3>
+<p>New lifecycles are available, you can load them by running the command
+<tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">loaddata</span> <span class="pre">extra_lifecycles</span></tt></p>
+</div>
+</div>
+<div class="section" id="previous-versions">
+<h2>3.5.1.4. Previous versions<a class="headerlink" href="#previous-versions" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="whatsnew-1.1.html">3.5.2. What&#8217;s new in OpenPLM 1.1</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="whatsnew-1.1.html" title="3.5.2. What’s new in OpenPLM 1.1"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../whatsnew-2.0.html" title="3. What’s new in OpenPLM 2.0"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../whatsnew-2.0.html" >3. What&#8217;s new in OpenPLM 2.0</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

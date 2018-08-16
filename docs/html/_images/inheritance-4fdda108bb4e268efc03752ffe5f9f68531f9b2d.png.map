@@ -1,0 +1,5 @@
+<map id="inheritancebf961c041b" name="inheritancebf961c041b">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.lifecycle.Lifecycle" title="Lifecycle" alt="" coords="279,5,353,33"/>
+<area shape="rect" id="node6" href="#openPLM.plmapp.models.lifecycle.LifecycleStates" title="LifecycleStates" alt="" coords="257,55,375,83"/>
+<area shape="rect" id="node8" href="#openPLM.plmapp.models.lifecycle.State" title="State" alt="" coords="280,106,352,134"/>
+</map>

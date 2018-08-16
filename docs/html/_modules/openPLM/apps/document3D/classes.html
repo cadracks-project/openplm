@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.document3D.classes &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/document3D/classes.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.document3D.classes</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">def</span> <span class="nf">get_available_name</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">rand</span><span class="p">():</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+            <span class="n">r</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">r</span>
+    <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="n">base</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+    <span class="n">ext2</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s">&quot;no_ext&quot;</span>
+    <span class="n">md5</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">()</span>
+    <span class="n">md5</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
+    <span class="n">md5_value</span> <span class="o">=</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;-</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">ext</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ext2</span><span class="p">,</span> <span class="n">md5_value</span> <span class="o">%</span> <span class="n">rand</span><span class="p">())</span>
+    <span class="k">while</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">path</span><span class="p">)):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ext2</span><span class="p">,</span> <span class="n">md5_value</span> <span class="o">%</span> <span class="n">rand</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">path</span>
+
+
+<div class="viewcode-block" id="Product"><a class="viewcode-back" href="../../../../devel/applications/document3D/classes.html#openPLM.apps.document3D.classes.Product">[docs]</a><span class="k">class</span> <span class="nc">Product</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Class used to represent the **arborescense** contained in a</span>
+<span class="sd">    :class:`~django.core.files.File` **.stp**.A :class:`.Product` can be</span>
+<span class="sd">    simple or an assembly, if it is an assembly in **links** we will</span>
+<span class="sd">    guard the information about other :class:`.Product` that compose it.</span>
+
+
+<span class="sd">    There are two ways of generating a :class:`.Product`, reading the file</span>
+<span class="sd">    **.stp** across the class :class:`.StepImporter` ( will refill the</span>
+<span class="sd">    attribute **label_reference**  for every :class:`Product`), or reading</span>
+<span class="sd">    a file **.arb** related to a :class:`.ArbreFile`  .</span>
+<span class="sd">    Therefore there exist two ways of distinguishing the different :class:`.Product`,</span>
+<span class="sd">    by means of the attribute **label_reference** if this one is not False ,</span>
+<span class="sd">    or by means of the combination of attributes  **id** and **doc_id**.</span>
+
+
+<span class="sd">    :model attributes:</span>
+
+<span class="sd">    .. attribute:: links</span>
+
+<span class="sd">        If the product is an assembly, links stores one or more</span>
+<span class="sd">        :class:`.openPLM.apps.document3D.classes.Link` references to the products that compose it</span>
+
+
+<span class="sd">    .. attribute:: label_reference</span>
+
+<span class="sd">        When we generate an arborescense using :class:`.StepImporter` ,</span>
+<span class="sd">        here we will store the label that represents the :class:`.Product` ,</span>
+<span class="sd">        if we generate the arborescense reading a file **.geo**, this attribute will be **False**</span>
+
+<span class="sd">    .. attribute:: name</span>
+
+<span class="sd">        Name of :class:`.Product` ,if the name is empty and there exists a</span>
+<span class="sd">        :class:`.Link` at the :class:`.Product` , we will assign the name of the</span>
+<span class="sd">        :class:`.Link` to the :class:`.Product`</span>
+
+<span class="sd">    .. attribute:: doc_id</span>
+
+<span class="sd">        Id of the :class:`.DocumentFile` that contains the :class:`.Product` ,</span>
+<span class="sd">        in the case of :class:`~django.core.files.File` .stp decomposed them</span>
+<span class="sd">        **doc_id** may be different for every :class:`.Product` of the arborescense</span>
+
+<span class="sd">    .. attribute:: doc_path</span>
+
+<span class="sd">        Path of the :class:`~django.core.files.File` represented by the :class:`.DocumentFile` that contains the product</span>
+
+<span class="sd">    .. attribute:: part_to_decompose</span>
+
+<span class="sd">        Used in the decomposition, it indicates the :class:`.Part` where the :class:`.Product` was decomposed</span>
+
+<span class="sd">    .. attribute:: geometry</span>
+
+<span class="sd">        If geometry is True (&gt;=1) then the :class:`.Product` is single (without **links** )</span>
+<span class="sd">        , and his value refers to the index that we will use to recover a :class:`.GeometryFile`</span>
+
+<span class="sd">    .. attribute:: deep</span>
+
+<span class="sd">        Depth in the arborescense</span>
+
+<span class="sd">    .. attribute:: visited</span>
+
+<span class="sd">        Used in the decomposition , indicates if a :class:`.Product`  has been visited in the tour of the arborescense</span>
+
+<span class="sd">    .. attribute:: id</span>
+
+<span class="sd">        identified the :class:`.Product`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;label_reference&quot;</span><span class="p">,</span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="s">&quot;doc_id&quot;</span><span class="p">,</span><span class="s">&quot;links&quot;</span><span class="p">,</span><span class="s">&quot;geometry&quot;</span><span class="p">,</span><span class="s">&quot;deep&quot;</span><span class="p">,</span><span class="s">&quot;doc_path&quot;</span><span class="p">,</span><span class="s">&quot;visited&quot;</span><span class="p">,</span><span class="s">&quot;part_to_decompose&quot;</span><span class="p">,</span><span class="s">&quot;id&quot;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">deep</span><span class="p">,</span><span class="n">label_reference</span><span class="p">,</span><span class="n">doc_id</span><span class="p">,</span><span class="nb">id</span><span class="p">,</span><span class="n">doc_path</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span><span class="n">geometry</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="c">#no tiene location</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">links</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_reference</span><span class="o">=</span><span class="n">label_reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_id</span><span class="o">=</span><span class="n">doc_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_path</span><span class="o">=</span><span class="n">doc_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">part_to_decompose</span><span class="o">=</span><span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">deep</span><span class="o">=</span><span class="n">deep</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="o">=</span><span class="nb">id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">=</span><span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">set_geometry</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">geometry</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span>
+
+    <span class="k">def</span> <span class="nf">set_new_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">new_doc_id</span><span class="p">,</span><span class="n">new_doc_path</span><span class="p">,</span><span class="n">for_child</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="c">#0 cant be a valid geometry index , 0==False</span>
+        <span class="n">old_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">doc_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_id</span><span class="o">=</span><span class="n">new_doc_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc_path</span><span class="o">=</span><span class="n">new_doc_path</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">doc_id</span> <span class="o">==</span> <span class="n">old_id</span> <span class="ow">or</span> <span class="n">for_child</span><span class="p">:</span>
+                <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">set_new_root</span><span class="p">(</span><span class="n">new_doc_id</span><span class="p">,</span><span class="n">new_doc_path</span><span class="p">,</span><span class="n">for_child</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Product.is_decomposed"><a class="viewcode-back" href="../../../../devel/applications/document3D/classes.html#openPLM.apps.document3D.classes.Product.is_decomposed">[docs]</a>    <span class="k">def</span> <span class="nf">is_decomposed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If it is an assembly and any :class:`.Product` contents in its **links**</span>
+<span class="sd">        are defined (**doc_id**) in another :class:`DocumentFile` (**doc_id**)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">doc_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_id</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Product.is_decomposable"><a class="viewcode-back" href="../../../../devel/applications/document3D/classes.html#openPLM.apps.document3D.classes.Product.is_decomposable">[docs]</a>    <span class="k">def</span> <span class="nf">is_decomposable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If it is an assembly and any :class:`.Product` contents in its **links**</span>
+<span class="sd">        are defined (**doc_id**) in the same :class:`DocumentFile` (**doc_id**)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">doc_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_id</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_assembly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">doc_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">]]</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Product.from_list"><a class="viewcode-back" href="../../../../devel/applications/document3D/classes.html#openPLM.apps.document3D.classes.Product.from_list">[docs]</a>    <span class="k">def</span> <span class="nf">from_list</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">arbre</span><span class="p">,</span> <span class="n">product</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">product_root</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">deep</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">to_update_product_root</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a new Product built from *arbre*. *arbre* is a serialized version as returned</span>
+<span class="sd">        by :meth:`.to_list`.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">            - To generate a **product** of a single file **.arb** ::</span>
+
+<span class="sd">                tree=Product.from_list(json.loads(new_ArbreFile.file.read()))</span>
+
+
+<span class="sd">            - To generate a **product** of a single file .arb and link this one like a branch</span>
+<span class="sd">              of a certain **product_root_node** of an already existing **product_root**</span>
+
+<span class="sd">              .. code-block:: python</span>
+
+<span class="sd">                    product=Product.from_list(json.loads(new_ArbreFile.file.read()),product=False, product_root=product_root, deep=xxx, to_update_product_root=product_root_node)</span>
+
+<span class="sd">              This method generates the :class:`Link` between **product_root_node** and  **product** ,</span>
+<span class="sd">              **BUT** it does not add the occurrences, generally this occurrences are stored in the</span>
+<span class="sd">              existing :class:`Location_link`</span>
+
+<span class="sd">              After generating the **product** and the :class:`Link`, we will have to refill the</span>
+<span class="sd">              :class:`Link` calling the function :meth:`.add_occurrence` for the :class:`Link`:</span>
+
+<span class="sd">                .. code-block:: python</span>
+
+<span class="sd">                    for location in locations:</span>
+<span class="sd">                        product_root_node.links[-1].add_occurrence(location.name,location)</span>
+
+<span class="sd">        :param arbre:</span>
+<span class="sd">        :param product: Product that represents an arborescense , **ONLY** used in successive</span>
+<span class="sd">                        recursive calls of the function</span>
+<span class="sd">        :type plmobject: :class:`.Product`</span>
+<span class="sd">        :param product_root: Product that represents a root arborescense , used to determine if</span>
+<span class="sd">                             the product to generate is already present in the tree</span>
+<span class="sd">        :type plmobject: :class:`.Product`</span>
+<span class="sd">        :param deep: depth of **product** in the arborescense</span>
+<span class="sd">        :param to_update_product_root: Product that represents a node of an arborescense</span>
+<span class="sd">                                       (sub-branch of arborescense referenced by **product_root**)</span>
+<span class="sd">        :type plmobject: :class:`.Product`</span>
+<span class="sd">      &quot;&quot;&quot;</span>
+
+
+        <span class="k">def</span> <span class="nf">prod</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">product_root</span><span class="p">:</span>
+            <span class="n">product</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">arbre</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">deep</span><span class="p">)</span>
+            <span class="n">product_root</span> <span class="o">=</span> <span class="n">product</span>
+
+        <span class="k">elif</span> <span class="n">to_update_product_root</span><span class="p">:</span> <span class="c">#Important, in case of generation of a tree contained in several files, it supports updated product_root</span>
+            <span class="n">product</span><span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">arbre</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">deep</span><span class="p">)</span>
+
+            <span class="n">product_assembly</span><span class="o">=</span><span class="n">search_assembly</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">product_root</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">product_assembly</span><span class="p">:</span>
+                <span class="n">to_update_product_root</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Link</span><span class="p">(</span><span class="n">product_assembly</span><span class="p">))</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">to_update_product_root</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Link</span><span class="p">(</span><span class="n">product</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arbre</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">arbre_child</span> <span class="o">=</span> <span class="n">arbre</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">product_child</span> <span class="o">=</span> <span class="n">prod</span><span class="p">(</span><span class="n">arbre_child</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">deep</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">product_assembly</span> <span class="o">=</span> <span class="n">search_assembly</span><span class="p">(</span><span class="n">product_child</span><span class="p">,</span> <span class="n">product_root</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">product_assembly</span><span class="p">:</span>
+                <span class="n">product_child</span> <span class="o">=</span> <span class="n">product_assembly</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="n">Link</span><span class="p">(</span><span class="n">product_child</span><span class="p">)</span>
+            <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">matrix</span> <span class="ow">in</span> <span class="n">arbre_child</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="n">link</span><span class="o">.</span><span class="n">add_occurrence</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">TransformationMatrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">))</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">product_assembly</span><span class="p">:</span>
+                <span class="n">cls</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">arbre_child</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">product_child</span><span class="p">,</span> <span class="n">product_root</span><span class="p">,</span> <span class="n">deep</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">product</span>
+
+</div></div>
+<div class="viewcode-block" id="Link"><a class="viewcode-back" href="../../../../devel/applications/document3D/classes.html#openPLM.apps.document3D.classes.Link">[docs]</a><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Class used to represent a parent child link between two `.Product`.</span>
+<span class="sd">    A :class:`Link` can have several references, each one with its name and transformation matrix.</span>
+
+<span class="sd">    :model attributes:</span>
+
+
+<span class="sd">    .. attribute:: names</span>
+
+<span class="sd">        Name of each instances of the :class:`Link` , if the instance does not have name,</span>
+<span class="sd">        it gets the name of its :class:`.Product` child</span>
+
+<span class="sd">    .. attribute:: locations</span>
+
+<span class="sd">        :class:`TransformationMatrix` of each instances of the :class:`Link`</span>
+
+<span class="sd">    .. attribute:: product</span>
+
+<span class="sd">        :class:`.Product` child of the :class:`Link`</span>
+
+<span class="sd">    .. attribute:: quantity</span>
+
+<span class="sd">        Number of instances of the :class:`Link`  (each instance has a **name** and **location**)</span>
+
+<span class="sd">    .. attribute:: visited</span>
+
+<span class="sd">        Used in the decomposition , indicates if a :class:`Link` has been visited in the tour of the arborescense</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;names&quot;</span><span class="p">,</span><span class="s">&quot;locations&quot;</span><span class="p">,</span><span class="s">&quot;product&quot;</span><span class="p">,</span><span class="s">&quot;quantity&quot;</span><span class="p">,</span><span class="s">&quot;visited&quot;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="o">=</span><span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="o">=</span><span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">=</span><span class="n">product</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="o">=</span><span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">=</span><span class="bp">False</span><span class="c">#used only in multi-level decomposition</span>
+
+    <span class="k">def</span> <span class="nf">add_occurrence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">matrix</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">output</span><span class="o">=</span><span class="p">[]</span>
+        <span class="n">name_loc</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">):</span>
+            <span class="n">name_loc</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">to_array</span><span class="p">()])</span>
+
+        <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name_loc</span><span class="p">)</span>
+        <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">output</span>
+
+</div>
+<div class="viewcode-block" id="TransformationMatrix"><a class="viewcode-back" href="../../../../devel/applications/document3D/classes.html#openPLM.apps.document3D.classes.TransformationMatrix">[docs]</a><span class="k">class</span> <span class="nc">TransformationMatrix</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Defines a non-persistent transformation in 3D space</span>
+
+<span class="sd">     == == == == == = ==</span>
+<span class="sd">     x1 x2 x3 x4  x = x&#39;</span>
+<span class="sd">     y1 y2 y3 y4  y = y&#39;</span>
+<span class="sd">     z1 z2 z3 z4  z = z&#39;</span>
+<span class="sd">     0  0  0  1   1 = 1</span>
+<span class="sd">     == == == == == = ==</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;x1&quot;</span><span class="p">,</span><span class="s">&quot;x2&quot;</span><span class="p">,</span><span class="s">&quot;x3&quot;</span><span class="p">,</span><span class="s">&quot;x4&quot;</span><span class="p">,</span><span class="s">&quot;y1&quot;</span><span class="p">,</span><span class="s">&quot;y2&quot;</span><span class="p">,</span><span class="s">&quot;y3&quot;</span><span class="p">,</span><span class="s">&quot;y4&quot;</span><span class="p">,</span><span class="s">&quot;z1&quot;</span><span class="p">,</span><span class="s">&quot;z2&quot;</span><span class="p">,</span><span class="s">&quot;z3&quot;</span><span class="p">,</span><span class="s">&quot;z4&quot;</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coords</span><span class="p">):</span>
+
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x4</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y4</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="p">)</span> <span class="o">=</span> <span class="n">coords</span>
+
+    <span class="k">def</span> <span class="nf">to_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x4</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y4</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">z1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z3</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z4</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="search_assembly"><a class="viewcode-back" href="../../../../devel/applications/document3D/classes.html#openPLM.apps.document3D.classes.search_assembly">[docs]</a><span class="k">def</span> <span class="nf">search_assembly</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">product_root</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a :class:`Product` is already present in an arborescense :class:`Product` (**product_root**)</span>
+<span class="sd">    There are two manners of comparison, across **label_reference**</span>
+<span class="sd">    ( generated for :class:`.StepImporter` for every :class:`Product`),</span>
+<span class="sd">    or across **id** and **doc_id** (extracted of a file **.geo** for every :class:`Product`)</span>
+
+<span class="sd">    :param product_root: :class:`Product` root of the arborescense</span>
+<span class="sd">    :param product: :class:`Product` for that we look in the **product_root**</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">product_root</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">product_root</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="o">==</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span>
+            <span class="k">elif</span> <span class="n">product</span><span class="o">.</span><span class="n">id</span><span class="o">==</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">id</span> <span class="ow">and</span> <span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="o">==</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span>
+            <span class="n">product_found</span><span class="o">=</span><span class="n">search_assembly</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">product_found</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">product_found</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

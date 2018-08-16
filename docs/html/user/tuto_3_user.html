@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.3. Functions related to USER &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="1. List of Tutorials" href="tutorials.html" />
+    <link rel="next" title="1.4. Functions related to GROUPS" href="tuto_4_group.html" />
+    <link rel="prev" title="3. Functions specific to PLM object : DOCUMENT" href="PLMObject/3_document.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tuto_4_group.html" title="1.4. Functions related to GROUPS"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="PLMObject/3_document.html" title="3. Functions specific to PLM object : DOCUMENT"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" accesskey="U">1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.3. Functions related to <strong>USER</strong></a><ul>
+<li><a class="reference internal" href="#overview">1.3.1. OVERVIEW</a></li>
+<li><a class="reference internal" href="#attributes">1.3.2. ATTRIBUTES</a></li>
+<li><a class="reference internal" href="#history">1.3.3. HISTORY</a></li>
+<li><a class="reference internal" href="#parts-doc-cad">1.3.4. PARTS-DOC-CAD</a></li>
+<li><a class="reference internal" href="#delegation">1.3.5. DELEGATION</a><ul>
+<li><a class="reference internal" href="#add-a-user-sponsor">1.3.5.1. Add a user (sponsor)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#groups">1.3.6. GROUPS</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="PLMObject/3_document.html"
+                        title="previous chapter">3. Functions specific to PLM object : <strong>DOCUMENT</strong></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tuto_4_group.html"
+                        title="next chapter">1.4. Functions related to <strong>GROUPS</strong></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/user/tuto_3_user.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/tuto_3_user.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="functions-related-to-user">
+<span id="en-user-func"></span><h1>1.3. Functions related to <strong>USER</strong><a class="headerlink" href="#functions-related-to-user" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the functions you can use to display and manipulate the <strong>Users</strong> in openPLM.</p>
+<div class="section" id="overview">
+<h2>1.3.1. OVERVIEW<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Users</strong> are standard Django objects. With OpenPLM you can modify some attributes, change your password and delegate your rights.</p>
+<p>In OpenPLM, the <em>type</em> is <strong>User</strong>.</p>
+<p>In <strong>User</strong> class, you have several instances with a <em>username</em>.</p>
+<p>Each <strong>Users</strong> have a unique <em>username</em>.</p>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Example : User / pdurand / -</p>
+</div>
+<p>We can create links between a <strong>User</strong> and <strong>Parts</strong> or <strong>Documents</strong>. These Links define different rights <strong>Users</strong> have on each <strong>Part</strong> and each <strong>Document</strong>.</p>
+<p>We can create delegation links between the <strong>Users</strong> in order to allow rights transfer.</p>
+</div>
+<div class="section" id="attributes">
+<h2>1.3.2. ATTRIBUTES<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<p>Displays the ID card of the user.</p>
+<p>You find standard attributes like first name, last name, e-mail adress, date of creation, ...
+You find customized attributes depending of the company OpenPLM is implemented for.</p>
+<p>If you have necessary rights, you can <strong>Edit</strong> the attributes and modify them.</p>
+<p>If you have necessary rights, you can  change the <strong>Password</strong>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can proceed some research based on each attribute.</p>
+</div>
+</div>
+<div class="section" id="history">
+<h2>1.3.3. HISTORY<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>Displays the history of the user.</p>
+<p>It ensures the full tracability of the user.</p>
+<p>A RSS feed icon is shown when you are on this tab. By clicking it you can
+subscribe to the feed related to the user.</p>
+</div>
+<div class="section" id="parts-doc-cad">
+<h2>1.3.4. PARTS-DOC-CAD<a class="headerlink" href="#parts-doc-cad" title="Permalink to this headline">¶</a></h2>
+<p>Displays related Parts and Documents of the current user.</p>
+</div>
+<div class="section" id="delegation">
+<h2>1.3.5. DELEGATION<a class="headerlink" href="#delegation" title="Permalink to this headline">¶</a></h2>
+<p>Display Users delegated by the current user and their assigned roles.</p>
+<dl class="docutils">
+<dt>If you have necessary rights, you can :</dt>
+<dd><ul class="first last simple">
+<li><strong>Add</strong> some delegated Users for each role.</li>
+<li><strong>Stop</strong> delegation.</li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="add-a-user-sponsor">
+<span id="add-user"></span><h3>1.3.5.1. Add a user (sponsor)<a class="headerlink" href="#add-a-user-sponsor" title="Permalink to this headline">¶</a></h3>
+<p>Go to your user page :</p>
+<blockquote>
+<div><ul class="simple">
+<li>clicking on the STUDY button from home page,</li>
+<li>clicking on your name .</li>
+</ul>
+</div></blockquote>
+<p>From the DELEGATION tab click on Sponsor button.
+You should see a page allowing you to sponsor a new user. Fill the form, add
+the user to a group (a default group has already been created), and
+make sure the email address is correct. Then Validate</p>
+<img alt="../_images/sponsor.png" src="../_images/sponsor.png" />
+<p>The new user has been created and he should have received an email with his
+connexion informations.</p>
+</div>
+</div>
+<div class="section" id="groups">
+<h2>1.3.6. GROUPS<a class="headerlink" href="#groups" title="Permalink to this headline">¶</a></h2>
+<p>Displays related Groups of the user.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tuto_4_group.html" title="1.4. Functions related to GROUPS"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="PLMObject/3_document.html" title="3. Functions specific to PLM object : DOCUMENT"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" >1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

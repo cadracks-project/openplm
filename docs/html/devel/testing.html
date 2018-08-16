@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>11. Testing openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="7. Specifications" href="../specs/index.html" />
+    <link rel="prev" title="10. Rich text | Wiki syntax" href="richtext.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../specs/index.html" title="7. Specifications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="richtext.html" title="10. Rich text | Wiki syntax"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">11. Testing openPLM</a><ul>
+<li><a class="reference internal" href="#overview">11.1. Overview</a></li>
+<li><a class="reference internal" href="#running-tests">11.2. Running tests</a><ul>
+<li><a class="reference internal" href="#dependencies">11.2.1. Dependencies</a></li>
+<li><a class="reference internal" href="#settings">11.2.2. Settings</a></li>
+<li><a class="reference internal" href="#running-all-tests">11.2.3. Running all tests</a></li>
+<li><a class="reference internal" href="#running-a-specific-test">11.2.4. Running a specific test</a></li>
+<li><a class="reference internal" href="#testing-document3d-app">11.2.5. Testing document3D app</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#code-coverage">11.3. Code coverage</a></li>
+<li><a class="reference internal" href="#tasks-celery">11.4. Tasks (celery)</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="richtext.html"
+                        title="previous chapter">10. Rich text | Wiki syntax</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../specs/index.html"
+                        title="next chapter">7. Specifications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/testing.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/testing.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="testing-openplm">
+<h1>11. Testing openPLM<a class="headerlink" href="#testing-openplm" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>11.1. Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>openPLM uses <a class="reference external" href="https://docs.djangoproject.com/en/1.3/topics/testing/">Django&#8217;s testing framework</a>.
+Most tests are unit tests.</p>
+</div>
+<div class="section" id="running-tests">
+<h2>11.2. Running tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="dependencies">
+<h3>11.2.1. Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Tests depend on lxml (package python-lxml). Moreover the <a class="reference internal" href="../admin/applications/subversion/index.html#subversion-admin"><em>subversion &#8211; Subversion Repository Application</em></a> and
+<a class="reference internal" href="../admin/applications/gdoc/index.html#gdoc-admin"><em>gdoc &#8211; Google Document Application</em></a> are tested, so theirs dependencies must be installed
+(it is not necessary to configure an OAuth account).</p>
+</div>
+<div class="section" id="settings">
+<h3>11.2.2. Settings<a class="headerlink" href="#settings" title="Permalink to this headline">¶</a></h3>
+<p>openPLM ships with a settings file named <tt class="file docutils literal"><span class="pre">settings_tests.py</span></tt>.
+Notable changes compared to a standard settings file are:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the database is a sqlite3 database</li>
+<li>files are saved into a tempory folder</li>
+<li>the xapian index is saved in an in-memory database</li>
+<li>celery tasks are synchronously run</li>
+<li>south is not enabled</li>
+<li>some testing purpose applications are enabled</li>
+<li>loaded templates are cached (note that this setting may be enabled
+in production)</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="running-all-tests">
+<h3>11.2.3. Running all tests<a class="headerlink" href="#running-all-tests" title="Permalink to this headline">¶</a></h3>
+<p>To run all tests:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cd</span> <span class="pre">/path/to/openPLM</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">test</span> <span class="pre">--settings=settings_tests</span></tt></li>
+</ul>
+</div></blockquote>
+<p>Note that some subversion tests require an access to openplm.org (they
+do something similar to <tt class="docutils literal"><span class="pre">svn</span> <span class="pre">log</span></tt>).</p>
+</div>
+<div class="section" id="running-a-specific-test">
+<h3>11.2.4. Running a specific test<a class="headerlink" href="#running-a-specific-test" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to only test a specific application:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">test</span> <span class="pre">plmapp</span> <span class="pre">--settings=settings_tests</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">test</span> <span class="pre">pdfgen</span> <span class="pre">--settings=settings_tests</span></tt></li>
+</ul>
+</div></blockquote>
+<p>It is also possible to run a specific test case:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">test</span> <span class="pre">plmapp.GroupControllerTestCase</span> <span class="pre">--settings=settings_tests</span></tt></li>
+</ul>
+</div></blockquote>
+<p>It is also possible to run a single test:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">test</span> <span class="pre">plmapp.GroupControllerTestCase.test_create</span> <span class="pre">--settings=settings_tests</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="testing-document3d-app">
+<h3>11.2.5. Testing document3D app<a class="headerlink" href="#testing-document3d-app" title="Permalink to this headline">¶</a></h3>
+<p>By default, document3D is not tested since it depends on PythonOCC which is not
+packaged on all distributions.
+To test document3D, the environment variable <span class="target" id="index-0"></span><tt class="xref std std-envvar docutils literal"><span class="pre">openPLM3D</span></tt> must be set to
+<tt class="docutils literal"><span class="pre">enabled</span></tt>.
+For example, the command <tt class="docutils literal"><span class="pre">openPLM3D=&quot;enabled&quot;</span> <span class="pre">./manage.py</span> <span class="pre">test</span> <span class="pre">--settings=settings_tests</span></tt>
+runs all tests, including document3D&#8217;s tests.</p>
+</div>
+</div>
+<div class="section" id="code-coverage">
+<h2>11.3. Code coverage<a class="headerlink" href="#code-coverage" title="Permalink to this headline">¶</a></h2>
+<p>openPLM ships with a script named <tt class="file docutils literal"><span class="pre">./bin/run_coverage.sh</span></tt>. This script runs all
+tests with <a class="reference external" href="http://nedbatchelder.com/code/coverage/">coverage</a>. By default,
+this script produces an html report into the <tt class="file docutils literal"><span class="pre">coverage_report</span></tt> directory.
+It is possible to produce an XML output by setting the environment variable
+<span class="target" id="index-1"></span><tt class="xref std std-envvar docutils literal"><span class="pre">TEST_OUTPUT</span></tt> to <tt class="docutils literal"><span class="pre">xml</span></tt>. This output produces a file in
+<tt class="file docutils literal"><span class="pre">tests_results</span></tt>  in a format compatible with <a class="reference external" href="http://cobertura.sourceforge.net/">Cobertura</a>.</p>
+</div>
+<div class="section" id="tasks-celery">
+<h2>11.4. Tasks (celery)<a class="headerlink" href="#tasks-celery" title="Permalink to this headline">¶</a></h2>
+<p>The file <tt class="file docutils literal"><span class="pre">settings_tests.py</span></tt> has special celery settings:</p>
+<blockquote>
+<div><ul class="simple">
+<li>An in-memory broker is used</li>
+<li>All tasks are run <strong>synchronously</strong> so that it is easier to check their
+effects. This implies that some possible concurrency bugs can not be detected.</li>
+<li>Exceptions are propagated.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../specs/index.html" title="7. Specifications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="richtext.html" title="10. Rich text | Wiki syntax"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

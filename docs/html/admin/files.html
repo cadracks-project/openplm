@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5. Files &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="5. Admin documentation" href="index.html" />
+    <link rel="next" title="6. Lifecycle" href="lifecycle.html" />
+    <link rel="prev" title="4. Commands" href="commands.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="6. Lifecycle"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="commands.html" title="4. Commands"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">5. Files</a><ul>
+<li><a class="reference internal" href="#how-openplm-manages-files">5.1. How OpenPLM manages files</a><ul>
+<li><a class="reference internal" href="#minor-revisions">5.1.1. Minor revisions</a></li>
+<li><a class="reference internal" href="#thumbnails">5.1.2. Thumbnails</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#webdav">5.2. WebDAV</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="commands.html"
+                        title="previous chapter">4. Commands</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lifecycle.html"
+                        title="next chapter">6. Lifecycle</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/files.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/files.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="files">
+<span id="files-admin"></span><h1>5. Files<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-openplm-manages-files">
+<h2>5.1. How OpenPLM manages files<a class="headerlink" href="#how-openplm-manages-files" title="Permalink to this headline">¶</a></h2>
+<p>All files bound to a document are stored in a single directory
+(see <a class="reference internal" href="settings.html#settings.DOCUMENTS_DIR" title="settings.DOCUMENTS_DIR"><tt class="xref py py-const docutils literal"><span class="pre">DOCUMENTS_DIR</span></tt></a>). This directory contains
+a lot of subdirectories, one per seen extensions (in lower case).</p>
+<p>Each file is stored in the directory related to its extension.
+However, they are renamed into <tt class="samp docutils literal"><em><span class="pre">md5sum</span></em><span class="pre">-</span><em><span class="pre">rand</span></em><span class="pre">.</span><em><span class="pre">ext</span></em></tt> where:</p>
+<blockquote>
+<div><ul class="simple">
+<li><cite>md5sum</cite> is the md5 sum of the original filename</li>
+<li><cite>rand</cite> is a random part to avoid to overwrite an existing file</li>
+<li><cite>ext</cite> is the original extension</li>
+</ul>
+</div></blockquote>
+<p>This renaming makes it possible to store several files with the
+same name and several revision of the same file.</p>
+<p>The model <a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> stores in the database the
+data related to a file (its document, path, etc.).</p>
+<div class="section" id="minor-revisions">
+<h3>5.1.1. Minor revisions<a class="headerlink" href="#minor-revisions" title="Permalink to this headline">¶</a></h3>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>After a check-in or a deletion, OpenPLM creates a new DocumentFile
+in the database. This DocumentFile is marked as deprecated and
+its file may be kept or deleted according to the configuration
+of OpenPLM.</p>
+<p>If <a class="reference internal" href="settings.html#settings.KEEP_ALL_FILES" title="settings.KEEP_ALL_FILES"><tt class="xref py py-const docutils literal"><span class="pre">KEEP_ALL_FILES</span></tt></a> is True (default is False),
+OpenPLM will never delete a file. This ensures a maximum traceability
+but may require a lot of disk place.</p>
+<p>How OpenPLM decides to keep or delete a file is explained
+<a class="reference internal" href="../devel/modules/files/deletable.html#module-plmapp.files.deletable" title="plmapp.files.deletable"><tt class="xref py py-mod docutils literal"><span class="pre">here</span></tt></a>. Currently, the only way to modify
+the default behaviour is to edit this file.</p>
+</div>
+<div class="section" id="thumbnails">
+<h3>5.1.2. Thumbnails<a class="headerlink" href="#thumbnails" title="Permalink to this headline">¶</a></h3>
+<p>Thumbnails are stored in the <a class="reference internal" href="settings.html#settings.THUMBNAILS_DIR" title="settings.THUMBNAILS_DIR"><tt class="xref py py-const docutils literal"><span class="pre">THUMBNAILS_DIR</span></tt></a> directory.
+All thumbnails are PNG files and they are named <tt class="samp docutils literal"><span class="pre">df_id.png</span></tt> where
+<cite>df_id</cite> is the id of the related DocumentFile.</p>
+<p>When a file is deleted, its thumbnail is also deleted.</p>
+</div>
+</div>
+<div class="section" id="webdav">
+<h2>5.2. WebDAV<a class="headerlink" href="#webdav" title="Permalink to this headline">¶</a></h2>
+<p>Enabling <a class="reference internal" href="applications/webdav/index.html#webdav-admin"><em>WebDAV access</em></a> allows the company to browse
+all documents and their files.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="6. Lifecycle"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="commands.html" title="4. Commands"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

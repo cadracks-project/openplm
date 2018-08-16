@@ -1,0 +1,454 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.controllers.group &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/controllers/group.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.controllers.group</h1><div class="highlight"><pre>
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains a class called :class:`GroupController` which</span>
+<span class="sd">provides a controller for :class:`~django.contrib.auth.models.Group`.</span>
+<span class="sd">This class is similar to :class:`.PLMObjectController` but some methods</span>
+<span class="sd">from :class:`.PLMObjectController` are not defined.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.mail</span> <span class="kn">import</span> <span class="n">send_mail</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.tasks</span> <span class="kn">import</span> <span class="n">update_index</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">PermissionError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers.base</span> <span class="kn">import</span> <span class="n">Controller</span><span class="p">,</span> <span class="n">permission_required</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.references</span> <span class="kn">import</span> <span class="n">validate_reference</span>
+
+<div class="viewcode-block" id="GroupController"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController">[docs]</a><span class="k">class</span> <span class="nc">GroupController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Object used to manage a :class:`~django.contrib.auth.models.Group` and store his</span>
+<span class="sd">    modification in a history</span>
+
+<span class="sd">    :attributes:</span>
+<span class="sd">        .. attribute:: object</span>
+
+<span class="sd">            The :class:`~django.contrib.auth.models.Group` managed by the controller</span>
+
+<span class="sd">    :param obj: managed object</span>
+<span class="sd">    :type obj: an instance of :class:`~django.contrib.auth.models.Group`</span>
+<span class="sd">    :param user: user who modify *obj*</span>
+<span class="sd">    :type user: :class:`~django.contrib.auth.models.Group`</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        This class does not inherit from :class:`.PLMObjectController`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">HISTORY</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GroupHistory</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">no_index</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;groupinfo&quot;</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">groupinfo</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GroupController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="p">,</span> <span class="n">no_index</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GroupController.create"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{}):</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span> <span class="ow">or</span> <span class="n">profile</span><span class="o">.</span><span class="n">is_administrator</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not a contributor&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Restricted account can not create a group.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;name must not be empty&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">validate_reference</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Name contains a &#39;/&#39; or a &#39;..&#39;&quot;</span><span class="p">)</span>
+
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">GroupInfo</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">description</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">creator</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;description&quot;</span><span class="p">]:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">infos</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;name&quot;</span> <span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s">&quot;description&quot;</span> <span class="p">:</span> <span class="n">description</span><span class="p">}</span>
+        <span class="n">infos</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">infos</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;Create&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+        <span class="n">update_index</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="s">&quot;plmapp&quot;</span><span class="p">,</span> <span class="s">&quot;groupinfo&quot;</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GroupController.create_from_form"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.create_from_form">[docs]</a>    <span class="k">def</span> <span class="nf">create_from_form</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Creates a :class:`PLMObjectController` from *form* and associates *user*</span>
+<span class="sd">        as the creator/owner of the PLMObject.</span>
+
+<span class="sd">        This method raises :exc:`ValueError` if *form* is invalid.</span>
+
+<span class="sd">        :param form: a django form associated to a model</span>
+<span class="sd">        :param user: user who creates/owns the object</span>
+<span class="sd">        :rtype: :class:`PLMObjectController`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span>
+            <span class="n">desc</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;description&quot;</span><span class="p">]</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;form is invalid&quot;</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="GroupController.load"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">get_object_or_404</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Group</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">reference</span><span class="p">),</span> <span class="n">user</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.has_permission"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.has_permission">[docs]</a>    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="GroupController.update_users"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.update_users">[docs]</a>    <span class="k">def</span> <span class="nf">update_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">formset</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Updates users with data from *formset*</span>
+
+<span class="sd">        :param formset:</span>
+<span class="sd">        :type formset: a formset_factory of</span>
+<span class="sd">                        :class:`~plmapp.forms.ModifyUserForm`</span>
+
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">            :attr:`object`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="n">users</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">forms</span><span class="p">:</span>
+                <span class="n">group</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">group</span><span class="o">.</span><span class="n">pk</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad group </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s"> expected)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">group</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">))</span>
+                <span class="n">delete</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;delete&quot;</span><span class="p">]</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;user&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">user</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad user </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Restricted account can not join a group&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">delete</span><span class="p">:</span>
+                    <span class="n">users</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+                <span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">group</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;User removed&quot;</span><span class="p">,</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">u</span><span class="o">.</span><span class="n">username</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">users</span><span class="p">)))</span>
+</div>
+    <span class="nd">@permission_required</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">)</span>
+<div class="viewcode-block" id="GroupController.add_user"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.add_user">[docs]</a>    <span class="k">def</span> <span class="nf">add_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asks *user* to join the group.</span>
+
+<span class="sd">        An email is sent to *user* so that he can validate its inscription.</span>
+
+<span class="sd">        :raises: :exc:`ValueError` if user&#39;s email is empty.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">email</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;user&#39;s email is empty&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Restricted account can not join a group&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+        <span class="n">inv</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                <span class="n">guest</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">guest_asked</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_invitation_to_guest</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.ask_to_join"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.ask_to_join">[docs]</a>    <span class="k">def</span> <span class="nf">ask_to_join</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Asks to join the group.</span>
+
+<span class="sd">        An email is sent to the group&#39;s owner so that he can validate the</span>
+<span class="sd">        inscription.</span>
+
+<span class="sd">        :raises: :exc:`ValueError` if the owner&#39;s email is empty.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">email</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;user&#39;s email is empty&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Restricted account can not join a group&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="n">inv</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">group</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">,</span>
+                <span class="n">guest</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">guest_asked</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">send_invitation_to_owner</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.accept_invitation"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.accept_invitation">[docs]</a>    <span class="k">def</span> <span class="nf">accept_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">invitation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Accepts an invitation.</span>
+
+<span class="sd">        If the owner sent *invitation*, it checks that :attr:`_user` is the</span>
+<span class="sd">        guest and adds him to the group.</span>
+
+<span class="sd">        If the guest sent *invitation*, it checks that :attr:`_user` is the</span>
+<span class="sd">        owner and adds the guest to the group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">invitation</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">PENDING</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid invitation&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">invitation</span><span class="o">.</span><span class="n">guest_asked</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">!=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">owner</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not accept this invitation.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">!=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">guest</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not accept this invitation.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+
+        <span class="n">invitation</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">ACCEPTED</span>
+        <span class="n">invitation</span><span class="o">.</span><span class="n">validation_time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+        <span class="n">user</span> <span class="o">=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">guest</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="n">invitation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;User added&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">users</span><span class="o">=</span><span class="p">(</span><span class="n">user</span><span class="p">,))</span>
+</div>
+<div class="viewcode-block" id="GroupController.send_invitation_to_owner"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.send_invitation_to_owner">[docs]</a>    <span class="k">def</span> <span class="nf">send_invitation_to_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">invitation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a mail to the owner asking him to accept the invitation</span>
+<span class="sd">        to join the group.</span>
+
+<span class="sd">        This method can be called to resend an invitation.</span>
+
+<span class="sd">        :raises: :exc:`ValueError` if the invitation&#39;s state is not</span>
+<span class="sd">            :attr:`.Invitation.PENDING`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">invitation</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">PENDING</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid invitation&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">!=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">guest</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not send this invitation.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                <span class="s">&quot;invitation&quot;</span> <span class="p">:</span> <span class="n">invitation</span><span class="p">,</span>
+                <span class="s">&quot;guest&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                <span class="p">}</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="s">&quot;[PLM] </span><span class="si">%s</span><span class="s"> asks you to join the group </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_mail</span><span class="p">(</span><span class="n">send_mail</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">owner</span><span class="p">],</span> <span class="n">ctx</span><span class="p">,</span> <span class="s">&quot;mails/invitation2&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.send_invitation_to_guest"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.send_invitation_to_guest">[docs]</a>    <span class="k">def</span> <span class="nf">send_invitation_to_guest</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">invitation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sends a mail to the guest asking him to accept the invitation</span>
+<span class="sd">        to join the group.</span>
+
+<span class="sd">        This method can be called to resend an invitation.</span>
+
+<span class="sd">        :raises: :exc:`ValueError` if the invitation&#39;s state is not</span>
+<span class="sd">            :attr:`.Invitation.PENDING`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">invitation</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">PENDING</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid invitation&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">!=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">owner</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not send this invitation.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;group&quot;</span> <span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                <span class="s">&quot;invitation&quot;</span> <span class="p">:</span> <span class="n">invitation</span><span class="p">,</span>
+                <span class="p">}</span>
+        <span class="n">subject</span> <span class="o">=</span> <span class="s">&quot;[PLM] Invitation to join the group </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_mail</span><span class="p">(</span><span class="n">send_mail</span><span class="p">,</span> <span class="n">subject</span><span class="p">,</span> <span class="p">[</span><span class="n">invitation</span><span class="o">.</span><span class="n">guest</span><span class="p">],</span> <span class="n">ctx</span><span class="p">,</span>
+                <span class="s">&quot;mails/invitation1&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.refuse_invitation"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.refuse_invitation">[docs]</a>    <span class="k">def</span> <span class="nf">refuse_invitation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">invitation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Refuses an invitation.</span>
+
+<span class="sd">        If the owner sent *invitation*, it checks that :attr:`_user` is the</span>
+<span class="sd">        guest and *invitation* is marked as refused.</span>
+
+<span class="sd">        If the guest sent *invitation*, it checks that :attr:`_user` is the</span>
+<span class="sd">        owner and *invitation* is marked as refused.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">invitation</span><span class="o">.</span><span class="n">state</span> <span class="o">!=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">PENDING</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid invitation&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">invitation</span><span class="o">.</span><span class="n">guest_asked</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">!=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">owner</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not refuse this invitation.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">!=</span> <span class="n">invitation</span><span class="o">.</span><span class="n">guest</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not refuse this invitation.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="n">invitation</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">REFUSED</span>
+        <span class="n">invitation</span><span class="o">.</span><span class="n">validation_time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="n">invitation</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># TODO mail</span>
+</div>
+<div class="viewcode-block" id="GroupController.save"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_history</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Saves :attr:`object` and records its history in the database.</span>
+<span class="sd">        If *with_history* is False, the history is not recorded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GroupController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">with_history</span><span class="p">)</span>
+        <span class="n">update_index</span><span class="o">.</span><span class="n">delay</span><span class="p">(</span><span class="s">&quot;plmapp&quot;</span><span class="p">,</span> <span class="s">&quot;groupinfo&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.get_attached_parts"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.get_attached_parts">[docs]</a>    <span class="k">def</span> <span class="nf">get_attached_parts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_parts</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plmobject_group</span><span class="o">.</span><span class="n">exclude_cancelled</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">type__in</span><span class="o">=</span><span class="n">types</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.get_attached_documents"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.get_attached_documents">[docs]</a>    <span class="k">def</span> <span class="nf">get_attached_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_documents</span><span class="p">()</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plmobject_group</span><span class="o">.</span><span class="n">exclude_cancelled</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">type__in</span><span class="o">=</span><span class="n">types</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="GroupController.check_readable"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_group.html#plmapp.controllers.group.GroupController.check_readable">[docs]</a>    <span class="k">def</span> <span class="nf">check_readable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">raise_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not see this group&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

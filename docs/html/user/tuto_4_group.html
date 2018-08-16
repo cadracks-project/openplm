@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.4. Functions related to GROUPS &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="1. List of Tutorials" href="tutorials.html" />
+    <link rel="next" title="2. List of plugins" href="plugins.html" />
+    <link rel="prev" title="1.3. Functions related to USER" href="tuto_3_user.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plugins.html" title="2. List of plugins"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tuto_3_user.html" title="1.3. Functions related to USER"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" accesskey="U">1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.4. Functions related to <strong>GROUPS</strong></a><ul>
+<li><a class="reference internal" href="#overview">1.4.1. OVERVIEW</a></li>
+<li><a class="reference internal" href="#attributes">1.4.2. ATTRIBUTES</a></li>
+<li><a class="reference internal" href="#history">1.4.3. HISTORY</a></li>
+<li><a class="reference internal" href="#users">1.4.4. USERS</a></li>
+<li><a class="reference internal" href="#objects">1.4.5. OBJECTS</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tuto_3_user.html"
+                        title="previous chapter">1.3. Functions related to <strong>USER</strong></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="plugins.html"
+                        title="next chapter">2. List of plugins</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/user/tuto_4_group.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/tuto_4_group.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="functions-related-to-groups">
+<span id="en-group-func"></span><h1>1.4. Functions related to <strong>GROUPS</strong><a class="headerlink" href="#functions-related-to-groups" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the functions you can use to display and manipulate the <strong>Groups</strong> in openPLM.</p>
+<div class="section" id="overview">
+<h2>1.4.1. OVERVIEW<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The <strong>Groups</strong> are standard Django objects. With OpenPLM you can modify some attributes.</p>
+<p>In OpenPLM, the <em>type</em> is <strong>Group</strong>.</p>
+<p>Each <strong>Groups</strong> have a unique <em>name</em>.</p>
+<div class="admonition hint">
+<p class="first admonition-title">Hint</p>
+<p class="last">Example : Group / leading-group / -</p>
+</div>
+</div>
+<div class="section" id="attributes">
+<h2>1.4.2. ATTRIBUTES<a class="headerlink" href="#attributes" title="Permalink to this headline">¶</a></h2>
+<p>Displays the ID card of the group.</p>
+<p>You find standard attributes like name, description, date of creation ..
+You can find customized attributes depending of the company OpenPLM is implemented for.</p>
+<p>If you have necessary rights, you can <strong>Edit</strong> the attributes and modify them.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can proceed some research based on each attribute.</p>
+</div>
+</div>
+<div class="section" id="history">
+<h2>1.4.3. HISTORY<a class="headerlink" href="#history" title="Permalink to this headline">¶</a></h2>
+<p>Displays the history of the group.</p>
+<p>It ensures the full tracability of the group.</p>
+<p>A RSS feed icon is shown when you are on this tab. By clicking it you can
+subscribe to the feed related to the group.</p>
+</div>
+<div class="section" id="users">
+<h2>1.4.4. USERS<a class="headerlink" href="#users" title="Permalink to this headline">¶</a></h2>
+<p>Displays the members (users) of the group and the pending invitations (sent and received) .</p>
+<p>From this tab you can :</p>
+<blockquote>
+<div><ul class="simple">
+<li>invite users to join the group , if you have the necessary rights</li>
+<li>remove users from the group, if you have the necessary rights</li>
+<li>ask to join the group</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="objects">
+<h2>1.4.5. OBJECTS<a class="headerlink" href="#objects" title="Permalink to this headline">¶</a></h2>
+<p>Displays Id card of objects which belong to the group</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="plugins.html" title="2. List of plugins"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tuto_3_user.html" title="1.3. Functions related to USER"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" >1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

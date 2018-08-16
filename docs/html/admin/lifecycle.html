@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6. Lifecycle &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="5. Admin documentation" href="index.html" />
+    <link rel="next" title="7. Publication" href="publication.html" />
+    <link rel="prev" title="5. Files" href="files.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="7. Publication"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="files.html" title="5. Files"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6. Lifecycle</a><ul>
+<li><a class="reference internal" href="#adding-a-new-lifecycle">6.1. Adding a new lifecycle</a><ul>
+<li><a class="reference internal" href="#using-the-admin-interface">6.1.1. Using the admin interface</a></li>
+<li><a class="reference internal" href="#using-the-python-shell">6.1.2. Using the python shell</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-to-change-the-lifecycle-of-an-object">6.2. How to change the lifecycle of an object</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="files.html"
+                        title="previous chapter">5. Files</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="publication.html"
+                        title="next chapter">7. Publication</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/lifecycle.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/lifecycle.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lifecycle">
+<h1>6. Lifecycle<a class="headerlink" href="#lifecycle" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="adding-a-new-lifecycle">
+<h2>6.1. Adding a new lifecycle<a class="headerlink" href="#adding-a-new-lifecycle" title="Permalink to this headline">¶</a></h2>
+<p>A lifecycle must have at least 3 states:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>a draft state</li>
+<li>optional states</li>
+<li>an official state</li>
+<li>a deprecated state</li>
+</ol>
+</div></blockquote>
+<div class="section" id="using-the-admin-interface">
+<h3>6.1.1. Using the admin interface<a class="headerlink" href="#using-the-admin-interface" title="Permalink to this headline">¶</a></h3>
+<p>First, you need to create all states: open the page
+<tt class="samp docutils literal"><span class="pre">http://</span><em><span class="pre">server</span></em><span class="pre">/admin/plmapp/state/add</span></tt> and create them. The only
+required field is the name of the state, this value will be displayed in the
+lifecycle page. It&#8217;s fine if a state is referred by several lifecycles.</p>
+<p>Then you need to create a lifecycle: open the page
+<tt class="samp docutils literal"><span class="pre">http://</span><em><span class="pre">server</span></em><span class="pre">/admin/plmapp/lifecycle/add/</span></tt> and create it.
+Two fields are required: its name (that will be shown in the creation page)
+and its official state.</p>
+<p>Then you need to create objects (named lifecyclestates) that bound the states
+to the lifecycle.  Open the page
+<tt class="samp docutils literal"><span class="pre">http://</span><em><span class="pre">server</span></em><span class="pre">/admin/plmapp/lifecyclestates/add/</span></tt> and create one object
+per state. Three fields are required:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>The lifecycle</li>
+<li>The state</li>
+<li>A rank: this field (an integer) is used to order the states,
+the first state must have the lower rank.</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="using-the-python-shell">
+<h3>6.1.2. Using the python shell<a class="headerlink" href="#using-the-python-shell" title="Permalink to this headline">¶</a></h3>
+<p>It is possible to programamtically create a lifecycle.</p>
+<p>Open a python shell (<strong class="command">./manage.py shell</strong>):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">Lifecycle</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">openPLM.plmapp.lifecycle</span> <span class="kn">import</span> <span class="n">LifecycleList</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c"># arguments: name of the lifecycle, name of the official state, names off all states (ordered)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lcl</span> <span class="o">=</span> <span class="n">LifecycleList</span><span class="p">(</span><span class="s">&quot;mylifecycle&quot;</span><span class="p">,</span> <span class="s">&quot;official&quot;</span><span class="p">,</span> <span class="s">&quot;draft&quot;</span><span class="p">,</span> <span class="s">&quot;state2&quot;</span><span class="p">,</span> <span class="s">&quot;state3&quot;</span><span class="p">,</span> <span class="s">&quot;official&quot;</span><span class="p">,</span> <span class="s">&quot;deprecated&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Lifecycle</span><span class="o">.</span><span class="n">from_lifecyclelist</span><span class="p">(</span><span class="n">lcl</span><span class="p">)</span> <span class="c"># create the lifecycle</span>
+<span class="go">&lt;Lifecycle: Lifecycle&lt;mylifecycle&gt;&gt;</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="../devel/modules/lifecycle.html#plmapp.lifecycle.LifecycleList" title="plmapp.lifecycle.LifecycleList"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleList</span></tt></a></p>
+</div>
+</div>
+</div>
+<div class="section" id="how-to-change-the-lifecycle-of-an-object">
+<h2>6.2. How to change the lifecycle of an object<a class="headerlink" href="#how-to-change-the-lifecycle-of-an-object" title="Permalink to this headline">¶</a></h2>
+<p>If you have to change the lifecycle of an object, you have to:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Edit its PLMObject page (via the admin interface):
+make sure its state is consistent with the new lifecycle</li>
+<li>Make sure there is one (not least, not more) signer assigned to each signing level
+(number of states minus one levels):
+Add/edit required <tt class="xref py py-class docutils literal"><span class="pre">PLMObjectUserLink</span></tt> (<tt class="samp docutils literal"><span class="pre">http://</span><em><span class="pre">server</span></em><span class="pre">/plmapp/plmobjectuserlink/</span></tt>).
+All missing roles must start with <tt class="docutils literal"><span class="pre">sign_</span></tt>.</li>
+</ol>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>If you have to select a signer role above 10, you will have to edit
+the code of <tt class="file docutils literal"><span class="pre">plmapp/models.py</span></tt>, find the following lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ROLES</span> <span class="o">=</span> <span class="p">[</span><span class="n">ROLE_OWNER</span><span class="p">,</span> <span class="n">ROLE_NOTIFIED</span><span class="p">,</span> <span class="n">ROLE_SPONSOR</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span> <span class="c"># increase this number</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">ROLES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+<span class="n">ROLE_READER</span> <span class="o">=</span> <span class="s">&quot;reader&quot;</span>
+</pre></div>
+</div>
+<p>increase the number 10 and restart your server.</p>
+<p class="last">(Yes, its annoying, but you should not change the lifecycle of an object).</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="7. Publication"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="files.html" title="5. Files"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

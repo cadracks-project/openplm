@@ -1,0 +1,785 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.plmapp.models.link &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="openPLM.plmapp.models" href="../models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" accesskey="U">openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/plmapp/models/link.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.plmapp.models.link</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">import</span> <span class="nn">kjbuckets</span>
+
+
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ValidationError</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span><span class="p">,</span> <span class="n">IntegrityError</span>
+<span class="kn">from</span> <span class="nn">django.db.models.query</span> <span class="kn">import</span> <span class="n">QuerySet</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils.units</span> <span class="kn">import</span> <span class="n">UNITS</span><span class="p">,</span> <span class="n">DEFAULT_UNIT</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">level_to_sign_str</span>
+
+<span class="kn">from</span> <span class="nn">.lifecycle</span> <span class="kn">import</span> <span class="n">State</span>
+<span class="kn">from</span> <span class="nn">.plmobject</span> <span class="kn">import</span> <span class="n">PLMObject</span>
+<span class="kn">from</span> <span class="nn">.part</span> <span class="kn">import</span> <span class="n">Part</span>
+<span class="kn">from</span> <span class="nn">.document</span> <span class="kn">import</span> <span class="n">Document</span>
+
+<div class="viewcode-block" id="LinkQuerySet"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkQuerySet">[docs]</a><span class="k">class</span> <span class="nc">LinkQuerySet</span><span class="p">(</span><span class="n">QuerySet</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; QuerySet with utility methods to filter links alive at a given time.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LinkQuerySet.now"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkQuerySet.now">[docs]</a>    <span class="k">def</span> <span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filters links: keeps only alive links (end_time is null).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">end_time__isnull</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LinkQuerySet.at"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkQuerySet.at">[docs]</a>    <span class="k">def</span> <span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Filters links: keeps alive links at time *time*.</span>
+
+<span class="sd">        :param time: a :class:`~datetime.datetime` or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">ctime__lte</span><span class="o">=</span><span class="n">time</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">end_time__isnull</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                <span class="n">end_time__lt</span><span class="o">=</span><span class="n">time</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LinkQuerySet.end"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkQuerySet.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ends all alive links: sets theur :attr:`end_time` to the current time and saves them</span>
+<span class="sd">        if there :attr:`end_time` are not already set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">end_time</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+</div></div>
+<div class="viewcode-block" id="LinkManager"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkManager">[docs]</a><span class="k">class</span> <span class="nc">LinkManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Links manager, returns a :class:`LinkQuerySet`.&quot;&quot;&quot;</span>
+
+    <span class="n">use_for_related_fields</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">LinkQuerySet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LinkManager.now"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkManager.now">[docs]</a>    <span class="k">def</span> <span class="nf">now</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shorcut for ``self.get_query_set().now()``. See :meth:`LinkQuerySet.now`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="LinkManager.at"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkManager.at">[docs]</a>    <span class="k">def</span> <span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shorcut for ``self.get_query_set().at(time)``. See :meth:`LinkQuerySet.at`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LinkManager.end"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.LinkManager.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Shorcut for ``self.get_query_set().end()``. See :meth:`LinkQuerySet.end`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_query_set</span><span class="p">()</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="CurrentLinkManager"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.CurrentLinkManager">[docs]</a><span class="k">class</span> <span class="nc">CurrentLinkManager</span><span class="p">(</span><span class="n">LinkManager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manager which returns alive links.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">LinkQuerySet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+</div>
+<div class="viewcode-block" id="Link"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.Link">[docs]</a><span class="k">class</span> <span class="nc">Link</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Abstract link base class.</span>
+
+<span class="sd">    This class represents a link between two :class:`.PLMObject`</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: ctime</span>
+
+<span class="sd">            date of creation of the link (automatically set)</span>
+<span class="sd">        .. attribute:: end_time</span>
+
+<span class="sd">            date of deletion of the link (default: None, the link is still active)</span>
+
+<span class="sd">    :class attributes:</span>
+<span class="sd">        .. attribute:: ACTION_NAME</span>
+
+<span class="sd">            an identifier used to set :attr:`.History.action` field</span>
+<span class="sd">        .. attribute:: objects</span>
+
+<span class="sd">            default manager: instance of :class:`LinkManager`</span>
+
+<span class="sd">        .. attribute:: current_objects</span>
+
+<span class="sd">            alternate manager (:class:`CurrentLinkManager`) which returns alive links.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ctime</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">end_time</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">None</span><span class="p">)</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">LinkManager</span><span class="p">()</span>
+    <span class="n">current_objects</span> <span class="o">=</span> <span class="n">CurrentLinkManager</span><span class="p">()</span>
+
+    <span class="n">ACTION_NAME</span> <span class="o">=</span> <span class="s">&quot;Link&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+
+<div class="viewcode-block" id="Link.clean"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.Link.clean">[docs]</a>    <span class="k">def</span> <span class="nf">clean</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check for instances with null values in unique_together fields.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Link</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">field_tuple</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">unique_together</span><span class="p">[:]:</span>
+            <span class="n">unique_filter</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">unique_fields</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">null_found</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">for</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">field_tuple</span><span class="p">:</span>
+                <span class="n">field_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field_name</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">unique_filter</span><span class="p">[</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">__isnull&#39;</span><span class="o">%</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+                    <span class="n">null_found</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">unique_filter</span><span class="p">[</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span><span class="o">%</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">field_value</span>
+                    <span class="n">unique_fields</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field_name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">null_found</span><span class="p">:</span>
+                <span class="n">unique_queryset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">unique_filter</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">:</span>
+                    <span class="n">unique_queryset</span> <span class="o">=</span> <span class="n">unique_queryset</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">unique_queryset</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unique_error_message</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">unique_fields</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="n">ValidationError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clean</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">ValidationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">IntegrityError</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Link</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Link.end"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.Link.end">[docs]</a>    <span class="k">def</span> <span class="nf">end</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Ends the link: sets its :attr:`end_time` to the current time and saves it</span>
+<span class="sd">        if its :attr:`end_time` is not already set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end_time</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</div></div>
+<div class="viewcode-block" id="ParentChildLink"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLink">[docs]</a><span class="k">class</span> <span class="nc">ParentChildLink</span><span class="p">(</span><span class="n">Link</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Link between two :class:`.Part`: a parent and a child</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: parent</span>
+
+<span class="sd">            a :class:`.Part`</span>
+<span class="sd">        .. attribute:: child</span>
+
+<span class="sd">            a :class:`.Part`</span>
+<span class="sd">        .. attribute:: quantity</span>
+
+<span class="sd">            amount of child (a positive float)</span>
+<span class="sd">        .. attribute:: unit</span>
+
+<span class="sd">            unit of the quantity</span>
+<span class="sd">        .. attribute:: order</span>
+
+<span class="sd">            positive integer</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ACTION_NAME</span> <span class="o">=</span> <span class="s">&quot;Link : parent-child&quot;</span>
+
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Part</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_parent&quot;</span><span class="p">)</span>
+    <span class="n">child</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Part</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_child&quot;</span><span class="p">)</span>
+    <span class="n">quantity</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FloatField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">UNITS</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">DEFAULT_UNIT</span><span class="p">)</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveSmallIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;parent&quot;</span><span class="p">,</span> <span class="s">&quot;child&quot;</span><span class="p">,</span> <span class="s">&quot;end_time&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;ParentChildLink&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%f</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%d</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ParentChildLink.get_shortened_unit"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLink.get_shortened_unit">[docs]</a>    <span class="k">def</span> <span class="nf">get_shortened_unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns unit as a human readable string.</span>
+<span class="sd">        If :attr:`.unit` equals to &quot;-&quot;, returns an empty string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit</span> <span class="o">==</span> <span class="s">&quot;-&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">u&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_unit_display</span><span class="p">()</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="ParentChildLink.extensions"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLink.extensions">[docs]</a>    <span class="k">def</span> <span class="nf">extensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns a queryset of bound :class:`.ParentChildLinkExtension`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ParentChildLinkExtension</span><span class="o">.</span><span class="n">children</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">link</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="ParentChildLink.get_extension_data"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLink.get_extension_data">[docs]</a>    <span class="k">def</span> <span class="nf">get_extension_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary of extension data. The returned value can be passed</span>
+<span class="sd">        as a valid arguement to :meth:`.clone`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">extension_data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ext</span><span class="o">.</span><span class="n">one_per_link</span><span class="p">():</span>
+                <span class="n">extension_data</span><span class="p">[</span><span class="n">ext</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">ext</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">extension_data</span>
+</div>
+<div class="viewcode-block" id="ParentChildLink.clone"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLink.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">extension_data</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Clone this link.</span>
+
+<span class="sd">        It is possible to pass additional arguments to override some original</span>
+<span class="sd">        values.</span>
+
+<span class="sd">        :param save: If True, the cloned link and its extensions are saved</span>
+<span class="sd">        :param extension_data: dictionary PCLE module name -&gt; data of data</span>
+<span class="sd">            that are given to :meth:`.ParentChildLinkExtension.clone`.</span>
+
+<span class="sd">        :return: a tuple (cloned link, list of cloned extensions)</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            &gt;&gt;&gt; print link</span>
+<span class="sd">            ParentChildLink&lt;Part&lt;PART_2/MotherBoard/a&gt;, Part&lt;ttd/RAM/a&gt;, 4.000000, -, 10&gt;</span>
+<span class="sd">            &gt;&gt;&gt; link.extensions</span>
+<span class="sd">            [&lt;ReferenceDesignator: ReferenceDesignator&lt;m1,m2,&gt;&gt;]</span>
+<span class="sd">            &gt;&gt;&gt; clone, ext = link.clone(False,</span>
+<span class="sd">            ...    {&quot;referencedesignator&quot; : { &quot;reference_designator&quot; : &quot;new_value&quot;}},</span>
+<span class="sd">            ...    quantity=51)</span>
+<span class="sd">            &gt;&gt;&gt; print clone</span>
+<span class="sd">            ParentChildLink&lt;Part&lt;PART_2/MotherBoard/a&gt;, Part&lt;ttd/RAM/a&gt;, 51.000000, -, 10&gt;</span>
+<span class="sd">            &gt;&gt;&gt; print ext</span>
+<span class="sd">            [&lt;ReferenceDesignator: ReferenceDesignator&lt;new_value&gt;&gt;]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># original data</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">,</span> <span class="n">child</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="p">,</span>
+                <span class="n">quantity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">order</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">unit</span><span class="p">,</span>
+                <span class="n">end_time</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">end_time</span><span class="p">)</span>
+        <span class="c"># update data from kwargs</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">ParentChildLink</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+            <span class="n">link</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># clone the extensions</span>
+        <span class="n">extensions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">extension_data</span> <span class="o">=</span> <span class="n">extension_data</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+            <span class="n">extensions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">save</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">extension_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span><span class="p">,</span> <span class="p">{})))</span>
+        <span class="k">return</span> <span class="n">link</span><span class="p">,</span> <span class="n">extensions</span>
+
+</div></div>
+<span class="k">class</span> <span class="nc">ChildQuerySet</span><span class="p">(</span><span class="n">QuerySet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">iterator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">(</span><span class="n">ChildQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">iterator</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_child_object</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">ChildManager</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_query_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ChildQuerySet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">ParentModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">_child_name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">editable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_child_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_child_name</span><span class="p">()</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">ParentModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_child_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent_model</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_child_name</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent_link</span><span class="p">()</span><span class="o">.</span><span class="n">related_query_name</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_child_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_child_name</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">get_parent_link</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_parent_model</span><span class="p">()]</span>
+
+    <span class="k">def</span> <span class="nf">get_parent_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="k">def</span> <span class="nf">get_parent_object</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_parent_link</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">registered_PCLEs</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="viewcode-block" id="ParentChildLinkExtension"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension">[docs]</a><span class="k">class</span> <span class="nc">ParentChildLinkExtension</span><span class="p">(</span><span class="n">ParentModel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extension of a :class:`.ParentChildLink` used to store additional data.</span>
+
+<span class="sd">    This class is abstract, subclass must define the :meth:`.clone` method,</span>
+<span class="sd">    add at least one field (or it would be useless) and may override</span>
+<span class="sd">    :meth:`.get_visible_fields` or :meth:`.get_editable_fields`.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :ref:`bom_extensions` explains how to subclass this class.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="c">#! link bound to the PCLE</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">ParentChildLink</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_link&quot;</span><span class="p">)</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Manager</span><span class="p">()</span>
+    <span class="n">children</span> <span class="o">=</span> <span class="n">ChildManager</span><span class="p">()</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ParentChildLinkExtension.get_visible_fields"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.get_visible_fields">[docs]</a>    <span class="k">def</span> <span class="nf">get_visible_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of visible fieldnames.</span>
+
+<span class="sd">        By default, returns an empty list.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ParentChildLinkExtension.get_editable_fields"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.get_editable_fields">[docs]</a>    <span class="k">def</span> <span class="nf">get_editable_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of editable fields.</span>
+
+<span class="sd">        By default, returns :meth:`.get_visible_fields`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">get_visible_fields</span><span class="p">())</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ParentChildLinkExtension.one_per_link"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.one_per_link">[docs]</a>    <span class="k">def</span> <span class="nf">one_per_link</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns True if only one extension should be created per link.</span>
+
+<span class="sd">        By default return True if :meth:`.get_visible_fields` returns a</span>
+<span class="sd">        non empty list.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">get_visible_fields</span><span class="p">())</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="ParentChildLinkExtension.apply_to"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.apply_to">[docs]</a>    <span class="k">def</span> <span class="nf">apply_to</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if this extension applies to *parent*.</span>
+
+<span class="sd">        :param parent: part which will have a new child</span>
+<span class="sd">        :type parent: :class:`.Part` (its most specific subclass).</span>
+
+<span class="sd">        Returns True by default.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="ParentChildLinkExtension.clone"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clone this extension.</span>
+
+<span class="sd">        **Subclass must define its implementation.** and respect the</span>
+<span class="sd">        following specification:</span>
+
+<span class="sd">        :param link: the new cloned link, the cloned extension must be</span>
+<span class="sd">                     bound to it</span>
+<span class="sd">        :type link: :class:`.ParentChildLink`</span>
+<span class="sd">        :param save: True if the cloned extension must be saved, False</span>
+<span class="sd">                     (the default) if it must not be saved.</span>
+<span class="sd">        :type save: boolean</span>
+<span class="sd">        :param data: additional data that override the original values</span>
+
+<span class="sd">        :return: the cloned extension</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+</div>
+    <span class="k">def</span> <span class="nf">get_parent_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ParentChildLinkExtension</span>
+
+<div class="viewcode-block" id="ParentChildLinkExtension.to_dict"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.ParentChildLinkExtension.to_dict">[docs]</a>    <span class="k">def</span> <span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a dictionary fieldnames -&gt; value that can be safely passed as</span>
+<span class="sd">        a kwargument to :meth:`.clone` and that is used to compare two</span>
+<span class="sd">        extensions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_all_field_names</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="s">&quot;link&quot;</span><span class="p">,</span> <span class="s">&quot;_child_name&quot;</span><span class="p">,</span>
+                    <span class="s">&#39;parentchildlinkextension_ptr&#39;</span><span class="p">):</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d</span>
+</div></div>
+<div class="viewcode-block" id="register_PCLE"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.register_PCLE">[docs]</a><span class="k">def</span> <span class="nf">register_PCLE</span><span class="p">(</span><span class="n">PCLE</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Register *PCLE* so that openPLM can show its visible fields.</span>
+
+<span class="sd">    :param PCLE: the registered PCLE</span>
+<span class="sd">    :type PCLE: a subclass of :class:`.ParentChildLinkExtension`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">registered_PCLEs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PCLE</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="get_PCLEs"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.get_PCLEs">[docs]</a><span class="k">def</span> <span class="nf">get_PCLEs</span><span class="p">(</span><span class="n">parent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the list of registered :class:`.ParentChildLinkExtension` that</span>
+<span class="sd">    applied to *parent*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">PCLE</span> <span class="k">for</span> <span class="n">PCLE</span> <span class="ow">in</span> <span class="n">registered_PCLEs</span> <span class="k">if</span> <span class="n">PCLE</span><span class="o">.</span><span class="n">apply_to</span><span class="p">(</span><span class="n">parent</span><span class="p">)]</span>
+
+</div>
+<div class="viewcode-block" id="RevisionLink"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.RevisionLink">[docs]</a><span class="k">class</span> <span class="nc">RevisionLink</span><span class="p">(</span><span class="n">Link</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Link between two revisions of a :class:`.PLMObject`</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: old</span>
+
+<span class="sd">            old revision (a :class:`.PLMObject`)</span>
+<span class="sd">        .. attribute:: new</span>
+
+<span class="sd">            new revision (a :class:`.PLMObject`)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;old&quot;</span><span class="p">,</span> <span class="s">&quot;new&quot;</span><span class="p">,</span> <span class="s">&quot;end_time&quot;</span><span class="p">)</span>
+
+    <span class="n">ACTION_NAME</span> <span class="o">=</span> <span class="s">&quot;Link : revision&quot;</span>
+    <span class="n">old</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_old&quot;</span><span class="p">)</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_new&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;RevisionLink&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">old</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">new</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DocumentPartLink"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.DocumentPartLink">[docs]</a><span class="k">class</span> <span class="nc">DocumentPartLink</span><span class="p">(</span><span class="n">Link</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Link between a :class:`.Part` and a :class:`.Document`</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: part</span>
+
+<span class="sd">            a :class:`.Part`</span>
+<span class="sd">        .. attribute:: document</span>
+
+<span class="sd">            a :class:`.Document`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ACTION_NAME</span> <span class="o">=</span> <span class="s">&quot;Link : document-part&quot;</span>
+
+    <span class="n">document</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_document&quot;</span><span class="p">)</span>
+    <span class="n">part</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Part</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_part&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="s">&quot;part&quot;</span><span class="p">,</span> <span class="s">&quot;end_time&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;DocumentPartLink&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">part</span><span class="p">)</span>
+
+<span class="c"># abstraction stuff</span></div>
+<span class="n">ROLE_NOTIFIED</span> <span class="o">=</span> <span class="s">&quot;notified&quot;</span>
+<span class="n">ROLE_SIGN</span> <span class="o">=</span> <span class="s">&quot;sign_&quot;</span>
+<span class="n">ROLE_OWNER</span> <span class="o">=</span> <span class="s">&quot;owner&quot;</span>
+<span class="n">ROLE_SPONSOR</span> <span class="o">=</span> <span class="s">&quot;sponsor&quot;</span>
+
+<span class="n">ROLES</span> <span class="o">=</span> <span class="p">[</span><span class="n">ROLE_OWNER</span><span class="p">,</span> <span class="n">ROLE_NOTIFIED</span><span class="p">,</span> <span class="n">ROLE_SPONSOR</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="n">ROLES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+<span class="n">ROLE_READER</span> <span class="o">=</span> <span class="s">&quot;reader&quot;</span>
+<span class="n">ROLES</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ROLE_READER</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DelegationLink"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.DelegationLink">[docs]</a><span class="k">class</span> <span class="nc">DelegationLink</span><span class="p">(</span><span class="n">Link</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Link between two :class:`~.django.contrib.auth.models.User` to delegate</span>
+<span class="sd">    his rights (abstract class)</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: delegator</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who gives his role</span>
+<span class="sd">        .. attribute:: delegatee</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who receives the role</span>
+<span class="sd">        .. attribute:: role</span>
+
+<span class="sd">            right that is delegated</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ACTION_NAME</span> <span class="o">=</span> <span class="s">&quot;Link : delegation&quot;</span>
+
+    <span class="n">delegator</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_delegator&quot;</span><span class="p">)</span>
+    <span class="n">delegatee</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_delegatee&quot;</span><span class="p">)</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="n">ROLES</span><span class="p">,</span> <span class="n">ROLES</span><span class="p">),</span>
+            <span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;delegator&quot;</span><span class="p">,</span> <span class="s">&quot;delegatee&quot;</span><span class="p">,</span> <span class="s">&quot;role&quot;</span><span class="p">,</span> <span class="s">&quot;end_time&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;DelegationLink&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">delegator</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">delegatee</span><span class="p">,</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="DelegationLink.get_delegators"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.DelegationLink.get_delegators">[docs]</a>    <span class="k">def</span> <span class="nf">get_delegators</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the list of user&#39;s id of the delegators of *user* for the role</span>
+<span class="sd">        *role*.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;delegatee&quot;</span><span class="p">,</span> <span class="s">&quot;delegator&quot;</span><span class="p">)</span>
+        <span class="n">gr</span> <span class="o">=</span> <span class="n">kjbuckets</span><span class="o">.</span><span class="n">kjGraph</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">links</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">gr</span><span class="o">.</span><span class="n">reachable</span><span class="p">(</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+
+</div></div>
+<div class="viewcode-block" id="PLMObjectUserLink"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.PLMObjectUserLink">[docs]</a><span class="k">class</span> <span class="nc">PLMObjectUserLink</span><span class="p">(</span><span class="n">Link</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Link between a :class:`~.django.contrib.auth.models.User` and a</span>
+<span class="sd">    :class:`.PLMObject`</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: plmobject</span>
+
+<span class="sd">            a :class:`.PLMObject`</span>
+<span class="sd">        .. attribute:: user</span>
+
+<span class="sd">            a :class:`.User`</span>
+<span class="sd">        .. attribute:: role</span>
+
+<span class="sd">            role of *user* for *plmobject* (like `owner` or `notified`)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">ACTION_NAME</span> <span class="o">=</span> <span class="s">&quot;Link : PLMObject-user&quot;</span>
+
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;users&quot;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">_user&quot;</span><span class="p">)</span>
+    <span class="n">role</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="nb">zip</span><span class="p">(</span><span class="n">ROLES</span><span class="p">,</span> <span class="n">ROLES</span><span class="p">),</span>
+            <span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;plmobject&quot;</span><span class="p">,</span> <span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="s">&quot;role&quot;</span><span class="p">,</span> <span class="s">&quot;end_time&quot;</span><span class="p">)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="s">&quot;role&quot;</span><span class="p">,</span> <span class="s">&quot;plmobject__type&quot;</span><span class="p">,</span> <span class="s">&quot;plmobject__reference&quot;</span><span class="p">,</span>
+                <span class="s">&quot;plmobject__revision&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;PLMObjectUserLink&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plmobject</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="PromotionApproval"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.PromotionApproval">[docs]</a><span class="k">class</span> <span class="nc">PromotionApproval</span><span class="p">(</span><span class="n">Link</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.2</span>
+
+<span class="sd">    Model to track a promotion approval</span>
+
+<span class="sd">    :model attributes:</span>
+<span class="sd">        .. attribute:: plmobject</span>
+
+<span class="sd">            approved :class:`.PLMObject`</span>
+<span class="sd">        .. attribute:: user</span>
+
+<span class="sd">            :class:`.User` who approved the promotion</span>
+<span class="sd">        .. attribute:: current_state</span>
+
+<span class="sd">            current :class:`.State` of :attr:`plmobject`</span>
+<span class="sd">        .. attribute:: next_state</span>
+
+<span class="sd">            next :class:`.State` of :attr:`plmobject` when if will be promoted</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">plmobject</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">PLMObject</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;approvals&quot;</span><span class="p">)</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;approvals&quot;</span><span class="p">)</span>
+    <span class="n">current_state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;+&quot;</span><span class="p">)</span>
+    <span class="n">next_state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;+&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;plmobject&quot;</span><span class="p">,</span> <span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="s">&quot;current_state&quot;</span><span class="p">,</span> <span class="s">&quot;next_state&quot;</span><span class="p">,</span> <span class="s">&quot;end_time&quot;</span><span class="p">)</span>
+</div>
+<span class="k">class</span> <span class="nc">PartSet</span><span class="p">(</span><span class="n">Link</span><span class="p">):</span>
+
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Part</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s">&quot;</span><span class="si">%(class)s</span><span class="s">s&quot;</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">abstract</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">def</span> <span class="nf">add_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="n">new_partset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+        <span class="n">new_partset</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">all</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">new_partset</span>
+
+    <span class="k">def</span> <span class="nf">remove_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_partset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+            <span class="n">new_partset</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">all</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="n">part</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">new_partset</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">join</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">part_or_set</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">part_or_set</span><span class="p">,</span> <span class="n">cls</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">part_or_set</span><span class="o">.</span><span class="n">add_part</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+        <span class="n">partset</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">get_partset</span><span class="p">(</span><span class="n">part_or_set</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">partset</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">partset</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">get_partset</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">partset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">partset</span><span class="o">.</span><span class="n">add_part</span><span class="p">(</span><span class="n">part_or_set</span><span class="p">)</span>
+            <span class="n">new_partset</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+            <span class="n">new_partset</span><span class="o">.</span><span class="n">parts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">part_or_set</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_partset</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">partset</span><span class="o">.</span><span class="n">add_part</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_partset</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">part</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+           <span class="n">partset</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">s&quot;</span> <span class="o">%</span> <span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+           <span class="k">return</span> <span class="n">partset</span>
+        <span class="k">except</span> <span class="n">cls</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_related_parts</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">parts</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parts</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">ps</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">parts__in</span><span class="o">=</span><span class="n">parts</span><span class="p">)</span><span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">s__in&quot;</span> <span class="o">%</span> <span class="n">cls</span><span class="o">.</span><span class="n">__name__</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="p">:</span> <span class="n">ps</span><span class="p">}</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">Part</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">query</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="AlternatePartSet"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.link.AlternatePartSet">[docs]</a><span class="k">class</span> <span class="nc">AlternatePartSet</span><span class="p">(</span><span class="n">PartSet</span><span class="p">):</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" >openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

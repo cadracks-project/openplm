@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.views.group &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/views/group.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.views.group</h1><div class="highlight"><pre>
+<span class="c">#-!- coding:utf-8 -!-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">as</span> <span class="nn">forms</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="n">handle_errors</span><span class="p">,</span> <span class="n">get_generic_data</span><span class="p">,</span> <span class="n">get_pagination</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">r2r</span>
+
+
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_users"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.group.display_users">[docs]</a><span class="k">def</span> <span class="nf">display_users</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View of the *user* page of a group.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_user_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">update_users</span><span class="p">(</span><span class="n">formset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_user_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;user_formset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">formset</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;pending_invitations&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">invitation_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">state</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">PENDING</span><span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;guest&quot;</span><span class="p">,</span> <span class="s">&quot;owner&quot;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;in_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;groups/users.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="group_add_user"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.group.group_add_user">[docs]</a><span class="k">def</span> <span class="nf">group_add_user</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View of the *Add user* page of a group.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectUserForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">guest</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;username&quot;</span><span class="p">])</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">add_user</span><span class="p">(</span><span class="n">guest</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Invitation sent to </span><span class="si">%(name)s</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="n">guest</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()}</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;..&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">SelectUserForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;add_user_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;link_creation&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;groups/add_user.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="group_ask_to_join"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.group.group_ask_to_join">[docs]</a><span class="k">def</span> <span class="nf">group_ask_to_join</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View of the *user join* page of a group</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">ask_to_join</span><span class="p">()</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Invitation asked to </span><span class="si">%(name)s</span><span class="s">&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()}</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;..&quot;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;ask_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;in_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;groups/ask_to_join.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_plmobjects"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.group.display_plmobjects">[docs]</a><span class="k">def</span> <span class="nf">display_plmobjects</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View of the *objects* page of a group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">plmobject_group</span><span class="o">.</span><span class="n">exclude_cancelled</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_pagination</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">objects</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">))</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;objects&#39;</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;groups/objects.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../../../users/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="accept_invitation"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.group.accept_invitation">[docs]</a><span class="k">def</span> <span class="nf">accept_invitation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage page to accept invitation or request to join a group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="nb">long</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">InvitationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">inv</span> <span class="o">==</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;invitation&quot;</span><span class="p">]:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">accept_invitation</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Invitation accepted&quot;</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;../../../users/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">InvitationForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;invitation&quot;</span> <span class="p">:</span> <span class="n">inv</span><span class="p">})</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;invitation_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;invitation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;groups/accept_invitation.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../../../users/&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="refuse_invitation"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.group.refuse_invitation">[docs]</a><span class="k">def</span> <span class="nf">refuse_invitation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manage page to refuse invitation or request to join a group.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="nb">long</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">InvitationForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">()</span> <span class="ow">and</span> <span class="n">inv</span> <span class="o">==</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;invitation&quot;</span><span class="p">]:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">refuse_invitation</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Invitation refused&quot;</span><span class="p">)</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;../../../users/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">InvitationForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;invitation&quot;</span> <span class="p">:</span> <span class="n">inv</span><span class="p">})</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;invitation_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;invitation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">inv</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;users&#39;</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;groups/refuse_invitation.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="send_invitation"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.group.send_invitation">[docs]</a><span class="k">def</span> <span class="nf">send_invitation</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">token</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Views to (re)send an invitation.</span>
+
+<span class="sd">    :param obj_ref: name of the group</span>
+<span class="sd">    :param token: token that identify the invitation</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">token</span> <span class="o">=</span> <span class="nb">long</span><span class="p">(</span><span class="n">token</span><span class="p">)</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="s">&quot;Group&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">)</span>
+    <span class="n">inv</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Invitation</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="n">token</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">inv</span><span class="o">.</span><span class="n">guest_asked</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">send_invitation_to_owner</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Invitation asked to </span><span class="si">%(name)s</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="n">owner</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">send_invitation_to_guest</span><span class="p">(</span><span class="n">inv</span><span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Invitation sent to </span><span class="si">%(name)s</span><span class="s">&quot;</span><span class="p">)</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="n">guest</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">()</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">msg</span> <span class="o">%</span> <span class="p">{</span><span class="s">&quot;name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;../../../users/&quot;</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

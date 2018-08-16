@@ -1,0 +1,202 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Functions specific to PLM object : DOCUMENT &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="1.2. Functions related to PLM objects : PART / DOCUMENT" href="../tuto_2_plmobject.html" />
+    <link rel="next" title="1.3. Functions related to USER" href="../tuto_3_user.html" />
+    <link rel="prev" title="2. Functions specific to PLM object : PART" href="2_part.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../tuto_3_user.html" title="1.3. Functions related to USER"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="2_part.html" title="2. Functions specific to PLM object : PART"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../tutorials.html" >1. List of Tutorials</a> &raquo;</li>
+          <li><a href="../tuto_2_plmobject.html" accesskey="U">1.2. Functions related to PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Functions specific to PLM object : <strong>DOCUMENT</strong></a><ul>
+<li><a class="reference internal" href="#parts">3.1. PARTS</a></li>
+<li><a class="reference internal" href="#files">3.2. FILES</a></li>
+<li><a class="reference internal" href="#d-document">3.3. 3D DOCUMENT</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="2_part.html"
+                        title="previous chapter">2. Functions specific to PLM object : <strong>PART</strong></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../tuto_3_user.html"
+                        title="next chapter">1.3. Functions related to <strong>USER</strong></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/user/PLMObject/3_document.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/PLMObject/3_document.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="functions-specific-to-plm-object-document">
+<h1>3. Functions specific to PLM object : <strong>DOCUMENT</strong><a class="headerlink" href="#functions-specific-to-plm-object-document" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="parts">
+<h2>3.1. PARTS<a class="headerlink" href="#parts" title="Permalink to this headline">¶</a></h2>
+<p>Displays related Parts of the current document.</p>
+<dl class="docutils">
+<dt>If you have necessary rights, you can :</dt>
+<dd><ul class="first last simple">
+<li><strong>Add</strong> a new Part,</li>
+<li><strong>Remove</strong> a Part.</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="files">
+<h2>3.2. FILES<a class="headerlink" href="#files" title="Permalink to this headline">¶</a></h2>
+<p>Displays files uploaded in the current document.</p>
+<dl class="docutils">
+<dt>If you have necessary rights, you can :</dt>
+<dd><ul class="first last simple">
+<li>add/upload files</li>
+<li>simply download them</li>
+<li>check-out files (download and lock file)</li>
+<li>check-in files (upload and unlock them).</li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="d-document">
+<h2>3.3. 3D DOCUMENT<a class="headerlink" href="#d-document" title="Permalink to this headline">¶</a></h2>
+<p>3DDocument is a type of document with all the functions related to the sub-class of <strong>PLMObject</strong> , Document. It&#8217;s used to describe the solid geometry of an object. This geometry is usually defined in STEP files ( extension <em>.step</em> or <em>.stp</em>)  .</p>
+<p>If the document is a 3D document and contains STEP files,  a 3D view is generated using these files.</p>
+<p>Here is an example of 3D view :</p>
+<img alt="../../_images/3Dview.png" src="../../_images/3Dview.png" style="width: 100%;" />
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../tuto_3_user.html" title="1.3. Functions related to USER"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="2_part.html" title="2. Functions specific to PLM object : PART"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../tutorials.html" >1. List of Tutorials</a> &raquo;</li>
+          <li><a href="../tuto_2_plmobject.html" >1.2. Functions related to PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

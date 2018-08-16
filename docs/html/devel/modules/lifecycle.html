@@ -1,0 +1,253 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.10. lifecycle — Utilities to manipulate lifecycle &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.11. mail — Tools to send mails" href="mail.html" />
+    <link rel="prev" title="5.9. forms — Forms used by openPLM" href="forms.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mail.html" title="5.11. mail — Tools to send mails"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="forms.html" title="5.9. forms — Forms used by openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="forms.html"
+                        title="previous chapter">5.9. <tt class="docutils literal docutils literal docutils literal"><span class="pre">forms</span></tt> &#8212; Forms used by openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="mail.html"
+                        title="next chapter">5.11. <tt class="docutils literal"><span class="pre">mail</span></tt> &#8212; Tools to send mails</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/lifecycle.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/lifecycle.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.lifecycle">
+<span id="lifecycle-utilities-to-manipulate-lifecycle"></span><h1>5.10. <tt class="xref py py-mod docutils literal"><span class="pre">lifecycle</span></tt> &#8212; Utilities to manipulate lifecycle<a class="headerlink" href="#module-plmapp.lifecycle" title="Permalink to this headline">¶</a></h1>
+<p>This module contains a class that can be used to simplify the usage of
+<a class="reference internal" href="models.html#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a> and <a class="reference internal" href="models.html#openPLM.plmapp.models.lifecycle.LifecycleStates" title="openPLM.plmapp.models.lifecycle.LifecycleStates"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleStates</span></tt></a>.</p>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="models.html#openPLM.plmapp.models.lifecycle.Lifecycle.to_states_list" title="openPLM.plmapp.models.lifecycle.Lifecycle.to_states_list"><tt class="xref py py-meth docutils literal"><span class="pre">Lifecycle.to_states_list()</span></tt></a></dt>
+<dd>Method to convert a <a class="reference internal" href="models.html#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a> into a <a class="reference internal" href="#plmapp.lifecycle.LifecycleList" title="plmapp.lifecycle.LifecycleList"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleList</span></tt></a></dd>
+<dt><a class="reference internal" href="models.html#openPLM.plmapp.models.lifecycle.Lifecycle.from_lifecyclelist" title="openPLM.plmapp.models.lifecycle.Lifecycle.from_lifecyclelist"><tt class="xref py py-meth docutils literal"><span class="pre">Lifecycle.from_lifecyclelist()</span></tt></a>.</dt>
+<dd>Method to convert a <a class="reference internal" href="#plmapp.lifecycle.LifecycleList" title="plmapp.lifecycle.LifecycleList"><tt class="xref py py-class docutils literal"><span class="pre">LifecycleList</span></tt></a> into a <a class="reference internal" href="models.html#openPLM.plmapp.models.lifecycle.Lifecycle" title="openPLM.plmapp.models.lifecycle.Lifecycle"><tt class="xref py py-class docutils literal"><span class="pre">Lifecycle</span></tt></a></dd>
+</dl>
+</div>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">_lifecycles_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s">&quot;draft&quot;</span><span class="p">,</span> <span class="s">&quot;official&quot;</span><span class="p">,</span> <span class="s">&quot;deprecated&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s">&quot;draft&quot;</span><span class="p">,</span> <span class="s">&quot;official&quot;</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">lifecycles</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">cycles</span> <span class="ow">in</span> <span class="n">_lifecycles_list</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;-&gt;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cycles</span><span class="p">)</span> 
+    <span class="n">lifecycles</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">LifecycleList</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;official&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cycles</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="plmapp.lifecycle.LifecycleList">
+<em class="property">class </em><tt class="descclassname">plmapp.lifecycle.</tt><tt class="descname">LifecycleList</tt><big>(</big><em>name</em>, <em>official_state</em>, <em>*args</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/lifecycle.html#LifecycleList"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.lifecycle.LifecycleList" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">list</span></tt></p>
+<p>Object which represents a lifecycle as a list of string.</p>
+<p>This class inherits from list, so you can use all list methods.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span> <span class="o">=</span> <span class="n">LifecycleList</span><span class="p">(</span><span class="s">&quot;MyCycle&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">&#39;a&#39;</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="plmapp.lifecycle.LifecycleList.name">
+<tt class="descname">name</tt><a class="headerlink" href="#plmapp.lifecycle.LifecycleList.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>name of the lifecycle</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.lifecycle.LifecycleList.official_state">
+<tt class="descname">official_state</tt><a class="headerlink" href="#plmapp.lifecycle.LifecycleList.official_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>name of the official state (must be in the list of states)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.lifecycle.LifecycleList.next_state">
+<tt class="descname">next_state</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/lifecycle.html#LifecycleList.next_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.lifecycle.LifecycleList.next_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the next state of <em>state</em></p>
+<p>Raises <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>state</em> is not in the list and <tt class="xref py py-exc docutils literal"><span class="pre">IndexError</span></tt>
+if <em>state</em> is the last state.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span> <span class="o">=</span> <span class="n">LifecycleList</span><span class="p">(</span><span class="s">&quot;MyCycle&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+<span class="go">&#39;c&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">IndexError</span>: <span class="n">list index out of range</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">list.index(x): x not in list</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.lifecycle.LifecycleList.previous_state">
+<tt class="descname">previous_state</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/lifecycle.html#LifecycleList.previous_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.lifecycle.LifecycleList.previous_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the previous state of <em>state</em></p>
+<p>Raises <tt class="xref py py-exc docutils literal"><span class="pre">ValueError</span></tt> if <em>state</em> is not in the list and <tt class="xref py py-exc docutils literal"><span class="pre">IndexError</span></tt>
+if <em>state</em> is the first state.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span> <span class="o">=</span> <span class="n">LifecycleList</span><span class="p">(</span><span class="s">&quot;MyCycle&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="o">.</span><span class="n">previous_state</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">)</span>
+<span class="go">&#39;a&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="o">.</span><span class="n">previous_state</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">IndexError</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cycle</span><span class="o">.</span><span class="n">previous_state</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+    <span class="o">...</span>
+<span class="gr">ValueError</span>: <span class="n">list.index(x): x not in list</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="mail.html" title="5.11. mail — Tools to send mails"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="forms.html" title="5.9. forms — Forms used by openPLM"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>7. Specifications &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="next" title="1. Part and document cloning: specifications" href="clone.html" />
+    <link rel="prev" title="11. Testing openPLM" href="../devel/testing.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clone.html" title="1. Part and document cloning: specifications"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../devel/testing.html" title="11. Testing openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../devel/testing.html"
+                        title="previous chapter">11. Testing openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="clone.html"
+                        title="next chapter">1. Part and document cloning: specifications</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/specs/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/specs/index.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="specifications">
+<h1>7. Specifications<a class="headerlink" href="#specifications" title="Permalink to this headline">¶</a></h1>
+<p>This section documents which rules openPLM should follow like what are
+the consequences of a promote.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="clone.html">1. Part and document cloning: specifications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clone.html#permissions">1.1. Permissions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clone.html#cloneable-elements">1.2. Cloneable elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clone.html#cloning-process">1.3. Cloning process</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lifecycle.html">2. Lifecycle</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lifecycle.html#standard-lifecycles">2.1. Standard lifecycles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lifecycle.html#cancelled-lifecycle">2.2. Cancelled lifecycle</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="publication.html">3. Publication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#condition-to-publish-a-part-or-a-document">3.1. Condition to publish a part or a document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#access">3.2. Access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#visible-data">3.3. Visible data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#unpublishing-a-plmobject">3.4. Unpublishing a plmobject</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#browsing-of-published-plmobject">3.5. Browsing of published plmobject</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="restricted_access.html">4. Restricted access</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="restricted_access.html#restricted-account">4.1. Restricted Account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricted_access.html#accessible-parts-and-documents">4.2. Accessible parts and documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricted_access.html#inaccessible-contents">4.3. Inaccessible contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricted_access.html#accessible-contents">4.4. Accessible contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="restricted_access.html#rights-delegation">4.5. Rights delegation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="revisions.html">5. Revisions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="revisions.html#suggested-parts-when-a-document-is-revised">5.1. Suggested parts when a document is revised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="revisions.html#suggested-documents-when-a-part-is-revised">5.2. Suggested documents when a part is revised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="revisions.html#children-suggested-when-a-part-is-revised">5.3. Children suggested when a part is revised</a></li>
+<li class="toctree-l2"><a class="reference internal" href="revisions.html#parents-suggested-when-a-part-is-revised">5.4. Parents suggested when a part is revised</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="clone.html" title="1. Part and document cloning: specifications"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../devel/testing.html" title="11. Testing openPLM"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

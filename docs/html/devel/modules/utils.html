@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.17. utils — Utilities &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.17.1. archive — Module to stream tar and zip archives" href="utils/archive.html" />
+    <link rel="prev" title="5.16.7. thumbnailers.sw — Thumbnailer for SolidWorks files" href="thumbnailers/thumbnailers_sw.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utils/archive.html" title="5.17.1. archive — Module to stream tar and zip archives"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers/thumbnailers_sw.html" title="5.16.7. thumbnailers.sw — Thumbnailer for SolidWorks files"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="thumbnailers/thumbnailers_sw.html"
+                        title="previous chapter">5.16.7. <tt class="docutils literal docutils literal docutils literal"><span class="pre">thumbnailers.sw</span></tt> &#8212; Thumbnailer for SolidWorks files</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="utils/archive.html"
+                        title="next chapter">5.17.1. <tt class="docutils literal"><span class="pre">archive</span></tt> &#8212; Module to stream tar and zip archives</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/utils.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/utils.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.utils">
+<span id="utils-utilities"></span><h1>5.17. <tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt> &#8212; Utilities<a class="headerlink" href="#module-plmapp.utils" title="Permalink to this headline">¶</a></h1>
+<p>This module contains some functions which may be useful.</p>
+<dl class="class">
+<dt id="plmapp.utils.SeekedFile">
+<em class="property">class </em><tt class="descclassname">plmapp.utils.</tt><tt class="descname">SeekedFile</tt><big>(</big><em>file</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#SeekedFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.SeekedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>A file-like object that wraps an already opened
+and seeked file.</p>
+<p>This file-like can be read by PIL and is used to
+open an image contained in another file.</p>
+<dl class="method">
+<dt id="plmapp.utils.SeekedFile.read">
+<tt class="descname">read</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#SeekedFile.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.SeekedFile.read" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.utils.SeekedFile.readline">
+<tt class="descname">readline</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#SeekedFile.readline"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.SeekedFile.readline" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.utils.SeekedFile.readlines">
+<tt class="descname">readlines</tt><big>(</big><em>*args</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#SeekedFile.readlines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.SeekedFile.readlines" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.utils.SeekedFile.tell">
+<tt class="descname">tell</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#SeekedFile.tell"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.SeekedFile.tell" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="plmapp.utils.SeekedFile.seek">
+<tt class="descname">seek</tt><big>(</big><em>offset</em>, <em>whence=0</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#SeekedFile.seek"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.SeekedFile.seek" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.next_in_seq">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">next_in_seq</tt><big>(</big><em>seq</em>, <em>value</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#next_in_seq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.next_in_seq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns item next to <em>value</em> in the sequence <em>seq</em></p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">next_in_seq</span><span class="p">(</span><span class="s">&quot;abcd&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">)</span>
+<span class="go">&#39;c&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">next_in_seq</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.get_next_revision">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">get_next_revision</tt><big>(</big><em>revision</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#get_next_revision"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.get_next_revision" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns next revision for <em>revision</em>. For example, if <em>revision</em> represents
+an int, it returns a string of the value + 1.</p>
+<p>If it can not find a new revision, it returns &#8220;&#8221;</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span>
+<span class="go">&#39;b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+<span class="go">&#39;s&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">)</span>
+<span class="go">&#39;aa&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">)</span>
+<span class="go">&#39;B&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;R&quot;</span><span class="p">)</span>
+<span class="go">&#39;S&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;Z&quot;</span><span class="p">)</span>
+<span class="go">&#39;AA&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;1&quot;</span><span class="p">)</span>
+<span class="go">&#39;2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;41&quot;</span><span class="p">)</span>
+<span class="go">&#39;42&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;0041&quot;</span><span class="p">)</span>
+<span class="go">&#39;0042&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;a.b&quot;</span><span class="p">)</span>
+<span class="go">&#39;a.c&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;a-a&quot;</span><span class="p">)</span>
+<span class="go">&#39;a-b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;a,a&quot;</span><span class="p">)</span>
+<span class="go">&#39;a,b&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;a.3&quot;</span><span class="p">)</span>
+<span class="go">&#39;a.4&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;a.b.1&quot;</span><span class="p">)</span>
+<span class="go">&#39;a.b.2&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;plop&quot;</span><span class="p">)</span>
+<span class="go">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;a.plop&quot;</span><span class="p">)</span>
+<span class="go">&#39;&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_next_revision</span><span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.convert">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">convert</tt><big>(</big><em>value</em>, <em>from_</em>, <em>to</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert <em>value</em> from <em>from_</em> unit to <em>to</em> unit.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;</span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">convert</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;cm&quot;</span><span class="p">,</span> <span class="s">&quot;mm&quot;</span><span class="p">)</span>
+<span class="go">&#39;100.000&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;</span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">convert</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;mm&quot;</span><span class="p">,</span> <span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="go">&#39;1.000&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;</span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">convert</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s">&quot;in&quot;</span><span class="p">,</span> <span class="s">&quot;cm&quot;</span><span class="p">)</span>
+<span class="go">&#39;25.400&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;</span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">convert</span><span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="s">&quot;pt&quot;</span><span class="p">,</span> <span class="s">&quot;in&quot;</span><span class="p">)</span>
+<span class="go">&#39;1.000&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="s">&quot;</span><span class="si">%.3f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">convert</span><span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="s">&quot;pc&quot;</span><span class="p">,</span> <span class="s">&quot;in&quot;</span><span class="p">)</span>
+<span class="go">&#39;12.000&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.normalize_length">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">normalize_length</tt><big>(</big><em>length</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#normalize_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.normalize_length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts <em>length</em> to a length in mm, formatted as <tt class="docutils literal"><span class="pre">%.1f</span></tt></p>
+<p>Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_length</span><span class="p">(</span><span class="s">&quot;29.7cm&quot;</span><span class="p">)</span>
+<span class="go">&#39;297.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_length</span><span class="p">(</span><span class="s">&quot;21.00001cm&quot;</span><span class="p">)</span>
+<span class="go">&#39;210.0&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">normalize_length</span><span class="p">(</span><span class="s">&quot;7.5in&quot;</span><span class="p">)</span>
+<span class="go">&#39;190.5&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.size_to_format">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">size_to_format</tt><big>(</big><em>width_lg</em>, <em>height_lg</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#size_to_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.size_to_format" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a size to a page format</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">size_to_format</span><span class="p">(</span><span class="s">&quot;29.7cm&quot;</span><span class="p">,</span> <span class="s">&quot;21cm&quot;</span><span class="p">)</span>
+<span class="go">&#39;Other&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">size_to_format</span><span class="p">(</span><span class="s">&quot;21cm&quot;</span><span class="p">,</span> <span class="s">&quot;29.7cm&quot;</span><span class="p">)</span>
+<span class="go">&#39;A4&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.level_to_sign_str">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">level_to_sign_str</tt><big>(</big><em>level</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#level_to_sign_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.level_to_sign_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a level (int, starting from 0) to a sign role</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">&#39;sign_1st_level&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&#39;sign_2nd_level&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">&#39;sign_3rd_level&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="go">&#39;sign_4th_level&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="go">&#39;sign_5th_level&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="go">&#39;sign_11th_level&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.memoize_noarg">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">memoize_noarg</tt><big>(</big><em>func</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#memoize_noarg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.memoize_noarg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decorator which memoize result of <em>func</em>. <em>func</em> must not take arguments</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.generate_password">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">generate_password</tt><big>(</big><em>length=12</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#generate_password"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.generate_password" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a random password of <em>length</em> characters.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.can_generate_pdf">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">can_generate_pdf</tt><big>(</big><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#can_generate_pdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.can_generate_pdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <tt class="docutils literal"><span class="pre">True</span></tt> if openPLM can generate pdf files, i.e, pisa (xhtml2pdf)
+is installed.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.get_ext">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">get_ext</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#get_ext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.get_ext" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns the extension of <em>filename</em> (dot include).</p>
+<p>It stripped all &#8221;.{number}&#8221; extensions if they are present.</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">get_ext</span><span class="p">(</span><span class="s">&quot;filename.png&quot;</span><span class="p">)</span>
+<span class="go">&#39;.png&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_ext</span><span class="p">(</span><span class="s">&quot;filename.prt.2&quot;</span><span class="p">)</span>
+<span class="go">&#39;.prt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_ext</span><span class="p">(</span><span class="s">&quot;filename.prt&quot;</span><span class="p">)</span>
+<span class="go">&#39;.prt&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_ext</span><span class="p">(</span><span class="s">&quot;filename.1&quot;</span><span class="p">)</span>
+<span class="go">&#39;.1&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.get_pages_num">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">get_pages_num</tt><big>(</big><em>total_pages</em>, <em>current_page</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#get_pages_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.get_pages_num" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.1.</span></p>
+<p>Returns the pages to display for the pagination</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.filename_to_name">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">filename_to_name</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#filename_to_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.filename_to_name" title="Permalink to this definition">¶</a></dt>
+<dd><p class="versionadded">
+<span class="versionmodified">New in version 1.2.</span></p>
+<p>Returns a clean version of a filename that should be
+more suitable as a document name.</p>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><div class="first last highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">filename_to_name</span><span class="p">(</span><span class="s">&quot;/tmp/hello.pdf&quot;</span><span class="p">)</span>
+<span class="go">&#39;hello&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename_to_name</span><span class="p">(</span><span class="s">u&quot;/tmp/Hello_world.pdf&quot;</span><span class="p">)</span>
+<span class="go">u&#39;Hello world&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename_to_name</span><span class="p">(</span><span class="s">u&quot;/tmp/heLLoWorlD.xyz&quot;</span><span class="p">)</span>
+<span class="go">u&#39;heLLoWorlD&#39;</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.utils.r2r">
+<tt class="descclassname">plmapp.utils.</tt><tt class="descname">r2r</tt><big>(</big><em>template</em>, <em>dictionary</em>, <em>request</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/utils.html#r2r"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.utils.r2r" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">render_to_response</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span>
+                      <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="utils/archive.html">5.17.1. <tt class="docutils literal"><span class="pre">archive</span></tt> &#8212; Module to stream tar and zip archives</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/importing.html">5.17.2. <tt class="docutils literal"><span class="pre">importing</span></tt> &#8212; Importing helpers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/units.html">5.17.3. <tt class="docutils literal"><span class="pre">units</span></tt> &#8212; Units</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="utils/archive.html" title="5.17.1. archive — Module to stream tar and zip archives"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="thumbnailers/thumbnailers_sw.html" title="5.16.7. thumbnailers.sw — Thumbnailer for SolidWorks files"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

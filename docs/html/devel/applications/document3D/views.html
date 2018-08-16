@@ -1,0 +1,507 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.3.3. document3D.views — models for openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.3. Document3D" href="index.html" />
+    <link rel="next" title="6.3.4. document3D.arborescense — models for openPLM" href="arborescense.html" />
+    <link rel="prev" title="6.3.2. document3D.classes — models for openPLM" href="classes.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="arborescense.html" title="6.3.4. document3D.arborescense — models for openPLM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="classes.html" title="6.3.2. document3D.classes — models for openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="classes.html"
+                        title="previous chapter">6.3.2. <tt class="docutils literal docutils literal docutils literal"><span class="pre">document3D.classes</span></tt> &#8212; models for openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="arborescense.html"
+                        title="next chapter">6.3.4. <tt class="docutils literal docutils literal docutils literal"><span class="pre">document3D.arborescense</span></tt> &#8212; models for openPLM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/document3D/views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/document3D/views.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="document3d-views-models-for-openplm">
+<h1>6.3.3. <tt class="xref py py-mod docutils literal"><span class="pre">document3D.views</span></tt> &#8212; models for openPLM<a class="headerlink" href="#document3d-views-models-for-openplm" title="Permalink to this headline">¶</a></h1>
+<p>Habla sobre los modelos</p>
+<span class="target" id="module-openPLM.apps.document3D.views"></span><dl class="function">
+<dt id="openPLM.apps.document3D.views.display_3d">
+<tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">display_3d</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#display_3d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.display_3d" title="Permalink to this definition">¶</a></dt>
+<dd><p>3D view.</p>
+<p>This view is able to show a 3D file (STEP or STL) using WebGL.</p>
+<p><strong>Template:</strong></p>
+<p><tt class="file docutils literal"><span class="pre">Display3D.html</span></tt></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.views.StepDecomposer">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">StepDecomposer</tt><big>(</big><em>part</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#StepDecomposer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.StepDecomposer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">openPLM.plmapp.decomposers.base.Decomposer</span></tt></p>
+<p><a class="reference internal" href="../../modules/decomposers/decomposers_base.html#plmapp.decomposers.base.Decomposer" title="plmapp.decomposers.base.Decomposer"><tt class="xref py py-class docutils literal"><span class="pre">Decomposer</span></tt></a> of Document3D.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.views.PartDoc">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">PartDoc</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>PartDoc(part_type, qty_form, cforms, name, is_assembly, prefix, ref)</p>
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.PartDoc.cforms">
+<tt class="descname">cforms</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc.cforms" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.PartDoc.is_assembly">
+<tt class="descname">is_assembly</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc.is_assembly" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.PartDoc.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.PartDoc.part_type">
+<tt class="descname">part_type</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc.part_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.PartDoc.prefix">
+<tt class="descname">prefix</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc.prefix" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.PartDoc.qty_form">
+<tt class="descname">qty_form</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc.qty_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.PartDoc.ref">
+<tt class="descname">ref</tt><a class="headerlink" href="#openPLM.apps.document3D.views.PartDoc.ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="openPLM.apps.document3D.views.Assembly">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">Assembly</tt><a class="headerlink" href="#openPLM.apps.document3D.views.Assembly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<p>Assembly(part_docs, name, visited, depth, type)</p>
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.Assembly.depth">
+<tt class="descname">depth</tt><a class="headerlink" href="#openPLM.apps.document3D.views.Assembly.depth" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.Assembly.name">
+<tt class="descname">name</tt><a class="headerlink" href="#openPLM.apps.document3D.views.Assembly.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.Assembly.part_docs">
+<tt class="descname">part_docs</tt><a class="headerlink" href="#openPLM.apps.document3D.views.Assembly.part_docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.Assembly.type">
+<tt class="descname">type</tt><a class="headerlink" href="#openPLM.apps.document3D.views.Assembly.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.views.Assembly.visited">
+<tt class="descname">visited</tt><a class="headerlink" href="#openPLM.apps.document3D.views.Assembly.visited" title="Permalink to this definition">¶</a></dt>
+<dd><p>itemgetter(item, ...) &#8211;&gt; itemgetter object</p>
+<p>Return a callable object that fetches the given item(s) from its operand.
+After, f=itemgetter(2), the call f(r) returns r[2].
+After, g=itemgetter(2,5,3), the call g(r) returns (r[2], r[5], r[3])</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.views.display_decompose">
+<tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">display_decompose</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#display_decompose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.display_decompose" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>obj_type</strong> &#8211; Type of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> from which we want to realize the decomposition</li>
+<li><strong>obj_ref</strong> &#8211; Reference of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> from which we want to realize the decomposition</li>
+<li><strong>obj_revi</strong> &#8211; Revision of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> from which we want to realize the decomposition</li>
+<li><strong>stp_id</strong> &#8211; Id that identify the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> contained in a <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> attached to the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> (identified by <strong>obj_type</strong>, <strong>obj_ref</strong>, <strong>obj_revi</strong>) that we will decompose</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>When we demand the decomposition across the web form, the following tasks are realized</p>
+<ul>
+<li><p class="first">We check that the <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> that contains the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>stp_id</strong>) that will be decomposed has not been modified since the generation of the form</p>
+</li>
+<li><p class="first">We check the validity of the information got in the form</p>
+</li>
+<li><dl class="first docutils">
+<dt>If exists a native <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> file related to <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>stp_id</strong>) that will be decomposed</dt>
+<dd><p class="first last">then this one was depreciated (afterwards will be promoted)</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">The <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>stp_id</strong>) was locked (afterwards will be promoted)</p>
+</li>
+<li><p class="first">We call the function <tt class="xref py py-meth docutils literal"><span class="pre">generate_part_doc_links_AUX()</span></tt> (with the property <strong>transaction.commit_on_success</strong>)</p>
+<blockquote>
+<div><ul class="simple">
+<li>We generate the arborescense (<tt class="xref py py-class docutils literal"><span class="pre">product</span></tt>) of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>stp_id</strong>)</li>
+<li>The bom-child of Parts (in relation to the arborescense of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> (<strong>stp_id</strong>)) has been generated</li>
+<li>For every <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> generated in the previous condition  we attach all the <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Location_link" title="openPLM.apps.document3D.models.Location_link"><tt class="xref py py-class docutils literal"><span class="pre">Location_link</span></tt></a> relatives</li>
+<li>To every generated <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> a <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> has been attached and this document has been set like the attribute PartDecompose of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></li>
+<li>The attribute doc_id of every node of the arborescense (<a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>) is now the relative id of <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> generated in the previous condition</li>
+<li>To every generated <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> has been added a new empty(locked) <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STP</li>
+<li>The attribute doc_path of every node of the arborescense(<a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a>) is now the path of <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STP generated in the previous condition</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">We update the indexes for the objects generated</p>
+</li>
+<li><p class="first">We call the processus decomposer_all(with celeryd)</p>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.views.clean_form">
+<tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">clean_form</tt><big>(</big><em>request</em>, <em>assemblies</em>, <em>product</em>, <em>index</em>, <em>obj_type</em>, <em>inbulk_cache</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#clean_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.clean_form" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>assemblies</strong> &#8211; will be refill whit the information necessary the generate the forms</li>
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents the arborescense of the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> .stp contained in a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></li>
+<li><strong>index</strong> &#8211; Use  to mark and to identify the <strong>product</strong> s that already have been visited</li>
+<li><strong>obj_type</strong> &#8211; Type of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> from which we want to realize the decomposition</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>It checks the validity of the forms contained in <strong>request</strong></p>
+<p>If the forms are not valid, it returns the information to refill the new forms contained in <strong>assemblies</strong>.</p>
+<p>Refill <strong>assemblies</strong> with the different assemblies of the file step , we use <strong>index</strong> to mark and to identify the <strong>products</strong> that already have been visited</p>
+<p>For every Assembly we have the next information:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Name of assembly</p>
+</li>
+<li><p class="first">Visited , If assembly is sub-assembly of more than one assembly, this attribute will be <strong>False</strong> for all less one of the occurrences</p>
+<blockquote>
+<div><p>If visited is <strong>False</strong>, we will be able to modify only the attributes <strong>Order</strong> , <strong>Quantity</strong> and <strong>Unit</strong> refered to the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> in the form</p>
+<p>If visited is not <strong>False</strong> , it will be a new id acording to <strong>index</strong> (&gt;=1) generated to identify the assembly</p>
+</div></blockquote>
+</li>
+<li><p class="first">Depth  of assembly</p>
+</li>
+<li><p class="first"><strong>obj_type</strong> , type of <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> of Assembly</p>
+</li>
+<li><p class="first">A list with the products that compose the assembly</p>
+<p>for each element in the list:</p>
+<blockquote>
+<div><ul class="simple">
+<li>part_type contains the form to select the type of <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></li>
+<li>ord_quantity contains the forms to select Order , Quantity and Unit refered to the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a></li>
+<li>creation_formset contains the form for the creation of the part selected in part_type and of one <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a></li>
+<li>name_child_assemblies contains the name of the element</li>
+<li>is_assembly determine if the element is a single product or another assembly</li>
+<li>prefix contains the <strong>index</strong> of the assembly  if he is visited for first time , else is False</li>
+<li>ref contains the <strong>index</strong> of the assembly if he was visited previously, else False</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.views.initialize_assemblies">
+<tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">initialize_assemblies</tt><big>(</big><em>assemblies</em>, <em>product</em>, <em>group</em>, <em>user</em>, <em>index</em>, <em>obj_type</em>, <em>inbulk_cache</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#initialize_assemblies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.initialize_assemblies" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>assemblies</strong> &#8211; will be refill whit the information necessary the generate the forms</li>
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents the arborescense of the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/files/file/#django.core.files.File" title="(in Django v1.7)"><tt class="xref py py-class docutils literal"><span class="pre">File</span></tt></a> .stp contained in a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></li>
+<li><strong>index</strong> &#8211; Use  to mark and to identify the <strong>product</strong> s that already have been visited</li>
+<li><strong>obj_type</strong> &#8211; Type of the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> from which we want to realize the decomposition</li>
+<li><strong>group</strong> &#8211; group by default from which we want to realize the decomposition</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns in assemblies a list initialized with the different assemblies of the file step</p>
+<p>For every Assembly we have the next information:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">Name of assembly</p>
+</li>
+<li><p class="first">Visited , If assembly is sub-assembly of more than an assembly, this attribute will be <strong>False</strong> for all less one of the occurrences</p>
+<blockquote>
+<div><p>If visited is <strong>False</strong>, we will be able to modify only the attributes <strong>Order</strong> , <strong>Quantity</strong> and <strong>Unit</strong> refered to the <tt class="xref py py-class docutils literal"><span class="pre">ParentChildLinkin</span></tt> in the form</p>
+<p>If visited is not <strong>False</strong> , it will be a new id acording to <strong>index</strong> (&gt;=1) generated to identify the assembly</p>
+</div></blockquote>
+</li>
+<li><p class="first">Depth  of assembly</p>
+</li>
+<li><p class="first"><strong>obj_type</strong> , type of <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> of Assembly</p>
+</li>
+<li><p class="first">A list with the products that compose the assembly</p>
+<p>for each element in the list:</p>
+<blockquote>
+<div><ul class="simple">
+<li>part_type contains the form to select the type of <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a></li>
+<li>ord_quantity contains the forms to select Order , Quantity and Unit refered to the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a></li>
+<li>creation_formset contains the form for the creation of the part selected in part_type and of one <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a></li>
+<li>name_child_assemblies contains the name of the element</li>
+<li>is_assembly determine if the element is a single product or another assembly</li>
+<li>prefix contains the <strong>index</strong> of the assembly if he is visited for first time , else is False</li>
+<li>ref contains the <strong>index</strong> of the assembly if he was visited previously, else False</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.views.generate_part_doc_links">
+<tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">generate_part_doc_links</tt><big>(</big><em>request</em>, <em>product</em>, <em>parent_ctrl</em>, <em>instances</em>, <em>doc3D</em>, <em>inbulk_cache</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#generate_part_doc_links"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.generate_part_doc_links" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents the arborescense</li>
+<li><strong>parent_ctrl</strong> &#8211; <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> from which we want to realize the decomposition</li>
+<li><strong>instances</strong> &#8211; Use to trace the items to update</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Parses forms and generates:</p>
+<ul class="simple">
+<li>The bom-child of Parts (in relation to the <strong>product</strong>)</li>
+<li>For every <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.link.ParentChildLink" title="openPLM.plmapp.models.link.ParentChildLink"><tt class="xref py py-class docutils literal"><span class="pre">ParentChildLink</span></tt></a> generated in the previous condition we attach all the <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Location_link" title="openPLM.apps.document3D.models.Location_link"><tt class="xref py py-class docutils literal"><span class="pre">Location_link</span></tt></a> relatives</li>
+<li>To every generated <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> a <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> has been attached and Document3D has been set like the attribute PartDecompose of the Part</li>
+<li>The attribute doc_id of every node of the arborescense(<strong>product</strong>) is now the relative id of <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> generated in the previous condition</li>
+<li>To every generated <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3D" title="openPLM.apps.document3D.models.Document3D"><tt class="xref py py-class docutils literal"><span class="pre">Document3D</span></tt></a> has been added a new empty(locked) <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STP ( <tt class="xref py py-meth docutils literal"><span class="pre">generateGhostDocumentFile()</span></tt> )</li>
+<li>The attribute doc_path of every node of the arborescense(<strong>product</strong>) is now the path of <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> STP generated in the previous condition</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.views.generateGhostDocumentFile">
+<tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">generateGhostDocumentFile</tt><big>(</big><em>product</em>, <em>document</em>, <em>locker</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#generateGhostDocumentFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.generateGhostDocumentFile" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>product</strong> &#8211; <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> that represents the arborescense</li>
+<li><strong>Doc_controller</strong> &#8211; <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3DController" title="openPLM.apps.document3D.models.Document3DController"><tt class="xref py py-class docutils literal"><span class="pre">Document3DController</span></tt></a> from which we want to generate the <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>For one <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> (<strong>product</strong>) and one <a class="reference internal" href="models.html#openPLM.apps.document3D.models.Document3DController" title="openPLM.apps.document3D.models.Document3DController"><tt class="xref py py-class docutils literal"><span class="pre">Document3DController</span></tt></a> (<strong>Doc_controller</strong>), generates a <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a> with a file .stp emptily without indexation</p>
+<p>It updates the attributes <strong>doc_id</strong> and <strong>doc_path</strong> of the <a class="reference internal" href="classes.html#openPLM.apps.document3D.classes.Product" title="openPLM.apps.document3D.classes.Product"><tt class="xref py py-class docutils literal"><span class="pre">Product</span></tt></a> (<strong>product</strong>) in relation of the generated <a class="reference internal" href="../../modules/models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.document3D.views.ajax_part_creation_form">
+<tt class="descclassname">openPLM.apps.document3D.views.</tt><tt class="descname">ajax_part_creation_form</tt><big>(</big><em>request</em>, <em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/views.html#ajax_part_creation_form"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.views.ajax_part_creation_form" title="Permalink to this definition">¶</a></dt>
+<dd><p>It updates the form of an assembly determined by <strong>prefix</strong> without recharging the whole page and respecting the information introduced up to the moment</p>
+<p>The attributes can change depending on the type of part selected</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="arborescense.html" title="6.3.4. document3D.arborescense — models for openPLM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="classes.html" title="6.3.2. document3D.classes — models for openPLM"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

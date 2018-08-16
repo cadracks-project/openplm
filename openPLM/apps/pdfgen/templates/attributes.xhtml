@@ -1,0 +1,37 @@
+{% extends "base.xhtml" %}
+{% load i18n plmapp_tags %}
+
+
+{% block title %}
+    {{ obj.title|striptags }} 
+{% endblock %}
+
+{% block page_title %}
+    {{ obj.title }} 
+{% endblock %}
+
+{% block content %}
+
+    <div>
+        <table class="Content">
+            {% for description, attribute, richtext in attributes %}
+                    <tr class="Content">
+                        <td class="Content description">{{description|capfirst}}</td>
+                        <td class="Content">
+                            {% if attribute.year %}
+                                {{ attribute|date:"DATETIME_FORMAT" }} — 
+                                {% blocktrans with attribute|timesince as time_since %}{{time_since}} ago{% endblocktrans %}
+                            {% elif richtext %}
+                                <div class="richtext">
+                                    {{ attribute|richtext_filter:obj }}
+                                </div>
+                            {% else %}
+                                {{attribute|linebreaks}}
+                            {% endif %}
+                        </td>
+                    </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.plmapp.models.lifecycle &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="openPLM.plmapp.models" href="../models.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" accesskey="U">openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/plmapp/models/lifecycle.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.plmapp.models.lifecycle</h1><div class="highlight"><pre>
+<span class="c">#! -*- coding:utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.lifecycle</span> <span class="kn">import</span> <span class="n">LifecycleList</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">memoize_noarg</span>
+
+
+
+<span class="c"># lifecycle stuff</span>
+
+<span class="k">class</span> <span class="nc">State</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+<div class="viewcode-block" id="State"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.State">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    State : object which represents a state in a lifecycle</span>
+<span class="sd">    </span>
+<span class="sd">    .. attribute:: name</span>
+
+<span class="sd">        name of the state, must be unique</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&#39;State&lt;</span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<span class="k">class</span> <span class="nc">Lifecycle</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span></div>
+<div class="viewcode-block" id="Lifecycle"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.Lifecycle">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Lifecycle : object which represents a lifecycle</span>
+<span class="sd">    </span>
+<span class="sd">    .. attribute:: name</span>
+
+<span class="sd">        name of the lifecycle, must be unique</span>
+
+<span class="sd">    .. attribute:: official_state</span>
+
+<span class="sd">        *official* :class:`.State` of the lifecycle</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        A Lifecycle is iterable and each iteration returns a string of</span>
+<span class="sd">        the next state.</span>
+
+<span class="sd">    .. seealso:: :class:`~plmapp.lifecycle.LifecycleList`</span>
+<span class="sd">        A class that simplifies the usage of a LifeCycle</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+
+    <span class="n">STANDARD</span><span class="p">,</span> <span class="n">CANCELLED</span><span class="p">,</span> <span class="n">ECR</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">TYPES</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">STANDARD</span><span class="p">,</span> <span class="s">&quot;standard&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">CANCELLED</span><span class="p">,</span> <span class="s">&quot;cancelled&quot;</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">ECR</span><span class="p">,</span> <span class="s">&quot;ECR&quot;</span><span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">official_state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">State</span><span class="p">)</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveSmallIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="n">STANDARD</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">TYPES</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Lifecycle</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c"># keep a cache of some values: Lifecycle are most of the time</span>
+        <span class="c"># read-only objects, and there are no valid reasons to modify a</span>
+        <span class="c"># lifecycle in a production environment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_first_state</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_last_state</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_states_list</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&#39;Lifecycle&lt;</span><span class="si">%s</span><span class="s">&gt;&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">to_states_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Lifecycle.to_states_list"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.Lifecycle.to_states_list">[docs]</a>        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Converts a Lifecycle to a :class:`.LifecycleList` (a list of strings)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states_list</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">lcs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecyclestates_set</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;rank&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_states_list</span> <span class="o">=</span> <span class="n">LifecycleList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">official_state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">lcs</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;state__name&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">LifecycleList</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">official_state</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_states_list</span><span class="p">)</span>
+
+    <span class="nd">@property</span></div>
+    <span class="k">def</span> <span class="nf">first_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_state</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_first_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecyclestates_set</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;rank&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">state</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_first_state</span>
+    
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">last_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_state</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_last_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecyclestates_set</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-rank&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">state</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_last_state</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">nb_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_states_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_states_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecyclestates_set</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">())</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_lifecyclelist</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">cycle</span><span class="p">):</span>
+<div class="viewcode-block" id="Lifecycle.from_lifecyclelist"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.Lifecycle.from_lifecyclelist">[docs]</a>        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Builds a Lifecycle from *cycle*. The built object is save in the database.</span>
+<span class="sd">        This function creates states which were not in the database</span>
+<span class="sd">        </span>
+<span class="sd">        :param cycle: the cycle used to build the :class:`.Lifecycle`</span>
+<span class="sd">        :type cycle: :class:`~plmapp.lifecycle.LifecycleList`</span>
+<span class="sd">        :return: a :class:`.Lifecycle`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">lifecycle</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">cycle</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">official_state</span><span class="o">=</span><span class="n">State</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">cycle</span><span class="o">.</span><span class="n">official_state</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">cycle</span><span class="o">.</span><span class="n">official_state</span> <span class="o">==</span> <span class="n">cycle</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">lifecycle</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">ECR</span>
+        <span class="n">lifecycle</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">state_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cycle</span><span class="p">):</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">State</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">state_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">lcs</span> <span class="o">=</span> <span class="n">LifecycleStates</span><span class="p">(</span><span class="n">lifecycle</span><span class="o">=</span><span class="n">lifecycle</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">lcs</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">lifecycle</span>
+                
+<span class="k">class</span> <span class="nc">LifecycleStates</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span></div></div>
+<div class="viewcode-block" id="LifecycleStates"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.LifecycleStates">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    A LifecycleStates links a :class:`.Lifecycle` and a :class:`.State`.</span>
+<span class="sd">    </span>
+<span class="sd">    The link is made with a field *rank* to order the states.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">lifecycle</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Lifecycle</span><span class="p">)</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">State</span><span class="p">)</span>
+    <span class="n">rank</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveSmallIntegerField</span><span class="p">()</span>
+
+    
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">app_label</span> <span class="o">=</span> <span class="s">&quot;plmapp&quot;</span>
+        <span class="n">unique_together</span> <span class="o">=</span> <span class="p">((</span><span class="s">&#39;lifecycle&#39;</span><span class="p">,</span> <span class="s">&#39;state&#39;</span><span class="p">),)</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&quot;LifecycleStates&lt;</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">, </span><span class="si">%d</span><span class="s">&gt;&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="p">),</span>
+                                                 <span class="nb">unicode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">),</span>
+                                                 <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+
+<span class="nd">@memoize_noarg</span></div>
+<span class="k">def</span> <span class="nf">get_default_lifecycle</span><span class="p">():</span>
+<div class="viewcode-block" id="get_default_lifecycle"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.get_default_lifecycle">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns the default :class:`.Lifecycle` used when instanciate a :class:`.PLMObject`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Lifecycle</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;draft_official_deprecated&quot;</span><span class="p">)</span>
+
+<span class="nd">@memoize_noarg</span></div>
+<span class="k">def</span> <span class="nf">get_cancelled_lifecycle</span><span class="p">():</span>
+<div class="viewcode-block" id="get_cancelled_lifecycle"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.get_cancelled_lifecycle">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns the &quot;cancelled&quot; Lifecycle.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">Lifecycle</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;cancelled&quot;</span><span class="p">)</span>
+
+<span class="nd">@memoize_noarg</span></div>
+<span class="k">def</span> <span class="nf">get_cancelled_state</span><span class="p">():</span>
+<div class="viewcode-block" id="get_cancelled_state"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.get_cancelled_state">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns the &quot;cancelled&quot; State.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">State</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">&quot;cancelled&quot;</span><span class="p">)</span>
+
+
+<span class="n">_default_states_cache</span> <span class="o">=</span> <span class="p">{}</span></div>
+<span class="k">def</span> <span class="nf">get_default_state</span><span class="p">(</span><span class="n">lifecycle</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="get_default_state"><a class="viewcode-back" href="../../../../devel/modules/models.html#openPLM.plmapp.models.lifecycle.get_default_state">[docs]</a>    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns the default :class:`.State` used when instanciate a :class:`.PLMObject`.</span>
+<span class="sd">    It&#39;s the first state of the default lifecycle.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lifecycle</span><span class="p">:</span>
+        <span class="n">lifecycle</span> <span class="o">=</span> <span class="n">get_default_lifecycle</span><span class="p">()</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">_default_states_cache</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="n">lifecycle</span><span class="o">.</span><span class="n">first_state</span>
+        <span class="n">_default_states_cache</span><span class="p">[</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">state</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../models.html" >openPLM.plmapp.models</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

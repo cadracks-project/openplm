@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.filters &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/filters.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.filters</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">re</span><span class="o">,</span> <span class="nn">htmlentitydefs</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">strip_tags</span><span class="p">,</span> <span class="n">linebreaks</span>
+<span class="kn">from</span> <span class="nn">django.utils.safestring</span> <span class="kn">import</span> <span class="n">mark_safe</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils.importing</span> <span class="kn">import</span> <span class="n">import_dotted_path</span>
+
+<span class="c">## http://effbot.org/zone/re-sub.htm#unescape-html</span>
+<span class="c"># Removes HTML or XML character references and entities from a text string.</span>
+<span class="c">#</span>
+<span class="c"># @param text The HTML (or XML) source text.</span>
+<span class="c"># @return The plain text, as a Unicode string, if necessary.</span>
+
+<div class="viewcode-block" id="unescape"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.unescape">[docs]</a><span class="k">def</span> <span class="nf">unescape</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fixup</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">text</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;&amp;#&quot;</span><span class="p">:</span>
+            <span class="c"># character reference</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">text</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;&amp;#x&quot;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">unichr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">16</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="nb">unichr</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># named entity</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="nb">unichr</span><span class="p">(</span><span class="n">htmlentitydefs</span><span class="o">.</span><span class="n">name2codepoint</span><span class="p">[</span><span class="n">text</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">text</span> <span class="c"># leave as is</span>
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">&quot;&amp;#?\w+;&quot;</span><span class="p">,</span> <span class="n">fixup</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="richtext"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.richtext">[docs]</a><span class="k">def</span> <span class="nf">richtext</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This template filter takes a string value and passes it through the</span>
+<span class="sd">    function specified by the RICHTEXT_FILTER setting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">richtext_filter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;RICHTEXT_FILTER&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">richtext_filter</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">import_dotted_path</span><span class="p">(</span><span class="n">richtext_filter</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span><span class="p">:</span> <span class="n">mark_safe</span><span class="p">(</span><span class="n">linebreaks</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">True</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="plaintext"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.plaintext">[docs]</a><span class="k">def</span> <span class="nf">plaintext</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This template filter takes a string value and passes it through the</span>
+<span class="sd">    function specified by the RICHTEXT_PLAIN_FILTER setting.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">richtext_filter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;RICHTEXT_FILTER&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="n">richtext_plain_filter</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;RICHTEXT_PLAIN_FILTER&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">richtext_plain_filter</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">import_dotted_path</span><span class="p">(</span><span class="n">richtext_plain_filter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">richtext_filter</span><span class="p">:</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">import_dotted_path</span><span class="p">(</span><span class="n">richtext_filter</span><span class="p">)</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span><span class="p">:</span> <span class="n">unescape</span><span class="p">(</span><span class="n">strip_tags</span><span class="p">(</span><span class="n">f</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">o</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">o</span><span class="p">:</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+</div>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">markdown</span>
+    <span class="kn">from</span> <span class="nn">markdown.inlinepatterns</span> <span class="kn">import</span> <span class="n">LinkPattern</span>
+    <span class="kn">from</span> <span class="nn">markdown.util</span> <span class="kn">import</span> <span class="n">etree</span>
+    <span class="kn">from</span> <span class="nn">markdown.extensions</span> <span class="kn">import</span> <span class="n">Extension</span>
+    <span class="kn">from</span> <span class="nn">markdown.extensions.headerid</span> <span class="kn">import</span> <span class="n">slugify</span>
+    <span class="kn">from</span> <span class="nn">django.utils.encoding</span> <span class="kn">import</span> <span class="n">iri_to_uri</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">ref</span> <span class="o">=</span> <span class="s">r&#39;(?:</span><span class="se">\\</span><span class="s"> |[^/?#\t\r\v\f\s])+&#39;</span>
+    <span class="n">object_pattern</span> <span class="o">=</span> <span class="s">r&#39;(\w+/{ref}/{ref})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ref</span><span class="o">=</span><span class="n">ref</span><span class="p">)</span>
+<div class="viewcode-block" id="build_url"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.build_url">[docs]</a>    <span class="k">def</span> <span class="nf">build_url</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">iri_to_uri</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="prefixed_slugify"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.prefixed_slugify">[docs]</a>    <span class="k">def</span> <span class="nf">prefixed_slugify</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;plm-&quot;</span> <span class="o">+</span> <span class="n">slugify</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMLinkExtension"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.PLMLinkExtension">[docs]</a>    <span class="k">class</span> <span class="nc">PLMLinkExtension</span><span class="p">(</span><span class="n">Extension</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">configs</span><span class="p">):</span>
+            <span class="c"># set extension defaults</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+                            <span class="s">&#39;base_url&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;String to append to beginning or URL.&#39;</span><span class="p">],</span>
+                            <span class="s">&#39;end_url&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;/&#39;</span><span class="p">,</span> <span class="s">&#39;String to append to end of URL.&#39;</span><span class="p">],</span>
+                            <span class="s">&#39;html_class&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;wikilink&#39;</span><span class="p">,</span> <span class="s">&#39;CSS hook. Leave blank for none.&#39;</span><span class="p">],</span>
+                            <span class="s">&#39;build_url&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="n">build_url</span><span class="p">,</span> <span class="s">&#39;Callable formats URL from label.&#39;</span><span class="p">],</span>
+                            <span class="s">&#39;base_label&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;String to prepend to the label&#39;</span><span class="p">],</span>
+                            <span class="s">&#39;end_label&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="s">&#39;String to append to the label&#39;</span><span class="p">],</span>
+            <span class="p">}</span>
+
+            <span class="c"># Override defaults with user settings</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">configs</span> <span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setConfig</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="n">pattern</span>
+
+<div class="viewcode-block" id="PLMLinkExtension.extendMarkdown"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.PLMLinkExtension.extendMarkdown">[docs]</a>        <span class="k">def</span> <span class="nf">extendMarkdown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">md</span><span class="p">,</span> <span class="n">md_globals</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">md</span> <span class="o">=</span> <span class="n">md</span>
+
+            <span class="c"># append to end of inline patterns</span>
+            <span class="n">pattern</span> <span class="o">=</span> <span class="n">PLMPattern</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">getConfigs</span><span class="p">())</span>
+            <span class="n">pattern</span><span class="o">.</span><span class="n">markdown</span> <span class="o">=</span> <span class="n">md</span>
+            <span class="n">md</span><span class="o">.</span><span class="n">inlinePatterns</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;plmlink</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pattern</span><span class="p">),</span> <span class="n">pattern</span><span class="p">,</span>
+                <span class="s">&quot;&lt;not_strong&quot;</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="PLMPattern"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.PLMPattern">[docs]</a>    <span class="k">class</span> <span class="nc">PLMPattern</span><span class="p">(</span><span class="n">LinkPattern</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">config</span><span class="p">):</span>
+            <span class="n">LinkPattern</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+
+<div class="viewcode-block" id="PLMPattern.handleMatch"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.PLMPattern.handleMatch">[docs]</a>        <span class="k">def</span> <span class="nf">handleMatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;base_url&#39;</span><span class="p">]</span>
+                <span class="n">end_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;end_url&#39;</span><span class="p">]</span>
+                <span class="n">html_class</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;html_class&#39;</span><span class="p">]</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\\</span><span class="s"> &quot;</span><span class="p">,</span> <span class="s">&quot; &quot;</span><span class="p">)</span>
+                <span class="n">url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;build_url&#39;</span><span class="p">](</span><span class="n">label</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">end_url</span><span class="p">)</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">)</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">u&#39;</span><span class="si">%s%s%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;base_label&#39;</span><span class="p">],</span>  <span class="n">label</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;end_label&#39;</span><span class="p">])</span>
+                <span class="n">a</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;href&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">unescape</span><span class="p">(</span><span class="n">url</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">html_class</span><span class="p">:</span>
+                    <span class="n">a</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;class&#39;</span><span class="p">,</span> <span class="n">html_class</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">a</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+            <span class="k">return</span> <span class="n">a</span>
+</div></div>
+<div class="viewcode-block" id="markdown_filter"><a class="viewcode-back" href="../../devel/modules/filters.html#plmapp.filters.markdown_filter">[docs]</a>    <span class="k">def</span> <span class="nf">markdown_filter</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+        <span class="c"># TODO: optimize this code</span>
+        <span class="k">def</span> <span class="nf">previous_revision</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">get_previous_revisions</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plmobject_url</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">next_revision</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">get_next_revisions</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plmobject_url</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+        <span class="n">md</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">safe_mode</span><span class="o">=</span><span class="s">&#39;escape&#39;</span><span class="p">,</span>
+            <span class="n">output_format</span><span class="o">=</span><span class="s">&#39;html5&#39;</span><span class="p">,</span>
+            <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;abbr&quot;</span><span class="p">,</span> <span class="s">&quot;tables&quot;</span><span class="p">,</span> <span class="s">&quot;def_list&quot;</span><span class="p">,</span> <span class="s">&quot;smart_strong&quot;</span><span class="p">,</span> <span class="s">&quot;toc&quot;</span><span class="p">,</span>
+                <span class="s">&quot;headerid&quot;</span><span class="p">,</span> <span class="s">&quot;fenced_code&quot;</span><span class="p">,</span> <span class="s">&quot;sane_lists&quot;</span><span class="p">,</span> <span class="s">&quot;footnotes&quot;</span><span class="p">,</span>
+                <span class="c"># objects</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&quot;\[</span><span class="si">%s</span><span class="s">\]&quot;</span> <span class="o">%</span> <span class="n">object_pattern</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;base_url&#39;</span><span class="p">,</span> <span class="s">&#39;/object/&#39;</span><span class="p">)]),</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&quot;\bpart:(\w+)&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;base_url&#39;</span><span class="p">,</span> <span class="s">&#39;/redirect_name/part/&#39;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;base_label&#39;</span><span class="p">,</span> <span class="s">&#39;part:&#39;</span><span class="p">)]),</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&#39;\bpart:&quot;([^&quot;]+)&quot;&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;base_url&#39;</span><span class="p">,</span> <span class="s">&#39;/redirect_name/part/&#39;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;base_label&#39;</span><span class="p">,</span> <span class="s">&#39;part:&#39;</span><span class="p">)]),</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&quot;\bdoc:(\w+)&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;base_url&#39;</span><span class="p">,</span> <span class="s">&#39;/redirect_name/doc/&#39;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;base_label&#39;</span><span class="p">,</span> <span class="s">&#39;doc:&#39;</span><span class="p">)]),</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&#39;\bdoc:&quot;([^&quot;]+)&quot;&#39;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;base_url&#39;</span><span class="p">,</span> <span class="s">&#39;/redirect_name/doc/&#39;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;base_label&#39;</span><span class="p">,</span> <span class="s">&#39;doc:&#39;</span><span class="p">)]),</span>
+                <span class="c"># users</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&quot;(?&lt;!\w)@(</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">ref</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;base_url&#39;</span><span class="p">,</span> <span class="s">&#39;/user/&#39;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;base_label&#39;</span><span class="p">,</span> <span class="s">&#39;@&#39;</span><span class="p">)]),</span>
+                <span class="c"># groups</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&quot;\bgroup:(</span><span class="si">%s</span><span class="s">)\b&quot;</span> <span class="o">%</span> <span class="n">ref</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;base_url&#39;</span><span class="p">,</span> <span class="s">&#39;/group/&#39;</span><span class="p">),</span>
+                    <span class="p">(</span><span class="s">&#39;base_label&#39;</span><span class="p">,</span> <span class="s">&#39;group:&#39;</span><span class="p">)]),</span>
+                <span class="c"># previous/next revisions</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&quot;(?&lt;!\w)(\&lt;\&lt;)(?!\w)&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;build_url&#39;</span><span class="p">,</span> <span class="n">previous_revision</span><span class="p">)]),</span>
+                <span class="n">PLMLinkExtension</span><span class="p">(</span><span class="s">r&quot;(?&lt;!\w)(\&gt;\&gt;)(?!\w)&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s">&#39;build_url&#39;</span><span class="p">,</span> <span class="n">next_revision</span><span class="p">)]),</span>
+
+            <span class="p">],</span>
+            <span class="n">extension_configs</span><span class="o">=</span><span class="p">{</span>
+                <span class="s">&#39;headerid&#39;</span><span class="p">:</span> <span class="p">[(</span><span class="s">&#39;slugify&#39;</span><span class="p">,</span> <span class="n">prefixed_slugify</span><span class="p">),</span> <span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">mark_safe</span><span class="p">(</span><span class="n">md</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

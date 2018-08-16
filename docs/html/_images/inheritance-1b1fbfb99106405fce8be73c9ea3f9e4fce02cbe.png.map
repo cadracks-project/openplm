@@ -1,0 +1,9 @@
+<map id="inheritance452210514f" name="inheritance452210514f">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.history.GroupHistory" title="GroupHistory" alt="" coords="517,30,624,58"/>
+<area shape="rect" id="node2" href="#openPLM.plmapp.models.history.AbstractHistory" title="AbstractHistory" alt="" coords="348,81,468,109"/>
+<area shape="rect" id="node6" href="#openPLM.plmapp.models.history.History" title="History" alt="" coords="535,81,607,109"/>
+<area shape="rect" id="node11" href="#openPLM.plmapp.models.history.UserHistory" title="UserHistory" alt="" coords="523,131,619,159"/>
+<area shape="rect" id="node18" href="#openPLM.plmapp.models.history.StateHistory" title="StateHistory" alt="" coords="357,131,459,159"/>
+<area shape="rect" id="node16" href="#openPLM.plmapp.models.history.StateHistoryManager" title="StateHistoryManager" alt="" coords="139,55,296,83"/>
+<area shape="rect" id="node14" href="#openPLM.plmapp.models.history.StateHistoryQuerySet" title="StateHistoryQuerySet" alt="" coords="136,5,299,33"/>
+</map>

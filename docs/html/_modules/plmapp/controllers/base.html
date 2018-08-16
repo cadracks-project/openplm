@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.controllers.base &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/controllers/base.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.controllers.base</h1><div class="highlight"><pre>
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">difflib</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+<span class="kn">from</span> <span class="nn">django.db.models.fields</span> <span class="kn">import</span> <span class="n">FieldDoesNotExist</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">PermissionError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.mail</span> <span class="kn">import</span> <span class="n">send_histories_mail</span>
+
+<span class="n">_controller_rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&quot;(?P&lt;type&gt;\w+)Controller&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MetaController"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.MetaController">[docs]</a><span class="k">class</span> <span class="nc">MetaController</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Metaclass used to register a controller and get a controller associated</span>
+<span class="sd">    to a type (see :meth:`get_controller`).</span>
+
+<span class="sd">    See :ref:`how-to-add-a-controller` for more explanations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c">#: dict&lt;type_name(str) : Controller(like :class:`PLMObjectController`)&gt;</span>
+    <span class="n">controllers_dict</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="c"># sets a __slots__ attributes to reduce memory consumption</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="o">!=</span> <span class="s">&quot;Controller&quot;</span> <span class="ow">and</span> <span class="s">&quot;__slots__&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s">&quot;__slots__&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Controller</span><span class="o">.</span><span class="n">__slots__</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="nb">type</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">mcs</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s">&quot;MANAGED_TYPE&quot;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+            <span class="n">managed</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="s">&quot;MANAGED_TYPE&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">_controller_rx</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+                <span class="n">managed</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c"># the controller is not interresting</span>
+                <span class="k">return</span> <span class="n">cls</span>
+        <span class="n">mcs</span><span class="o">.</span><span class="n">controllers_dict</span><span class="p">[</span><span class="n">managed</span><span class="p">]</span> <span class="o">=</span> <span class="n">cls</span>
+        <span class="k">return</span> <span class="n">cls</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="MetaController.get_controller"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.MetaController.get_controller">[docs]</a>    <span class="k">def</span> <span class="nf">get_controller</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">type_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the controller (subclass of :class:`.PLMObjectController`)</span>
+<span class="sd">        associated to *type_name* (a string).</span>
+
+<span class="sd">        For example, ``get_controller(&quot;Part&quot;)`` will return the class</span>
+<span class="sd">        :class:`.PartController`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">type_name</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">controllers_dict</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">controllers_dict</span><span class="p">[</span><span class="n">type_name</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># get his model and return his parent controller</span>
+            <span class="k">if</span> <span class="n">type_name</span> <span class="o">==</span> <span class="s">&quot;PLMObject&quot;</span><span class="p">:</span>
+                <span class="c"># just a security to prevent an infinite recursion</span>
+                <span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers.plmobject</span> <span class="kn">import</span> <span class="n">PLMObjectController</span>
+                <span class="k">return</span> <span class="n">PLMObjectController</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">type_name</span><span class="p">]</span>
+                <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">__bases__</span>
+                                <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">)]</span>
+                <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">get_controller</span><span class="p">(</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="c">#: shortcut for :meth:`MetaController.get_controller`</span></div></div>
+<span class="n">get_controller</span> <span class="o">=</span> <span class="n">MetaController</span><span class="o">.</span><span class="n">get_controller</span>
+
+<div class="viewcode-block" id="permission_required"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.permission_required">[docs]</a><span class="k">def</span> <span class="nf">permission_required</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s">&quot;owner&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator for methods of :class:`PLMObjectController` which</span>
+<span class="sd">    raises :exc:`.PermissionError` if :attr:`PLMObjectController._user`</span>
+<span class="sd">    has not the role *role*</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="nd">@wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">wrapper</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">&quot;Permission required: `</span><span class="si">%s</span><span class="s">`</span><span class="se">\n</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+</div>
+<div class="viewcode-block" id="Controller"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller">[docs]</a><span class="k">class</span> <span class="nc">Controller</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Object used to manage a :class:`~plmapp.models.PLMObject` and store his</span>
+<span class="sd">    modification in a history</span>
+
+<span class="sd">    :attributes:</span>
+<span class="sd">        .. attribute:: object</span>
+
+<span class="sd">            The :class:`.PLMObject` managed by the controller</span>
+<span class="sd">        .. attribute:: _user</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who modifies ``object``</span>
+
+<span class="sd">    :param obj: managed object</span>
+<span class="sd">    :type obj: a subinstance of :class:`.PLMObject`</span>
+<span class="sd">    :param user: user who modifies *obj*</span>
+<span class="sd">    :type user: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">MetaController</span>
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s">&quot;object&quot;</span><span class="p">,</span> <span class="s">&quot;_user&quot;</span><span class="p">,</span> <span class="s">&quot;_histo&quot;</span><span class="p">,</span> <span class="s">&quot;_pending_mails&quot;</span><span class="p">,</span> <span class="s">&quot;_mail_blocked&quot;</span><span class="p">,</span>
+            <span class="s">&quot;__permissions&quot;</span><span class="p">,</span> <span class="s">&quot;__histo&quot;</span><span class="p">)</span>
+
+    <span class="n">HISTORY</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">AbstractHistory</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">no_index</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mail_blocked</span> <span class="o">=</span> <span class="n">block_mails</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pending_mails</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="c"># variable to store attribute changes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_histo</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="c"># cache for permissions (dict(role-&gt;bool))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__permissions</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span> <span class="o">=</span> <span class="n">obj</span>
+        <span class="k">if</span> <span class="n">no_index</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Controller.load"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="bp">NotImplemented</span>
+</div>
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="c"># we override this method to make it to modify *object* directly</span>
+        <span class="c"># if we modify *object*, we records the modification in **_histo*</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span> <span class="ow">and</span> \
+           <span class="ow">not</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__slots__</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">)</span>
+            <span class="n">old_value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+            <span class="n">mfield</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">mfield</span><span class="o">.</span><span class="n">verbose_name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">old_value</span> <span class="o">!=</span> <span class="n">value</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mfield</span><span class="p">,</span> <span class="s">&quot;richtext&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                    <span class="c"># store a unified diff (shorter than storing both values)</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="s">u&quot;{field}:</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">)</span>
+                    <span class="n">diff</span> <span class="o">=</span> <span class="n">difflib</span><span class="o">.</span><span class="n">unified_diff</span><span class="p">(</span><span class="n">old_value</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(),</span> <span class="n">value</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span>
+                    <span class="c"># skip the ---/+++ lines</span>
+                    <span class="n">message</span> <span class="o">+=</span> <span class="s">u&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">islice</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">message</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%(field)s</span><span class="s"> : changes from &#39;</span><span class="si">%(old)s</span><span class="s">&#39; to &#39;</span><span class="si">%(new)s</span><span class="s">&#39;&quot;</span> <span class="o">%</span> \
+                        <span class="p">{</span><span class="s">&quot;field&quot;</span> <span class="p">:</span> <span class="n">field</span><span class="p">,</span> <span class="s">&quot;old&quot;</span> <span class="p">:</span> <span class="n">old_value</span><span class="p">,</span> <span class="s">&quot;new&quot;</span> <span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_histo</span> <span class="o">+=</span> <span class="n">message</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Controller</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="n">attr</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="c"># we override this method to get attributes from *object* directly</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__slots__</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="n">__getattribute__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;object&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Controller.save"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">with_history</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Saves :attr:`object` and records its history in the database.</span>
+<span class="sd">        If *with_history* is False, the history is not recorded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_histo</span> <span class="ow">and</span> <span class="n">with_history</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;Modify&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_histo</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_histo</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+</div>
+    <span class="k">def</span> <span class="nf">_save_histo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="p">(),</span> <span class="n">roles</span><span class="o">=</span><span class="p">(),</span> <span class="n">users</span><span class="o">=</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Records *action* with details *details* made by :attr:`_user` in</span>
+<span class="sd">        on :attr:`object` in the user histories table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">HISTORY</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="n">action</span><span class="p">,</span>
+                                     <span class="n">details</span><span class="o">=</span><span class="n">details</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+            <span class="n">blacklist</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">email</span><span class="p">,)</span>
+        <span class="n">roles</span> <span class="o">=</span> <span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">roles</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_mail</span><span class="p">(</span><span class="n">send_histories_mail</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="p">[</span><span class="n">h</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">blacklist</span><span class="p">,</span> <span class="n">users</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Controller.get_verbose_name"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.get_verbose_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_verbose_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a verbose name for *attr_name*.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            &gt;&gt;&gt; ctrl.get_verbose_name(&quot;ctime&quot;)</span>
+<span class="sd">            u&#39;date of creation&#39;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">attr_name</span><span class="p">)</span><span class="o">.</span><span class="n">verbose_name</span>
+        <span class="k">except</span> <span class="n">FieldDoesNotExist</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">attr_name</span>
+        <span class="k">return</span> <span class="n">item</span>
+</div>
+<div class="viewcode-block" id="Controller.update_from_form"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.update_from_form">[docs]</a>    <span class="k">def</span> <span class="nf">update_from_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">form</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Updates :attr:`object` from data of *form*</span>
+
+<span class="sd">        :raises: :exc:`ValueError` if *form* is invalid.</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`_user` is not the owner of</span>
+<span class="sd">            :attr:`object`.</span>
+<span class="sd">        :raises: :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_editable</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">need_save</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">]:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                    <span class="n">need_save</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="n">need_save</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;form is invalid&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Controller.check_permission"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.check_permission">[docs]</a>    <span class="k">def</span> <span class="nf">check_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method checks if :attr:`_user` has permissions implied by *role*.</span>
+<span class="sd">        For example, *role* can be *owner* or *notified*.</span>
+
+<span class="sd">        If the check succeeds, **True** is returned. Otherwise, if *raise_* is</span>
+<span class="sd">        **True** (the default), a :exc:`.PermissionError` is raised and if</span>
+<span class="sd">        *raise_* is **False**, **False** is returned.</span>
+
+<span class="sd">        .. admonition:: Implementation details</span>
+
+<span class="sd">            This method keeps a cache, so that you dont have to worry about</span>
+<span class="sd">            multiple calls to this method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">role</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__permissions</span><span class="p">:</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__permissions</span><span class="p">[</span><span class="n">role</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ok</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__permissions</span><span class="p">[</span><span class="n">role</span><span class="p">]</span> <span class="o">=</span> <span class="n">ok</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ok</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;action not allowed for </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ok</span>
+</div>
+<div class="viewcode-block" id="Controller.clear_permissions_cache"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.clear_permissions_cache">[docs]</a>    <span class="k">def</span> <span class="nf">clear_permissions_cache</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__permissions</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Controller.has_permission"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.has_permission">[docs]</a>    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="Controller.check_contributor"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.check_contributor">[docs]</a>    <span class="k">def</span> <span class="nf">check_contributor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method checks if *user* is a contributor. If not, it raises</span>
+<span class="sd">        :exc:`.PermissionError`.</span>
+
+<span class="sd">        If *user* is None (the default), :attr:`_user` is used.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span> <span class="ow">or</span> <span class="n">profile</span><span class="o">.</span><span class="n">is_administrator</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s"> is not a contributor&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="c"># should not be possible, but an admin may have done a mistake</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s"> is not a contributor&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Controller.check_editable"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.check_editable">[docs]</a>    <span class="k">def</span> <span class="nf">check_editable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Controller.block_mails"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.block_mails">[docs]</a>    <span class="k">def</span> <span class="nf">block_mails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Blocks mails sending. Call :meth:`unblock_mails` to send blocked mails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mail_blocked</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="Controller.unblock_mails"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.unblock_mails">[docs]</a>    <span class="k">def</span> <span class="nf">unblock_mails</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unblock mails sending. This sends all previously blocked mails.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending_mails</span><span class="p">:</span>
+            <span class="n">mail</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pending_mails</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span>
+            <span class="n">mail</span><span class="p">[</span><span class="mi">0</span><span class="p">](</span><span class="o">*</span><span class="n">mail</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_mail_blocked</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+    <span class="k">def</span> <span class="nf">_send_mail</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mail_blocked</span><span class="p">:</span>
+            <span class="n">mail</span> <span class="o">=</span> <span class="p">(</span><span class="n">func</span><span class="p">,)</span> <span class="o">+</span> <span class="n">args</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pending_mails</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mail</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Controller.histories"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_base.html#plmapp.controllers.base.Controller.histories">[docs]</a>    <span class="k">def</span> <span class="nf">histories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">HISTORY</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">order_by</span><span class="p">(</span><span class="s">&quot;-date&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">)</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

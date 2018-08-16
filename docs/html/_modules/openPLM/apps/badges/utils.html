@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.badges.utils &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/badges/utils.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.badges.utils</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Badge</span> <span class="k">as</span> <span class="n">BadgeModel</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">BadgeToUser</span><span class="p">,</span> <span class="n">LEVEL_CHOICES</span>
+
+
+<span class="k">class</span> <span class="nc">RequiresUserOrProgress</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span>
+
+<span class="n">registered_badges</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">badge</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">badge</span><span class="o">.</span><span class="n">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">registered_badges</span><span class="p">:</span>
+        <span class="n">registered_badges</span><span class="p">[</span><span class="n">badge</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">badge</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">badge</span>
+
+<span class="k">def</span> <span class="nf">badge_count</span><span class="p">(</span><span class="n">user_or_qs</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Given a user or queryset of users, this returns the badge</span>
+<span class="sd">    count at each badge level that the user(s) have earned.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">     &gt;&gt;&gt; badge_count(User.objects.filter(username=&#39;admin&#39;))</span>
+<span class="sd">     [{&#39;count&#39;: 0, &#39;badge__level&#39;: &#39;1&#39;}, {&#39;count&#39;: 0, &#39;badge__level&#39;: &#39;2&#39;}, {&#39;count&#39;: 0, &#39;badge__level&#39;: &#39;3&#39;}, {&#39;count&#39;: 0, &#39;badge__level&#39;: &#39;4&#39;}]</span>
+
+<span class="sd">    Uses a single database query.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">badge_counts</span> <span class="o">=</span> <span class="n">BadgeToUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user_or_qs</span><span class="p">,</span> <span class="n">User</span><span class="p">):</span>
+        <span class="n">badge_counts</span> <span class="o">=</span> <span class="n">badge_counts</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user_or_qs</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">user_or_qs</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">QuerySet</span><span class="p">):</span>
+        <span class="n">badge_counts</span> <span class="o">=</span> <span class="n">badge_counts</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__in</span><span class="o">=</span><span class="n">user_or_qs</span><span class="p">)</span>
+
+    <span class="n">badge_counts</span> <span class="o">=</span> <span class="n">badge_counts</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="s">&#39;badge__level&#39;</span><span class="p">)</span>
+    <span class="n">badge_counts</span> <span class="o">=</span> <span class="n">badge_counts</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">Count</span><span class="p">(</span><span class="s">&#39;badge__level&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_badge_count</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+        <span class="n">bc</span> <span class="o">=</span> <span class="p">[</span><span class="n">bc</span> <span class="k">for</span> <span class="n">bc</span> <span class="ow">in</span> <span class="n">badge_counts</span> <span class="k">if</span> <span class="n">bc</span><span class="p">[</span><span class="s">&#39;badge__level&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">level</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">bc</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">bc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># if the user has no badges at this level, return the appropriate response</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;count&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;badge__level&#39;</span><span class="p">:</span> <span class="n">level</span><span class="p">}</span>
+
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">get_badge_count</span><span class="p">(</span><span class="n">level_choice</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">level_choice</span> <span class="ow">in</span> <span class="n">LEVEL_CHOICES</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">MetaBadgeMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="n">new_badge</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">MetaBadgeMeta</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+        <span class="n">parents</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">bases</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">MetaBadgeMeta</span><span class="p">)]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">parents</span><span class="p">:</span>
+            <span class="c"># If this isn&#39;t a subclass of MetaBadge, don&#39;t do anything special.</span>
+            <span class="k">return</span> <span class="n">new_badge</span>
+        <span class="k">return</span> <span class="n">register</span><span class="p">(</span><span class="n">new_badge</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="MetaBadge"><a class="viewcode-back" href="../../../../devel/applications/badges/utils.html#openPLM.apps.badges.utils.MetaBadge">[docs]</a><span class="k">class</span> <span class="nc">MetaBadge</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">MetaBadgeMeta</span>
+
+    <span class="n">one_time_only</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">Model</span>
+
+    <span class="n">link_to_doc</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="n">progress_start</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">progress_finish</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># whenever the server is reloaded, the badge will be initialized and</span>
+        <span class="c"># added to the database</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keep_badge_updated</span><span class="p">()</span>
+        <span class="n">post_save</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_signal_callback</span><span class="p">,</span> <span class="n">sender</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_signal_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;instance&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">award_ceremony</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_test_conditions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="n">condition_callbacks</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;check&#39;</span><span class="p">)]</span>
+
+        <span class="c"># will return False on the first False condition</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span> <span class="n">fn</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span> <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">condition_callbacks</span> <span class="p">)</span>
+
+<div class="viewcode-block" id="MetaBadge.get_user"><a class="viewcode-back" href="../../../../devel/applications/badges/utils.html#openPLM.apps.badges.utils.MetaBadge.get_user">[docs]</a>    <span class="k">def</span> <span class="nf">get_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This function should be overriden if the user can not be</span>
+<span class="sd">        reached using `instance.user`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">user</span>
+</div>
+    <span class="k">def</span> <span class="nf">get_progress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">BadgeToUser</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">badge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">badge</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">())</span>
+
+<div class="viewcode-block" id="MetaBadge.get_progress_percentage"><a class="viewcode-back" href="../../../../devel/applications/badges/utils.html#openPLM.apps.badges.utils.MetaBadge.get_progress_percentage">[docs]</a>    <span class="k">def</span> <span class="nf">get_progress_percentage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the percentage of progress for a user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">progress</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RequiresUserOrProgress</span><span class="p">(</span><span class="s">&quot;This method requires either a user or progress keyword argument&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">progress</span><span class="p">:</span>
+            <span class="n">progress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_progress</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="n">progress</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">progress</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_finish</span><span class="p">)</span>
+
+        <span class="c"># multiply by a float to get floating point precision</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">*</span> <span class="n">progress</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_finish</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_start</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_keep_badge_updated</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;badge&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="n">badge</span><span class="p">,</span> <span class="n">created</span> <span class="o">=</span> <span class="n">BadgeModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">badge</span><span class="o">.</span><span class="n">level</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+            <span class="n">badge</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span>
+            <span class="n">badge</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">badge</span> <span class="o">=</span> <span class="n">badge</span>
+
+    <span class="k">def</span> <span class="nf">award_ceremony</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_test_conditions</span><span class="p">(</span><span class="n">instance</span><span class="p">):</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">badge</span><span class="o">.</span><span class="n">award_to</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MetaBadge.check_user"><a class="viewcode-back" href="../../../../devel/applications/badges/utils.html#openPLM.apps.badges.utils.MetaBadge.check_user">[docs]</a>    <span class="k">def</span> <span class="nf">check_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        checks if the user exists or not</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="MetaBadge.check_can_win_badge"><a class="viewcode-back" href="../../../../devel/applications/badges/utils.html#openPLM.apps.badges.utils.MetaBadge.check_can_win_badge">[docs]</a>    <span class="k">def</span> <span class="nf">check_can_win_badge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if a user can win a badge.</span>
+<span class="sd">        Some badge can only be won by contributor.</span>
+<span class="sd">        If a badge can be won by user who are not contributor this function should be overridden</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_user</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span>
+        <span class="k">else</span> <span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,666 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.views.part &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/views/part.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.views.part</h1><div class="highlight"><pre>
+<span class="c">#-!- coding:utf-8 -!-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">messages</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">HttpResponseBadRequest</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">as</span> <span class="nn">forms</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils.archive</span> <span class="kn">import</span> <span class="n">ARCHIVE_FORMATS</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="p">(</span><span class="n">get_obj_from_form</span><span class="p">,</span> <span class="n">handle_errors</span><span class="p">,</span> <span class="n">get_generic_data</span><span class="p">,</span> <span class="n">get_id_card_data</span><span class="p">,</span> <span class="n">get_obj_by_id</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.decomposers.base</span> <span class="kn">import</span> <span class="n">DecomposersManager</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">r2r</span>
+
+
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_children"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.display_children">[docs]</a><span class="k">def</span> <span class="nf">display_children</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BOM view.</span>
+
+<span class="sd">    That view displays the children of the selected object that must be a part.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/bom-child/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/bom.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``children``</span>
+<span class="sd">        a list of :class:`.Child`</span>
+
+<span class="sd">    ``display_form``</span>
+<span class="sd">        a :class:`.DisplayChildrenForm`</span>
+
+<span class="sd">    ``extra_columns``</span>
+<span class="sd">        a list of extra columns that are displayed</span>
+
+<span class="sd">    ``extension_data``</span>
+
+<span class="sd">    ``decomposition_msg``</span>
+<span class="sd">        a html message to decompose the part (may be empty)</span>
+
+<span class="sd">    ``decomposable_children``</span>
+<span class="sd">        a set of child part ids that are decomposable</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s">&quot;diff&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">urlencode</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot;&amp;compact=on&quot;</span>
+        <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">diff/?</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">query</span><span class="p">))</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;get_children&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;object must be a part&quot;</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="s">&quot;first&quot;</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;all&quot;</span>
+    <span class="n">show_documents</span> <span class="o">=</span> <span class="n">show_alternates</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">display_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DisplayChildrenForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">display_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;date&quot;</span><span class="p">]</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;level&quot;</span><span class="p">]</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;state&quot;</span><span class="p">]</span>
+            <span class="n">show_documents</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;show_documents&quot;</span><span class="p">]</span>
+            <span class="n">show_alternates</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;show_alternates&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">display_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DisplayChildrenForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;date&quot;</span> <span class="p">:</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+            <span class="s">&quot;level&quot;</span> <span class="p">:</span> <span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="s">&quot;state&quot;</span><span class="p">:</span><span class="s">&quot;all&quot;</span><span class="p">})</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_bom</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">show_documents</span><span class="p">,</span> <span class="n">show_alternates</span><span class="p">))</span>
+    <span class="c"># decomposition</span>
+    <span class="k">if</span> <span class="n">DecomposersManager</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">children_ids</span> <span class="o">=</span> <span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">child_id</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;children&quot;</span><span class="p">])</span>
+        <span class="n">decomposable_children</span> <span class="o">=</span> <span class="n">DecomposersManager</span><span class="o">.</span><span class="n">get_decomposable_parts</span><span class="p">(</span><span class="n">children_ids</span><span class="p">)</span>
+        <span class="n">decomposition_msg</span> <span class="o">=</span> <span class="n">DecomposersManager</span><span class="o">.</span><span class="n">get_decomposition_message</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">decomposition_msg</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+        <span class="n">decomposable_children</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;BOM-child&#39;</span><span class="p">,</span>
+                <span class="s">&#39;decomposition_msg&#39;</span> <span class="p">:</span> <span class="n">decomposition_msg</span><span class="p">,</span>
+                <span class="s">&#39;decomposable_children&#39;</span> <span class="p">:</span> <span class="n">decomposable_children</span><span class="p">,</span>
+                <span class="s">&quot;display_form&quot;</span> <span class="p">:</span> <span class="n">display_form</span><span class="p">,</span>
+                <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/bom.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;..&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="edit_children"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.edit_children">[docs]</a><span class="k">def</span> <span class="nf">edit_children</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to edit a BOM.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/bom-child/edit/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/bom_edit.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``children_formset``</span>
+<span class="sd">        a formset to edit the BOM</span>
+
+<span class="sd">    ``extra_columns``</span>
+<span class="sd">        a list of extra columns that are displayed</span>
+
+<span class="sd">    ``extra_fields``</span>
+<span class="sd">        a list of extra fields that are editable</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;get_children&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;object must be a part&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_children_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">update_children</span><span class="p">(</span><span class="n">formset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;..&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_children_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="n">extra_columns</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">extra_fields</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">PCLE</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">get_PCLEs</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">):</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="n">PCLE</span><span class="o">.</span><span class="n">get_visible_fields</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="n">extra_columns</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">f</span><span class="p">,</span> <span class="n">PCLE</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">verbose_name</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">)</span>
+            <span class="n">prefix</span> <span class="o">=</span> <span class="n">PCLE</span><span class="o">.</span><span class="n">_meta</span><span class="o">.</span><span class="n">module_name</span>
+            <span class="n">extra_fields</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">_</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">prefix</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;BOM-child&#39;</span><span class="p">,</span>
+                <span class="s">&#39;extra_columns&#39;</span> <span class="p">:</span> <span class="n">extra_columns</span><span class="p">,</span>
+                <span class="s">&#39;extra_fields&#39;</span> <span class="p">:</span> <span class="n">extra_fields</span><span class="p">,</span>
+                <span class="s">&#39;children_formset&#39;</span><span class="p">:</span> <span class="n">formset</span><span class="p">,</span> <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/bom_edit.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span><span class="p">(</span><span class="n">undo</span><span class="o">=</span><span class="s">&quot;../..&quot;</span><span class="p">)</span>
+<div class="viewcode-block" id="replace_child"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.replace_child">[docs]</a><span class="k">def</span> <span class="nf">replace_child</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">link_id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to replace a child by another one.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/bom-child/replace/{link_id}/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    :param link_id: id of the :class:`.ParentChildLink` being replaced</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/bom_replace.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``replace_child_form``</span>
+<span class="sd">        a form to select the replacement part</span>
+
+<span class="sd">    ``link``</span>
+<span class="sd">        :class:`.ParentChildLink` being replaced</span>
+
+<span class="sd">    ``link_creation``</span>
+<span class="sd">        Set to True</span>
+
+<span class="sd">    ``attach``</span>
+<span class="sd">        set to (*obj*, &quot;add_child&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">link_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">link_id</span><span class="p">)</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span>
+            <span class="n">load_all</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ParentChildLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">link_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddPartForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">replace_child</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;../..&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddPartForm</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;results&quot;</span><span class="p">]:</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">precompute_can_add_child2</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;replace_child_form&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">form</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;link&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">link</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;attach&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;add_child&quot;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;link_creation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;parts/bom_replace.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="add_child"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.add_child">[docs]</a><span class="k">def</span> <span class="nf">add_child</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to add a child to a part.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/bom-child/add/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/bom_add.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``add_child_form``</span>
+<span class="sd">        a form to add a child (:class:`.AddChildForm`)</span>
+
+<span class="sd">    ``link``</span>
+<span class="sd">        :class:`.ParentChildLink` being replaced</span>
+
+<span class="sd">    ``link_creation``</span>
+<span class="sd">        Set to True</span>
+
+<span class="sd">    ``attach``</span>
+<span class="sd">        set to (*obj*, &quot;add_child&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span>
+            <span class="n">load_all</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">add_child_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddChildForm</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_child_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">child_obj</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">add_child_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">add_child</span><span class="p">(</span><span class="n">child_obj</span><span class="p">,</span>
+                          <span class="n">add_child_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;quantity&quot;</span><span class="p">],</span>
+                          <span class="n">add_child_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;order&quot;</span><span class="p">],</span>
+                          <span class="n">add_child_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;unit&quot;</span><span class="p">],</span>
+                          <span class="o">**</span><span class="n">add_child_form</span><span class="o">.</span><span class="n">extensions</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;BOM-child/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_parts</span><span class="p">():</span>
+            <span class="c"># use GET params only if they seems valid</span>
+            <span class="n">initial</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">initial</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="n">add_child_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddChildForm</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;current_page&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;BOM-child&#39;</span>
+    <span class="k">if</span> <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;results&quot;</span><span class="p">]:</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">precompute_can_add_child2</span><span class="p">()</span>
+        <span class="n">orders</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">parentchildlink_parent</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&#39;order&#39;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+        <span class="n">initial_order</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">orders</span><span class="p">)</span> <span class="o">+</span> <span class="mi">10</span> <span class="k">if</span> <span class="n">orders</span> <span class="k">else</span> <span class="mi">10</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;order&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">initial_order</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;link_creation&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="s">&#39;add_child_form&#39;</span><span class="p">:</span> <span class="n">add_child_form</span><span class="p">,</span>
+                <span class="s">&#39;attach&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;add_child&quot;</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/bom_add.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="compare_bom"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.compare_bom">[docs]</a><span class="k">def</span> <span class="nf">compare_bom</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;get_children&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;object must be a part&quot;</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">date2</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="s">&quot;first&quot;</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;all&quot;</span>
+    <span class="n">show_documents</span> <span class="o">=</span> <span class="n">show_alternates</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">compact</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">cmp_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CompareBOMForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;date&quot;</span><span class="p">]</span>
+            <span class="n">date2</span> <span class="o">=</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;date2&quot;</span><span class="p">]</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;level&quot;</span><span class="p">]</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;state&quot;</span><span class="p">]</span>
+            <span class="n">show_documents</span> <span class="o">=</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;show_documents&quot;</span><span class="p">]</span>
+            <span class="n">show_alternates</span> <span class="o">=</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;show_documents&quot;</span><span class="p">]</span>
+            <span class="n">compact</span> <span class="o">=</span> <span class="n">cmp_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;compact&quot;</span><span class="p">,</span> <span class="n">compact</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">initial</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;date&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,</span> <span class="s">&quot;date2&quot;</span> <span class="p">:</span> <span class="n">now</span><span class="p">,</span> <span class="s">&quot;level&quot;</span> <span class="p">:</span> <span class="s">&quot;first&quot;</span><span class="p">,</span>
+            <span class="s">&quot;state&quot;</span> <span class="p">:</span> <span class="s">&quot;all&quot;</span><span class="p">,</span> <span class="s">&quot;compact&quot;</span> <span class="p">:</span> <span class="n">compact</span><span class="p">,</span> <span class="p">}</span>
+        <span class="n">cmp_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">CompareBOMForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="n">initial</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">cmp_bom</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">date2</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">show_documents</span><span class="p">,</span> <span class="n">show_alternates</span><span class="p">))</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;BOM-child&#39;</span><span class="p">,</span>
+                <span class="s">&quot;cmp_form&quot;</span> <span class="p">:</span> <span class="n">cmp_form</span><span class="p">,</span>
+                <span class="s">&#39;compact&#39;</span> <span class="p">:</span> <span class="n">compact</span><span class="p">,</span>
+                <span class="s">&#39;date1&#39;</span> <span class="p">:</span> <span class="n">date</span> <span class="ow">or</span> <span class="n">now</span><span class="p">,</span>
+                <span class="s">&#39;date2&#39;</span> <span class="p">:</span> <span class="n">date2</span> <span class="ow">or</span> <span class="n">now</span><span class="p">,</span>
+                <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/bom_diff.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_parents"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.display_parents">[docs]</a><span class="k">def</span> <span class="nf">display_parents</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parents view.</span>
+
+<span class="sd">    That view displays the parents of the selected object that must be a part.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/parents/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/parents.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``parents``</span>
+<span class="sd">        a list of :class:`.Parents`</span>
+
+<span class="sd">    ``display_form``</span>
+<span class="sd">        a :class:`.DisplayChildrenForm`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;get_parents&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;object must be a part&quot;</span><span class="p">)</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">level</span> <span class="o">=</span> <span class="s">&quot;first&quot;</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="s">&quot;all&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+        <span class="n">display_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DisplayChildrenForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">display_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;date&quot;</span><span class="p">]</span>
+            <span class="n">level</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;level&quot;</span><span class="p">]</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">display_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;state&quot;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">display_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">DisplayChildrenForm</span><span class="p">(</span><span class="n">initial</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">date</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+            <span class="n">level</span><span class="o">=</span><span class="s">&quot;first&quot;</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="s">&quot;all&quot;</span><span class="p">))</span>
+    <span class="c"># FIXME: show attached documents if asked</span>
+    <span class="k">del</span> <span class="n">display_form</span><span class="o">.</span><span class="n">fields</span><span class="p">[</span><span class="s">&quot;show_documents&quot;</span><span class="p">]</span>
+    <span class="n">max_level</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s">&quot;first&quot;</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">only_official</span> <span class="o">=</span> <span class="n">state</span> <span class="o">==</span> <span class="s">&quot;official&quot;</span>
+    <span class="n">parents</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_parents</span><span class="p">(</span><span class="n">max_level</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">only_official</span><span class="o">=</span><span class="n">only_official</span><span class="p">)</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="nb">set</span><span class="p">([</span><span class="n">obj</span><span class="o">.</span><span class="n">id</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s">&quot;last&quot;</span> <span class="ow">and</span> <span class="n">parents</span><span class="p">:</span>
+        <span class="n">previous_level</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_parents</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">max_parents</span> <span class="ow">and</span> <span class="n">c</span><span class="o">.</span><span class="n">level</span> <span class="o">&gt;</span> <span class="n">previous_level</span><span class="p">:</span>
+                <span class="k">del</span> <span class="n">max_parents</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">max_parents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="n">previous_level</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">level</span>
+        <span class="n">parents</span> <span class="o">=</span> <span class="n">max_parents</span>
+    <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">parents</span><span class="p">:</span>
+        <span class="n">ids</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">parent_id</span><span class="p">)</span>
+
+    <span class="n">states</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">StateHistory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject__in</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">only_official</span><span class="p">:</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="n">states</span><span class="o">.</span><span class="n">officials</span><span class="p">()</span>
+    <span class="n">states</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">states</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;plmobject&quot;</span><span class="p">,</span> <span class="s">&quot;state&quot;</span><span class="p">))</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;parents&#39;</span><span class="p">,</span>
+                <span class="s">&#39;parents&#39;</span> <span class="p">:</span>  <span class="n">parents</span><span class="p">,</span>
+                <span class="s">&#39;display_form&#39;</span> <span class="p">:</span> <span class="n">display_form</span><span class="p">,</span>
+                <span class="s">&#39;states&#39;</span> <span class="p">:</span> <span class="n">states</span><span class="p">,</span>
+                <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/parents.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="alternates"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.alternates">[docs]</a><span class="k">def</span> <span class="nf">alternates</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&quot;current_page&quot;</span> <span class="p">:</span> <span class="s">&quot;alternates&quot;</span><span class="p">,</span>
+        <span class="s">&quot;alternates&quot;</span> <span class="p">:</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_alternates</span><span class="p">(),</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/alternates.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="add_alternate"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.add_alternate">[docs]</a><span class="k">def</span> <span class="nf">add_alternate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">add_part_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddPartForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_part_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">part_obj</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">add_part_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">add_alternate</span><span class="p">(</span><span class="n">part_obj</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;alternates/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">add_part_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddPartForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;link_creation&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="s">&#39;add_part_form&#39;</span><span class="p">:</span> <span class="n">add_part_form</span><span class="p">,</span>
+                <span class="s">&#39;attach&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;add_alternate&quot;</span><span class="p">)</span> <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/alternates_add.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="delete_alternate"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.delete_alternate">[docs]</a><span class="k">def</span> <span class="nf">delete_alternate</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">delete_alternate</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;alternates/&quot;</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="display_doc_cad"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.display_doc_cad">[docs]</a><span class="k">def</span> <span class="nf">display_doc_cad</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attached documents view.</span>
+
+<span class="sd">    That view displays the documents attached to the selected object that must be a part.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/doc-cad/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/doccad.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``documents``</span>
+<span class="sd">        a queryset of :class:`.DocumentPartLink` bound to the part</span>
+
+<span class="sd">    ``archive_formats``</span>
+<span class="sd">        list of available archive formats</span>
+
+<span class="sd">    ``docs_formset``</span>
+<span class="sd">        a formset to detach documents</span>
+
+<span class="sd">    ``forms``</span>
+<span class="sd">        a dictionary (link_id -&gt; form) to get the form related to a link</span>
+<span class="sd">        (a document may not be &quot;detachable&quot;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;get_attached_documents&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">HttpResponseBadRequest</span><span class="p">(</span><span class="s">&quot;object must be a part&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_doc_cad_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">formset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">update_doc_cad</span><span class="p">(</span><span class="n">formset</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">formset</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">get_doc_cad_formset</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="n">dforms</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">form</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">form</span><span class="p">)</span> <span class="k">for</span> <span class="n">form</span> <span class="ow">in</span> <span class="n">formset</span><span class="o">.</span><span class="n">forms</span><span class="p">)</span>
+    <span class="n">documents</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_attached_documents</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;current_page&#39;</span><span class="p">:</span><span class="s">&#39;doc-cad&#39;</span><span class="p">,</span>
+                <span class="s">&#39;documents&#39;</span><span class="p">:</span> <span class="n">documents</span><span class="p">,</span>
+                <span class="s">&#39;forms&#39;</span> <span class="p">:</span> <span class="n">dforms</span><span class="p">,</span>
+                <span class="s">&#39;archive_formats&#39;</span> <span class="p">:</span> <span class="n">ARCHIVE_FORMATS</span><span class="p">,</span>
+                <span class="s">&#39;docs_formset&#39;</span><span class="p">:</span> <span class="n">formset</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_id_card_data</span><span class="p">([</span><span class="n">d</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/doccad.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="add_doc_cad"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.add_doc_cad">[docs]</a><span class="k">def</span> <span class="nf">add_doc_cad</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to attach a document to a part.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/doc-cad/add/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`parts/doccad_add.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``add_doc_cad_form``</span>
+<span class="sd">        a form to attach a document (:class:`.AddDocCadForm`)</span>
+
+<span class="sd">    ``link_creation``</span>
+<span class="sd">        Set to True</span>
+
+<span class="sd">    ``attach``</span>
+<span class="sd">        set to (*obj*, &quot;attach_doc&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">add_doc_cad_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddDocCadForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">add_doc_cad_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">doc_cad_obj</span> <span class="o">=</span> <span class="n">get_obj_from_form</span><span class="p">(</span><span class="n">add_doc_cad_form</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">attach_to_document</span><span class="p">(</span><span class="n">doc_cad_obj</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;doc-cad/&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">add_doc_cad_form</span> <span class="o">=</span> <span class="n">forms</span><span class="o">.</span><span class="n">AddDocCadForm</span><span class="p">()</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;link_creation&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+                <span class="s">&#39;add_doc_cad_form&#39;</span><span class="p">:</span> <span class="n">add_doc_cad_form</span><span class="p">,</span>
+                <span class="s">&#39;attach&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;attach_doc&quot;</span><span class="p">)})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;parts/doccad_add.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="delete_doc_cad"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.part.delete_doc_cad">[docs]</a><span class="k">def</span> <span class="nf">delete_doc_cad</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View to detach a document referred by the POST parameter ``plmobject``.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/doc-cad/delete/`</span>
+
+<span class="sd">    .. include:: views_params.txt</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">doc_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">[</span><span class="s">&quot;plmobject&quot;</span><span class="p">])</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">get_obj_by_id</span><span class="p">(</span><span class="n">doc_id</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">detach_document</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;The document {doc.type}/{doc.reference}/{doc.revision} has been detached.&quot;</span><span class="p">)</span>
+        <span class="n">messages</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span> <span class="o">+</span> <span class="s">&quot;doc-cad/&quot;</span><span class="p">)</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

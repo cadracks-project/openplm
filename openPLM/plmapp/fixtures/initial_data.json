@@ -1,0 +1,127 @@
+[
+    {
+        "pk": "draft", 
+        "model": "plmapp.state", 
+        "fields": {}
+    }, 
+    {
+        "pk": "proposed", 
+        "model": "plmapp.state", 
+        "fields": {}
+    }, 
+    {
+        "pk": "official", 
+        "model": "plmapp.state", 
+        "fields": {}
+    }, 
+    {
+        "pk": "deprecated", 
+        "model": "plmapp.state", 
+        "fields": {}
+    }, 
+    {
+        "pk": "cancelled", 
+        "model": "plmapp.state", 
+        "fields": {}
+    }, 
+    {
+        "pk": "draft_official_deprecated", 
+        "model": "plmapp.lifecycle", 
+        "fields": {
+            "official_state":"official",
+            "type" : 1
+        }
+    },
+    {
+        "pk": "draft_proposed_official_deprecated", 
+        "model": "plmapp.lifecycle", 
+        "fields": {
+            "official_state":"official",
+            "type" : 1
+        }
+    },
+
+    {
+        "pk": "cancelled", 
+        "model": "plmapp.lifecycle", 
+        "fields": {
+            "official_state":"cancelled",
+            "type" : 2
+        }
+    }, 
+
+    {
+        "pk": 1, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "draft", 
+            "lifecycle": "draft_official_deprecated", 
+            "rank": 0
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "official", 
+            "lifecycle": "draft_official_deprecated", 
+            "rank": 1
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "deprecated", 
+            "lifecycle": "draft_official_deprecated", 
+            "rank": 2
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "cancelled", 
+            "lifecycle": "cancelled", 
+            "rank": 0
+        }
+    },
+    {
+        "pk": 5, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "draft", 
+            "lifecycle": "draft_proposed_official_deprecated", 
+            "rank": 0
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "proposed", 
+            "lifecycle": "draft_proposed_official_deprecated", 
+            "rank": 1
+        }
+    }, 
+
+    {
+        "pk": 7, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "official", 
+            "lifecycle": "draft_proposed_official_deprecated", 
+            "rank": 2
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "plmapp.lifecyclestates", 
+        "fields": {
+            "state": "deprecated", 
+            "lifecycle": "draft_proposed_official_deprecated", 
+            "rank": 3
+        }
+    }
+    
+]

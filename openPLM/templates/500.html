@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+{% block leftcolumn %} {% endblock %}
+
+
+{% block main %}
+    <div id="ActiveBox">
+
+        <div id="ActiveArea">
+            <h3 class="hplm">{% trans "Error 500" %}</h3>
+            {% blocktrans with request_path as request_path %}
+                Internal server error.
+            {% endblocktrans %}
+            </p>
+
+            <div class="clearfix"></div>
+
+        </div>
+
+    </div>
+{% endblock %}
+

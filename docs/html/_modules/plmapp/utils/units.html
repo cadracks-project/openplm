@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.utils.units &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="plmapp.utils" href="../utils.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../utils.html" accesskey="U">plmapp.utils</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/utils/units.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.utils.units</h1><div class="highlight"><pre>
+<span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">This module defines two constants:</span>
+
+<span class="sd">.. data:: DEFAULT_UNIT</span>
+
+<span class="sd">    The default unit of a BOM row: ``-`` (each)</span>
+
+<span class="sd">.. data:: UNITS</span>
+
+<span class="sd">    All valid units of a BOM row.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="n">DEFAULT_UNIT</span> <span class="o">=</span> <span class="s">&quot;-&quot;</span>
+
+<span class="n">UNITS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Amounts&#39;</span><span class="p">),</span> <span class="p">(</span>
+        <span class="p">(</span><span class="n">DEFAULT_UNIT</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;Each&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;mol&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;mol&#39;</span><span class="p">)),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Lengths&#39;</span><span class="p">),</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;mm&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;mm&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;cm&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;cm&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;dm&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;dm&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;m&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;m&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;km&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;km&#39;</span><span class="p">)),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Volumes&#39;</span><span class="p">),</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;m3&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;m</span><span class="se">\xb3</span><span class="s">&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;mL&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;mL&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;cL&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;cL&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;dL&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;dL&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;L&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;L&#39;</span><span class="p">)),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+    <span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">u&#39;Masses&#39;</span><span class="p">),</span> <span class="p">(</span>
+        <span class="p">(</span><span class="s">&#39;mg&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;mg&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;cg&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;cg&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;dg&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;dg&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;g&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;g&#39;</span><span class="p">)),</span>
+        <span class="p">(</span><span class="s">&#39;kg&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s">u&#39;kg&#39;</span><span class="p">)),</span>
+        <span class="p">)</span>
+    <span class="p">),</span>
+<span class="p">)</span>
+
+<div class="viewcode-block" id="UnitConversionError"><a class="viewcode-back" href="../../../devel/modules/utils/units.html#plmapp.utils.units.UnitConversionError">[docs]</a><span class="k">class</span> <span class="nc">UnitConversionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.1</span>
+
+<span class="sd">    Exception raised if an error occurs while converting</span>
+<span class="sd">    a value from one unit to another one.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+</div>
+<span class="n">FACTORS</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="s">&#39;mm&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="s">&#39;m&#39;</span><span class="p">),</span>
+    <span class="s">&#39;cm&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="s">&#39;m&#39;</span><span class="p">),</span>
+    <span class="s">&#39;dm&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s">&#39;m&#39;</span><span class="p">),</span>
+    <span class="s">&#39;m&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="s">&#39;m&#39;</span><span class="p">),</span>
+    <span class="s">&#39;km&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s">&#39;m&#39;</span><span class="p">),</span>
+
+    <span class="s">&#39;mg&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="s">&#39;g&#39;</span><span class="p">),</span>
+    <span class="s">&#39;cg&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="s">&#39;g&#39;</span><span class="p">),</span>
+    <span class="s">&#39;dg&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s">&#39;g&#39;</span><span class="p">),</span>
+    <span class="s">&#39;g&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="s">&#39;g&#39;</span><span class="p">),</span>
+    <span class="s">&#39;kg&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="s">&#39;g&#39;</span><span class="p">),</span>
+
+    <span class="s">&#39;mol&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">6.0221404e23</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">),</span>
+    <span class="s">&#39;-&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">),</span>
+
+    <span class="s">&#39;m3&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">1000.</span><span class="p">,</span> <span class="s">&#39;L&#39;</span><span class="p">),</span>
+    <span class="s">&#39;mL&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.001</span><span class="p">,</span> <span class="s">&#39;L&#39;</span><span class="p">),</span>
+    <span class="s">&#39;cL&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="s">&#39;L&#39;</span><span class="p">),</span>
+    <span class="s">&#39;dL&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="s">&#39;L&#39;</span><span class="p">),</span>
+    <span class="s">&#39;L&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="s">&#39;L&#39;</span><span class="p">),</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="convert_unit"><a class="viewcode-back" href="../../../devel/modules/utils/units.html#plmapp.utils.units.convert_unit">[docs]</a><span class="k">def</span> <span class="nf">convert_unit</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">original_unit</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.1</span>
+
+<span class="sd">    Converts a value expressed in *original_unit* to</span>
+<span class="sd">    *new_unit*</span>
+
+<span class="sd">    :raises: :exc:`UnitConversionError` if the conversion is not possible.</span>
+
+<span class="sd">    Here is an example :</span>
+
+<span class="sd">        &gt;&gt;&gt; convert_unit(1, &#39;m&#39;, &#39;mm&#39;)</span>
+<span class="sd">        1000.0</span>
+<span class="sd">        &gt;&gt;&gt; convert_unit(5, &#39;dm&#39;, &#39;mm&#39;)</span>
+<span class="sd">        500.0</span>
+<span class="sd">        &gt;&gt;&gt; convert_unit(5, &#39;dL&#39;, &#39;m3&#39;)</span>
+<span class="sd">        0.00050000000000000001</span>
+<span class="sd">        &gt;&gt;&gt; convert_unit(5, &#39;dL&#39;, &#39;kg&#39;)</span>
+<span class="sd">        ------------------------------------------------------------</span>
+<span class="sd">        Traceback (most recent call last):</span>
+<span class="sd">          File &quot;&lt;ipython console&gt;&quot;, line 1, in &lt;module&gt;</span>
+<span class="sd">          File plmpapp/utils/units.py&quot;, line 80, in convert_unit</span>
+<span class="sd">            def convert_unit(value, original_unit, new_unit):</span>
+<span class="sd">        UnitConversionError: Inconsistent units (dL, kg)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">factor1</span><span class="p">,</span> <span class="n">base1</span> <span class="o">=</span> <span class="n">FACTORS</span><span class="p">[</span><span class="n">original_unit</span><span class="p">]</span>
+    <span class="n">factor2</span><span class="p">,</span> <span class="n">base2</span> <span class="o">=</span> <span class="n">FACTORS</span><span class="p">[</span><span class="n">new_unit</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">base1</span> <span class="o">!=</span> <span class="n">base2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">UnitConversionError</span><span class="p">(</span><span class="s">&quot;Inconsistent units (</span><span class="si">%s</span><span class="s">, </span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">original_unit</span><span class="p">,</span> <span class="n">new_unit</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="n">factor1</span> <span class="o">/</span> <span class="n">factor2</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li>
+          <li><a href="../utils.html" >plmapp.utils</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

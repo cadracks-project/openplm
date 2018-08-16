@@ -1,0 +1,166 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.files.formats &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/files/formats.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.files.formats</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
+<span class="c"># extensions from http://en.wikipedia.org/wiki/List_of_file_formats#Computer-aided_design_.28CAD.29</span>
+<span class="c"># + fc*, brep, stp, idv</span>
+<span class="c">#: a set of CAD file extensions, all values are in lowercase and starts with a dot.</span>
+<span class="n">CAD_FORMATS</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span>
+    <span class="s">&quot;.3dmlw&quot;</span><span class="p">,</span> <span class="s">&quot;.3dxml&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.acp&quot;</span><span class="p">,</span> <span class="s">&quot;.amf&quot;</span><span class="p">,</span> <span class="s">&quot;.ar&quot;</span><span class="p">,</span> <span class="s">&quot;.art&quot;</span><span class="p">,</span> <span class="s">&quot;.asc&quot;</span><span class="p">,</span> <span class="s">&quot;.asm&quot;</span><span class="p">,</span> <span class="s">&quot;.bin&quot;</span><span class="p">,</span> <span class="s">&quot;.bim&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.ccc&quot;</span><span class="p">,</span> <span class="s">&quot;.ccm&quot;</span><span class="p">,</span> <span class="s">&quot;.ccs&quot;</span><span class="p">,</span> <span class="s">&quot;.cad&quot;</span><span class="p">,</span> <span class="s">&quot;.catdrawing&quot;</span><span class="p">,</span> <span class="s">&quot;.catpart&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.catproduct&quot;</span><span class="p">,</span> <span class="s">&quot;.catprocess&quot;</span><span class="p">,</span> <span class="s">&quot;.cel&quot;</span><span class="p">,</span> <span class="s">&quot;.cgr&quot;</span><span class="p">,</span> <span class="s">&quot;.co&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.drw&quot;</span><span class="p">,</span> <span class="s">&quot;.dwg&quot;</span><span class="p">,</span> <span class="s">&quot;.dft&quot;</span><span class="p">,</span> <span class="s">&quot;.dgn&quot;</span><span class="p">,</span> <span class="s">&quot;.dgk&quot;</span><span class="p">,</span> <span class="s">&quot;.dmt&quot;</span><span class="p">,</span> <span class="s">&quot;.dxf&quot;</span><span class="p">,</span> <span class="s">&quot;.dwb&quot;</span><span class="p">,</span> <span class="s">&quot;.dwf&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.emb&quot;</span><span class="p">,</span> <span class="s">&quot;.esw&quot;</span><span class="p">,</span> <span class="s">&quot;.excellon&quot;</span><span class="p">,</span> <span class="s">&quot;.exp&quot;</span><span class="p">,</span> <span class="s">&quot;.fm&quot;</span><span class="p">,</span> <span class="s">&quot;.fmz&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.g&quot;</span><span class="p">,</span> <span class="s">&quot;.gerber&quot;</span><span class="p">,</span> <span class="s">&quot;.grb&quot;</span><span class="p">,</span> <span class="s">&quot;.gtc&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.iam&quot;</span><span class="p">,</span> <span class="s">&quot;.icd&quot;</span><span class="p">,</span> <span class="s">&quot;.idv&quot;</span><span class="p">,</span> <span class="s">&quot;.idw&quot;</span><span class="p">,</span> <span class="s">&quot;.ifc&quot;</span><span class="p">,</span> <span class="s">&quot;.iges&quot;</span><span class="p">,</span> <span class="s">&quot;.ipn&quot;</span><span class="p">,</span> <span class="s">&quot;.ipt&quot;</span><span class="p">,</span> <span class="s">&quot;.jt&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.mcd&quot;</span><span class="p">,</span> <span class="s">&quot;.model&quot;</span><span class="p">,</span> <span class="s">&quot;.ocd&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.par&quot;</span><span class="p">,</span> <span class="s">&quot;.prt&quot;</span><span class="p">,</span> <span class="s">&quot;.pln&quot;</span><span class="p">,</span> <span class="s">&quot;.psm&quot;</span><span class="p">,</span> <span class="s">&quot;.psmodel&quot;</span><span class="p">,</span> <span class="s">&quot;.pwi&quot;</span><span class="p">,</span> <span class="s">&quot;.pyt&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.rlf&quot;</span><span class="p">,</span> <span class="s">&quot;.rvt&quot;</span><span class="p">,</span> <span class="s">&quot;.rfa&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.scdoc&quot;</span><span class="p">,</span> <span class="s">&quot;.skp&quot;</span><span class="p">,</span> <span class="s">&quot;.sldasm&quot;</span><span class="p">,</span> <span class="s">&quot;.slddrw&quot;</span><span class="p">,</span> <span class="s">&quot;.sldprt&quot;</span><span class="p">,</span> <span class="s">&quot;.step&quot;</span><span class="p">,</span> <span class="s">&quot;.stp&quot;</span><span class="p">,</span> <span class="s">&quot;.stl&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.tct&quot;</span><span class="p">,</span> <span class="s">&quot;.tcw&quot;</span><span class="p">,</span> <span class="s">&quot;.unv&quot;</span><span class="p">,</span> <span class="s">&quot;.vc6&quot;</span><span class="p">,</span> <span class="s">&quot;.vlm&quot;</span><span class="p">,</span> <span class="s">&quot;.vs&quot;</span><span class="p">,</span> <span class="s">&quot;.wrl&quot;</span><span class="p">,</span> <span class="s">&quot;.xe&quot;</span><span class="p">,</span>
+    <span class="s">&quot;.fcstd&quot;</span><span class="p">,</span> <span class="s">&quot;.fmacro&quot;</span><span class="p">,</span> <span class="s">&quot;.fscript&quot;</span><span class="p">,</span> <span class="s">&quot;.brep&quot;</span><span class="p">,</span> <span class="s">&quot;.brp&quot;</span><span class="p">,</span>
+<span class="p">))</span>
+
+<div class="viewcode-block" id="is_cad_file"><a class="viewcode-back" href="../../../devel/modules/files/formats.html#plmapp.files.formats.is_cad_file">[docs]</a><span class="k">def</span> <span class="nf">is_cad_file</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns True if *filename* is a CAD file.</span>
+<span class="sd">    Only tests if its extension is in :const:`CAD_FORMATS`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ext</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="n">CAD_FORMATS</span>
+</div>
+<span class="n">native_to_standards</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span>
+<span class="n">native_to_standards</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+    <span class="p">(</span>
+    <span class="p">(</span><span class="s">u&#39;.fcstd&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">u&#39;.step&#39;</span><span class="p">,</span> <span class="s">u&#39;.stp&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s">u&#39;.catproduct&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">u&#39;.step&#39;</span><span class="p">,</span> <span class="s">u&#39;.stp&#39;</span><span class="p">)),</span>
+    <span class="p">(</span><span class="s">u&#39;.catpart&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">u&#39;.step&#39;</span><span class="p">,</span> <span class="s">u&#39;.stp&#39;</span><span class="p">)),</span>
+<span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

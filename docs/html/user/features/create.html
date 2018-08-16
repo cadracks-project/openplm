@@ -1,0 +1,359 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2. Create &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="3. Features" href="../features.html" />
+    <link rel="next" title="3. Wiki (Markdown) syntax" href="markdown_syntax.html" />
+    <link rel="prev" title="1. Browse" href="browse.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="markdown_syntax.html" title="3. Wiki (Markdown) syntax"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="browse.html" title="1. Browse"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../features.html" accesskey="U">3. Features</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">2. Create</a><ul>
+<li><a class="reference internal" href="#other-creation-tools">2.1. Other creation tools</a><ul>
+<li><a class="reference internal" href="#sponsor-a-new-user">2.1.1. Sponsor a new user</a></li>
+<li><a class="reference internal" href="#import-from-a-csv-file">2.1.2. Import from a csv file</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="browse.html"
+                        title="previous chapter">1. Browse</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="markdown_syntax.html"
+                        title="next chapter">3. Wiki (Markdown) syntax</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/user/features/create.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/features/create.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="create">
+<h1>2. Create<a class="headerlink" href="#create" title="Permalink to this headline">¶</a></h1>
+<p>This document describes how to create <strong>Parts</strong>, <strong>Documents</strong>.
+It describes how to add new <strong>Users</strong> too.</p>
+
+<link rel="stylesheet" media="screen" type="text/css" href="../../_static/user_features/css/feature.css"/>
+
+<div class="feature_block" >
+    <img src="../../_images/Capture_openPLM_create.png" alt="the create view">
+    <div class="marker" id="create_type">
+        <div class="info">
+    	    Select the type (or subtype) of object you want to create :
+            <ul>
+                <li>Part</li>
+                <li>Document</li>
+                <li>Group</li>
+                <li>User</li>
+            </ul>
+        </div>
+    </div>
+    <div class="marker" id="create_ref">
+        <div class="info">
+            When "<i>Auto</i>" box is checked, the reference of the object will be automatically generated.
+            You can uncheck this box if you want to enter a reference.
+        </div>
+    </div>
+    <div class="marker" id="create_rev">
+        <div class="info">
+           The revision of the object is automatically set to "<i>a</i>" when you create it but you can modify it as you want.
+        </div>
+    </div>
+    <div class="marker" id="create_cycle">
+        <div class="info">
+           Select the lifecycle of the object
+        </div>
+    </div>
+    <div class="marker" id="create_group">
+        <div class="info">
+           Select the group which can reach the document
+        </div>
+    </div>
+    <div class="marker" id="create_import">
+        <div class="info">
+            Import csv files to create PLM object, Bom or add users.
+        </div>
+    </div>
+</div>
+<div class="section" id="other-creation-tools">
+<h2>2.1. Other creation tools<a class="headerlink" href="#other-creation-tools" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="sponsor-a-new-user">
+<h3>2.1.1. Sponsor a new user<a class="headerlink" href="#sponsor-a-new-user" title="Permalink to this headline">¶</a></h3>
+<p>The sponsor form is also reachable in the delegation tab</p>
+</div>
+<div class="section" id="import-from-a-csv-file">
+<h3>2.1.2. Import from a csv file<a class="headerlink" href="#import-from-a-csv-file" title="Permalink to this headline">¶</a></h3>
+<p>PLM object (parts and document) and user can be created with a csv file. This file
+must contains headers related to the target (object or user).
+Mostly these headers are the required field in the related
+object or user creation form.</p>
+<dl class="docutils">
+<dt>Example of csv file&#8217;s structure :</dt>
+<dd><dl class="first last docutils">
+<dt>1 - PLM object</dt>
+<dd><table border="1" class="first docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">type</th>
+<th class="head">reference</th>
+<th class="head">revision</th>
+<th class="head">name</th>
+<th class="head">group</th>
+<th class="head">lifecycle</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Part</td>
+<td>PART_00078</td>
+<td>a</td>
+<td>part_example</td>
+<td>leading-group</td>
+<td>draft</td>
+</tr>
+<tr class="row-odd"><td>Document</td>
+<td>DOC_00091</td>
+<td>b</td>
+<td>doc_example</td>
+<td>leading-group</td>
+<td>official</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Download the <a class="reference download internal" href="../../_downloads/PLMObject.csv"><tt class="xref download docutils literal"><span class="pre">file</span></tt></a>.</p>
+</dd>
+<dt>2 - BOM</dt>
+<dd><table border="1" class="first docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">parent-type</th>
+<th class="head">parent-reference</th>
+<th class="head">parent-revision</th>
+<th class="head">child-type</th>
+<th class="head">child-reference</th>
+<th class="head">child-revision</th>
+<th class="head">quantity</th>
+<th class="head">order</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Part</td>
+<td>PART_00078</td>
+<td>a</td>
+<td>Part</td>
+<td>PART_00080</td>
+<td>a</td>
+<td>3</td>
+<td>10</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Download the <a class="reference download internal" href="../../_downloads/BOM.csv"><tt class="xref download docutils literal"><span class="pre">file</span></tt></a>.</p>
+</dd>
+<dt>3 - User</dt>
+<dd><table border="1" class="first docutils">
+<colgroup>
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">username</th>
+<th class="head">first_name</th>
+<th class="head">last_name</th>
+<th class="head">email</th>
+<th class="head">groups</th>
+<th class="head">language</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>bob</td>
+<td>Bob</td>
+<td>Bill</td>
+<td><a class="reference external" href="mailto:bob&#37;&#52;&#48;example&#46;com">bob<span>&#64;</span>example<span>&#46;</span>com</a></td>
+<td>leading_group</td>
+<td>en</td>
+</tr>
+<tr class="row-odd"><td>bill</td>
+<td>Bill</td>
+<td>Bob</td>
+<td><a class="reference external" href="mailto:bill&#37;&#52;&#48;example&#46;com">bill<span>&#64;</span>example<span>&#46;</span>com</a></td>
+<td>leading_group/other_group</td>
+<td>en</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>The available values for language are :</dt>
+<dd><ul class="first last simple">
+<li>&#8220;en&#8221; (english)</li>
+<li>&#8220;fr&#8221; (french)</li>
+<li>&#8220;es&#8221; (spanish)</li>
+<li>&#8220;ja&#8221; (japanese)</li>
+<li>&#8220;ru&#8221; (russian)</li>
+<li>&#8220;zh_CN&#8221; (chinese)</li>
+</ul>
+</dd>
+</dl>
+<p class="last">Download the <a class="reference download internal" href="../../_downloads/User.csv"><tt class="xref download docutils literal"><span class="pre">file</span></tt></a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="markdown_syntax.html" title="3. Wiki (Markdown) syntax"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="browse.html" title="1. Browse"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="../features.html" >3. Features</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

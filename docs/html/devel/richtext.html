@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>10. Rich text | Wiki syntax &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="11. Testing openPLM" href="testing.html" />
+    <link rel="prev" title="9. Publication" href="publication.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="testing.html" title="11. Testing openPLM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="9. Publication"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">10. Rich text | Wiki syntax</a><ul>
+<li><a class="reference internal" href="#introduction">10.1. Introduction</a></li>
+<li><a class="reference internal" href="#model-how-to-enhance-a-textfield">10.2. Model: how to enhance a textfield</a></li>
+<li><a class="reference internal" href="#how-to-render-a-content">10.3. How to render a content</a><ul>
+<li><a class="reference internal" href="#functions">10.3.1. Functions</a></li>
+<li><a class="reference internal" href="#template-filters">10.3.2. Template filters</a></li>
+<li><a class="reference internal" href="#views-ajax">10.3.3. Views, ajax</a></li>
+<li><a class="reference internal" href="#forms">10.3.4. Forms</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#markdown-syntax">10.4. Markdown syntax</a></li>
+<li><a class="reference internal" href="#how-to-add-a-new-syntax">10.5. How to add a new syntax</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="publication.html"
+                        title="previous chapter">9. Publication</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="testing.html"
+                        title="next chapter">11. Testing openPLM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/richtext.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/richtext.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="rich-text-wiki-syntax">
+<span id="devel-richtext"></span><h1>10. Rich text | Wiki syntax<a class="headerlink" href="#rich-text-wiki-syntax" title="Permalink to this headline">¶</a></h1>
+<p class="versionadded">
+<span class="versionmodified">New in version 2.0.</span></p>
+<div class="section" id="introduction">
+<h2>10.1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>OpenPLM 2.0 introduces a wiki syntax to comments and some text fields.</p>
+<p>The code and this documentation speak about rich text instead of a
+wiki content as it is not really a wiki engine (no WikiLink automatically
+created).</p>
+<p>This document describes how to mark a text field as a rich text field
+and how to render its content.</p>
+</div>
+<div class="section" id="model-how-to-enhance-a-textfield">
+<h2>10.2. Model: how to enhance a textfield<a class="headerlink" href="#model-how-to-enhance-a-textfield" title="Permalink to this headline">¶</a></h2>
+<p>OpenPLM does not store the rendered HTML. So it is possible to set
+a text field as a &#8220;rich&#8221; text field at any time. To do that,
+simply add a <tt class="docutils literal"><span class="pre">richtext</span></tt> attribute (set tot True) to the text field.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">Part</span><span class="p">):</span>
+
+    <span class="n">my_text_field</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">()</span>
+<span class="hll">    <span class="n">my_text_field</span><span class="o">.</span><span class="n">richtext</span> <span class="o">=</span> <span class="bp">True</span>
+</span></pre></div>
+</div>
+<p>Note that a plain text rendering is stored by the search engine.
+This plain text rendering is syntax dependant and you may have
+to reindex a model if the raw text (user input stored in the database)
+and the plain text may be too different.</p>
+</div>
+<div class="section" id="how-to-render-a-content">
+<h2>10.3. How to render a content<a class="headerlink" href="#how-to-render-a-content" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="functions">
+<h3>10.3.1. Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<p>Two functions are available to render a text:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="modules/filters.html#plmapp.filters.richtext" title="plmapp.filters.richtext"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.filters.richtext()</span></tt></a></li>
+<li><a class="reference internal" href="modules/filters.html#plmapp.filters.plaintext" title="plmapp.filters.plaintext"><tt class="xref py py-func docutils literal"><span class="pre">plmapp.filters.plaintext()</span></tt></a></li>
+</ul>
+</div></blockquote>
+<p>The first one returns an HTML output,
+the second one returns a plain text output.
+The plain text output is stored and indexed by the search engine.</p>
+<p>Both functions take the text to render and the current object
+(usually a controller). The current object is required to
+render relative links (like links to the next/previous revisions).</p>
+</div>
+<div class="section" id="template-filters">
+<h3>10.3.2. Template filters<a class="headerlink" href="#template-filters" title="Permalink to this headline">¶</a></h3>
+<p>Two template filters are available to render a text in a template:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.richtext_filter" title="plmapp.templatetags.plmapp_tags.richtext_filter"><tt class="xref py py-func docutils literal"><span class="pre">richtext_filter()</span></tt></a></li>
+<li><a class="reference internal" href="modules/plmapp_tags.html#plmapp.templatetags.plmapp_tags.plaintext_filter" title="plmapp.templatetags.plmapp_tags.plaintext_filter"><tt class="xref py py-func docutils literal"><span class="pre">plaintext_filter()</span></tt></a></li>
+</ul>
+</div></blockquote>
+<p>Both filters take a text to render and the current object:</p>
+<div class="highlight-django"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">load</span> <span class="nv">plmapp_tags</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">...</span>
+<span class="cp">{{</span> <span class="nv">text</span><span class="o">|</span><span class="nf">richtext_filter</span><span class="o">:</span><span class="nv">obj</span><span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-django"><div class="highlight"><pre><span class="cp">{%</span> <span class="k">load</span> <span class="nv">plmapp_tags</span> <span class="cp">%}</span><span class="x"></span>
+<span class="x">...</span>
+<span class="cp">{{</span> <span class="nv">text</span><span class="o">|</span><span class="nf">plaintext_filter</span><span class="o">:</span><span class="nv">obj</span><span class="cp">}}</span><span class="x"></span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="views-ajax">
+<h3>10.3.3. Views, ajax<a class="headerlink" href="#views-ajax" title="Permalink to this headline">¶</a></h3>
+<p>One AJAX view (<a class="reference internal" href="modules/views.html#plmapp.views.ajax.ajax_richtext_preview" title="plmapp.views.ajax.ajax_richtext_preview"><tt class="xref py py-func docutils literal"><span class="pre">ajax_richtext_preview()</span></tt></a>) is available to
+get an HTML preview of a content.</p>
+<p>URLs:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt>PLMObject</dt>
+<dd><tt class="samp docutils literal"><span class="pre">/ajax/richtext_preview/</span><em><span class="pre">type</span></em><span class="pre">/</span><em><span class="pre">reference</span></em><span class="pre">/</span><em><span class="pre">revision</span></em><span class="pre">/</span></tt></dd>
+<dt>User</dt>
+<dd><tt class="samp docutils literal"><span class="pre">/ajax/richtext_preview/User/</span><em><span class="pre">username</span></em><span class="pre">/-/</span></tt></dd>
+<dt>Group</dt>
+<dd><tt class="samp docutils literal"><span class="pre">/ajax/richtext_preview/Group/</span><em><span class="pre">name</span></em><span class="pre">/-/</span></tt></dd>
+</dl>
+</div></blockquote>
+<p>This view requires one GET parameter, <tt class="docutils literal"><span class="pre">content</span></tt> which is the
+raw content to be rendered.</p>
+<p>It returns a JSON response with one key, <tt class="docutils literal"><span class="pre">html</span></tt>, the rendered
+content that can be included in a div element.</p>
+</div>
+<div class="section" id="forms">
+<h3>10.3.4. Forms<a class="headerlink" href="#forms" title="Permalink to this headline">¶</a></h3>
+<p>Creation and modification forms automatically convert
+textarea widget to the enhanced version as set
+by the <tt class="xref std std-setting docutils literal"><span class="pre">RICHTEXT_WIDGET_ClASS</span></tt> settings.</p>
+<p>If you need to enhance a textarea, you can call
+<a class="reference internal" href="modules/forms.html#plmapp.forms.enhance_fields" title="plmapp.forms.enhance_fields"><tt class="xref py py-func docutils literal"><span class="pre">forms.enhance_fields()</span></tt></a> if the form was built from a model.
+Alternatively, you can enhance any form like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils.importing</span> <span class="kn">import</span> <span class="n">import_dotted_path</span>
+
+<span class="k">def</span> <span class="nf">enhance_form</span><span class="p">(</span><span class="n">form_cls</span><span class="p">,</span> <span class="n">field</span><span class="p">):</span>
+    <span class="n">widget_class</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&quot;RICHTEXT_WIDGET_CLASS&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">widget_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">cls</span> <span class="o">=</span> <span class="n">import_dotted_path</span><span class="p">(</span><span class="n">widget_class</span><span class="p">)</span>
+        <span class="n">form_cls</span><span class="o">.</span><span class="n">base_fields</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">cls</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">form_cls</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="markdown-syntax">
+<h2>10.4. Markdown syntax<a class="headerlink" href="#markdown-syntax" title="Permalink to this headline">¶</a></h2>
+<p>OpenPLM ships with a <a class="reference external" href="http://daringfireball.net/projects/markdown/">Markdown</a> syntax.</p>
+<p>It can be enabled with the following settings:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">RICHTEXT_FILTER</span> <span class="o">=</span> <span class="s">&#39;openPLM.plmapp.filters.markdown_filter&#39;</span>
+<span class="n">RICHTEXT_WIDGET_CLASS</span> <span class="o">=</span> <span class="s">&#39;openPLM.plmapp.widgets.MarkdownWidget&#39;</span>
+</pre></div>
+</div>
+<p>The filter is built with <a class="reference external" href="http://pythonhosted.org/Markdown/index.html">Python Markdown</a> with the <tt class="docutils literal"><span class="pre">safe_mode</span></tt> option activated
+and the following extensions:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">abbr</span></tt>,</li>
+<li><tt class="docutils literal"><span class="pre">tables</span></tt>,</li>
+<li><tt class="docutils literal"><span class="pre">def_list</span></tt>,</li>
+<li><tt class="docutils literal"><span class="pre">smart_strong</span></tt>,</li>
+<li><tt class="docutils literal"><span class="pre">toc</span></tt>.</li>
+</ul>
+</div></blockquote>
+<p>More custom extensions are enabled, they added the following syntaxes:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">[</span><em><span class="pre">type</span></em><span class="pre">/</span><em><span class="pre">reference</span></em><span class="pre">/</span><em><span class="pre">revision</span></em><span class="pre">]</span></tt></td>
+<td>link to a PLMObject</td>
+</tr>
+<tr class="row-even"><td><tt class="samp docutils literal"><span class="pre">part:&quot;</span><em><span class="pre">name</span></em><span class="pre">&quot;</span></tt> or <tt class="samp docutils literal"><span class="pre">part:</span><em><span class="pre">name</span></em></tt></td>
+<td>link to the most recent part named <em>name</em></td>
+</tr>
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">doc:&quot;</span><em><span class="pre">name</span></em><span class="pre">&quot;</span></tt> or <tt class="samp docutils literal"><span class="pre">doc:</span><em><span class="pre">name</span></em></tt></td>
+<td>link to the most recent document named <em>name</em></td>
+</tr>
+<tr class="row-even"><td><tt class="samp docutils literal"><span class="pre">&lt;&lt;</span></tt></td>
+<td>link to the previous revision of the current object</td>
+</tr>
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">&gt;&gt;</span></tt></td>
+<td>link to the next revision of the current object</td>
+</tr>
+<tr class="row-even"><td><tt class="samp docutils literal"><span class="pre">&#64;</span><em><span class="pre">username</span></em></tt></td>
+<td>link to a user page</td>
+</tr>
+<tr class="row-odd"><td><tt class="samp docutils literal"><span class="pre">group:</span><em><span class="pre">name</span></em></tt></td>
+<td>link to a group</td>
+</tr>
+</tbody>
+</table>
+<p>The javascript editor is based on <a class="reference external" href="http://tstone.github.com/jquery-markedit/">MarkEdit</a>, it renders the preview
+with <a class="reference internal" href="modules/views.html#plmapp.views.ajax.ajax_richtext_preview" title="plmapp.views.ajax.ajax_richtext_preview"><tt class="xref py py-func docutils literal"><span class="pre">ajax_richtext_preview()</span></tt></a>.</p>
+</div>
+<div class="section" id="how-to-add-a-new-syntax">
+<h2>10.5. How to add a new syntax<a class="headerlink" href="#how-to-add-a-new-syntax" title="Permalink to this headline">¶</a></h2>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Be careful, markup libraries may have features that allow raw HTML to be
+included, and that allow arbitrary files to be included. These can lead to
+XSS vulnerabilities and leaking of private information. It is your
+responsibility to check the features of the library you are using and
+configure it appropriately to avoid this.</p>
+</div>
+<p>To add a new syntax, you only have to write one function that
+will convert the content.
+This function is registered by the <tt class="xref std std-setting docutils literal"><span class="pre">RICHTEXT_FILTER</span></tt> setting
+which must be the complete python path to the function
+(<tt class="docutils literal"><span class="pre">application.module.function_name</span></tt>).
+OpenPLM will automatically import the module and call the function instead
+of the default implementation.</p>
+<p>The function must take two arguments:</p>
+<blockquote>
+<div><ul class="simple">
+<li>the content to convert</li>
+<li>the current object</li>
+</ul>
+</div></blockquote>
+<p>It must return a unicode string which should mark as safe if it
+is a safe html content.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># apps/my_filter/filters.py</span>
+<span class="kn">from</span> <span class="nn">django.utils.safestring</span> <span class="kn">import</span> <span class="n">mark_safe</span>
+
+<span class="k">def</span> <span class="nf">my_filter</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="c"># do something with content</span>
+    <span class="n">html</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mark_safe</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># settings.py</span>
+<span class="n">RICHTEXT_FILTER</span> <span class="o">=</span> <span class="s">&#39;openPLM.apps.my_filter.filters.my_filter&#39;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Be careful with all security issues. Moreover, this function
+should never fail and be tolerant to syntax errors.
+Be also careful with extra features which may leak
+confidential data.</p>
+</div>
+<p>Then you can define two additional settings:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="xref std std-setting docutils literal"><span class="pre">RICHTEXT_PLAIN_FILTER</span></tt> which should be a
+path to function.
+This function is similar to the previous filter except it
+must return a plain text without any HTML tags (content
+is escaped by openPLM).
+The default implementation cleans up the HTML code.</li>
+<li><tt class="xref std std-setting docutils literal"><span class="pre">RICHTEXT_WIDGET_CLASS</span></tt> which should be a
+path to a widget class.</li>
+</ul>
+</div></blockquote>
+<p>For example, the markdown widget is defined like this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">django</span> <span class="kn">import</span> <span class="n">forms</span>
+
+<span class="k">class</span> <span class="nc">MarkdownWidget</span><span class="p">(</span><span class="n">forms</span><span class="o">.</span><span class="n">Textarea</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Media</span><span class="p">:</span>
+        <span class="n">css</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;all&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;css/jquery.markedit.css&#39;</span><span class="p">,)</span>
+        <span class="p">}</span>
+        <span class="n">js</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;js/showdown.js&#39;</span><span class="p">,</span> <span class="s">&#39;js/jquery.markedit.js&#39;</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">MarkdownWidget</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s">&quot;class&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;markedit&quot;</span>
+</pre></div>
+</div>
+<p>As you can see, it defines extra css and js files.
+It also sets the class attribute of the textarea so that
+the javascript can easily treat the textarea
+(here, <tt class="docutils literal"><span class="pre">$(&quot;.markedit&quot;).markedit()</span></tt>).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="testing.html" title="11. Testing openPLM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="publication.html" title="9. Publication"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

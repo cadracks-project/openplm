@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.utils &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/utils.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.utils</h1><div class="highlight"><pre>
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module contains some functions which may be useful.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render_to_response</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+
+<div class="viewcode-block" id="SeekedFile"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.SeekedFile">[docs]</a><span class="k">class</span> <span class="nc">SeekedFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.1</span>
+
+<span class="sd">    A file-like object that wraps an already opened</span>
+<span class="sd">    and seeked file.</span>
+
+<span class="sd">    This file-like can be read by PIL and is used to</span>
+<span class="sd">    open an image contained in another file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shift</span> <span class="o">=</span> <span class="nb">file</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="nb">file</span>
+
+<div class="viewcode-block" id="SeekedFile.read"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.SeekedFile.read">[docs]</a>    <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SeekedFile.readline"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.SeekedFile.readline">[docs]</a>    <span class="k">def</span> <span class="nf">readline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SeekedFile.readlines"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.SeekedFile.readlines">[docs]</a>    <span class="k">def</span> <span class="nf">readlines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SeekedFile.tell"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.SeekedFile.tell">[docs]</a>    <span class="k">def</span> <span class="nf">tell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">tell</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift</span>
+</div>
+<div class="viewcode-block" id="SeekedFile.seek"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.SeekedFile.seek">[docs]</a>    <span class="k">def</span> <span class="nf">seek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">whence</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="n">offset</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift</span><span class="p">,</span> <span class="n">whence</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="next_in_seq"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.next_in_seq">[docs]</a><span class="k">def</span> <span class="nf">next_in_seq</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns item next to *value* in the sequence *seq*</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; next_in_seq(&quot;abcd&quot;, &quot;b&quot;)</span>
+<span class="sd">        &#39;c&#39;</span>
+<span class="sd">        &gt;&gt;&gt; next_in_seq(range(5), 2)</span>
+<span class="sd">        3</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">seq</span><span class="p">[</span><span class="n">seq</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="get_next_revision"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.get_next_revision">[docs]</a><span class="k">def</span> <span class="nf">get_next_revision</span><span class="p">(</span><span class="n">revision</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns next revision for *revision*. For example, if *revision* represents</span>
+<span class="sd">    an int, it returns a string of the value + 1.</span>
+
+<span class="sd">    If it can not find a new revision, it returns &quot;&quot;</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;a&quot;)</span>
+<span class="sd">        &#39;b&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;r&quot;)</span>
+<span class="sd">        &#39;s&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;z&quot;)</span>
+<span class="sd">        &#39;aa&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;A&quot;)</span>
+<span class="sd">        &#39;B&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;R&quot;)</span>
+<span class="sd">        &#39;S&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;Z&quot;)</span>
+<span class="sd">        &#39;AA&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;1&quot;)</span>
+<span class="sd">        &#39;2&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;41&quot;)</span>
+<span class="sd">        &#39;42&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;0041&quot;)</span>
+<span class="sd">        &#39;0042&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;a.b&quot;)</span>
+<span class="sd">        &#39;a.c&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;a-a&quot;)</span>
+<span class="sd">        &#39;a-b&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;a,a&quot;)</span>
+<span class="sd">        &#39;a,b&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;a.3&quot;)</span>
+<span class="sd">        &#39;a.4&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;a.b.1&quot;)</span>
+<span class="sd">        &#39;a.b.2&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;plop&quot;)</span>
+<span class="sd">        &#39;&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;a.plop&quot;)</span>
+<span class="sd">        &#39;&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_next_revision(&quot;&quot;)</span>
+<span class="sd">        &#39;&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">revision</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">revision</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">revision</span> <span class="o">==</span> <span class="s">&quot;z&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s">&quot;aa&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">next_in_seq</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">revision</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">revision</span> <span class="o">==</span> <span class="s">&quot;Z&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s">&quot;AA&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">next_in_seq</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">revision</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="n">zeros</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&quot;^(0*).+&quot;</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">zeros</span> <span class="o">+</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">revision</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&quot;^(.*)([-.,])([^-.,]+)$&quot;</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+        <span class="n">last</span> <span class="o">=</span> <span class="n">get_next_revision</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">last</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">last</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;</span>
+
+<span class="c"># 1 mm = 1 mm, 1 cm = 10 mm...</span></div>
+<span class="n">UNITS</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;mm&quot;</span> <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+         <span class="s">&quot;cm&quot;</span> <span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+         <span class="s">&quot;in&quot;</span> <span class="p">:</span> <span class="mf">25.4</span><span class="p">,</span>
+         <span class="s">&quot;pt&quot;</span> <span class="p">:</span> <span class="mf">25.4</span> <span class="o">/</span> <span class="mi">72</span><span class="p">,</span>
+         <span class="s">&quot;pc&quot;</span> <span class="p">:</span> <span class="mi">12</span> <span class="o">*</span> <span class="mf">25.4</span> <span class="o">/</span> <span class="mi">72</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="convert"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.convert">[docs]</a><span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">from_</span><span class="p">,</span> <span class="n">to</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert *value* from *from_* unit to *to* unit.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; &quot;%.3f&quot; % convert(10, &quot;cm&quot;, &quot;mm&quot;)</span>
+<span class="sd">        &#39;100.000&#39;</span>
+<span class="sd">        &gt;&gt;&gt; &quot;%.3f&quot; % convert(10, &quot;mm&quot;, &quot;cm&quot;)</span>
+<span class="sd">        &#39;1.000&#39;</span>
+<span class="sd">        &gt;&gt;&gt; &quot;%.3f&quot; % convert(10, &quot;in&quot;, &quot;cm&quot;)</span>
+<span class="sd">        &#39;25.400&#39;</span>
+<span class="sd">        &gt;&gt;&gt; &quot;%.3f&quot; % convert(72, &quot;pt&quot;, &quot;in&quot;)</span>
+<span class="sd">        &#39;1.000&#39;</span>
+<span class="sd">        &gt;&gt;&gt; &quot;%.3f&quot; % convert(72, &quot;pc&quot;, &quot;in&quot;)</span>
+<span class="sd">        &#39;12.000&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="n">UNITS</span><span class="p">[</span><span class="n">from_</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">UNITS</span><span class="p">[</span><span class="n">to</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="normalize_length"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.normalize_length">[docs]</a><span class="k">def</span> <span class="nf">normalize_length</span><span class="p">(</span><span class="n">length</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts *length* to a length in mm, formatted as ``%.1f``</span>
+
+<span class="sd">    Example ::</span>
+
+<span class="sd">        &gt;&gt;&gt; normalize_length(&quot;29.7cm&quot;)</span>
+<span class="sd">        &#39;297.0&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_length(&quot;21.00001cm&quot;)</span>
+<span class="sd">        &#39;210.0&#39;</span>
+<span class="sd">        &gt;&gt;&gt; normalize_length(&quot;7.5in&quot;)</span>
+<span class="sd">        &#39;190.5&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">r&quot;([\d.]+)([cmip][mntc])&quot;</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">unit</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s">&quot;</span><span class="si">%.1f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">convert</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="s">&quot;mm&quot;</span><span class="p">)</span>
+</div>
+<span class="n">FORMATS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">(</span><span class="s">&quot;841.0&quot;</span><span class="p">,</span> <span class="s">&quot;1189.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A0&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;594.0&quot;</span><span class="p">,</span> <span class="s">&quot;841.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A1&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;420.0&quot;</span><span class="p">,</span> <span class="s">&quot;594.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A2&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;297.0&quot;</span><span class="p">,</span> <span class="s">&quot;420.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A3&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;210.0&quot;</span><span class="p">,</span> <span class="s">&quot;297.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A4&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;148.0&quot;</span><span class="p">,</span> <span class="s">&quot;210.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A5&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;105.0&quot;</span><span class="p">,</span> <span class="s">&quot;148.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A6&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;74.0&quot;</span><span class="p">,</span> <span class="s">&quot;105.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A7&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;52.0&quot;</span><span class="p">,</span> <span class="s">&quot;74.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A8&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;37.0&quot;</span><span class="p">,</span> <span class="s">&quot;52.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A9&quot;</span><span class="p">,</span>
+    <span class="p">(</span><span class="s">&quot;26.0&quot;</span><span class="p">,</span> <span class="s">&quot;37.0&quot;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;A10&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">CFORMATS</span> <span class="o">=</span> <span class="p">[(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">FORMATS</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()]</span>
+<span class="n">CFORMATS</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="n">CFORMATS</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="s">&quot;Other&quot;</span><span class="p">,</span> <span class="s">&quot;Other&quot;</span><span class="p">))</span>
+<div class="viewcode-block" id="size_to_format"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.size_to_format">[docs]</a><span class="k">def</span> <span class="nf">size_to_format</span><span class="p">(</span><span class="n">width_lg</span><span class="p">,</span> <span class="n">height_lg</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a size to a page format</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; size_to_format(&quot;29.7cm&quot;, &quot;21cm&quot;)</span>
+<span class="sd">        &#39;Other&#39;</span>
+<span class="sd">        &gt;&gt;&gt; size_to_format(&quot;21cm&quot;, &quot;29.7cm&quot;)</span>
+<span class="sd">        &#39;A4&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">normalize_length</span><span class="p">(</span><span class="n">width_lg</span><span class="p">),</span> <span class="n">normalize_length</span><span class="p">(</span><span class="n">height_lg</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">FORMATS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="s">&quot;Other&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="level_to_sign_str"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.level_to_sign_str">[docs]</a><span class="k">def</span> <span class="nf">level_to_sign_str</span><span class="p">(</span><span class="n">level</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Converts a level (int, starting from 0) to a sign role</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; level_to_sign_str(0)</span>
+<span class="sd">        &#39;sign_1st_level&#39;</span>
+<span class="sd">        &gt;&gt;&gt; level_to_sign_str(1)</span>
+<span class="sd">        &#39;sign_2nd_level&#39;</span>
+<span class="sd">        &gt;&gt;&gt; level_to_sign_str(2)</span>
+<span class="sd">        &#39;sign_3rd_level&#39;</span>
+<span class="sd">        &gt;&gt;&gt; level_to_sign_str(3)</span>
+<span class="sd">        &#39;sign_4th_level&#39;</span>
+<span class="sd">        &gt;&gt;&gt; level_to_sign_str(4)</span>
+<span class="sd">        &#39;sign_5th_level&#39;</span>
+<span class="sd">        &gt;&gt;&gt; level_to_sign_str(10)</span>
+<span class="sd">        &#39;sign_11th_level&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">types</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span> <span class="p">:</span> <span class="s">&quot;1st&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="p">:</span> <span class="s">&quot;2nd&quot;</span><span class="p">,</span> <span class="mi">2</span> <span class="p">:</span> <span class="s">&quot;3rd&quot;</span><span class="p">}</span>
+    <span class="k">return</span> <span class="s">&quot;sign_</span><span class="si">%s</span><span class="s">_level&quot;</span> <span class="o">%</span> <span class="n">types</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">th&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">level</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="memoize_noarg"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.memoize_noarg">[docs]</a><span class="k">def</span> <span class="nf">memoize_noarg</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator which memoize result of *func*. *func* must not take arguments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">():</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="s">&quot;_result&quot;</span><span class="p">):</span>
+            <span class="n">wrapper</span><span class="o">.</span><span class="n">_result</span> <span class="o">=</span> <span class="n">func</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">_result</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+</div>
+<span class="n">password_chars</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span> <span class="o">+</span> <span class="s">&quot;@!=&amp;/*-_&quot;</span>
+<div class="viewcode-block" id="generate_password"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.generate_password">[docs]</a><span class="k">def</span> <span class="nf">generate_password</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">12</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generates a random password of *length* characters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">password_chars</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">length</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="can_generate_pdf"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.can_generate_pdf">[docs]</a><span class="k">def</span> <span class="nf">can_generate_pdf</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns ``True`` if openPLM can generate pdf files, i.e, pisa (xhtml2pdf)</span>
+<span class="sd">    is installed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+    <span class="k">return</span> <span class="s">&#39;openPLM.apps.pdfgen&#39;</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span>
+</div>
+<div class="viewcode-block" id="get_ext"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.get_ext">[docs]</a><span class="k">def</span> <span class="nf">get_ext</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.1</span>
+
+<span class="sd">    Returns the extension of *filename* (dot include).</span>
+
+<span class="sd">    It stripped all &quot;.{number}&quot; extensions if they are present.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; get_ext(&quot;filename.png&quot;)</span>
+<span class="sd">        &#39;.png&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_ext(&quot;filename.prt.2&quot;)</span>
+<span class="sd">        &#39;.prt&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_ext(&quot;filename.prt&quot;)</span>
+<span class="sd">        &#39;.prt&#39;</span>
+<span class="sd">        &gt;&gt;&gt; get_ext(&quot;filename.1&quot;)</span>
+<span class="sd">        &#39;.1&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ext</span> <span class="ow">and</span> <span class="n">ext</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="n">filename</span><span class="p">,</span> <span class="n">ext2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext2</span><span class="p">:</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">ext2</span>
+    <span class="k">return</span> <span class="n">ext</span>
+
+</div>
+<div class="viewcode-block" id="get_pages_num"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.get_pages_num">[docs]</a><span class="k">def</span> <span class="nf">get_pages_num</span><span class="p">(</span><span class="n">total_pages</span><span class="p">,</span> <span class="n">current_page</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.1</span>
+
+<span class="sd">    Returns the pages to display for the pagination</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">current_page</span><span class="p">)</span>
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">total_pages</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">total</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="n">pages</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">total</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">page</span> <span class="o">&lt;</span> <span class="n">total</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">page</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">pages</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">page</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">page</span><span class="o">+</span><span class="mi">3</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pages</span> <span class="o">=</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pages</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">total</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="n">total</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pages</span>
+
+</div>
+<div class="viewcode-block" id="filename_to_name"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.filename_to_name">[docs]</a><span class="k">def</span> <span class="nf">filename_to_name</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    .. versionadded:: 1.2</span>
+
+<span class="sd">    Returns a clean version of a filename that should be</span>
+<span class="sd">    more suitable as a document name.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; filename_to_name(&quot;/tmp/hello.pdf&quot;)</span>
+<span class="sd">        &#39;hello&#39;</span>
+<span class="sd">        &gt;&gt;&gt; filename_to_name(u&quot;/tmp/Hello_world.pdf&quot;)</span>
+<span class="sd">        u&#39;Hello world&#39;</span>
+<span class="sd">        &gt;&gt;&gt; filename_to_name(u&quot;/tmp/heLLoWorlD.xyz&quot;)</span>
+<span class="sd">        u&#39;heLLoWorlD&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">basename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">,</span> <span class="s">&quot; &quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="r2r"><a class="viewcode-back" href="../../devel/modules/utils.html#plmapp.utils.r2r">[docs]</a><span class="k">def</span> <span class="nf">r2r</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shortcut for:</span>
+
+<span class="sd">    ::</span>
+
+<span class="sd">        render_to_response(template, dictionary,</span>
+<span class="sd">                              context_instance=RequestContext(request))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">,</span>
+                              <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">doctest</span>
+    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

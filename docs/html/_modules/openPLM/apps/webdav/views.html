@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.webdav.views &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/webdav/views.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.webdav.views</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">openPLM.webdav application</span>
+<span class="sd">Copyright 2012 LinObject</span>
+
+<span class="sd">Modified version of webdav/views.py from:</span>
+<span class="sd">    django-webdav is a small WebDAV implementation for Django.</span>
+<span class="sd">    Copyright 2012 Peter Gebauer</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">HttpResponseNotFound</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">authenticate</span><span class="p">,</span> <span class="n">login</span>
+<span class="kn">from</span> <span class="nn">django.views.decorators.csrf</span> <span class="kn">import</span> <span class="n">csrf_exempt</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.webdav_handler</span> <span class="kn">import</span> <span class="n">WebDavHandler</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.webdav_handler</span> <span class="kn">import</span> <span class="n">WebDavHandlerException</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends.openplm</span> <span class="kn">import</span> <span class="n">OpenPLMBackend</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.acl</span> <span class="kn">import</span> <span class="n">WebDavPrivilegeException</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="n">secure_required</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">ControllerError</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;webdav&quot;</span><span class="p">)</span>
+
+<span class="nd">@csrf_exempt</span>
+<div class="viewcode-block" id="not_found"><a class="viewcode-back" href="../../../../devel/applications/webdav/views.html#openPLM.apps.webdav.views.not_found">[docs]</a><span class="k">def</span> <span class="nf">not_found</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">HttpResponseNotFound</span><span class="p">(</span><span class="s">&quot;Not found&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="basic_auth"><a class="viewcode-back" href="../../../../devel/applications/webdav/views.html#openPLM.apps.webdav.views.basic_auth">[docs]</a><span class="k">def</span> <span class="nf">basic_auth</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Authenticates the user with a basic http authentication</span>
+<span class="sd">    and returns the user.</span>
+<span class="sd">    Returns None if the user can not be authenticated.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="s">&#39;HTTP_AUTHORIZATION&#39;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="p">:</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="p">[</span><span class="s">&#39;HTTP_AUTHORIZATION&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">auth</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="c"># only basic auth is supported</span>
+            <span class="k">if</span> <span class="n">auth</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;basic&quot;</span><span class="p">:</span>
+                <span class="n">uname</span><span class="p">,</span> <span class="n">passwd</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">auth</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">authenticate</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">uname</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">passwd</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+                    <span class="n">login</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">user</span>
+                    <span class="k">return</span> <span class="n">user</span>
+    <span class="k">return</span> <span class="bp">None</span>
+</div>
+<span class="nd">@csrf_exempt</span>
+<span class="nd">@secure_required</span>
+<div class="viewcode-block" id="openplm_webdav"><a class="viewcode-back" href="../../../../devel/applications/webdav/views.html#openPLM.apps.webdav.views.openplm_webdav">[docs]</a><span class="k">def</span> <span class="nf">openplm_webdav</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">local_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    View that handles all webdav requests.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">is_anonymous</span><span class="p">():</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">basic_auth</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+    <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">(</span><span class="s">&quot;403 Forbidden&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">403</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">OpenPLMBackend</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">WebDavHandler</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="n">backend</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">handler</span><span class="o">.</span><span class="n">handle_method</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">WebDavHandlerException</span><span class="p">,</span> <span class="n">wdhe</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;handlers failed to handle request; </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">wdhe</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;400 Bad Request&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">WebDavPrivilegeException</span><span class="p">,</span> <span class="n">ControllerError</span><span class="p">),</span> <span class="n">wpe</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;user &#39;</span><span class="si">%s</span><span class="s">&#39; failed privileges; </span><span class="si">%s</span><span class="s">&quot;</span>
+                    <span class="o">%</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">wpe</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;403 Forbidden&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">403</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="n">nie</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;no implementation; </span><span class="si">%s</span><span class="s">&quot;</span><span class="o">%</span><span class="n">nie</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;501 Not Implemented&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">501</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+
+    <span class="c"># failed authentication results in 401</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">()</span>
+    <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">=</span> <span class="mi">401</span>
+    <span class="n">response</span><span class="p">[</span><span class="s">&#39;WWW-Authenticate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Basic realm=&quot;openPLM-dav&quot;&#39;</span>
+    <span class="k">return</span> <span class="n">response</span>
+
+</div>
+<span class="k">if</span> <span class="s">&quot;django_digest&quot;</span> <span class="ow">in</span> <span class="n">settings</span><span class="o">.</span><span class="n">INSTALLED_APPS</span><span class="p">:</span>
+    <span class="c"># pip install &quot;hg+https://bitbucket.org/scjody/django-digest&quot; python_digest</span>
+    <span class="kn">from</span> <span class="nn">django_digest</span> <span class="kn">import</span> <span class="n">HttpDigestAuthenticator</span>
+    <span class="kn">import</span> <span class="nn">python_digest</span>
+
+    <span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">md5</span>
+
+    <span class="k">def</span> <span class="nf">calc_ha2_rspauth</span><span class="p">(</span><span class="n">uri</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">md5</span><span class="p">(</span><span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">uri</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">calc_hash</span><span class="p">(</span><span class="o">**</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="n">hash_text</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%(ha1)s</span><span class="s">:</span><span class="si">%(nonce)s</span><span class="s">:</span><span class="si">%(nc)s</span><span class="s">:</span><span class="si">%(cnonce)s</span><span class="s">:auth:</span><span class="si">%(ha2)s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">parameters</span>
+        <span class="k">return</span> <span class="n">md5</span><span class="p">(</span><span class="n">hash_text</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">calc_rspauth</span><span class="p">(</span><span class="n">parameters</span><span class="p">):</span>
+        <span class="n">ha2_rspauth</span> <span class="o">=</span> <span class="n">calc_ha2_rspauth</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="s">&quot;uri&quot;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">calc_hash</span><span class="p">(</span><span class="n">ha2</span><span class="o">=</span><span class="n">ha2_rspauth</span><span class="p">,</span> <span class="o">**</span><span class="n">parameters</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_httpdigest</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="nd">@csrf_exempt</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">authenticator</span> <span class="o">=</span> <span class="n">HttpDigestAuthenticator</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">build_challenge_response</span><span class="p">()</span>
+
+            <span class="n">response</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s">&#39;status_code&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">401</span><span class="p">,</span> <span class="mi">403</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">build_challenge_response</span><span class="p">()</span>
+            <span class="k">if</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
+                <span class="n">digest</span> <span class="o">=</span> <span class="n">python_digest</span><span class="o">.</span><span class="n">parse_digest_credentials</span><span class="p">(</span>
+                    <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="p">[</span><span class="s">&#39;HTTP_AUTHORIZATION&#39;</span><span class="p">])</span>
+                <span class="n">nc</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%08d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">digest</span><span class="o">.</span><span class="n">nc</span>
+                <span class="n">partial_digest</span> <span class="o">=</span> <span class="n">authenticator</span><span class="o">.</span><span class="n">_account_storage</span><span class="o">.</span><span class="n">get_partial_digest</span><span class="p">(</span><span class="n">digest</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+                <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s">&quot;username&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                        <span class="s">&quot;ha1&quot;</span><span class="p">:</span> <span class="n">partial_digest</span><span class="p">,</span>
+                        <span class="s">&quot;nonce&quot;</span><span class="p">:</span> <span class="n">digest</span><span class="o">.</span><span class="n">nonce</span><span class="p">,</span>
+                        <span class="s">&quot;cnonce&quot;</span><span class="p">:</span> <span class="n">digest</span><span class="o">.</span><span class="n">cnonce</span><span class="p">,</span>
+                        <span class="s">&quot;method&quot;</span><span class="p">:</span><span class="n">digest</span><span class="o">.</span><span class="n">algorithm</span><span class="p">,</span>
+                        <span class="s">&quot;uri&quot;</span><span class="p">:</span> <span class="n">digest</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span>
+                        <span class="s">&quot;nc&quot;</span><span class="p">:</span> <span class="n">nc</span><span class="p">,</span>
+                        <span class="p">}</span>
+                <span class="n">rspauth</span> <span class="o">=</span> <span class="n">calc_rspauth</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="s">&#39;rspauth=&quot;</span><span class="si">%s</span><span class="s">&quot;,cnonce=&quot;</span><span class="si">%s</span><span class="s">&quot;,nc=</span><span class="si">%s</span><span class="s">,qop=</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">rspauth</span><span class="p">,</span> <span class="n">digest</span><span class="o">.</span><span class="n">cnonce</span><span class="p">,</span>
+                        <span class="n">nc</span><span class="p">,</span> <span class="n">digest</span><span class="o">.</span><span class="n">qop</span><span class="p">)</span>
+                <span class="n">response</span><span class="p">[</span><span class="s">&quot;Authentication-Info&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">info</span>
+            <span class="k">return</span> <span class="n">response</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="n">openplm_webdav</span> <span class="o">=</span> <span class="n">_httpdigest</span><span class="p">(</span><span class="n">openplm_webdav</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

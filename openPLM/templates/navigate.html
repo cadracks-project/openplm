@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+{% block css %}
+
+    <link rel="stylesheet" href="{{STATIC_URL}}css/navigate.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="{{STATIC_URL}}css/showLoading.css" type="text/css" media="screen" charset="utf-8" />
+{% endblock css %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{STATIC_URL}}js/jquery.showLoading.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/raphael-min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/screenfull.min.js"></script>
+    <script type="text/javascript" src="{{STATIC_URL}}js/navigate.js"></script>
+
+    <script>
+        $(function () {
+            draw_edges({{edges|safe}}, {{img_width}}, {{img_height}});
+        });
+    </script>
+{% endblock %}
+
+
+<!-- Manage html display in the Content div which correspond to the "attributes" menu -->
+
+{% block content %}
+    <div id="Navigate">
+        <div id="navAddForm">
+            <form method="POST" action="">{% csrf_token %}
+                <table>
+                    <tbody>
+                        <td></td>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+        <div style="display:none;" id="dialog-confirm" title='{% trans "Attach document?" %}'>
+            <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;">&nbsp;</span>
+            <p>
+            {% trans "Attach the selected document?" %}
+            </p>
+            <form method="POST" action="">{% csrf_token %}
+                <table>
+                    <tbody>
+                        <td></td>
+                    </tbody>
+                </table>
+            </form>
+
+        </div>
+        <div id="navThumbnails">
+
+            <div id="navThumbnailsBar">
+                <span id="navDocument">&nbsp;</span>
+                <button id="closeThumbnails">{% trans "Close" %}</button>
+            </div>
+            <div id="thumbnailsList">
+            </div>
+
+        </div>
+        <div id="imgManagement">
+            <span class="imgManagement" id="topControl">&nbsp;</span>
+            <span class="imgManagement" id="leftControl">&nbsp;</span>
+            <span class="imgManagement" id="rightControl">&nbsp;</span>
+            <span class="imgManagement" id="bottomControl">&nbsp;</span>
+        </div>
+        <div id="add-buttons">
+            {% if is_contributor %}
+                {% if obj.is_part or obj.is_document %}
+                    {% include "navigate/add_buttons.html" %}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div id="zoom-toolbar">
+            <img src="{{STATIC_URL}}img/navigate/zoom-out.png"
+                class="ui-button ui-widget ui-state-default ui-corner-all"
+                id="zoom-out"
+                title="{% trans "Zoom out" %}"/>
+            <img src="{{STATIC_URL}}img/navigate/zoom-in.png"
+                class="ui-button ui-widget ui-state-default ui-corner-all"
+                id="zoom-in"
+                title="{% trans "Zoom in" %}"/>
+            <img src="{{STATIC_URL}}img/navigate/zoom-fit-best.png"
+                class="ui-button ui-widget ui-state-default ui-corner-all"
+                id="zoom-fit-all"
+                title="{% trans "Fit all" %}"/>
+            <img src="{{STATIC_URL}}img/navigate/zoom-original.png"
+                class="ui-button ui-widget ui-state-default ui-corner-all"
+                id="zoom-original"
+                title="{% trans "Original" %}"/>
+            
+        </div>
+        <div id="slider-scale"></div>
+        <div id="DivNav" style="width:{{img_width}}px; height:{{img_height}}px;">
+            <div id="navholder"></div>
+            {{map_areas|safe}}
+
+        </div>
+
+
+        <div id="RevisionsNav">
+        {% if obj.is_part or obj.is_document %}
+
+            {% trans "Other revisions of the object"%}<br/>
+            {% with obj.get_previous_revisions as previous_revisions %}
+                {% if previous_revisions %}
+                    <a href="{% with previous_revisions|last as prev %}{{prev.plmobject_url}}navigate/{%endwith%}">
+                        <img src="{{STATIC_URL}}img/navigate/prev.png" alt="{% trans "previous" %}" title="{% trans "displays previous revision as current object" %}">
+                    </a>
+                {% else %}
+                    <img src="{{STATIC_URL}}img/navigate/no_prev.png" alt="{% trans "previous" %}" title="{% trans "you are on the first revision of this object" %}">
+                {% endif %}
+            {% endwith %}
+
+            {% with obj.get_next_revisions as next_revisions %}
+                {% if next_revisions %}
+                    <a href="{% with next_revisions|first as next %}{{next.plmobject_url}}navigate/{%endwith%}">
+                        <img src="{{STATIC_URL}}img/navigate/next.png" alt="{% trans "next" %}" title="{% trans "displays next revision as current object" %}">
+                    </a>
+                {% else %}
+                    <img src="{{STATIC_URL}}img/navigate/no_next.png" alt="{% trans "next" %}" title="{% trans "you are on the last revision of this object" %}">
+                {% endif %}
+            {% endwith %}
+
+        {% endif %}
+        </div>
+        <button id="full-screen" class="tb-btn tb-btn-small" title="{% trans "Toggle fullscreen display" %}"><i class="tb-icon-fullscreen"></i></button>
+        <div id="FilterNav">
+            {% trans "Display :" %}
+            <form method="post" action="." >{% csrf_token %}
+                <ul id="FilterNavUl">
+                    {{filter_object_form.as_ul}}
+                    <li><input id="FilterButton" type="submit" class="tb-btn" value="{% trans "FILTER" %}"/></li>
+                </ul>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+

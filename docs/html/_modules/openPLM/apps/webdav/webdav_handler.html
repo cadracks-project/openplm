@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.webdav.webdav_handler &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/webdav/webdav_handler.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.webdav.webdav_handler</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">openPLM.webdav application</span>
+<span class="sd">Copyright 2012 LinObject</span>
+
+<span class="sd">Modified version of webdav/webdav_handler.py from:</span>
+<span class="sd">django-webdav is a small WebDAV implementation for Django.</span>
+<span class="sd">Copyright 2012 Peter Gebauer</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">urlparse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="n">HttpResponse</span><span class="p">,</span> <span class="n">StreamingHttpResponse</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ImproperlyConfigured</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">BackendIOException</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">BackendResourceNotFoundException</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">BackendStorageException</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">BackendLockException</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.backends</span> <span class="kn">import</span> <span class="n">BackendItem</span><span class="p">,</span> <span class="n">PropertySet</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.util</span> <span class="kn">import</span> <span class="n">get_propfind_properties_from_xml</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.util</span> <span class="kn">import</span> <span class="n">get_multistatus_response_xml</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.util</span> <span class="kn">import</span> <span class="n">get_lock_response_xml</span>
+<span class="kn">from</span> <span class="nn">openPLM.apps.webdav.util</span> <span class="kn">import</span> <span class="n">format_http_datetime</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&quot;webdav&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="WebDavHandlerException"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandlerException">[docs]</a><span class="k">class</span> <span class="nc">WebDavHandlerException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="WebDavHandler"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler">[docs]</a><span class="k">class</span> <span class="nc">WebDavHandler</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resource_path</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span> <span class="o">=</span> <span class="n">resource_path</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">backend</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ImproperlyConfigured</span><span class="p">(</span><span class="s">&quot;no backend!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="n">backend</span>
+
+<div class="viewcode-block" id="WebDavHandler.get_final_path_part"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_final_path_part">[docs]</a>    <span class="k">def</span> <span class="nf">get_final_path_part</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">localpath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">localpath</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+        <span class="k">if</span> <span class="n">localpath</span> <span class="o">==</span> <span class="s">&quot;.&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">localpath</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">localpath</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_path</span><span class="p">):])</span>
+        <span class="k">return</span> <span class="bp">None</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.get_supported_methods"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_supported_methods">[docs]</a>    <span class="k">def</span> <span class="nf">get_supported_methods</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="s">&quot;OPTIONS&quot;</span><span class="p">,</span> <span class="s">&quot;PROPFIND&quot;</span><span class="p">,</span> <span class="s">&quot;PROPPATCH&quot;</span><span class="p">,</span> <span class="s">&quot;MKCOL&quot;</span><span class="p">,</span> <span class="s">&quot;GET&quot;</span><span class="p">,</span> <span class="s">&quot;HEAD&quot;</span><span class="p">,</span>
+                <span class="s">&quot;DELETE&quot;</span><span class="p">,</span> <span class="s">&quot;PUT&quot;</span><span class="p">,</span> <span class="s">&quot;COPY&quot;</span><span class="p">,</span> <span class="s">&quot;MOVE&quot;</span><span class="p">,</span> <span class="s">&quot;LOCK&quot;</span><span class="p">,</span> <span class="s">&quot;UNLOCK&quot;</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.parse_if_header"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.parse_if_header">[docs]</a>    <span class="k">def</span> <span class="nf">parse_if_header</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">http_if</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_IF&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">http_if</span><span class="p">:</span>
+            <span class="n">parsing_path</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">parsing_token</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">http_if</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">parsing_path</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+                        <span class="n">parsing_path</span> <span class="o">=</span> <span class="bp">False</span>
+                        <span class="k">continue</span>
+                    <span class="n">path</span> <span class="o">+=</span> <span class="n">char</span>
+                <span class="k">elif</span> <span class="n">parsing_token</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39;)&#39;</span><span class="p">:</span>
+                        <span class="n">parsing_token</span> <span class="o">=</span> <span class="bp">False</span>
+                        <span class="k">continue</span>
+                    <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39;&gt;&#39;</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">token</span> <span class="o">+=</span> <span class="n">char</span>
+                <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39;&lt;&#39;</span><span class="p">:</span>
+                    <span class="n">parsing_path</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s">&#39;(&#39;</span><span class="p">:</span>
+                    <span class="n">parsing_token</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="n">path</span> <span class="ow">and</span> <span class="n">token</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">path</span><span class="p">,</span> <span class="n">token</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">ret</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.get_matching_token"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_matching_token">[docs]</a>    <span class="k">def</span> <span class="nf">get_matching_token</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_LOCK_TOKEN&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">token</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_if_header</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">lpath</span><span class="p">,</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">parsed</span><span class="p">:</span>
+            <span class="n">ppath</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">lpath</span><span class="p">)</span>
+            <span class="n">testpath</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">ppath</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">testpath</span> <span class="ow">and</span> <span class="n">testpath</span> <span class="o">==</span> <span class="n">path</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">token</span>
+        <span class="k">return</span> <span class="s">&quot;&quot;</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_method"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_method">[docs]</a>    <span class="k">def</span> <span class="nf">handle_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;OPTIONS&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_options</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;PROPFIND&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_propfind</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;PROPPATCH&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_proppatch</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;MKCOL&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_mkcol</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;GET&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_get</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;HEAD&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_head</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;DELETE&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_delete</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;PUT&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_put</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;COPY&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_copy</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;MOVE&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_move</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;LOCK&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_lock</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;UNLOCK&quot;</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_unlock</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">BackendIOException</span><span class="p">,</span> <span class="n">beioe</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">beioe</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">WebDavHandlerException</span><span class="p">(</span><span class="n">beioe</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">BackendResourceNotFoundException</span><span class="p">,</span> <span class="n">brnfe</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">brnfe</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;404 Not Found&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">BackendStorageException</span><span class="p">,</span> <span class="n">brnfe</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">brnfe</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;507 Insufficient Storage&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">507</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">BackendLockException</span><span class="p">,</span> <span class="n">ble</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">ble</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;423 Locked&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">423</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;backend method &#39;</span><span class="si">%s</span><span class="s">&#39; not implemented&quot;</span><span class="o">%</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&quot;invalid method &#39;</span><span class="si">%s</span><span class="s">&#39; for handler class &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">method</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__name__</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_options"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_options">[docs]</a>    <span class="k">def</span> <span class="nf">handle_options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="n">res</span><span class="p">[</span><span class="s">&quot;Allow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_supported_methods</span><span class="p">())</span>
+        <span class="n">res</span><span class="p">[</span><span class="s">&quot;DAV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;1, 2&quot;</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.get_200_response"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.get_200_response">[docs]</a>    <span class="k">def</span> <span class="nf">get_200_response</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;200 OK&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;Content-Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_propfind"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_propfind">[docs]</a>    <span class="k">def</span> <span class="nf">handle_propfind</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">get_propfind_properties_from_xml</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">depth</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_DEPTH&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_propfind</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">props</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">get_multistatus_response_xml</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">207</span><span class="p">,</span> <span class="s">&quot;text/xml; charset=utf-8&quot;</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;Content-Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;DAV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;1, 2&quot;</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;Depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">depth</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_proppatch"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_proppatch">[docs]</a>    <span class="k">def</span> <span class="nf">handle_proppatch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">props</span> <span class="o">=</span> <span class="n">get_propfind_properties_from_xml</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">depth</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_DEPTH&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">)</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_set_properties</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">props</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">get_multistatus_response_xml</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">items</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">207</span><span class="p">,</span> <span class="s">&quot;text/xml; charset=utf-8&quot;</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;Content-Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;DAV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;1, 2&quot;</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;Depth&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">depth</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_mkcol"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_mkcol">[docs]</a>    <span class="k">def</span> <span class="nf">handle_mkcol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_mkcol</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;200 OK&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_get"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_get">[docs]</a>    <span class="k">def</span> <span class="nf">handle_get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_get</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">StreamingHttpResponse</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_head"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_head">[docs]</a>    <span class="k">def</span> <span class="nf">handle_head</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_head</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_200_response</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_delete"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_delete">[docs]</a>    <span class="k">def</span> <span class="nf">handle_delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_token</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_delete</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_200_response</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_put"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_put">[docs]</a>    <span class="k">def</span> <span class="nf">handle_put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_token</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_put</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_200_response</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_copy"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_copy">[docs]</a>    <span class="k">def</span> <span class="nf">handle_copy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_DESTINATION&quot;</span><span class="p">))</span>
+        <span class="n">path2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_token</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">path2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WebDavHandlerException</span><span class="p">(</span><span class="s">&quot;missing destination header for copy&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_copy</span><span class="p">(</span><span class="n">path1</span><span class="p">,</span> <span class="n">path2</span><span class="p">,</span> <span class="n">token</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;201 OK&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_move"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_move">[docs]</a>    <span class="k">def</span> <span class="nf">handle_move</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">token1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_token</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">path1</span><span class="p">)</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_DESTINATION&quot;</span><span class="p">))</span>
+        <span class="n">path2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">token2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_matching_token</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">path2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">WebDavHandlerException</span><span class="p">(</span><span class="s">&quot;missing destination header for move&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_move</span><span class="p">(</span><span class="n">path1</span><span class="p">,</span> <span class="n">path2</span><span class="p">,</span> <span class="n">token1</span><span class="p">,</span> <span class="n">token2</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;201 OK&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_lock"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_lock">[docs]</a>    <span class="k">def</span> <span class="nf">handle_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_LOCK_TOKEN&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">token</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_if_header</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">items</span><span class="p">:</span>
+                <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+                <span class="n">token</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">lock</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_lock</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
+                                     <span class="n">token</span><span class="p">,</span>
+                                     <span class="n">owner</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                                     <span class="n">exclusive</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                     <span class="n">infinite</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                     <span class="n">timeout</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                     <span class="p">)</span>
+        <span class="k">if</span> <span class="n">lock</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">get_lock_response_xml</span><span class="p">(</span><span class="n">lock</span><span class="o">.</span><span class="n">to_dict</span><span class="p">())</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="s">&quot;text/xml; charset=utf-8&quot;</span><span class="p">)</span>
+            <span class="n">response</span><span class="p">[</span><span class="s">&quot;Lock-Token&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lock</span><span class="o">.</span><span class="n">token</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;412 Precondition Failed&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">412</span><span class="p">,</span>
+                                    <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</div>
+<div class="viewcode-block" id="WebDavHandler.handle_unlock"><a class="viewcode-back" href="../../../../devel/applications/webdav/webdav_handler.html#openPLM.apps.webdav.webdav_handler.WebDavHandler.handle_unlock">[docs]</a>    <span class="k">def</span> <span class="nf">handle_unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_final_path_part</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">META</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;HTTP_LOCK_TOKEN&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;&lt;&quot;</span><span class="p">):</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">token</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&quot;&gt;&quot;</span><span class="p">):</span>
+            <span class="n">token</span> <span class="o">=</span> <span class="n">token</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="o">.</span><span class="n">dav_unlock</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s">&quot;204 No Content&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="mi">204</span><span class="p">,</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

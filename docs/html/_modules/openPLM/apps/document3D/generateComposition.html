@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.document3D.generateComposition &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/document3D/generateComposition.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.document3D.generateComposition</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="c"># set to True to enable the dummy composer which consumes less memory</span>
+<span class="c"># and should be faster</span>
+<span class="c"># Currently it generates invalid STEP file, so you should not use it</span>
+<span class="c"># unless you want to fix it</span>
+
+<span class="n">DUMMY_COMPOSER</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="k">if</span> <span class="n">DUMMY_COMPOSER</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">part21_preparse</span> <span class="kn">import</span> <span class="n">readStepFile</span><span class="p">,</span> <span class="n">parse_entities</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&quot;MMGT_OPT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">OCC.TDF</span> <span class="kn">import</span> <span class="n">TDF_LabelSequence</span>
+    <span class="kn">from</span> <span class="nn">OCC.XSControl</span> <span class="kn">import</span> <span class="n">XSControl_WorkSession</span>
+    <span class="kn">from</span> <span class="nn">OCC.STEPControl</span> <span class="kn">import</span> <span class="n">STEPControl_AsIs</span>
+    <span class="kn">from</span> <span class="nn">OCC.STEPCAFControl</span> <span class="kn">import</span> <span class="n">STEPCAFControl_Writer</span>
+    <span class="kn">from</span> <span class="nn">OCC.TopLoc</span> <span class="kn">import</span> <span class="n">TopLoc_Location</span>
+    <span class="kn">from</span> <span class="nn">OCC.gp</span> <span class="kn">import</span> <span class="n">gp_Trsf</span>
+    <span class="kn">from</span> <span class="nn">STP_converter_WebGL</span> <span class="kn">import</span> <span class="n">set_label_name</span>
+
+    <span class="kn">from</span> <span class="nn">OCC.STEPCAFControl</span> <span class="kn">import</span> <span class="n">STEPCAFControl_Reader</span>
+    <span class="kn">from</span> <span class="nn">OCC</span> <span class="kn">import</span> <span class="n">XCAFApp</span><span class="p">,</span> <span class="n">TDocStd</span> <span class="p">,</span> <span class="n">XCAFDoc</span>
+    <span class="kn">from</span> <span class="nn">OCC.TCollection</span> <span class="kn">import</span> <span class="n">TCollection_ExtendedString</span>
+
+<span class="kn">from</span> <span class="nn">classes</span> <span class="kn">import</span> <span class="n">Product</span>
+
+<span class="k">class</span> <span class="nc">StepImporter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span> <span class="o">=</span> <span class="n">TDocStd</span><span class="o">.</span><span class="n">Handle_TDocStd_Document</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">XCAFApp</span><span class="o">.</span><span class="n">GetApplication</span><span class="p">()</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">NewDocument</span><span class="p">(</span><span class="n">TCollection_ExtendedString</span><span class="p">(</span><span class="s">&quot;MDTV-XCAF&quot;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span> <span class="o">=</span> <span class="n">STEPCAFControl_Reader</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span><span class="o">.</span><span class="n">ReadFile</span><span class="p">(</span><span class="n">file_path</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;utf-8&quot;</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;OpenCascade could not read STEP file&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span><span class="o">.</span><span class="n">Transfer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_shape_tool</span> <span class="o">=</span> <span class="n">XCAFDoc</span><span class="o">.</span><span class="n">XCAFDoc_DocumentTool_ShapeTool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Main</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_colors_tool</span> <span class="o">=</span> <span class="n">XCAFDoc</span><span class="o">.</span><span class="n">XCAFDoc_DocumentTool_ColorTool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doc</span><span class="o">.</span><span class="n">Main</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_shape_tool</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_tool</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_colors_tool</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shapes</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetShapes</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shapes</span><span class="p">)</span>
+        <span class="n">roots</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape_tool</span><span class="o">.</span><span class="n">GetFreeShapes</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span>
+        <span class="n">ws</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">STEPReader</span><span class="o">.</span><span class="n">Reader</span><span class="p">()</span><span class="o">.</span><span class="n">WS</span><span class="p">()</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">ws</span><span class="o">.</span><span class="n">Model</span><span class="p">()</span><span class="o">.</span><span class="n">GetObject</span><span class="p">()</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">Clear</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+            <span class="n">ws</span><span class="o">.</span><span class="n">ClearData</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">ws</span><span class="o">.</span><span class="n">ClearFile</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">Close</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="p">)</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_doc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span>
+
+
+<div class="viewcode-block" id="composer"><a class="viewcode-back" href="../../../../devel/applications/document3D/generateComposition.html#openPLM.apps.document3D.generateComposition.composer">[docs]</a><span class="k">def</span> <span class="nf">composer</span><span class="p">(</span><span class="n">temp_file_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :param temp_file_name: path of a  :class:`.tempfile` **.arb** that contains the information to generate a :class:`.Product` relative to the arborescense of a **.stp** file</span>
+
+
+<span class="sd">    For every node of the :class:`.Product`  the attribute **doc_file_path** indicates where is store the file **.stp** that represents the node</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_file_name</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_file_name</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span><span class="s">&quot;w+&quot;</span><span class="p">)</span><span class="c"># erase old data</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">WS</span> <span class="o">=</span> <span class="n">XSControl_WorkSession</span><span class="p">()</span>
+    <span class="n">my_step_importer</span> <span class="o">=</span> <span class="n">StepImporter</span><span class="p">(</span><span class="n">product</span><span class="o">.</span><span class="n">doc_path</span><span class="p">)</span>
+
+    <span class="n">st</span> <span class="o">=</span> <span class="n">my_step_importer</span><span class="o">.</span><span class="n">shape_tool</span>
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+    <span class="n">st</span><span class="o">.</span><span class="n">GetFreeShapes</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
+
+    <span class="n">add_labels</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">lr</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">st</span><span class="p">)</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">STEPCAFControl_Writer</span><span class="p">(</span><span class="n">WS</span><span class="o">.</span><span class="n">GetHandle</span><span class="p">(),</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">Length</span><span class="p">()):</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">Transfer</span><span class="p">(</span><span class="n">lr</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">),</span> <span class="n">STEPControl_AsIs</span><span class="p">)</span>
+
+    <span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">(</span><span class="n">temp_file_name</span><span class="p">)</span>
+
+</div>
+<span class="k">def</span> <span class="nf">add_labels</span><span class="p">(</span><span class="n">product</span><span class="p">,</span><span class="n">lr</span><span class="p">,</span><span class="n">st</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">doc_id</span> <span class="o">!=</span> <span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">:</span>
+
+                    <span class="n">lr_2</span> <span class="o">=</span> <span class="n">TDF_LabelSequence</span><span class="p">()</span>
+                    <span class="n">si</span> <span class="o">=</span> <span class="n">StepImporter</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">doc_path</span><span class="p">)</span>
+                    <span class="n">shape_tool</span> <span class="o">=</span> <span class="n">si</span><span class="o">.</span><span class="n">shape_tool</span>
+                    <span class="n">shape_tool</span><span class="o">.</span><span class="n">GetFreeShapes</span><span class="p">(</span><span class="n">lr_2</span><span class="p">)</span>
+                    <span class="n">add_labels</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">,</span> <span class="n">lr_2</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">shape_tool</span><span class="p">)</span>
+                    <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span> <span class="o">=</span> <span class="n">lr_2</span><span class="o">.</span><span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                    <span class="c"># FIXME: free memory</span>
+                    <span class="k">del</span> <span class="n">si</span>
+                    <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">quantity</span><span class="p">):</span>
+                    <span class="n">transformation</span> <span class="o">=</span> <span class="n">gp_Trsf</span><span class="p">()</span>
+                    <span class="n">loc</span> <span class="o">=</span> <span class="n">link</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
+                    <span class="n">transformation</span><span class="o">.</span><span class="n">SetValues</span><span class="p">(</span><span class="n">loc</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">x2</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">x3</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">x4</span><span class="p">,</span>
+                        <span class="n">loc</span><span class="o">.</span><span class="n">y1</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">y2</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">y3</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">y4</span><span class="p">,</span>
+                        <span class="n">loc</span><span class="o">.</span><span class="n">z1</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">z2</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">z3</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">z4</span><span class="p">,</span>
+                        <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+                    <span class="n">new_label</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">AddComponent</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">,</span>
+                            <span class="n">TopLoc_Location</span><span class="p">(</span><span class="n">transformation</span><span class="p">))</span>
+                    <span class="n">set_label_name</span><span class="p">(</span><span class="n">new_label</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">d</span><span class="p">])</span>
+
+
+<span class="k">class</span> <span class="nc">Composer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="o">=</span> <span class="n">product</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">output</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">added_files</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">occurences</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_completed</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_skipped</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_step_file</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_step_file</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_occurences</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_occurences</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_step_file</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">init_step_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;&quot;&quot;ISO-10303-21;</span>
+<span class="s">HEADER;</span>
+<span class="s">FILE_DESCRIPTION((&#39;Open CASCADE Model&#39;),&#39;2;1&#39;);</span>
+<span class="s">FILE_NAME(&#39;Open CASCADE Shape Model&#39;,&#39;2013-06-03T13:14:01&#39;,(&#39;Author&#39;),(</span>
+<span class="s">    &#39;Open CASCADE&#39;),&#39;Open CASCADE STEP processor 6.3&#39;,&#39;Open CASCADE 6.3&#39;</span>
+<span class="s">  ,&#39;Unknown&#39;);</span>
+<span class="s">FILE_SCHEMA((&#39;AUTOMOTIVE_DESIGN_CC2 { 1 2 10303 214 -1 1 5 4 }&#39;));</span>
+<span class="s">ENDSEC;</span>
+<span class="s">DATA;</span>
+<span class="s"> &quot;&quot;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">close_step_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;ENDSEC;</span><span class="se">\n</span><span class="s">END-ISO-10303-21;&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">increment_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+            <span class="k">return</span> <span class="s">&quot;#</span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">val</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span><span class="p">)</span>
+        <span class="n">new_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s">r&quot;\#(\d+)&quot;</span><span class="p">,</span> <span class="n">inc</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_line</span>
+
+    <span class="k">def</span> <span class="nf">add_step_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">product</span><span class="o">.</span><span class="n">doc_path</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">added_files</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">step</span> <span class="o">=</span> <span class="n">readStepFile</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">max_id</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">step</span><span class="p">[</span><span class="s">&quot;insttype&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">iname</span><span class="p">,</span> <span class="n">content</span> <span class="ow">in</span> <span class="n">step</span><span class="p">[</span><span class="s">&quot;contents&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">type_</span> <span class="o">=</span> <span class="n">step</span><span class="p">[</span><span class="s">&quot;insttype&quot;</span><span class="p">][</span><span class="n">iname</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">product</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">product</span> <span class="ow">and</span> <span class="n">type_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&quot;APPLICATION&quot;</span><span class="p">):</span>
+                <span class="c"># there are certainly more lines to skip</span>
+                <span class="k">continue</span>
+            <span class="n">iname2</span> <span class="o">=</span> <span class="n">iname</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span>
+            <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s">&quot;complex_type&quot;</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s">&quot;#</span><span class="si">%d</span><span class="s">=(</span><span class="si">%s</span><span class="s">)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">iname2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">increment_ids</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="s">&quot;#</span><span class="si">%d</span><span class="s">=</span><span class="si">%s</span><span class="s">(</span><span class="si">%s</span><span class="s">)</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">iname2</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">increment_ids</span><span class="p">(</span><span class="n">content</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s">&#39;NEXT_ASSEMBLY_USAGE_OCCURRENCE&#39;</span> <span class="ow">in</span> <span class="n">step</span><span class="p">[</span><span class="s">&#39;typeinst&#39;</span><span class="p">]:</span>
+            <span class="c"># find the root of an assembly</span>
+            <span class="n">parents</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">step</span><span class="p">[</span><span class="s">&#39;typeinst&#39;</span><span class="p">][</span><span class="s">&#39;NEXT_ASSEMBLY_USAGE_OCCURRENCE&#39;</span><span class="p">]:</span>
+                <span class="n">parent</span><span class="p">,</span> <span class="n">child</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s">&quot; </span><span class="se">\n\r</span><span class="s">#&#39;&quot;</span><span class="p">)</span>
+                                 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">step</span><span class="p">[</span><span class="s">&#39;contents&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)[</span><span class="mi">3</span><span class="p">:</span><span class="mi">5</span><span class="p">]]</span>
+                <span class="n">parents</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">parent</span><span class="p">))</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">child</span><span class="p">))</span>
+            <span class="n">roots</span> <span class="o">=</span> <span class="n">parents</span> <span class="o">/</span> <span class="n">children</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">roots</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Too many roots in </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">)</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">roots</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># a single product</span>
+            <span class="n">root</span> <span class="o">=</span> <span class="n">step</span><span class="p">[</span><span class="s">&#39;typeinst&#39;</span><span class="p">][</span><span class="s">&#39;PRODUCT_DEFINITION&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">product</span><span class="o">.</span><span class="n">label_reference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+</span> <span class="n">root</span>
+        <span class="k">del</span> <span class="n">step</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+=</span> <span class="n">max_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">added_files</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_occurences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">product</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">product</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="o">!=</span> <span class="n">product</span><span class="o">.</span><span class="n">doc_id</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_step_file</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_occurences</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">quantity</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">occurences</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">product</span><span class="o">.</span><span class="n">label_reference</span><span class="p">,</span>
+                            <span class="n">link</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">d</span><span class="p">],</span> <span class="n">link</span><span class="o">.</span><span class="n">locations</span><span class="p">[</span><span class="n">d</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">write_occurences</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">ref1</span><span class="p">,</span> <span class="n">ref2</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">loc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">occurences</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">e1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">e2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">e3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">e4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">e5</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">e6</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">item_count</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;&quot;&quot;#{e1} = CONTEXT_DEPENDENT_SHAPE_REPRESENTATION(#{e2},#{e4});</span>
+<span class="s">#{e2} = ( REPRESENTATION_RELATIONSHIP(&#39;&#39;,&#39;&#39;,#33,#10)</span>
+<span class="s">REPRESENTATION_RELATIONSHIP_WITH_TRANSFORMATION(#{e3})</span>
+<span class="s">SHAPE_REPRESENTATION_RELATIONSHIP() );</span>
+<span class="s">#{e3} = ITEM_DEFINED_TRANSFORMATION(&#39;&#39;,&#39;&#39;,#11,#15);</span>
+<span class="s">#{e4} = PRODUCT_DEFINITION_SHAPE(&#39;Placement&#39;,&#39;Placement of an item&#39;,#{e5}</span>
+<span class="s">  );</span>
+<span class="s">#{e6} = NEXT_ASSEMBLY_USAGE_OCCURRENCE(&#39;1&#39;,&#39;{name}&#39;,&#39;&#39;,#{ref1},#{ref2},$);</span>
+<span class="s">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="nb">locals</span><span class="p">()))</span>
+            <span class="c"># TODO: add locations and replaces #33, #10, #11, #15 entities</span>
+
+
+<span class="k">def</span> <span class="nf">dummy_compose</span><span class="p">(</span><span class="n">temp_file_name</span><span class="p">):</span>
+
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_file_name</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span><span class="s">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">product</span> <span class="o">=</span> <span class="n">Product</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_file_name</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span><span class="s">&quot;w+&quot;</span><span class="p">)</span><span class="c"># erase old data</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">temp_file_name</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">output</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">Composer</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">compose</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">DUMMY_COMPOSER</span><span class="p">:</span>
+        <span class="n">dummy_compose</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">composer</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

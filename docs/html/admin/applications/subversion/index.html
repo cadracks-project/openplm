@@ -1,0 +1,196 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.9. subversion – Subversion Repository Application &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="3. Applications" href="../../applications.html" />
+    <link rel="next" title="3.10. webdav – WebDAV support" href="../webdav/index.html" />
+    <link rel="prev" title="3.8. richpage - Page document (wiki page)" href="../richpage/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../webdav/index.html" title="3.10. webdav – WebDAV support"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../richpage/index.html" title="3.8. richpage - Page document (wiki page)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" accesskey="U">3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.9. subversion &#8211; Subversion Repository Application</a><ul>
+<li><a class="reference internal" href="#dependencies">3.9.1. Dependencies</a></li>
+<li><a class="reference internal" href="#settings-py">3.9.2. settings.py</a></li>
+<li><a class="reference internal" href="#synchronize-the-database">3.9.3. Synchronize the database</a></li>
+<li><a class="reference internal" href="#testing">3.9.4. Testing</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../richpage/index.html"
+                        title="previous chapter">3.8. richpage - Page document (wiki page)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../webdav/index.html"
+                        title="next chapter">3.10. webdav &#8211; WebDAV support</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/admin/applications/subversion/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/applications/subversion/index.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="subversion-subversion-repository-application">
+<span id="subversion-admin"></span><h1>3.9. subversion &#8211; Subversion Repository Application<a class="headerlink" href="#subversion-subversion-repository-application" title="Permalink to this headline">¶</a></h1>
+<p>This application adds a <strong>SubversionRepository</strong> document which links to a svn
+repository.</p>
+<div class="section" id="dependencies">
+<h2>3.9.1. Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>The <em>subversion</em> application adds the following dependency:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://pysvn.tigris.org/">pysvn</a></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="settings-py">
+<h2>3.9.2. settings.py<a class="headerlink" href="#settings-py" title="Permalink to this headline">¶</a></h2>
+<p>To enable the <em>subversion</em> application, it must be enabled in the settings file: add
+<tt class="docutils literal"><span class="pre">'openPLM.apps.subversion'</span></tt> to the list of installed applications
+(<a class="reference internal" href="../../upgrade/upgrade-2.0.html#INSTALLED_APPS" title="INSTALLED_APPS"><tt class="xref py py-const docutils literal"><span class="pre">INSTALLED_APPS</span></tt></a>).</p>
+</div>
+<div class="section" id="synchronize-the-database">
+<h2>3.9.3. Synchronize the database<a class="headerlink" href="#synchronize-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">migrate</span> <span class="pre">subversion</span></tt>.</p>
+</div>
+<div class="section" id="testing">
+<h2>3.9.4. Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>To test this application, create a new SubversionRepository.
+The <em>logs</em> page can display the last changesets if openPLM succeeds to retreive
+them.</p>
+<p>openPLM will <em>not</em> ask for a password to connect to a svn repository.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../webdav/index.html" title="3.10. webdav – WebDAV support"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../richpage/index.html" title="3.8. richpage - Page document (wiki page)"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

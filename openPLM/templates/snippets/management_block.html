@@ -1,0 +1,41 @@
+{% load i18n plmapp_tags %}
+
+{% if links %}
+    <div class="timeline">
+        <h3 class="hplm">{% trans links.0.role|capfirst %}</h3>
+
+        <dl>
+            {% for link in links %}
+                <dt class="changeset">
+                <span>{{link.user.first_name}}</span>
+                <span>{{link.user.last_name}},</span>
+                <a href="/user/{{link.user.username|urlencode }}/"><span>{{link.user.username}}</span></a>,
+                {% with link.user.profile as profile %}
+                    <span>{{ profile.rank }},</span>
+                {% endwith %}
+
+                <span>{{link.user.is_active|yesno:"active,inactive"}}</span>
+                </dt>
+                <dd class="management">
+                {% if can_delete %}
+                    <ul class="management">
+                        <li>
+                        <a class="tb-btn" href="../management/replace/{{link.id}}/?q=&type=User">{% trans "REPLACE" %}</a>
+                        </li>
+                        {% if link.role == 'notified' or link.role == 'reader' %}
+                            <li>
+
+                            <form action="../management/delete/" method="POST">{% csrf_token %}
+                                <input name="link_id" type="hidden" value="{{link.id}}"/>
+                                <input name="action" type="submit" class="tb-btn tb-btn-danger" value="{% trans "DELETE" %}" />
+                            </form>
+                            </li>
+                        {% endif %}
+                    </ul>
+                {% endif %}
+                </dd>
+            {% endfor %}
+        </dl>
+    </div>
+
+{% endif %}

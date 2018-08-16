@@ -1,0 +1,204 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.1. badges - &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="3. Applications" href="../../applications.html" />
+    <link rel="next" title="3.2. calendrier – Calendar views" href="../calendrier/index.html" />
+    <link rel="prev" title="3. Applications" href="../../applications.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../calendrier/index.html" title="3.2. calendrier – Calendar views"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../../applications.html" title="3. Applications"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" accesskey="U">3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../../../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.1. badges -</a><ul>
+<li><a class="reference internal" href="#settings-py">3.1.1. settings.py</a></li>
+<li><a class="reference internal" href="#synchronizing-the-database">3.1.2. Synchronizing the database</a></li>
+<li><a class="reference internal" href="#collecting-static-files">3.1.3. Collecting static files</a></li>
+<li><a class="reference internal" href="#award-badges">3.1.4. Award badges</a></li>
+<li><a class="reference internal" href="#testing">3.1.5. Testing</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../../applications.html"
+                        title="previous chapter">3. Applications</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../calendrier/index.html"
+                        title="next chapter">3.2. calendrier &#8211; Calendar views</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/admin/applications/badges/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/applications/badges/index.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="badges">
+<span id="badges-admin"></span><h1>3.1. badges -<a class="headerlink" href="#badges" title="Permalink to this headline">¶</a></h1>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">This application is still in early development stage.</p>
+</div>
+<p>This application add a &#8220;BADGES&#8221; tab on user profile.</p>
+<div class="section" id="settings-py">
+<h2>3.1.1. settings.py<a class="headerlink" href="#settings-py" title="Permalink to this headline">¶</a></h2>
+<p>To enable the <em>badges</em> application, it must be enabled in the settings file: add
+<tt class="docutils literal"><span class="pre">'openPLM.apps.badges'</span></tt> to the list of installed applications
+(<a class="reference internal" href="../../upgrade/upgrade-2.0.html#INSTALLED_APPS" title="INSTALLED_APPS"><tt class="xref py py-const docutils literal"><span class="pre">INSTALLED_APPS</span></tt></a>).
+You must also add a middleware: add <tt class="docutils literal"><span class="pre">'openPLM.apps.badges.middleware.GlobalRequest'</span></tt>
+to the <a class="reference internal" href="../../upgrade/upgrade-2.0.html#MIDDLEWARE_CLASSES" title="MIDDLEWARE_CLASSES"><tt class="xref py py-const docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></tt></a> setting (after the ProfileLocaleMiddleware).</p>
+</div>
+<div class="section" id="synchronizing-the-database">
+<h2>3.1.2. Synchronizing the database<a class="headerlink" href="#synchronizing-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">migrate</span> <span class="pre">badges</span></tt>.</p>
+</div>
+<div class="section" id="collecting-static-files">
+<h2>3.1.3. Collecting static files<a class="headerlink" href="#collecting-static-files" title="Permalink to this headline">¶</a></h2>
+<p>Run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">collectstatic</span></tt>.</p>
+</div>
+<div class="section" id="award-badges">
+<h2>3.1.4. Award badges<a class="headerlink" href="#award-badges" title="Permalink to this headline">¶</a></h2>
+<p>If you already had installed an openPLM, you can award badges to all users according
+to what they have done before the application has been installed.</p>
+<p>For that run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">award_badges</span></tt>.</p>
+</div>
+<div class="section" id="testing">
+<h2>3.1.5. Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h2>
+<p>Log in openPLM , go to your profile (then tab &#8220;BADGES&#8221;) and check if you have won a badge.</p>
+<p>If you didn&#8217;t get any badge, fill your profile (first name, last name and email), you should
+get the Autobiographer badge (one of the easiest).</p>
+<p>From the &#8220;BADGES&#8221; tab and pages which describe the badges, you can reach a list of
+all available badges.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../calendrier/index.html" title="3.2. calendrier – Calendar views"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../../applications.html" title="3. Applications"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >3. Applications</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

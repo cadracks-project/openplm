@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6. Developer documentation &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="next" title="1. Architecture overview" href="architecture.html" />
+    <link rel="prev" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0" href="../admin/upgrade/upgrade-2.0.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="architecture.html" title="1. Architecture overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../admin/upgrade/upgrade-2.0.html" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../admin/upgrade/upgrade-2.0.html"
+                        title="previous chapter">10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="architecture.html"
+                        title="next chapter">1. Architecture overview</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/index.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="developer-documentation">
+<h1>6. Developer documentation<a class="headerlink" href="#developer-documentation" title="Permalink to this headline">¶</a></h1>
+<p>If you are a plugins developper, you may want to read <a class="reference internal" href="http-api.html#module-http_api" title="http_api"><tt class="xref py py-mod docutils literal"><span class="pre">the</span> <span class="pre">api</span></tt></a>.</p>
+<p>If you are a core developper, you may want to read:</p>
+<blockquote>
+<div><ul class="simple">
+<li>An <a class="reference internal" href="architecture.html"><em>architecture overview</em></a></li>
+<li>Some <a class="reference internal" href="how-tos.html#how-tos-devel"><em>how-tos</em></a></li>
+<li>the <a class="reference internal" href="cookbook.html#cookbook"><em>cookbook</em></a> which contains some useful pieces of code</li>
+<li><a class="reference internal" href="modules.html"><em>modules&#8217; documentation</em></a></li>
+</ul>
+</div></blockquote>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="architecture.html">1. Architecture overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#main-dependencies">1.1. Main dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#directories">1.2. Directories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#plmapp">1.3. plmapp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html#custom-applications">1.4. Custom applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="how-tos.html">2. List of how-to&#8217;s</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ht_2_add_models.html">2.1. How to add a model (single file)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ht_3_add_models2.html">2.2. How to add a model (django application)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cookbook.html">3. Cookbook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cookbook.html#models">3.1. Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook.html#controllers">3.2. Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook.html#tests">3.3. Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cookbook.html#others">3.4. Others</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="http-api.html">4. <tt class="docutils literal"><span class="pre">http_api</span></tt> &#8212; HTTP-API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="http-api.html#how-to-make-a-query">4.1. How to make a query</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-api.html#returned-value">4.2. Returned value</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-api.html#authentication">4.3. Authentication</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-api.html#object-fields">4.4. Object fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-api.html#query-fields">4.5. Query fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-api.html#file-fields">4.6. File fields</a></li>
+<li class="toctree-l2"><a class="reference internal" href="http-api.html#list-of-available-queries">4.7. List of available queries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">5. Modules (<tt class="docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers.html">5.1. <tt class="docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/csvimport.html">5.2. <tt class="docutils literal"><span class="pre">csvimport</span></tt> &#8212; Tools to import data from a CSV file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/decomposers.html">5.3. <tt class="docutils literal"><span class="pre">decomposers</span></tt> &#8212; Utilities to decompose a part</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/exceptions.html">5.4. <tt class="docutils literal"><span class="pre">exceptions</span></tt> &#8212; Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/fileformats.html">5.5. <tt class="docutils literal"><span class="pre">fileformats</span></tt> &#8212; Simple module to test if a file is a CAD file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/filehandlers.html">5.6. <tt class="docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/files.html">5.7. <tt class="docutils literal"><span class="pre">files</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/filters.html">5.8. filters &#8211; Rendering of text written in a wiki syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/forms.html">5.9. <tt class="docutils literal"><span class="pre">forms</span></tt> &#8212; Forms used by openPLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/lifecycle.html">5.10. <tt class="docutils literal"><span class="pre">lifecycle</span></tt> &#8212; Utilities to manipulate lifecycle</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mail.html">5.11. <tt class="docutils literal"><span class="pre">mail</span></tt> &#8212; Tools to send mails</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html">5.12. <tt class="docutils literal"><span class="pre">models</span></tt> &#8212; models for openPLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/navigate.html">5.13. <tt class="docutils literal"><span class="pre">navigate</span></tt> &#8212; Tools to generate navigation&#8217;s graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/plmapp_tags.html">5.14. <tt class="docutils literal"><span class="pre">plmapp_tags</span></tt> &#8212; Template tags and filters used by openPLM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/references.html">5.15. <tt class="docutils literal"><span class="pre">references</span></tt> &#8212; module to generate a new reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers.html">5.16. <tt class="docutils literal"><span class="pre">thumbnailers</span></tt> &#8212; Utilities to generate a thumbnail from a file</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils.html">5.17. <tt class="docutils literal"><span class="pre">utils</span></tt> &#8212; Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html">5.18. <tt class="docutils literal"><span class="pre">views</span></tt> &#8212; Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/widgets.html">5.19. <tt class="docutils literal"><span class="pre">widgets</span></tt> &#8212; Form widgets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="applications.html">6. Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="applications/badges/index.html">6.1. Badges</a></li>
+<li class="toctree-l2"><a class="reference internal" href="applications/calendrier/index.html">6.2. calendrier &#8211; calendar generations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="applications/document3D/index.html">6.3. Document3D</a></li>
+<li class="toctree-l2"><a class="reference internal" href="applications/gdoc/index.html">6.4. gdoc &#8211; Google Document Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="applications/pdfgen/index.html">6.5. pdfgen &#8211; PDF outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="applications/webdav/index.html">6.6. webdav &#8211; WebDAV</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">7. Documenting OpenPLM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#tools-used-to-write-the-documention">7.1. Tools used to write the documention</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#compiling-the-documentation">7.2. Compiling the documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="documentation.html#directories">7.3. Directories</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bom.html">8. Bill of materials &#8211; BOM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bom.html#definition">8.1. Definition</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bom.html#how-the-bom-is-stored">8.2. How the BOM is stored</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bom.html#extensions">8.3. Extensions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bom.html#boms-comparison">8.4. BOMs comparison</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="publication.html">9. Publication</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#publishers">9.1. Publishers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#model">9.2. Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#controller">9.3. Controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#views">9.4. Views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="publication.html#templates">9.5. Templates</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="richtext.html">10. Rich text | Wiki syntax</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="richtext.html#introduction">10.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="richtext.html#model-how-to-enhance-a-textfield">10.2. Model: how to enhance a textfield</a></li>
+<li class="toctree-l2"><a class="reference internal" href="richtext.html#how-to-render-a-content">10.3. How to render a content</a></li>
+<li class="toctree-l2"><a class="reference internal" href="richtext.html#markdown-syntax">10.4. Markdown syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="richtext.html#how-to-add-a-new-syntax">10.5. How to add a new syntax</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">11. Testing openPLM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#overview">11.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#running-tests">11.2. Running tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#code-coverage">11.3. Code coverage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing.html#tasks-celery">11.4. Tasks (celery)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="architecture.html" title="1. Architecture overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../admin/upgrade/upgrade-2.0.html" title="10. Upgrading from OpenPLM 1.2 to OpenPLM 2.0"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

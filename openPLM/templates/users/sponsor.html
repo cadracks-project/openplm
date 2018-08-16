@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+<!-- Manage html display in the Content div which correspond to the "history" menu -->
+
+{% block content %}
+    {% if is_owner %}
+        {% if obj.is_contributor or obj.is_administrator %}
+            <p> {% trans "Sponsor a new user" %} </p>
+            <a href="/import/users/">{% trans "Click here to sponsor several users from a CSV file." %}</a>
+
+            {% with sponsor_form as form %}
+                {% include "snippets/undo_form.html" %}
+            {% endwith %}
+        {% else %}
+            <p>{% trans "You can not sponsor a new user since you are not a contributor."%}</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+

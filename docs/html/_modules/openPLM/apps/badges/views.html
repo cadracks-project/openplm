@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.badges.views &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/badges/views.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.badges.views</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">render_to_response</span><span class="p">,</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="n">get_generic_data</span><span class="p">,</span> <span class="n">handle_errors</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">r2r</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.apps.badges.models</span> <span class="kn">import</span> <span class="n">Badge</span>
+
+
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="overview"><a class="viewcode-back" href="../../../../devel/applications/badges/views.html#openPLM.apps.badges.views.overview">[docs]</a><span class="k">def</span> <span class="nf">overview</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">extra_context</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Badges view :</span>
+<span class="sd">        display all badges available in OpenPLM</span>
+
+<span class="sd">    :url: :samp:`/badges/`</span>
+<span class="sd">    </span>
+<span class="sd">    **Template:**</span>
+<span class="sd">    </span>
+<span class="sd">    :file:`badges/overview.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+<span class="sd"> </span>
+<span class="sd">    ``badges``</span>
+<span class="sd">        List of all badges available</span>
+
+<span class="sd">    ``object_type``</span>
+<span class="sd">        Name of the page</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    
+    <span class="n">badges</span> <span class="o">=</span> <span class="n">Badge</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;level&quot;</span><span class="p">)</span>
+    
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_context</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;badges&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">badges</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;object_type&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;Badges&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;badges/overview.html&quot;</span><span class="p">,</span><span class="n">ctx</span><span class="p">,</span><span class="n">request</span><span class="p">)</span>
+</div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="detail"><a class="viewcode-back" href="../../../../devel/applications/badges/views.html#openPLM.apps.badges.views.detail">[docs]</a><span class="k">def</span> <span class="nf">detail</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">slug</span><span class="p">,</span> <span class="n">extra_context</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Badge description view.</span>
+
+<span class="sd">    :url: :samp:`/badges/{{slug}}`</span>
+<span class="sd">    </span>
+<span class="sd">    **Template:**</span>
+<span class="sd">    </span>
+<span class="sd">    :file:`badges/detail.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+<span class="sd"> </span>
+<span class="sd">    ``badge``</span>
+<span class="sd">        Badge object corresponding to the id given in</span>
+<span class="sd">        *slug*.</span>
+
+<span class="sd">    ``users``</span>
+<span class="sd">        List of users who won the badge</span>
+<span class="sd">        </span>
+<span class="sd">    ``object_type``</span>
+<span class="sd">        component of the title of the page. Here the name</span>
+<span class="sd">        of the badge.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">badge</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">Badge</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">slug</span><span class="p">)</span>
+    <span class="n">users</span> <span class="o">=</span> <span class="n">badge</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_context</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;badge&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">badge</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;users&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">users</span>
+    <span class="n">object_type</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">u&quot;Badge : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;object_type&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">object_type</span> <span class="o">%</span><span class="p">(</span><span class="n">badge</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;badges/detail.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="nd">@handle_errors</span>    
+<div class="viewcode-block" id="display_userbadges"><a class="viewcode-back" href="../../../../devel/applications/badges/views.html#openPLM.apps.badges.views.display_userbadges">[docs]</a><span class="k">def</span> <span class="nf">display_userbadges</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Badge tab in user view.</span>
+
+<span class="sd">    :url: :samp:`/user/{{username}}/badges`</span>
+<span class="sd">    </span>
+<span class="sd">    **Template:**</span>
+<span class="sd">    </span>
+<span class="sd">    :file:`users/badges_overview.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+<span class="sd"> </span>
+<span class="sd">    ``badges``</span>
+<span class="sd">        List of badges won by the user</span>
+
+<span class="sd">    ``current_page``</span>
+<span class="sd">        name of the tab</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    
+    <span class="n">badges</span> <span class="o">=</span> <span class="n">Badge</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">active</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;level&quot;</span><span class="p">)</span>
+    
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;badges&#39;</span><span class="p">,</span> 
+        <span class="s">&#39;badges&#39;</span> <span class="p">:</span> <span class="n">badges</span><span class="p">,</span>
+        <span class="p">})</span>
+    
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&quot;user/badges_overview.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

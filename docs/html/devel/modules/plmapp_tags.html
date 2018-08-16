@@ -1,0 +1,371 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.14. plmapp_tags — Template tags and filters used by openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.15. references — module to generate a new reference" href="references.html" />
+    <link rel="prev" title="5.13. navigate — Tools to generate navigation’s graph" href="navigate.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="5.15. references — module to generate a new reference"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="navigate.html" title="5.13. navigate — Tools to generate navigation’s graph"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="navigate.html"
+                        title="previous chapter">5.13. <tt class="docutils literal docutils literal docutils literal"><span class="pre">navigate</span></tt> &#8212; Tools to generate navigation&#8217;s graph</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">5.15. <tt class="docutils literal"><span class="pre">references</span></tt> &#8212; module to generate a new reference</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/plmapp_tags.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/plmapp_tags.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.templatetags.plmapp_tags">
+<span id="plmapp-tags-template-tags-and-filters-used-by-openplm"></span><h1>5.14. <tt class="xref py py-mod docutils literal"><span class="pre">plmapp_tags</span></tt> &#8212; Template tags and filters used by openPLM<a class="headerlink" href="#module-plmapp.templatetags.plmapp_tags" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.can_add">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">can_add</tt><big>(</big><em>obj</em>, <em>arg</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#can_add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.can_add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if an object can be linked to the current object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>obj</strong> (it can be an instance of <a class="reference internal" href="models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a>, <a class="reference internal" href="models.html#openPLM.plmapp.models.part.Part" title="openPLM.plmapp.models.part.Part"><tt class="xref py py-class docutils literal"><span class="pre">Part</span></tt></a> or <a class="reference internal" href="controllers/controllers_user.html#plmapp.controllers.user.UserController" title="plmapp.controllers.user.UserController"><tt class="xref py py-class docutils literal"><span class="pre">UserController</span></tt></a>) &#8211; object to test</li>
+<li><strong>arg</strong> &#8211; arguments here are the current object and the action for link creation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if the action can be processed on the current object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.can_add_type">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">can_add_type</tt><big>(</big><em>parent_type</em>, <em>child_type</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#can_add_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.can_add_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in Bom View.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent_type</strong> &#8211; Type of the parent, the current part</li>
+<li><strong>child_type</strong> &#8211; type of the object that may be added as child</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if child_type is a type of object that can be added to parent_type</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.can_link">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">can_link</tt><big>(</big><em>current_type</em>, <em>suggested_type</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#can_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.can_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in Doc-Parts views.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>current_type</strong> &#8211; type of the current object (part or document)</li>
+<li><strong>suggested_type</strong> &#8211; type of the object that may be attached to the current one</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">True if current_type is a type of object that can be attached to current_type object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.key">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">key</tt><big>(</big><em>d</em>, <em>key_name</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#key"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.key" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.indice">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">indice</tt><big>(</big><em>l</em>, <em>index</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#indice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.indice" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.attr">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">attr</tt><big>(</big><em>o</em>, <em>attr_name</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.attr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.plainattr">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">plainattr</tt><big>(</big><em>obj</em>, <em>attr_name</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#plainattr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.plainattr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.is_plmobject">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">is_plmobject</tt><big>(</big><em>result</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#is_plmobject"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.is_plmobject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the object behind <em>result</em> is an instance of <a class="reference internal" href="models.html#openPLM.plmapp.models.plmobject.PLMObject" title="openPLM.plmapp.models.plmobject.PLMObject"><tt class="xref py py-class docutils literal"><span class="pre">PLMObject</span></tt></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.is_documentfile">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">is_documentfile</tt><big>(</big><em>result</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#is_documentfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.is_documentfile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the object behind <em>result</em> is an instance of <a class="reference internal" href="models.html#openPLM.plmapp.models.document.DocumentFile" title="openPLM.plmapp.models.document.DocumentFile"><tt class="xref py py-class docutils literal"><span class="pre">DocumentFile</span></tt></a></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.get_state_class">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">get_state_class</tt><big>(</big><em>plmobject</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#get_state_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.get_state_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the state class (&#8220;cancelled&#8221;, &#8220;draft&#8221;, &#8220;proposed&#8221;, &#8220;official&#8221;,
+or &#8220;deprecated&#8221;) of <em>plmobject</em>.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The result of this function is cached with <tt class="xref py py-func docutils literal"><span class="pre">_cache_lifecycle_stuff()</span></tt>.</p>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.result_class">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">result_class</tt><big>(</big><em>result</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#result_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.result_class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a css class according to result.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.hide_emails">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">hide_emails</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#hide_emails"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.hide_emails" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns <em>text</em> with all emails removed.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.templatetags.plmapp_tags.AddGetParameter">
+<em class="property">class </em><tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">AddGetParameter</tt><big>(</big><em>values</em>, <em>variables</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#AddGetParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.AddGetParameter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="plmapp.templatetags.plmapp_tags.AddGetParameter.render">
+<tt class="descname">render</tt><big>(</big><em>context</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#AddGetParameter.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.AddGetParameter.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.add_get">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">add_get</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#add_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.add_get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.templatetags.plmapp_tags.AddSearchParameter">
+<em class="property">class </em><tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">AddSearchParameter</tt><big>(</big><em>values</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#AddSearchParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.AddSearchParameter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="plmapp.templatetags.plmapp_tags.AddSearchParameter.render">
+<tt class="descname">render</tt><big>(</big><em>context</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#AddSearchParameter.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.AddSearchParameter.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.add_search">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">add_search</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#add_search"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.add_search" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.show_pages_bar">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">show_pages_bar</tt><big>(</big><em>page</em>, <em>request</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#show_pages_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.show_pages_bar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="plmapp.templatetags.plmapp_tags.IsObjectReadableNode">
+<em class="property">class </em><tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">IsObjectReadableNode</tt><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#IsObjectReadableNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.IsObjectReadableNode" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="plmapp.templatetags.plmapp_tags.IsObjectReadableNode.render">
+<tt class="descname">render</tt><big>(</big><em>context</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#IsObjectReadableNode.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.IsObjectReadableNode.render" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.do_is_object_readable">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">do_is_object_readable</tt><big>(</big><em>parser</em>, <em>token</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#do_is_object_readable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.do_is_object_readable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.is_readable">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">is_readable</tt><big>(</big><em>obj</em>, <em>user</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#is_readable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.is_readable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.main_type">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">main_type</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#main_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.main_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.confirm">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">confirm</tt><big>(</big><em>context</em>, <em>action</em>, <em>action_label</em>, <em>msg</em>, <em>btn_classes=''</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.confirm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.richtext_filter">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">richtext_filter</tt><big>(</big><em>content</em>, <em>obj=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#richtext_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.richtext_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This template filter takes a string value and passes it through the
+function specified by the RICHTEXT_FILTER setting.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.plaintext_filter">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">plaintext_filter</tt><big>(</big><em>content</em>, <em>obj=None</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#plaintext_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.plaintext_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>This template filter takes a string value and passes it through the
+function specified by the RICHTEXT_PLAIN_FILTER setting.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.avatar_url">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">avatar_url</tt><big>(</big><em>user</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#avatar_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.avatar_url" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.normalize_language_code">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">normalize_language_code</tt><big>(</big><em>code</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#normalize_language_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.normalize_language_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="plmapp.templatetags.plmapp_tags.fix_rendered_result">
+<tt class="descclassname">plmapp.templatetags.plmapp_tags.</tt><tt class="descname">fix_rendered_result</tt><big>(</big><em>rendered_text</em><big>)</big><a class="reference internal" href="../../_modules/plmapp/templatetags/plmapp_tags.html#fix_rendered_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.templatetags.plmapp_tags.fix_rendered_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="5.15. references — module to generate a new reference"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="navigate.html" title="5.13. navigate — Tools to generate navigation’s graph"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

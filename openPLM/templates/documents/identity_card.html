@@ -1,0 +1,24 @@
+{% extends "identity_card.html" %}
+{% load i18n plmapp_tags highlight %}
+
+{% block thumbnail_url%}{% spaceless %}
+    {% with thumbnails|key:object.id as path %}
+        {% if path %}
+            {{MEDIA_URL}}{{suffix_url}}thumbnails/{{path}}
+        {% else %}
+            {{STATIC_URL}}img/icon_doc.png
+        {% endif %}
+    {% endwith %}
+{% endspaceless %}{% endblock %}
+
+{% block thumbnail %}
+    {{ block.super }}
+    <span class="num_files">
+        {% blocktrans count num_files|key:object.id as file_count %}
+            {{file_count}} file
+            {% plural %}
+            {{file_count}} files
+        {% endblocktrans %}
+    </span>
+{% endblock %}
+

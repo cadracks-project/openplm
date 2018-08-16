@@ -1,0 +1,657 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.2. How to install openPLM server (development version) &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="1. How to install OpenPLM" href="how-tos.html" />
+    <link rel="next" title="1.3. How to upgrade an installation of OpenPLM" href="ht_3_upgrade.html" />
+    <link rel="prev" title="1.1. How to install openPLM server 2.0" href="ht_1_install_server.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ht_3_upgrade.html" title="1.3. How to upgrade an installation of OpenPLM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ht_1_install_server.html" title="1.1. How to install openPLM server 2.0"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="how-tos.html" accesskey="U">1. How to install OpenPLM</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">1.2. How to install openPLM server (development version)</a><ul>
+<li><a class="reference internal" href="#requirements">1.2.1. Requirements</a></li>
+<li><a class="reference internal" href="#install-necessary-packages">1.2.2. Install necessary packages</a></li>
+<li><a class="reference internal" href="#get-code-using-subversion">1.2.3. Get code using Subversion</a></li>
+<li><a class="reference internal" href="#configure-postgresql">1.2.4. Configure PostgreSQL</a></li>
+<li><a class="reference internal" href="#change-the-secret-key">1.2.5. Change the secret key</a></li>
+<li><a class="reference internal" href="#create-the-database">1.2.6. Create the database</a></li>
+<li><a class="reference internal" href="#compile-message-files">1.2.7. Compile message files</a></li>
+<li><a class="reference internal" href="#configure-where-the-files-are-saved">1.2.8. Configure where the files are saved</a></li>
+<li><a class="reference internal" href="#collect-staticfiles">1.2.9. Collect staticfiles</a></li>
+<li><a class="reference internal" href="#configure-the-search-engine">1.2.10. Configure the search engine</a></li>
+<li><a class="reference internal" href="#configure-celery">1.2.11. Configure Celery</a></li>
+<li><a class="reference internal" href="#configure-allowed-hosts">1.2.12. Configure allowed hosts</a></li>
+<li><a class="reference internal" href="#configure-apache-server">1.2.13. Configure Apache server</a></li>
+<li><a class="reference internal" href="#restart-apache-server">1.2.14. Restart Apache server</a></li>
+<li><a class="reference internal" href="#first-steps-in-openplm">1.2.15. First steps in openPLM</a><ul>
+<li><a class="reference internal" href="#editing-the-site-adress">1.2.15.1. Editing the site adress</a></li>
+<li><a class="reference internal" href="#adding-users">1.2.15.2. Adding users</a><ul>
+<li><a class="reference internal" href="#recommanded-method">1.2.15.2.1. Recommanded method</a></li>
+<li><a class="reference internal" href="#second-method">1.2.15.2.2. Second method</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#requiring-https-connections">1.2.16. Requiring HTTPS connections</a></li>
+<li><a class="reference internal" href="#configuring-e-mails">1.2.17. Configuring E-mails</a></li>
+<li><a class="reference internal" href="#turning-off-the-debugging-mode">1.2.18. Turning off the debugging mode</a></li>
+<li><a class="reference internal" href="#troubleshootings">1.2.19. Troubleshootings</a><ul>
+<li><a class="reference internal" href="#connection-refused">1.2.19.1. Connection refused</a></li>
+<li><a class="reference internal" href="#ioerror-at-object-create-socket-closed">1.2.19.2. IOError at /object/create &#8211; Socket closed</a></li>
+<li><a class="reference internal" href="#i-cannot-find-any-objects">1.2.19.3. I cannot find any objects</a></li>
+<li><a class="reference internal" href="#i-try-to-connect-to-http-server-but-i-always-get-an-it-works-page">1.2.19.4. I try to connect to http://server/ but I always get an &#8220;It works&#8221; page</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ht_1_install_server.html"
+                        title="previous chapter">1.1. How to install openPLM server 2.0</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ht_3_upgrade.html"
+                        title="next chapter">1.3. How to upgrade an installation of OpenPLM</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/ht_2_install_server.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/ht_2_install_server.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="how-to-install-openplm-server-development-version">
+<h1>1.2. How to install openPLM server (development version)<a class="headerlink" href="#how-to-install-openplm-server-development-version" title="Permalink to this headline">¶</a></h1>
+<p>This document describes how to install an openPLM server.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">OpenPLM 2.0 (current development version) will no longer be
+compatible with django 1.2 and the portage is in in progress.
+It is recommended to wait until the migration is done before
+installing this version. (2013/02/25)</p>
+</div>
+<div class="section" id="requirements">
+<h2>1.2.1. Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>This HowTo is based on:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Debian Wheezy</li>
+<li>Apache Server version: Apache/2.2.22 (from Debian)</li>
+<li>PostgreSQL 9.1</li>
+<li>Python 2.6.X or 2.7.X</li>
+<li>Django 1.5.X</li>
+<li>Celery 3.0.X</li>
+<li>Haystack 1.2.X</li>
+<li>Xapian 1.2.X</li>
+<li>Lepl 5.0</li>
+<li>South 0.7.6</li>
+<li>Markdown 2.2</li>
+</ul>
+</div></blockquote>
+<p>It is also valid on Debian Squeeze (Apache 2.2.16, PostgreSQL 8.4).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Django framework can run with SQLite 3 and MySQL databases and with other web servers.
+We welcome all feedbacks about these combinations. For more information, you can visit :
+<a class="reference external" href="http://www.djangoproject.com/">Django website</a></p>
+</div>
+</div>
+<div class="section" id="install-necessary-packages">
+<h2>1.2.2. Install necessary packages<a class="headerlink" href="#install-necessary-packages" title="Permalink to this headline">¶</a></h2>
+<p>First, you must install some dependencies:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">swig</span> <span class="pre">build-essential</span> <span class="pre">pkg-config</span> <span class="pre">gettext</span> <span class="pre">apache2</span> <span class="pre">libapache2-mod-wsgi</span> <span class="pre">python-pip</span> <span class="pre">python-dev</span> <span class="pre">python-imaging</span> <span class="pre">python-kjbuckets</span> <span class="pre">python-pypdf</span> <span class="pre">ipython</span> <span class="pre">graphviz</span> <span class="pre">graphviz-dev</span> <span class="pre">python-pygraphviz</span>&nbsp; <span class="pre">python-xapian</span> <span class="pre">rabbitmq-server</span> <span class="pre">postgresql</span> <span class="pre">libpq-dev</span> <span class="pre">python-tz</span> <span class="pre">python-pisa</span> <span class="pre">libgsf-bin</span> <span class="pre">imagemagick</span> <span class="pre">python-pisa</span> <span class="pre">python-lxml</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">odfpy</span> <span class="pre">docutils</span> <span class="pre">celery</span> <span class="pre">django-celery</span> <span class="pre">'django==1.5.2'</span> <span class="pre">'south==0.7.6'</span> <span class="pre">psycopg2</span>&nbsp; <span class="pre">'django-haystack&lt;2'</span> <span class="pre">librabbitmq</span> <span class="pre">markdown</span> <span class="pre">lepl</span></tt></li>
+</ol>
+</div></blockquote>
+<p>To enable plain text search on files, you need to install the following
+dependencies:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">poppler-utils</span> <span class="pre">html2text</span> <span class="pre">odt2txt</span> <span class="pre">antiword</span> <span class="pre">catdoc</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">openxmllib</span></tt></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="get-code-using-subversion">
+<h2>1.2.3. Get code using Subversion<a class="headerlink" href="#get-code-using-subversion" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">apt-get</span> <span class="pre">install</span> <span class="pre">subversion</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">mkdir</span> <span class="pre">/var/django</span></tt></li>
+</ul>
+</div></blockquote>
+<p>All files used for a new django site will be stored in this directory.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cd</span> <span class="pre">/var/django</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">svn</span> <span class="pre">co</span> <span class="pre">http://svn.openplm.org/svn/openPLM/</span></tt></li>
+</ul>
+</div></blockquote>
+<p>The directory ./openPLM is created and all codes are downloaded.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cd</span> <span class="pre">/var/django/openPLM</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="configure-postgresql">
+<h2>1.2.4. Configure PostgreSQL<a class="headerlink" href="#configure-postgresql" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">mkdir</span> <span class="pre">/var/postgres</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">postgres:postgres</span> <span class="pre">/var/postgres/</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">find</span> <span class="pre">/</span> <span class="pre">-name</span> <span class="pre">initdb</span></tt></p>
+<div class="highlight-python"><pre>/usr/lib/postgresql/8.4/bin/initdb</pre>
+</div>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">locale-gen</span> <span class="pre">fr_FR.UTF-8</span></tt>
+(replace <tt class="docutils literal"><span class="pre">fr_FR.UTF-8</span></tt> with your locale)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">su</span> <span class="pre">postgres</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">/usr/lib/postgresql/8.4/bin/initdb</span> <span class="pre">--encoding=UTF-8</span> <span class="pre">--locale=fr_FR.UTF-8</span> <span class="pre">--pgdata=/var/postgres/</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">/usr/lib/postgresql/8.4/bin/postgres</span> <span class="pre">-D</span> <span class="pre">/var/postgres</span> <span class="pre">&amp;</span></tt>
+(it is not a problem if postgres is already running, you do not have to restart it)</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">psql</span></tt>:</p>
+<blockquote>
+<div><div class="highlight-psql"><div class="highlight"><pre><span class="gp">postgres=#</span><span class="k">create</span> <span class="k">database</span> <span class="n">openplm</span><span class="p">;</span>
+<span class="gp">postgres=#</span><span class="k">create</span> <span class="k">role</span> <span class="n">django</span> <span class="k">with</span> <span class="k">password</span> <span class="s1">&#39;MyPassword&#39;</span> <span class="n">login</span><span class="p">;</span>
+<span class="go">\q</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">exit</span></tt></p>
+</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="change-the-secret-key">
+<h2>1.2.5. Change the secret key<a class="headerlink" href="#change-the-secret-key" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cd</span> <span class="pre">/var/django/openPLM/trunk/openPLM/</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">python</span> <span class="pre">bin/change_secret_key.py</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="create-the-database">
+<h2>1.2.6. Create the database<a class="headerlink" href="#create-the-database" title="Permalink to this headline">¶</a></h2>
+<p>Edit the file <tt class="file docutils literal"><span class="pre">/var/django/openPLM/trunk/openPLM/settings.py</span></tt>
+and set the database password (&#8216;MyPassword&#8217;)
+It must be the one set with the command <tt class="docutils literal"><span class="pre">create</span> <span class="pre">role</span> <span class="pre">django</span> <span class="pre">with</span> <span class="pre">password</span> <span class="pre">'MyPassword'</span> <span class="pre">login;</span></tt>
+Here the DATABASE_USER is <tt class="docutils literal"><span class="pre">django</span></tt>, not the Django admin created by
+<tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">syncdb</span> <span class="pre">--all</span></tt>.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># settings.py</span>
+<span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;default&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;ENGINE&#39;</span><span class="p">:</span> <span class="s">&#39;django.db.backends.postgresql_psycopg2&#39;</span><span class="p">,</span> <span class="c"># or &#39;postgresql&#39;, &#39;mysql&#39;, &#39;sqlite3&#39;, &#39;oracle&#39;.</span>
+        <span class="s">&#39;NAME&#39;</span><span class="p">:</span> <span class="s">&#39;openplm&#39;</span><span class="p">,</span>               <span class="c"># Or path to database file if using sqlite3.</span>
+        <span class="s">&#39;USER&#39;</span><span class="p">:</span> <span class="s">&#39;django&#39;</span><span class="p">,</span>                <span class="c"># Not used with sqlite3.</span>
+<span class="hll">        <span class="s">&#39;PASSWORD&#39;</span><span class="p">:</span> <span class="s">&#39;MyPassword&#39;</span><span class="p">,</span>        <span class="c"># Not used with sqlite3.</span>
+</span>        <span class="s">&#39;HOST&#39;</span><span class="p">:</span> <span class="s">&#39;localhost&#39;</span><span class="p">,</span>             <span class="c"># Set to empty string for localhost. Not used with sqlite3.</span>
+        <span class="s">&#39;PORT&#39;</span><span class="p">:</span> <span class="s">&#39;&#39;</span><span class="p">,</span>                      <span class="c"># Set to empty string for default. Not used with sqlite3.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then execute the following commands:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cd</span> <span class="pre">/var/django/openPLM/trunk/openPLM/</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">syncdb</span> <span class="pre">--all</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">migrate</span> <span class="pre">--all</span> <span class="pre">--fake</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">loaddata</span> <span class="pre">extra_lifecycles</span></tt> to load optional lifecycles</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You have to create the superadmin user for Django and a special user named &#8216;company&#8217;.
+The company can access all contents from openPLM and should sponsor other users.
+The admin is here to administrate openPLM via its admin interface.</p>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="compile-message-files">
+<h2>1.2.7. Compile message files<a class="headerlink" href="#compile-message-files" title="Permalink to this headline">¶</a></h2>
+<p>Run the following commands:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><tt class="docutils literal"><span class="pre">make</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">./bin/translate_all.sh</span> <span class="pre">compile</span> <span class="pre">all</span></tt></li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="configure-where-the-files-are-saved">
+<h2>1.2.8. Configure where the files are saved<a class="headerlink" href="#configure-where-the-files-are-saved" title="Permalink to this headline">¶</a></h2>
+<p>Create directory where the uploaded files will be stored:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">mkdir</span> <span class="pre">/var/openPLM</span></tt></li>
+</ul>
+</div></blockquote>
+<p>Change rights:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">/var/openPLM</span></tt></li>
+</ul>
+</div></blockquote>
+<p>Change rights for the directory where thumbnails will be stored:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">-R</span> <span class="pre">www-data:www-data</span> <span class="pre">/var/django/openPLM/trunk/openPLM/media/</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="collect-staticfiles">
+<h2>1.2.9. Collect staticfiles<a class="headerlink" href="#collect-staticfiles" title="Permalink to this headline">¶</a></h2>
+<p>Run <tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">collectstatic</span></tt>.
+This will collect static files (javascript, images, css) in
+the <tt class="file docutils literal"><span class="pre">static/</span></tt> repertory.</p>
+</div>
+<div class="section" id="configure-the-search-engine">
+<span id="search-engine-svn"></span><h2>1.2.10. Configure the search engine<a class="headerlink" href="#configure-the-search-engine" title="Permalink to this headline">¶</a></h2>
+<p>Although haystack supports several search engines, openPLM needs xapian.
+You may change the setting <cite>HAYSTACK_XAPIAN_PATH</cite> if you want to put the indexes
+in another directory.</p>
+<p>Once haystack is configured, you must rebuild the index:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">rebuild_index</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">-R</span> <span class="pre">/var/openPLM/xapian_index/</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="configure-celery">
+<span id="celery-svn"></span><h2>1.2.11. Configure Celery<a class="headerlink" href="#configure-celery" title="Permalink to this headline">¶</a></h2>
+<p>openPLM uses Celery to manage asynchronous tasks. Celery needs a broker, you can
+choose any broker supported by celery but <em>rabbitmq</em> is recommanded.</p>
+<p>To configure rabbitmq, you must create an user and a vhost (as root):</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">service</span> <span class="pre">rabbitmq-server</span> <span class="pre">start</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">rabbitmqctl</span> <span class="pre">add_user</span> <span class="pre">openplm</span> <span class="pre">'secret'</span></tt>
+(change this password, use single quotes to put special characters or spaces)</li>
+<li><tt class="docutils literal"><span class="pre">rabbitmqctl</span> <span class="pre">add_vhost</span> <span class="pre">openplm</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">rabbitmqctl</span> <span class="pre">set_permissions</span> <span class="pre">-p</span> <span class="pre">openplm</span> <span class="pre">openplm</span> <span class="pre">&quot;.*&quot;</span> <span class="pre">&quot;.*&quot;</span> <span class="pre">&quot;.*&quot;</span></tt></li>
+</ul>
+</div></blockquote>
+<p>Then you must modify the <cite>BROKER_*</cite> settings in the <tt class="file docutils literal"><span class="pre">settings.py</span></tt>, if you follow this tutorial, you
+only have to change <cite>BROKER_PASSWORD</cite>.</p>
+<p>For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># settings.py</span>
+<span class="n">BROKER_HOST</span> <span class="o">=</span> <span class="s">&quot;localhost&quot;</span>
+<span class="n">BROKER_PORT</span> <span class="o">=</span> <span class="mi">5672</span>
+<span class="n">BROKER_USER</span> <span class="o">=</span> <span class="s">&quot;openplm&quot;</span>
+<span class="hll"><span class="n">BROKER_PASSWORD</span> <span class="o">=</span> <span class="s">&quot;secret&quot;</span>
+</span><span class="n">BROKER_VHOST</span> <span class="o">=</span> <span class="s">&quot;openplm&quot;</span>
+</pre></div>
+</div>
+<p><strong class="command">celeryd</strong>, celery&#8217;s daemon must be run. openPLM ships with an init script:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">cp</span> <span class="pre">/var/django/openPLM/trunk/openPLM/etc/init.d/celeryd</span> <span class="pre">/etc/init.d/celeryd</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">cp</span> <span class="pre">/var/django/openPLM/trunk/openPLM/etc/default/celeryd</span> <span class="pre">/etc/default/celeryd</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">chmod</span> <span class="pre">+x</span> <span class="pre">/etc/init.d/celeryd</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">update-rc.d</span> <span class="pre">celeryd</span> <span class="pre">defaults</span></tt></li>
+</ul>
+</div></blockquote>
+<p>To launch <strong class="command">celeryd</strong>, run <tt class="docutils literal"><span class="pre">/etc/init.d/celeryd</span> <span class="pre">start</span></tt>.</p>
+</div>
+<div class="section" id="configure-allowed-hosts">
+<h2>1.2.12. Configure allowed hosts<a class="headerlink" href="#configure-allowed-hosts" title="Permalink to this headline">¶</a></h2>
+<p>Django 1.5 checks the host before serving a request.
+You must edit the <a class="reference external" href="http://docs.djangoproject.com/en/dev/ref/settings/#std:setting-ALLOWED_HOSTS" title="(in Django v1.7)"><tt class="xref std std-setting docutils literal"><span class="pre">ALLOWED_HOSTS</span></tt></a> setting so that
+django accepts to serve your requests.</p>
+</div>
+<div class="section" id="configure-apache-server">
+<h2>1.2.13. Configure Apache server<a class="headerlink" href="#configure-apache-server" title="Permalink to this headline">¶</a></h2>
+<p>Create a new apache&#8217;s site (<tt class="file docutils literal"><span class="pre">/etc/apache2/sites-available/openplm</span></tt>)
+and add the following lines (replace the server name):</p>
+<div class="highlight-apache"><div class="highlight"><pre><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> openplm.example.com
+    <span class="nb">DocumentRoot</span> <span class="sx">/var/www</span>
+
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/var/django/openPLM/trunk/openPLM/apache/django.wsgi</span>
+<span class="c"># required to enable webdav access </span>
+    <span class="nb">WSGIPassAuthorization</span> <span class="k">On</span> 
+
+    <span class="nt">&lt;Location</span> <span class="s">~ &quot;/media/(?!public)&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">WSGIAccessScript</span> <span class="sx">/var/django/openPLM/trunk/openPLM/apache/access_restricted.wsgi</span>
+    <span class="nt">&lt;/Location&gt;</span>
+
+    <span class="nb">Alias</span> <span class="sx">/static</span> <span class="sx">/var/django/openPLM/trunk/openPLM/static</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/static</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+    <span class="nb">Alias</span> <span class="sx">/media</span> <span class="sx">/var/django/openPLM/trunk/openPLM/media</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/media</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="restart-apache-server">
+<h2>1.2.14. Restart Apache server<a class="headerlink" href="#restart-apache-server" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">a2ensite</span> <span class="pre">openplm</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">service</span> <span class="pre">apache2</span> <span class="pre">restart</span></tt></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="first-steps-in-openplm">
+<h2>1.2.15. First steps in openPLM<a class="headerlink" href="#first-steps-in-openplm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="editing-the-site-adress">
+<h3>1.2.15.1. Editing the site adress<a class="headerlink" href="#editing-the-site-adress" title="Permalink to this headline">¶</a></h3>
+<p>Edit the default Site (<tt class="samp docutils literal"><span class="pre">http://</span><em><span class="pre">server</span></em><span class="pre">/admin/sites/site/1/</span></tt>) and set the
+domain name.
+This should be the same domain set in the apache file and in the ALLOWED_HOST setting.
+You must login with the admin account.
+You can use <tt class="docutils literal"><span class="pre">localhost</span></tt> on a local installation.</p>
+</div>
+<div class="section" id="adding-users">
+<h3>1.2.15.2. Adding users<a class="headerlink" href="#adding-users" title="Permalink to this headline">¶</a></h3>
+<p>To add users in OpenPLM, you have two methods. The first one uses the
+delegation tab directly in OpenPLM and the second one uses the administration
+interface.</p>
+<div class="section" id="recommanded-method">
+<h4>1.2.15.2.1. Recommanded method<a class="headerlink" href="#recommanded-method" title="Permalink to this headline">¶</a></h4>
+<p>The first method is the recommanded way to add users to an OpenPLM instance.
+The only constraint is that you need to have a working email configuration.</p>
+<p>You need to log into OpenPLM. If you have just completed the installation, you
+can log in using the company user created during installation.</p>
+<p>Open your web browser and go to:</p>
+<div class="highlight-python"><pre>http://your_site_address/</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Here your_site_adress is given as example but you have to use your own site adress</p>
+</div>
+<img alt="../_images/company_login.png" src="../_images/company_login.png" />
+<p>Then follow the steps described in <a class="reference internal" href="../user/tuto_3_user.html#add-user"><em>Add a user (sponsor)</em></a>.</p>
+<p>Create other users if needed, then logout and login as your new user account.</p>
+</div>
+<div class="section" id="second-method">
+<h4>1.2.15.2.2. Second method<a class="headerlink" href="#second-method" title="Permalink to this headline">¶</a></h4>
+<p>The second method to add users is <strong>not</strong> recomanded. Things can go wrong :
+permissions problems can occurs, and users might not be indexed.
+The only reason to use it is because you don&#8217;t need a working email configuration to use it.
+But even in that case, it is recommanded to take a few minutes to configure emails and use the sponsoring method.</p>
+<p>Open your web browser and go to:</p>
+<div class="highlight-python"><pre>http://your_site_address/admin/</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Here your_site_adress is given as example but you have to use your own site adress</p>
+</div>
+<p>Enter superadmin login and password:</p>
+<img alt="../_images/admin_login.png" src="../_images/admin_login.png" />
+<p>If you see an IOError (socket closed), checks your settings, in particular the
+stuff related to Celery and RabbitMQ.</p>
+<p>You can add new user and edit them going to Home&gt;Auth&gt;User:</p>
+<img alt="../_images/admin_user.png" src="../_images/admin_user.png" />
+<p>Do not forget to edit Home&gt;Plmapp&gt;User profiles in order to give correct rights for openPLM application :</p>
+<img alt="../_images/admin_userprofile.png" src="../_images/admin_userprofile.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">For more information about the <a class="reference external" href="http://docs.djangoproject.com/en/dev/intro/tutorial02/">Django Admin tool</a> .</p>
+</div>
+<p>Then you must create a new <em>Site</em> (use the admin interface) and set the <cite>SITE_ID</cite>
+variable in the <tt class="file docutils literal"><span class="pre">settings.py</span></tt> file.</p>
+<p>You are now ready for your first login:</p>
+<div class="highlight-python"><pre>http://localhost/</pre>
+</div>
+<img alt="../_images/openplm_connexion.png" src="../_images/openplm_connexion.png" />
+</div>
+</div>
+</div>
+<div class="section" id="requiring-https-connections">
+<h2>1.2.16. Requiring HTTPS connections<a class="headerlink" href="#requiring-https-connections" title="Permalink to this headline">¶</a></h2>
+<p>If your (apache) server support HTTPS, you can force HTTPS connections by setting the
+<tt class="xref py py-const docutils literal"><span class="pre">FORCE_HTTPS</span></tt> and <tt class="xref py py-const docutils literal"><span class="pre">SESSION_COOKIE_SECURE</span></tt> to <tt class="docutils literal"><span class="pre">True</span></tt> in the
+<tt class="file docutils literal"><span class="pre">settings.py</span></tt> file.</p>
+<p>Each HTTP connection will be redirected to an HTTPS connection.</p>
+<p>A possible apache configuration would be (the rewrite and ssl modules must
+be enabled)</p>
+<div class="highlight-apache"><div class="highlight"><pre><span class="nb">NameVirtualHost</span> *:80
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/var/django/openPLM/trunk/openPLM/apache/django.wsgi</span>
+    <span class="c"># required to enable webdav access </span>
+    <span class="nb">WSGIPassAuthorization</span> <span class="k">On</span> 
+
+    <span class="nt">&lt;Location</span> <span class="s">&quot;/admin&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">RewriteEngine</span> <span class="k">On</span>
+        <span class="nb">RewriteRule</span> (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    <span class="nt">&lt;/Location&gt;</span>
+    <span class="nt">&lt;Location</span> <span class="s">&quot;/static&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">RewriteEngine</span> <span class="k">On</span>
+        <span class="nb">RewriteRule</span> (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    <span class="nt">&lt;/Location&gt;</span>
+    <span class="nt">&lt;Location</span> <span class="s">&quot;/media&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">RewriteEngine</span> <span class="k">On</span>
+        <span class="nb">RewriteRule</span> (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+    <span class="nt">&lt;/Location&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+
+<span class="nb">NameVirtualHost</span> *:443
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+
+    <span class="nb">SSLEngine</span> <span class="k">on</span>
+    <span class="nb">SSLCertificateFile</span>    <span class="sx">/etc/ssl/mycert.crt</span>
+    <span class="nb">SSLCertificateKeyFile</span> <span class="sx">/etc/ssl/mykey.key</span>
+    <span class="nb">SSLVerifyClient</span> <span class="k">none</span>
+
+    <span class="nb">WSGIScriptAlias</span> / <span class="sx">/var/django/openPLM/trunk/openPLM/apache/django.wsgi</span>
+    <span class="nt">&lt;Location</span> <span class="s">~ &quot;/media/(?!public)&quot;</span><span class="nt">&gt;</span>
+        <span class="nb">WSGIAccessScript</span> <span class="sx">/var/django/openPLM/trunk/openPLM/apache/access_restricted.wsgi</span>
+    <span class="nt">&lt;/Location&gt;</span>
+    <span class="nb">Alias</span> <span class="sx">/static</span> <span class="sx">/var/django/openPLM/trunk/openPLM/static</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/static</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+    <span class="nb">Alias</span> <span class="sx">/media</span> <span class="sx">/var/django/openPLM/trunk/openPLM/media</span>
+    <span class="nt">&lt;Directory</span> <span class="s">/var/django/openPLM/trunk/openPLM/media</span><span class="nt">&gt;</span>
+        <span class="nb">Order</span> deny,allow
+        <span class="nb">Allow</span> from <span class="k">all</span>
+    <span class="nt">&lt;/Directory&gt;</span>
+
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-e-mails">
+<h2>1.2.17. Configuring E-mails<a class="headerlink" href="#configuring-e-mails" title="Permalink to this headline">¶</a></h2>
+<p>There are several variables that can be set in the <tt class="file docutils literal"><span class="pre">settings.py</span></tt> to configure
+how mails are sent. See the <a class="reference external" href="https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-EMAIL_HOST">Django documentation</a> for more details.</p>
+<p>OpenPLM adds another variable <cite>EMAIL_OPENPLM</cite> which is the e-mail address set
+in the <cite>from</cite> field of each e-mail. Usually, this is a <cite>no-reply&#64;</cite> address.</p>
+</div>
+<div class="section" id="turning-off-the-debugging-mode">
+<h2>1.2.18. Turning off the debugging mode<a class="headerlink" href="#turning-off-the-debugging-mode" title="Permalink to this headline">¶</a></h2>
+<p>Once your server is configured and runs fine, you should turn off the debug mode.
+Set the <tt class="xref py py-const docutils literal"><span class="pre">DEBUG</span></tt> setting to <tt class="docutils literal"><span class="pre">False</span></tt> and restart celery and apache.</p>
+</div>
+<div class="section" id="troubleshootings">
+<h2>1.2.19. Troubleshootings<a class="headerlink" href="#troubleshootings" title="Permalink to this headline">¶</a></h2>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><a class="reference internal" href="#connection-refused" id="id1">Connection refused</a></li>
+<li><a class="reference internal" href="#ioerror-at-object-create-socket-closed" id="id2">IOError at /object/create &#8211; Socket closed</a></li>
+<li><a class="reference internal" href="#i-cannot-find-any-objects" id="id3">I cannot find any objects</a></li>
+<li><a class="reference internal" href="#i-try-to-connect-to-http-server-but-i-always-get-an-it-works-page" id="id4">I try to connect to http://server/ but I always get an &#8220;It works&#8221; page</a></li>
+</ul>
+</div>
+<div class="section" id="connection-refused">
+<h3><a class="toc-backref" href="#id1">1.2.19.1. Connection refused</a><a class="headerlink" href="#connection-refused" title="Permalink to this headline">¶</a></h3>
+<p>This error is thrown if Celery is mis-configured and can not connect to
+RabbitMQ.</p>
+<p>See <a class="reference internal" href="#celery-svn"><em>Configure Celery</em></a> for more details, make sure that RabbitMQ is running and do
+not forget to edit the <cite>BROKER_*</cite> variables in the <tt class="file docutils literal"><span class="pre">settings.py</span></tt> file.</p>
+</div>
+<div class="section" id="ioerror-at-object-create-socket-closed">
+<h3><a class="toc-backref" href="#id2">1.2.19.2. IOError at /object/create &#8211; Socket closed</a><a class="headerlink" href="#ioerror-at-object-create-socket-closed" title="Permalink to this headline">¶</a></h3>
+<p>See <a class="reference internal" href="#connection-refused">Connection refused</a>.</p>
+</div>
+<div class="section" id="i-cannot-find-any-objects">
+<h3><a class="toc-backref" href="#id3">1.2.19.3. I cannot find any objects</a><a class="headerlink" href="#i-cannot-find-any-objects" title="Permalink to this headline">¶</a></h3>
+<p>You can rebuild the search index (<a class="reference internal" href="#search-engine-svn"><em>Configure the search engine</em></a>) and see if openPLM
+finds your parts.</p>
+<p>It is possible that celery can not update the
+search index. You can check celery&#8217;s log (<tt class="file docutils literal"><span class="pre">/var/log/celery/*.log</span></tt>) and
+see if it contains lines like <tt class="docutils literal"><span class="pre">[..</span> <span class="pre">INFO/MainProcess]</span> <span class="pre">Got</span> <span class="pre">task</span> <span class="pre">from</span> <span class="pre">broker:</span> <span class="pre">openPLM.plmapp.tasks.update_index[...]</span></tt>. It may be a permission problem and
+<tt class="docutils literal"><span class="pre">chown</span> <span class="pre">www-data:www-data</span> <span class="pre">-R</span> <span class="pre">/var/openPLM/xapian_index/</span></tt> may fix it.</p>
+</div>
+<div class="section" id="i-try-to-connect-to-http-server-but-i-always-get-an-it-works-page">
+<h3>1.2.19.4. I try to connect to <a class="reference external" href="http://server/">http://server/</a> but I always get an &#8220;It works&#8221; page<a class="headerlink" href="#i-try-to-connect-to-http-server-but-i-always-get-an-it-works-page" title="Permalink to this headline">¶</a></h3>
+<p>Maybe your apache installation is a little broken. Does <a class="reference external" href="http://server/home/">http://server/home/</a>
+show a more acceptable result?</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ht_3_upgrade.html" title="1.3. How to upgrade an installation of OpenPLM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ht_1_install_server.html" title="1.1. How to install openPLM server 2.0"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li>
+          <li><a href="how-tos.html" >1. How to install OpenPLM</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

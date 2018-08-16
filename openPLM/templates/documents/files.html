@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load i18n plmapp_tags %}
+
+<!-- Manage html display in the Content div which correspond to the "files" menu -->
+
+{% block css %}
+<link type="text/css" href="{{STATIC_URL}}css/files.css" rel="Stylesheet" />
+{% endblock %}
+
+
+{% block content %}
+    {% if is_contributor and obj.is_editable %}
+        {% trans "You can add/modify/delete file(s)." %}
+    {% elif is_contributor %}
+        {% trans "The status of this document does not allow adding/deleting files." %}
+    {% else %}
+        {% trans "You don't have the necessary rights to add/delete files."%}
+    {% endif %}
+    <form method="POST" action="">{% csrf_token %}
+        {% if is_contributor and obj.is_editable %}
+            {{ file_formset.management_form }}
+            <noscript>
+                <a class="tb-btn" href="./add/">
+                    <span class="ui-button-text">{% trans "ADD" %}</span>
+                </a>
+            </noscript>
+            {% if file_formset.total_form_count %}
+                    <div style="margin-bottom:10px"></div>  
+<!--                <div class="tb-btn-toolbar"> -->
+                    <input type="submit" class="tb-btn tb-btn-danger tb-btn-large" value="{% trans "DELETE" %}"/>
+                    <input type="button" class="tb-btn tb-btn-large" value="{% trans "CHECK ALL" %}" id="s_all"/>
+                    <input type="button" class="tb-btn tb-btn-large hidden" value="{% trans "UNCHECK ALL" %}" id="des_all"/>
+
+                    <div class="tb-btn-group">
+                        <button class="tb-btn tb-btn-large tb-dropdown-toggle" data-toggle="dropdown">
+                            {% trans "Download..." %}
+                            <span class="tb-caret"></span>
+                        </button>
+                        <ul class="tb tb-dropdown-menu">
+                            {% for format in archive_formats %}
+                                <li>
+                                <a href="./archive/?format={{format}}&files=1">{% blocktrans %}Download all files ({{format}}){% endblocktrans %}</a>
+                                </li>
+                            {% endfor %}
+                            {% if can_generate_pdf %}
+                                <li class="tb-divider"></li>
+                                <li>
+                                <a href="../pdf/">{% trans "Download merged PDF files"%}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+<!--                </div> -->
+            {% endif %}
+        {% else %}
+            {# placeholder since archive_form: float is right #}
+            <span>&nbsp;</span>
+        {% endif %}
+        <table class="Content">
+            {% for form in file_formset.forms %}
+                {% with instance=form.instance locked=form.instance.locked%}
+                    <tr class="Content file {{ locked|yesno:"locked,unlocked" }}">
+                        {{ form.id }}
+                        {{ form.document }}
+                        <td class="Content" style="width:50px; text-align:center">{% if not locked %} {{ form.delete }}{% endif %}</td>
+                            <td class="Content file-status">
+                                <span class="status icon-locked" {% if not locked %}style="display:none"{% endif %} title="{% trans "Locked" %}"></span>
+                                <span class="status icon-unlocked" {% if locked %}style="display:none"{% endif %} title="{% trans "Unlocked" %}"></span>
+                            </td>
+                            <td class="Content">
+                                <a href="/file/{{instance.id}}/{{instance.filename|urlencode}}?view=1">{{instance.filename}}</a></td>
+                            <td class="Content">{{instance.size|filesizeformat}}</td>
+                            <td class="Content">
+                                <a class="tb-btn tb-btn-large" href="/file/{{instance.id}}/{{instance.filename|urlencode}}">
+                                    <span>{% trans "DOWNLOAD" %}</span>
+                                </a>
+                            </td>
+                            <td class="Content">
+                                {% include "documents/checkout_btn.html" with doc_file=instance %}
+                            </td>
+                            <td class="Content">
+                                <a href="/file/revisions/{{instance.id}}/">{{ instance.revision }}</a>
+                            </td>
+                            <td class="Content">
+                                {% if instance.thumbnail %}
+                                    <img class="thumbnail" src="{{instance.thumbnail.url}}"
+                                    alt="Thumbnail"/>
+                                {% else %}
+                                    {% trans "No thumbnail available" %}
+                                {% endif %}
+                            </td>
+                    </tr>
+                {% endwith %}
+            {% endfor %}	    
+        </table>
+
+    </form>
+
+    <div id="dialog_check-out" class="hidden" title="{% trans "Confirm CHECK-OUT" %}">
+        {% trans "You'are checking out a standardfile while a native file is available. Your native file will be deprecated and will not be usable anymore." %}
+    </div>
+
+    {% if deprecated_files %}
+
+        <div id="deprecated_files">
+            <h6>{% trans "Deprecated files:" %}</h6>
+            {% for doc_file in deprecated_files %}        
+                <p><a href="/file/revisions/{{doc_file.id}}/">{{doc_file.filename}}</a></p>            
+            {% endfor %}    
+        </div>
+    {% endif %}
+    {% if is_contributor and obj.is_editable %}
+        <div id="add_file_container" class="hidden">
+            {% include "documents/files_add.html" %}
+            <div id="add-file-nojs">
+                <a href="add/">{% trans "Add file (no javascript)" %}</a>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+

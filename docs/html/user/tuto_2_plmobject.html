@@ -1,0 +1,182 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>1.2. Functions related to PLM objects : PART / DOCUMENT &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="1. List of Tutorials" href="tutorials.html" />
+    <link rel="next" title="1. Functions in common related PLM objects : PART / DOCUMENT" href="PLMObject/1_common.html" />
+    <link rel="prev" title="1.1. Main functions of openPLM" href="tuto_1_main_funct.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="PLMObject/1_common.html" title="1. Functions in common related PLM objects : PART / DOCUMENT"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="tuto_1_main_funct.html" title="1.1. Main functions of openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" accesskey="U">1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="tuto_1_main_funct.html"
+                        title="previous chapter">1.1. Main functions of openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="PLMObject/1_common.html"
+                        title="next chapter">1. Functions in common related PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/user/tuto_2_plmobject.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/user/tuto_2_plmobject.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="functions-related-to-plm-objects-part-document">
+<span id="en-plmobject-func"></span><h1>1.2. Functions related to PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong><a class="headerlink" href="#functions-related-to-plm-objects-part-document" title="Permalink to this headline">¶</a></h1>
+<p>This document describes the functions you can use to display and manipulate the <strong>Parts</strong> and <strong>Documents</strong> in openPLM.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="PLMObject/1_common.html">1. Functions in common related PLM objects : <strong>PART</strong> / <strong>DOCUMENT</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/1_common.html#overview">1.1. OVERVIEW</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/1_common.html#attributes">1.2. ATTRIBUTES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/1_common.html#lifecycle">1.3. LIFECYCLE</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/1_common.html#revisions">1.4. REVISIONS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/1_common.html#history">1.5. HISTORY</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PLMObject/2_part.html">2. Functions specific to PLM object : <strong>PART</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/2_part.html#bom-child">2.1. BOM-CHILD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/2_part.html#parents">2.2. PARENTS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/2_part.html#doc-cad">2.3. DOC-CAD</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="PLMObject/3_document.html">3. Functions specific to PLM object : <strong>DOCUMENT</strong></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/3_document.html#parts">3.1. PARTS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/3_document.html#files">3.2. FILES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="PLMObject/3_document.html#d-document">3.3. 3D DOCUMENT</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="PLMObject/1_common.html" title="1. Functions in common related PLM objects : PART / DOCUMENT"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="tuto_1_main_funct.html" title="1.1. Main functions of openPLM"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >4. User documentation</a> &raquo;</li>
+          <li><a href="tutorials.html" >1. List of Tutorials</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

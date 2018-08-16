@@ -1,0 +1,264 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.6.1. filehandlers.base — Base classes for filehandlers &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="5.6. filehandlers — Utilities to retrieve informations from a file" href="../filehandlers.html" />
+    <link rel="next" title="5.6.2. filehandlers.odf — Handler for odf files" href="filehandlers_odf.html" />
+    <link rel="prev" title="5.6. filehandlers — Utilities to retrieve informations from a file" href="../filehandlers.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="filehandlers_odf.html" title="5.6.2. filehandlers.odf — Handler for odf files"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../filehandlers.html" title="5.6. filehandlers — Utilities to retrieve informations from a file"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../filehandlers.html" accesskey="U">5.6. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../filehandlers.html"
+                        title="previous chapter">5.6. <tt class="docutils literal docutils literal docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="filehandlers_odf.html"
+                        title="next chapter">5.6.2. <tt class="docutils literal"><span class="pre">filehandlers.odf</span></tt> &#8212; Handler for odf files</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/modules/filehandlers/filehandlers_base.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/filehandlers/filehandlers_base.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.filehandlers.base">
+<span id="filehandlers-base-base-classes-for-filehandlers"></span><h1>5.6.1. <tt class="xref py py-mod docutils literal"><span class="pre">filehandlers.base</span></tt> &#8212; Base classes for filehandlers<a class="headerlink" href="#module-plmapp.filehandlers.base" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="plmapp.filehandlers.base.HandlersManager">
+<em class="property">class </em><tt class="descclassname">plmapp.filehandlers.base.</tt><tt class="descname">HandlersManager</tt><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#HandlersManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.HandlersManager" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>The HandlersManager has methods to register a <a class="reference internal" href="#plmapp.filehandlers.base.FileHandler" title="plmapp.filehandlers.base.FileHandler"><tt class="xref py py-class docutils literal"><span class="pre">FileHandler</span></tt></a> with a
+type of file (an extension with the dot, like <tt class="docutils literal"><span class="pre">&quot;.pdf&quot;</span></tt>) and to get a
+<a class="reference internal" href="#plmapp.filehandlers.base.FileHandler" title="plmapp.filehandlers.base.FileHandler"><tt class="xref py py-class docutils literal"><span class="pre">FileHandler</span></tt></a> from a typename.</p>
+<p>In all methods, <em>typename</em> should be in lowercase and start with a dot.</p>
+<dl class="classmethod">
+<dt id="plmapp.filehandlers.base.HandlersManager.register">
+<em class="property">classmethod </em><tt class="descname">register</tt><big>(</big><em>typename</em>, <em>handler</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#HandlersManager.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.HandlersManager.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the subclass of <a class="reference internal" href="#plmapp.filehandlers.base.FileHandler" title="plmapp.filehandlers.base.FileHandler"><tt class="xref py py-class docutils literal"><span class="pre">FileHandler</span></tt></a> <em>handler</em> for <em>typename</em>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.filehandlers.base.HandlersManager.get_best_handler">
+<em class="property">classmethod </em><tt class="descname">get_best_handler</tt><big>(</big><em>typename</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#HandlersManager.get_best_handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.HandlersManager.get_best_handler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the best <a class="reference internal" href="#plmapp.filehandlers.base.FileHandler" title="plmapp.filehandlers.base.FileHandler"><tt class="xref py py-class docutils literal"><span class="pre">FileHandler</span></tt></a> associated to <em>typename</em>. The best
+handler is the first registered handler for <em>typename</em>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.filehandlers.base.HandlersManager.get_all_handlers">
+<em class="property">classmethod </em><tt class="descname">get_all_handlers</tt><big>(</big><em>typename</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#HandlersManager.get_all_handlers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.HandlersManager.get_all_handlers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a list of all <tt class="xref py py-class docutils literal"><span class="pre">FileHander</span></tt> associated to <em>typename</em>.</p>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="plmapp.filehandlers.base.HandlersManager.get_all_supported_types">
+<em class="property">classmethod </em><tt class="descname">get_all_supported_types</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#HandlersManager.get_all_supported_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.HandlersManager.get_all_supported_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all supported types (a list of string).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="plmapp.filehandlers.base.FileHandler">
+<em class="property">class </em><tt class="descclassname">plmapp.filehandlers.base.</tt><tt class="descname">FileHandler</tt><big>(</big><em>path</em>, <em>filename</em><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#FileHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>A FileHandler is an object which retrieves informations from a file and 
+exposes this informations through its attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> &#8211; path of the file that should be parsed</li>
+<li><strong>filename</strong> &#8211; original filename of the file (with its extension).</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-tips-for-developpers admonition">
+<p class="first admonition-title">Tips for developpers</p>
+<p>A FileHandler has the following protected attributes:</p>
+<blockquote class="last">
+<div><dl class="attribute">
+<dt id="plmapp.filehandlers.base.FileHandler._path">
+<tt class="descname">_path</tt><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler._path" title="Permalink to this definition">¶</a></dt>
+<dd><p>equals to <em>path</em></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.filehandlers.base.FileHandler._filename">
+<tt class="descname">_filename</tt><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler._filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>equals to <em>filename</em></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.filehandlers.base.FileHandler._is_valid">
+<tt class="descname">_is_valid</tt><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler._is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if the file has been successfully parsed. Set by default
+to False. You can use the methods <a class="reference internal" href="#plmapp.filehandlers.base.FileHandler._set_valid" title="plmapp.filehandlers.base.FileHandler._set_valid"><tt class="xref py py-meth docutils literal"><span class="pre">_set_valid()</span></tt></a> and
+<a class="reference internal" href="#plmapp.filehandlers.base.FileHandler._set_invalid" title="plmapp.filehandlers.base.FileHandler._set_invalid"><tt class="xref py py-meth docutils literal"><span class="pre">_set_invalid()</span></tt></a> to modify this attribute.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.filehandlers.base.FileHandler._set_valid">
+<tt class="descname">_set_valid</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#FileHandler._set_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler._set_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the file as valid</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="plmapp.filehandlers.base.FileHandler._set_invalid">
+<tt class="descname">_set_invalid</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#FileHandler._set_invalid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler._set_invalid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the file as invalid</p>
+</dd></dl>
+
+</div></blockquote>
+</div>
+<dl class="method">
+<dt id="plmapp.filehandlers.base.FileHandler.is_valid">
+<tt class="descname">is_valid</tt><big>(</big><big>)</big><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#FileHandler.is_valid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler.is_valid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the file has been successfully parsed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="plmapp.filehandlers.base.FileHandler.attributes">
+<tt class="descname">attributes</tt><a class="reference internal" href="../../../_modules/plmapp/filehandlers/base.html#FileHandler.attributes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#plmapp.filehandlers.base.FileHandler.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of the attributes which have been successfully set.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="filehandlers_odf.html" title="5.6.2. filehandlers.odf — Handler for odf files"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../filehandlers.html" title="5.6. filehandlers — Utilities to retrieve informations from a file"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li>
+          <li><a href="../filehandlers.html" >5.6. <tt class="docutils literal docutils literal docutils literal docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{% load i18n plmapp_tags highlight %}
+
+{% get_current_language as LANGUAGE_CODE %}
+
+{% if user.is_authenticated %}
+    <a href="/user/{{user|urlencode }}/"><i class="tb-icon-user tb-icon-white"></i>{{user.get_full_name|default:user.username}}</a> | {% now "D j N Y, G:i"%}
+{% else %}
+    <a href="{% url 'login' %}?next={{request.get_full_path|urlencode }}">{% trans "Log in" %}</a>
+{% endif %}
+
+<form id="SetLangForm" action="/i18n/setlang/" method="post">{% csrf_token %}
+    <ul>
+        <li>
+        <select name="language">
+
+            {% for lang in LANGUAGES %}
+                <option value="{{ lang.0 }}" {% if LANGUAGE_CODE == lang.0|normalize_language_code %} selected="selected"{% endif %} >
+                {{ lang.1 }}
+                </option>
+            {% endfor %}
+        </select>
+        </li>
+        <li>
+        <input type="submit" class="tb-btn" value="{% trans "Go" %}" />
+        </li>
+    </ul>
+</form>
+
+{% if request.user.is_authenticated and not restricted %}
+    |
+    <a class="extlink" href="/timeline/">
+        <span>{% trans "Timeline" %}</span>
+    </a>
+{% endif %}
+    |
+    <a class="extlink" rel="help" href="{{DOCUMENTATION_URL}}../resources.html#getting-help" target="_blank">
+        <span>{% trans "Help" %}</span>
+    </a>
+{% if request.user.is_authenticated %}
+    |
+    <a class="extlink" href="/logout/">
+        <span>{% trans "Logout" %}</span>
+    </a>
+{% endif %}
+

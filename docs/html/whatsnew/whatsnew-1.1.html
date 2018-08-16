@@ -1,0 +1,583 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3.5.2. What’s new in OpenPLM 1.1 &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="3. What’s new in OpenPLM 2.0" href="../whatsnew-2.0.html" />
+    <link rel="next" title="4. User documentation" href="../user/index.html" />
+    <link rel="prev" title="3.5.2. What’s new in OpenPLM 1.1" href="" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../user/index.html" title="4. User documentation"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="#" title="3.5.2. What’s new in OpenPLM 1.1"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../whatsnew-2.0.html" accesskey="U">3. What&#8217;s new in OpenPLM 2.0</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3.5.2. What&#8217;s new in OpenPLM 1.1</a><ul>
+<li><a class="reference internal" href="#what-s-new-in-openplm-1-1-1">3.5.2.1. What&#8217;s new in OpenPLM 1.1.1</a></li>
+<li><a class="reference internal" href="#id1">3.5.2.2. What&#8217;s new in OpenPLM 1.1</a><ul>
+<li><a class="reference internal" href="#user-changes">3.5.2.2.1. User changes</a><ul>
+<li><a class="reference internal" href="#new-files-uploading">3.5.2.2.1.1. New files uploading</a></li>
+<li><a class="reference internal" href="#browsing-feature">3.5.2.2.1.2. Browsing feature</a></li>
+<li><a class="reference internal" href="#lifecycle-and-management">3.5.2.2.1.3. Lifecycle and management</a></li>
+<li><a class="reference internal" href="#public-pages">3.5.2.2.1.4. Public pages</a></li>
+<li><a class="reference internal" href="#restricted-account-and-sponsoring">3.5.2.2.1.5. Restricted account and sponsoring</a></li>
+<li><a class="reference internal" href="#timeline">3.5.2.2.1.6. Timeline</a></li>
+<li><a class="reference internal" href="#rss-feeds">3.5.2.2.1.7. RSS feeds</a></li>
+<li><a class="reference internal" href="#new-application-oerp">3.5.2.2.1.8. New application: oerp</a></li>
+<li><a class="reference internal" href="#document3d">3.5.2.2.1.9. Document3D</a><ul>
+<li><a class="reference internal" href="#d-view-enhancements">3.5.2.2.1.9.1. 3D view enhancements</a><ul>
+<li><a class="reference internal" href="#highlighting">3.5.2.2.1.9.1.1. Highlighting</a></li>
+<li><a class="reference internal" href="#shading">3.5.2.2.1.9.1.2. Shading</a></li>
+<li><a class="reference internal" href="#view-selection">3.5.2.2.1.9.1.3. View selection</a></li>
+<li><a class="reference internal" href="#random-colors-and-transparency">3.5.2.2.1.9.1.4. Random colors and transparency</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stl">3.5.2.2.1.9.2. STL</a></li>
+<li><a class="reference internal" href="#step-file-thumnnails">3.5.2.2.1.9.3. STEP file thumnnails</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#webdav-access">3.5.2.2.1.10. WebDAV access</a></li>
+<li><a class="reference internal" href="#bugs-fixed">3.5.2.2.1.11. Bugs fixed</a></li>
+<li><a class="reference internal" href="#other-enhancements">3.5.2.2.1.12. Other enhancements</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#administrator-changes">3.5.2.2.2. Administrator changes</a><ul>
+<li><a class="reference internal" href="#restricted-accounts-and-publishers">3.5.2.2.2.1. Restricted accounts and publishers</a></li>
+<li><a class="reference internal" href="#applications-layout">3.5.2.2.2.2. Applications layout</a></li>
+<li><a class="reference internal" href="#new-optional-dependency">3.5.2.2.2.3. New optional dependency</a></li>
+<li><a class="reference internal" href="#id11">3.5.2.2.2.4. document3D</a></li>
+<li><a class="reference internal" href="#id12">3.5.2.2.2.5. New application: oerp</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#developer-changes">3.5.2.2.3. Developer changes</a><ul>
+<li><a class="reference internal" href="#new-applications">3.5.2.2.3.1. New applications</a></li>
+<li><a class="reference internal" href="#library-changes">3.5.2.2.3.2. Library changes</a><ul>
+<li><a class="reference internal" href="#openplm-plmapp-models">3.5.2.2.3.2.1. <tt class="docutils literal"><span class="pre">openPLM.plmapp.models</span></tt></a></li>
+<li><a class="reference internal" href="#plmapp-controllers-plmobject">3.5.2.2.3.2.2. <tt class="docutils literal"><span class="pre">plmapp.controllers.plmobject</span></tt></a></li>
+<li><a class="reference internal" href="#new-modules">3.5.2.2.3.2.3. New modules</a></li>
+<li><a class="reference internal" href="#plmapp-units">3.5.2.2.3.2.4. <tt class="docutils literal"><span class="pre">plmapp.units</span></tt></a></li>
+<li><a class="reference internal" href="#plmapp-utils">3.5.2.2.3.2.5. <tt class="docutils literal"><span class="pre">plmapp.utils</span></tt></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href=""
+                        title="previous chapter">3.5.2. What&#8217;s new in OpenPLM 1.1</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../user/index.html"
+                        title="next chapter">4. User documentation</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/whatsnew/whatsnew-1.1.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/whatsnew/whatsnew-1.1.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="whatsnew-1-1"></span><div class="section" id="what-s-new-in-openplm-1-1">
+<h1>3.5.2. What&#8217;s new in OpenPLM 1.1<a class="headerlink" href="#what-s-new-in-openplm-1-1" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-s-new-in-openplm-1-1-1">
+<h2>3.5.2.1. What&#8217;s new in OpenPLM 1.1.1<a class="headerlink" href="#what-s-new-in-openplm-1-1-1" title="Permalink to this headline">¶</a></h2>
+<p>This release fixes a XSS security issue inside the template
+<tt class="file docutils literal"><span class="pre">templates/blocks/reference.html</span></tt> where the name of
+the current part/document was not escaped.</p>
+</div>
+<div class="section" id="id1">
+<h2>3.5.2.2. What&#8217;s new in OpenPLM 1.1<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="user-changes">
+<h3>3.5.2.2.1. User changes<a class="headerlink" href="#user-changes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="new-files-uploading">
+<h4>3.5.2.2.1.1. New files uploading<a class="headerlink" href="#new-files-uploading" title="Permalink to this headline">¶</a></h4>
+<p>You can now upload your files and keep an eye on the list of your files.</p>
+<p>Multiple files upload is available:
+you can select more than one file to upload.</p>
+<dl class="docutils">
+<dt>Progress-bars appear while uploading files:</dt>
+<dd><ul class="first last simple">
+<li>one per files</li>
+<li>one for the total progress</li>
+</ul>
+</dd>
+</dl>
+<p>Screenshots:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="100%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><div class="first last figure">
+<img alt="../_images/Capture_openPLM_file_add.png" src="../_images/Capture_openPLM_file_add.png" style="width: 100%;" />
+<p class="caption">New &#8220;Files&#8221; page</p>
+<div class="legend">
+As you can see, the upload form and the list of files are both displayed on the &#8220;Files&#8221; page.</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><div class="first last figure">
+<img alt="../_images/Capture_openPLM_file_progress.png" src="../_images/Capture_openPLM_file_progress.png" style="width: 100%;" />
+<p class="caption">Progress-bars</p>
+<div class="legend">
+Now OpenPLM display progress informations for each uploaded file. A global progress information is also given.</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="browsing-feature">
+<h4>3.5.2.2.1.2. Browsing feature<a class="headerlink" href="#browsing-feature" title="Permalink to this headline">¶</a></h4>
+<p>A new feature is available to browse all parts, documents, groups and users.</p>
+<p>For more details see <a class="reference internal" href="../user/features/browse.html#feat-browse"><em>Browse</em></a> feature documentation</p>
+</div>
+<div class="section" id="lifecycle-and-management">
+<h4>3.5.2.2.1.3. Lifecycle and management<a class="headerlink" href="#lifecycle-and-management" title="Permalink to this headline">¶</a></h4>
+<p>The lifecycle and management pages have been merged into the lifecycle page.</p>
+<p>Replacing a signer is now much more intuitive, see the screenshot:</p>
+<img alt="../_images/Capture_openPLM_lifecycle_management.png" src="../_images/Capture_openPLM_lifecycle_management.png" />
+</div>
+<div class="section" id="public-pages">
+<h4>3.5.2.2.1.4. Public pages<a class="headerlink" href="#public-pages" title="Permalink to this headline">¶</a></h4>
+<p>It is now possible to publish a part or a document. A published item is accessible to
+anonymous users.</p>
+</div>
+<div class="section" id="restricted-account-and-sponsoring">
+<h4>3.5.2.2.1.5. Restricted account and sponsoring<a class="headerlink" href="#restricted-account-and-sponsoring" title="Permalink to this headline">¶</a></h4>
+<p>A new kind of account is available: restricted account.</p>
+<p>A restricted account can not create any contents and can only access to selective
+parts and documents.</p>
+<p>This new account make it possible to share some contents to someone and be sure he
+would not be able to modify it or see other confidential data.</p>
+<p>To create a restricted account, you only have to sponsor a new user and
+select the &#8220;restricted account&#8221; option.</p>
+<p>Screenshot:</p>
+<img alt="../_images/Capture_openPLM_sponsor.png" src="../_images/Capture_openPLM_sponsor.png" />
+<p>As you can see on the screenshot above, it is now possible to sponsor a
+new user who can access mostly all contents but can not modify them.</p>
+<p>You can also select a language, the &#8220;new account&#8221; mail sent should be translated
+according to the chosen language.</p>
+</div>
+<div class="section" id="timeline">
+<h4>3.5.2.2.1.6. Timeline<a class="headerlink" href="#timeline" title="Permalink to this headline">¶</a></h4>
+<p>The timeline is like a global history which contains:</p>
+<blockquote>
+<div><ul class="simple">
+<li>all history events related to official objects</li>
+<li>all history events related to objects owned by groups you are in</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="rss-feeds">
+<h4>3.5.2.2.1.7. RSS feeds<a class="headerlink" href="#rss-feeds" title="Permalink to this headline">¶</a></h4>
+<p>You can now subscribe to rss feeds for:</p>
+<blockquote>
+<div><ul class="simple">
+<li>PLM objects</li>
+<li>User</li>
+<li>Group</li>
+<li>the timeline</li>
+</ul>
+</div></blockquote>
+<p>You can subscribre to these feeds from:</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;History&#8221; pages</li>
+<li>&#8220;Timeline&#8221; page</li>
+</ul>
+</div></blockquote>
+<p>This feeds are updated when there is a change on the related object(s), user or group.</p>
+</div>
+<div class="section" id="new-application-oerp">
+<h4>3.5.2.2.1.8. New application: oerp<a class="headerlink" href="#new-application-oerp" title="Permalink to this headline">¶</a></h4>
+<p>If you use OpenERP , OpenPLM provides a new application to &#8220;push&#8221; your official
+parts (and their BOM) into OpenERP.</p>
+</div>
+<div class="section" id="document3d">
+<h4>3.5.2.2.1.9. Document3D<a class="headerlink" href="#document3d" title="Permalink to this headline">¶</a></h4>
+<p>The document3D application has been improved.</p>
+<div class="section" id="d-view-enhancements">
+<h5>3.5.2.2.1.9.1. 3D view enhancements<a class="headerlink" href="#d-view-enhancements" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="highlighting">
+<h6>3.5.2.2.1.9.1.1. Highlighting<a class="headerlink" href="#highlighting" title="Permalink to this headline">¶</a></h6>
+<p>You can highlight a sub-assembly by moving your mouse over the sub-assembly name as show on
+the screenshot below:</p>
+<div class="figure">
+<img alt="../_images/3D3.png" src="../_images/3D3.png" />
+<p class="caption">Highlithing</p>
+<div class="legend">
+The highlighted part , L-Bracket, is displayed in red instead of green.</div>
+</div>
+</div>
+<div class="section" id="shading">
+<h6>3.5.2.2.1.9.1.2. Shading<a class="headerlink" href="#shading" title="Permalink to this headline">¶</a></h6>
+<p>Now there are shades displayed for 3D view.</p>
+<p>Screenshots before and now:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><div class="first last figure">
+<img alt="../_images/3D_old.png" src="../_images/3D_old.png" style="width: 60%;" />
+<p class="caption">Before</p>
+</div>
+</td>
+<td><div class="first last figure">
+<img alt="../_images/3D1.png" src="../_images/3D1.png" style="width: 70%;" />
+<p class="caption">Now</p>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="view-selection">
+<h6>3.5.2.2.1.9.1.3. View selection<a class="headerlink" href="#view-selection" title="Permalink to this headline">¶</a></h6>
+<p>A new toolbar is available to switch between views (axometric, front, right, top, rear, left, bottom).</p>
+</div>
+<div class="section" id="random-colors-and-transparency">
+<h6>3.5.2.2.1.9.1.4. Random colors and transparency<a class="headerlink" href="#random-colors-and-transparency" title="Permalink to this headline">¶</a></h6>
+<p>You can switch between random colors or initial colors.
+You can also toggle (enable/disable) the transparency and chose to display or hide axis.</p>
+<div class="figure">
+<a class="reference external image-reference" href="http://www.openplm.org/example3D/mendelmax2.html"><img alt="../_images/3D2.png" src="../_images/3D2.png" /></a>
+<p class="caption">3D view new toolbars</p>
+<div class="legend">
+Click on it to test the new toolbars (view selection, random colors and transparency).</div>
+</div>
+</div>
+</div>
+<div class="section" id="stl">
+<h5>3.5.2.2.1.9.2. STL<a class="headerlink" href="#stl" title="Permalink to this headline">¶</a></h5>
+<p>The 3D view can now display STL files (ASCII and binary formats).</p>
+</div>
+<div class="section" id="step-file-thumnnails">
+<h5>3.5.2.2.1.9.3. STEP file thumnnails<a class="headerlink" href="#step-file-thumnnails" title="Permalink to this headline">¶</a></h5>
+<p>OpenPLM can now generate a thumbnail of a STEP file. Currently, only
+non decomposed STEP files are handled.</p>
+</div>
+</div>
+<div class="section" id="webdav-access">
+<h4>3.5.2.2.1.10. WebDAV access<a class="headerlink" href="#webdav-access" title="Permalink to this headline">¶</a></h4>
+<p>OpenPLM can now serves all managed files through a WebDAV access.</p>
+<div class="figure">
+<img alt="../_images/webdav_nautilus.png" src="../_images/webdav_nautilus.png" />
+<p class="caption">A directory listing using Nautilus.</p>
+</div>
+</div>
+<div class="section" id="bugs-fixed">
+<h4>3.5.2.2.1.11. Bugs fixed<a class="headerlink" href="#bugs-fixed" title="Permalink to this headline">¶</a></h4>
+<p><strong>Suggested reference for PLM objects</strong></p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/108">108</a> step management - Suggested part references are all the same</p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/113">113</a>  Part - Suggested reference may cause some problem</p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/117">117</a> Object creation - If you update the page suggested reference and reference change</p>
+<p><strong>BOM</strong></p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/121">121</a> BOM - Display last level is not correct</p>
+<p><strong>Document3D</strong></p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/104">104</a> 3D data not copied when a Document3D is revised</p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/106">106</a> document3D: can not decompose a step file defining two products with the same name</p>
+<p><strong>File management</strong></p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/124">124</a> File check-in broken</p>
+<p><strong>Sponsorship</strong></p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/109">109</a> Sponsorship - Character &#8216; is authorised for username and leads to a bug</p>
+<p><strong>Delegation</strong></p>
+<p><a class="reference external" href="http://wiki.openplm.org/trac/ticket/119">119</a> Delegation - We can delegate someone who is not in the same groupe as the object</p>
+</div>
+<div class="section" id="other-enhancements">
+<h4>3.5.2.2.1.12. Other enhancements<a class="headerlink" href="#other-enhancements" title="Permalink to this headline">¶</a></h4>
+<p><strong>BOM</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>download as PDF,</li>
+<li>replace child.</li>
+</ul>
+</div></blockquote>
+<p><strong>Navigate view</strong></p>
+<p>If the current object is a part you can:</p>
+<blockquote>
+<div><ul class="simple">
+<li>attach a new document,</li>
+<li>add a new part (child).</li>
+</ul>
+</div></blockquote>
+<p>If the current object is a document you can:</p>
+<blockquote>
+<div><ul class="simple">
+<li>attach a new part.</li>
+</ul>
+</div></blockquote>
+<p><strong>Part and document</strong></p>
+<p>You can cancel and clone PLM objects.</p>
+<p><strong>Search panel</strong></p>
+<p>The research is performed asynchronously</p>
+<p><strong>Display enhancements</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>groups tab</li>
+<li>revisions tab</li>
+<li>...</li>
+</ul>
+</div></blockquote>
+<p><strong>Documentation</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>More documented features</li>
+<li>disponible dans la langue de Molière</li>
+</ul>
+</div></blockquote>
+<p><strong>Thumbnails: new supported formats</strong></p>
+<p>SolidWorks, Catia, Sketch Up, Pro Engineer</p>
+</div>
+</div>
+<div class="section" id="administrator-changes">
+<h3>3.5.2.2.2. Administrator changes<a class="headerlink" href="#administrator-changes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="restricted-accounts-and-publishers">
+<h4>3.5.2.2.2.1. Restricted accounts and publishers<a class="headerlink" href="#restricted-accounts-and-publishers" title="Permalink to this headline">¶</a></h4>
+<p>Restricted accounts represent a user with the <tt class="docutils literal"><span class="pre">restricted</span></tt> field set to true.
+A user with restricted access can:</p>
+<blockquote>
+<div><ul class="simple">
+<li>neither be a contributor ( imply he(she) can&#8217;t create object or group, sponsor user) neither an administrator</li>
+<li>not be member of a group</li>
+</ul>
+</div></blockquote>
+<p>A publisher is a user with the <tt class="docutils literal"><span class="pre">can_publish</span></tt> field set to true. He(she) can publish
+all official PLM objects he(she) can read. A published object is accessible to everyone,
+even anonymous users.</p>
+<p>The <tt class="docutils literal"><span class="pre">restricted</span></tt> and <tt class="docutils literal"><span class="pre">can_publish</span></tt> fields can be set via the admin interface.
+For more informations see <a class="reference internal" href="../specs/restricted_access.html#rest-account-specs"><em>Restricted access</em></a> and <a class="reference internal" href="../specs/publication.html#publication-specs"><em>Publication</em></a>.</p>
+</div>
+<div class="section" id="applications-layout">
+<h4>3.5.2.2.2.2. Applications layout<a class="headerlink" href="#applications-layout" title="Permalink to this headline">¶</a></h4>
+<p>A big change has been made to the application layout. Optionnals applications
+are now located in the apps folder.</p>
+<p>Make sure that your settings.py file has been update in consequences:
+with the exception of plmapp, openPLM applications are now named <tt class="samp docutils literal"><span class="pre">openPLM.apps.</span><em><span class="pre">ApplicationName</span></em></tt></p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="s">&#39;openPLM.plmapp&#39;</span><span class="p">,</span>
+<span class="s">&#39;openPLM.apps.cad&#39;</span><span class="p">,</span>
+<span class="s">&#39;openPLM.apps.cae&#39;</span><span class="p">,</span>
+<span class="s">&#39;openPLM.apps.office&#39;</span><span class="p">,</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="new-optional-dependency">
+<h4>3.5.2.2.2.3. New optional dependency<a class="headerlink" href="#new-optional-dependency" title="Permalink to this headline">¶</a></h4>
+<p><strong class="command">gsf</strong> (package <tt class="docutils literal"><span class="pre">libgsf-bin</span></tt> in Debian/Ubuntu) is now used to generate a thumnail from a SolidWorks file.</p>
+</div>
+<div class="section" id="id11">
+<h4>3.5.2.2.2.4. document3D<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h4>
+<p>New optional dependency: povray</p>
+</div>
+<div class="section" id="id12">
+<h4>3.5.2.2.2.5. New application: oerp<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h4>
+<p>This application depends on oerplib and require an update of your setting.py file, see <a class="reference internal" href="../admin/applications/oerp/index.html#oerp-admin"><em>oerp &#8211; OpenERP Application</em></a>.</p>
+</div>
+</div>
+<div class="section" id="developer-changes">
+<h3>3.5.2.2.3. Developer changes<a class="headerlink" href="#developer-changes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="new-applications">
+<h4>3.5.2.2.3.1. New applications<a class="headerlink" href="#new-applications" title="Permalink to this headline">¶</a></h4>
+<p>Some new applications were implemented, more details in <a class="reference internal" href="../devel/applications.html#applications"><em>Applications</em></a>.</p>
+</div>
+<div class="section" id="library-changes">
+<h4>3.5.2.2.3.2. Library changes<a class="headerlink" href="#library-changes" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="openplm-plmapp-models">
+<h5>3.5.2.2.3.2.1. <a class="reference internal" href="../devel/modules/models.html#module-openPLM.plmapp.models" title="openPLM.plmapp.models"><tt class="xref py py-mod docutils literal"><span class="pre">openPLM.plmapp.models</span></tt></a><a class="headerlink" href="#openplm-plmapp-models" title="Permalink to this headline">¶</a></h5>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.user.UserProfile.can_publish" title="openPLM.plmapp.models.user.UserProfile.can_publish"><tt class="xref py py-attr docutils literal"><span class="pre">UserProfile.can_publish</span></tt></a>: added: True if user can publish a plmobject</li>
+<li><a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.user.UserProfile.restricted" title="openPLM.plmapp.models.user.UserProfile.restricted"><tt class="xref py py-attr docutils literal"><span class="pre">UserProfile.restricted</span></tt></a>: added: True if user has a restricted account</li>
+<li><a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.published" title="openPLM.plmapp.models.plmobject.PLMObject.published"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.published</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.reference_number" title="openPLM.plmapp.models.plmobject.PLMObject.reference_number"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.reference_number</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.is_cloneable" title="openPLM.plmapp.models.plmobject.PLMObject.is_cloneable"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.is_cloneable</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/models.html#openPLM.plmapp.models.plmobject.PLMObject.published_attributes" title="openPLM.plmapp.models.plmobject.PLMObject.published_attributes"><tt class="xref py py-attr docutils literal"><span class="pre">PLMObject.published_attributes</span></tt></a>: added.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="plmapp-controllers-plmobject">
+<h5>3.5.2.2.3.2.2. <a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#module-plmapp.controllers.plmobject" title="plmapp.controllers.plmobject"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.controllers.plmobject</span></tt></a><a class="headerlink" href="#plmapp-controllers-plmobject" title="Permalink to this headline">¶</a></h5>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_publish" title="plmapp.controllers.plmobject.PLMObjectController.check_publish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.check_publish()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_publish" title="plmapp.controllers.plmobject.PLMObjectController.can_publish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.can_publish()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.publish" title="plmapp.controllers.plmobject.PLMObjectController.publish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.publish()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_unpublish" title="plmapp.controllers.plmobject.PLMObjectController.check_unpublish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.check_unpublish()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_unpublish" title="plmapp.controllers.plmobject.PLMObjectController.can_unpublish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.can_unpublish()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.unpublish" title="plmapp.controllers.plmobject.PLMObjectController.unpublish"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.unpublish()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_cancel" title="plmapp.controllers.plmobject.PLMObjectController.check_cancel"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.check_cancel()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_cancel" title="plmapp.controllers.plmobject.PLMObjectController.can_cancel"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.can_cancel()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_clone" title="plmapp.controllers.plmobject.PLMObjectController.check_clone"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.check_clone()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_clone" title="plmapp.controllers.plmobject.PLMObjectController.can_clone"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.can_clone()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.clone" title="plmapp.controllers.plmobject.PLMObjectController.clone"><tt class="xref py py-meth docutils literal"><span class="pre">PLMObjectController.clone()</span></tt></a>: added.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="new-modules">
+<h5>3.5.2.2.3.2.3. New modules<a class="headerlink" href="#new-modules" title="Permalink to this headline">¶</a></h5>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../devel/modules/thumbnailers/thumbnailers_jfif.html#module-plmapp.thumbnailers.jfifthumbnailer" title="plmapp.thumbnailers.jfifthumbnailer"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.thumbnailers.jfifthumbnailer</span></tt></a></li>
+<li><a class="reference internal" href="../devel/modules/thumbnailers/thumbnailers_png.html#module-plmapp.thumbnailers.pngthumbnailer" title="plmapp.thumbnailers.pngthumbnailer"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.thumbnailers.pngthumbnailer</span></tt></a></li>
+<li><a class="reference internal" href="../devel/modules/thumbnailers/thumbnailers_sw.html#module-plmapp.thumbnailers.swthumbnailer" title="plmapp.thumbnailers.swthumbnailer"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.thumbnailers.swthumbnailer</span></tt></a></li>
+</ul>
+</div></blockquote>
+<p>The modules <tt class="docutils literal"><span class="pre">plmapp.native_file_management</span></tt> and <tt class="docutils literal"><span class="pre">plmapp.cadformats</span></tt> have been merged
+into a new module: <tt class="xref py py-mod docutils literal"><span class="pre">plmapp.fileformats</span></tt>.</p>
+</div>
+<div class="section" id="plmapp-units">
+<h5>3.5.2.2.3.2.4. <tt class="xref py py-mod docutils literal"><span class="pre">plmapp.units</span></tt><a class="headerlink" href="#plmapp-units" title="Permalink to this headline">¶</a></h5>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../devel/modules/utils/units.html#plmapp.utils.units.UnitConversionError" title="plmapp.utils.units.UnitConversionError"><tt class="xref py py-exc docutils literal"><span class="pre">UnitConversionError</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/utils/units.html#plmapp.utils.units.convert_unit" title="plmapp.utils.units.convert_unit"><tt class="xref py py-func docutils literal"><span class="pre">convert_unit()</span></tt></a>: added.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="plmapp-utils">
+<h5>3.5.2.2.3.2.5. <a class="reference internal" href="../devel/modules/utils.html#module-plmapp.utils" title="plmapp.utils"><tt class="xref py py-mod docutils literal"><span class="pre">plmapp.utils</span></tt></a><a class="headerlink" href="#plmapp-utils" title="Permalink to this headline">¶</a></h5>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="../devel/modules/utils.html#plmapp.utils.SeekedFile" title="plmapp.utils.SeekedFile"><tt class="xref py py-class docutils literal"><span class="pre">SeekedFile</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/utils.html#plmapp.utils.get_ext" title="plmapp.utils.get_ext"><tt class="xref py py-func docutils literal"><span class="pre">get_ext()</span></tt></a>: added.</li>
+<li><a class="reference internal" href="../devel/modules/utils.html#plmapp.utils.get_pages_num" title="plmapp.utils.get_pages_num"><tt class="xref py py-func docutils literal"><span class="pre">get_pages_num()</span></tt></a>: added.</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../user/index.html" title="4. User documentation"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="#" title="3.5.2. What’s new in OpenPLM 1.1"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../whatsnew-2.0.html" >3. What&#8217;s new in OpenPLM 2.0</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

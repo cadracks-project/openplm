@@ -1,0 +1,192 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>7. Publication &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="5. Admin documentation" href="index.html" />
+    <link rel="next" title="8. References – how to customize generated references" href="references.html" />
+    <link rel="prev" title="6. Lifecycle" href="lifecycle.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="8. References – how to customize generated references"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="6. Lifecycle"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">7. Publication</a><ul>
+<li><a class="reference internal" href="#how-to-grant-publisher-permission">7.1. How to grant &#8220;publisher&#8221; permission</a></li>
+<li><a class="reference internal" href="#how-to-disable-anonymous-publication">7.2. How to disable anonymous publication</a></li>
+<li><a class="reference internal" href="#how-to-quickly-unpublish-all-objects">7.3. How to quickly unpublish all objects</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="lifecycle.html"
+                        title="previous chapter">6. Lifecycle</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="references.html"
+                        title="next chapter">8. References &#8211; how to customize generated references</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/admin/publication.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/admin/publication.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <p class="versionadded" id="publication-admin">
+<span class="versionmodified">New in version 1.1.</span></p>
+<div class="section" id="publication">
+<h1>7. Publication<a class="headerlink" href="#publication" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="how-to-grant-publisher-permission">
+<h2>7.1. How to grant &#8220;publisher&#8221; permission<a class="headerlink" href="#how-to-grant-publisher-permission" title="Permalink to this headline">¶</a></h2>
+<p>To allow an user to publish an object, edit its profile (via the admin interface)
+and check the <tt class="xref py py-attr docutils literal"><span class="pre">can_publish</span></tt> field.</p>
+</div>
+<div class="section" id="how-to-disable-anonymous-publication">
+<h2>7.2. How to disable anonymous publication<a class="headerlink" href="#how-to-disable-anonymous-publication" title="Permalink to this headline">¶</a></h2>
+<p>There is no setting for the moment, but you can:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Remove &#8220;publisher&#8221; permission of all users</li>
+<li>Unpublish all objects (see below)</li>
+</ol>
+</div></blockquote>
+<p>You can also edit the code and send a patch ;-)</p>
+</div>
+<div class="section" id="how-to-quickly-unpublish-all-objects">
+<h2>7.3. How to quickly unpublish all objects<a class="headerlink" href="#how-to-quickly-unpublish-all-objects" title="Permalink to this headline">¶</a></h2>
+<p>In a python shell (<tt class="docutils literal"><span class="pre">./manage.py</span> <span class="pre">shell</span></tt>), execute the following lines:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">PLMObject</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">PLMObject</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">published</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(no histories are recorded).</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="references.html" title="8. References – how to customize generated references"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lifecycle.html" title="6. Lifecycle"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >5. Admin documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

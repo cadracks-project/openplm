@@ -1,0 +1,28 @@
+{% load i18n %}
+{% spaceless %}
+    <div id="{{id|safe}}" class="node n_{{type}} {{main|yesno:"main_node, "}} card" style="{{style|safe}}"
+        title="{{title_}}">
+
+        <div class="bar"><span class="menuitem">&nbsp;</span></div>
+        {% with type|add:"s/identity_card.html" as tpl %}
+            {% with "true" as hide_link %}
+                {% include tpl %}
+            {% endwith %}
+        {% endwith %}
+
+
+        <div class="node-toolbar">
+            {% if type == "document" %}
+                <button onclick="dt('{{id|safe}}', '/ajax/thumbnails/{{time}}{{path}}');" class="node_thumbnails">{% trans "Display thumbnails" %}</button>
+            {% endif %}
+
+            {% if show_documents %}
+                <button onclick="dd('{{id|safe}}', '{{documents_url}}', '{{parts|safe}}');" class="node_show_docs {{doc_img_add|yesno:"add,remove"}}">{% trans "Show related documents" %}</button>
+            {% endif %}
+            <a class="study-btn" href="{{href}}../" >{% trans "Study" %}</a>
+        </div>
+
+        <a href="{{href|safe}}"><span>&nbsp;</span></a>
+
+    </div>
+{% endspaceless %}

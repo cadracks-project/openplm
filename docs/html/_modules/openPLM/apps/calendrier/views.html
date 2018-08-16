@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.calendrier.views &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/calendrier/views.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.calendrier.views</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">calendar</span> <span class="kn">import</span> <span class="n">HTMLCalendar</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">date</span><span class="p">,</span> <span class="n">MAXYEAR</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">groupby</span>
+<span class="c"># the datetime strftime() methods require year &gt;= 1900</span>
+<span class="n">MINYEAR</span> <span class="o">=</span> <span class="mi">1900</span>
+
+<span class="kn">from</span> <span class="nn">django.utils.dates</span> <span class="kn">import</span> <span class="n">WEEKDAYS</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">conditional_escape</span> <span class="k">as</span> <span class="n">esc</span>
+<span class="kn">from</span> <span class="nn">django.utils.html</span> <span class="kn">import</span> <span class="n">strip_tags</span>
+<span class="kn">from</span> <span class="nn">django.utils.safestring</span> <span class="kn">import</span> <span class="n">mark_safe</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">django_ical.views</span> <span class="kn">import</span> <span class="n">ICalFeed</span>
+    <span class="kn">from</span> <span class="nn">openPLM.apps.rss.feeds</span> <span class="kn">import</span> <span class="n">RssFeed</span><span class="p">,</span> <span class="n">TimelineRssFeed</span>
+    <span class="n">ICAL_INSTALLED</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="n">ICAL_INSTALLED</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views.base</span> <span class="kn">import</span> <span class="n">handle_errors</span><span class="p">,</span> <span class="n">get_generic_data</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">r2r</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.views</span> <span class="kn">import</span> <span class="n">display_object_history</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp</span> <span class="kn">import</span> <span class="n">models</span>
+
+<div class="viewcode-block" id="parse_date"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.parse_date">[docs]</a><span class="k">def</span> <span class="nf">parse_date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Parse *year* and *month* (string, integer or None) and</span>
+<span class="sd">    returns a tuple of int (*year*, *month*).</span>
+
+<span class="sd">    If *year* is None, the current year is returned.</span>
+<span class="sd">    If *month* is None, the current month is returned.</span>
+
+<span class="sd">    :raise: :exc:`.ValueError` if *year* &lt; 1900, *year* &gt; 9999,</span>
+<span class="sd">        *month* &lt; 1, *month* &gt; 12 or *month* and *year* can not</span>
+<span class="sd">        be converted to an integer or (*year* == 9999 and *month* == 12)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">year</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">year</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">month</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span><span class="o">.</span><span class="n">month</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">year</span> <span class="o">&lt;</span> <span class="n">MINYEAR</span> <span class="ow">or</span> <span class="n">year</span> <span class="o">&gt;</span> <span class="n">MAXYEAR</span> <span class="ow">or</span> <span class="n">month</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">month</span> <span class="o">&gt;</span> <span class="mi">12</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">year</span> <span class="o">==</span> <span class="n">MAXYEAR</span> <span class="ow">and</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">12</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Month or year are out of range&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span>
+
+<span class="c"># inspired by http://uggedal.com/journal/creating-a-flexible-monthly-calendar-in-django/</span>
+<span class="c"># by Eivind Uggedal</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar">[docs]</a><span class="k">class</span> <span class="nc">HistoryCalendar</span><span class="p">(</span><span class="n">HTMLCalendar</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">histories</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">HistoryCalendar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">histories</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_by_day</span><span class="p">(</span><span class="n">histories</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HistoryCalendar.formatday"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.formatday">[docs]</a>    <span class="k">def</span> <span class="nf">formatday</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">weekday</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">day</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cssclass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cssclasses</span><span class="p">[</span><span class="n">weekday</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()</span> <span class="o">==</span> <span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+                <span class="n">cssclass</span> <span class="o">+=</span> <span class="s">&#39; today&#39;</span>
+            <span class="k">if</span> <span class="n">day</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">histories</span><span class="p">:</span>
+                <span class="n">cssclass</span> <span class="o">+=</span> <span class="s">&#39; filled&#39;</span>
+                <span class="n">body</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;&lt;ul&gt;&#39;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">history</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">histories</span><span class="p">[</span><span class="n">day</span><span class="p">]:</span>
+                    <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;li&gt;&#39;</span><span class="p">)</span>
+                    <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;a href=&quot;</span><span class="si">%s</span><span class="s">&quot;&gt;&#39;</span> <span class="o">%</span> <span class="n">history</span><span class="o">.</span><span class="n">get_redirect_url</span><span class="p">()),</span>
+                    <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">format_hline</span><span class="p">(</span><span class="n">history</span><span class="p">))</span>
+                    <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;/a&gt;&lt;/li&gt;&#39;</span><span class="p">)</span>
+                <span class="n">body</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;&lt;/ul&gt;&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_cell</span><span class="p">(</span><span class="n">cssclass</span><span class="p">,</span> <span class="s">&#39;&lt;div class=&quot;daynumber&quot;&gt;</span><span class="si">%d</span><span class="s">&lt;/div&gt;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">day</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">body</span><span class="p">)))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cssclass</span> <span class="o">+=</span> <span class="s">&#39; empty&#39;</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_cell</span><span class="p">(</span><span class="n">cssclass</span><span class="p">,</span><span class="s">&#39;&lt;div class=&quot;daynumber&quot;&gt;</span><span class="si">%d</span><span class="s">&lt;/div&gt;&#39;</span> <span class="o">%</span> <span class="n">day</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">day_cell</span><span class="p">(</span><span class="s">&#39;noday&#39;</span><span class="p">,</span> <span class="s">&#39;&amp;nbsp;&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.formatmonth"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.formatmonth">[docs]</a>    <span class="k">def</span> <span class="nf">formatmonth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">month</span> <span class="o">=</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">HistoryCalendar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">formatmonth</span><span class="p">(</span><span class="n">year</span><span class="p">,</span>
+                <span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;class=&quot;month&quot;&#39;</span><span class="p">,</span> <span class="s">&#39;class=&quot;month Content&quot;&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.formatmonthname"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.formatmonthname">[docs]</a>    <span class="k">def</span> <span class="nf">formatmonthname</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&quot;&quot;</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.formatweekday"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.formatweekday">[docs]</a>    <span class="k">def</span> <span class="nf">formatweekday</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">day</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a weekday name as a table header.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s">&#39;&lt;th class=&quot;</span><span class="si">%s</span><span class="s">&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/th&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cssclasses</span><span class="p">[</span><span class="n">day</span><span class="p">],</span>
+                <span class="n">WEEKDAYS</span><span class="p">[</span><span class="n">day</span><span class="p">]</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.formatweekheader"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.formatweekheader">[docs]</a>    <span class="k">def</span> <span class="nf">formatweekheader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a header for a week as a table row.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formatweekday</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iterweekdays</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s">&#39;&lt;tr&gt;&lt;th class=&quot;weeknumber&quot;&gt;&lt;/th&gt;</span><span class="si">%s</span><span class="s">&lt;/tr&gt;&#39;</span> <span class="o">%</span> <span class="n">s</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.formatweek"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.formatweek">[docs]</a>    <span class="k">def</span> <span class="nf">formatweek</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">theweek</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a complete week as a table row.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">first_day</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">year</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">month</span><span class="p">,</span>
+            <span class="p">[</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">theweek</span> <span class="k">if</span> <span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">week_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">first_day</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s">&quot;%W&quot;</span><span class="p">))</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="s">&#39;&lt;td class=&quot;weeknumber&quot;&gt;</span><span class="si">%d</span><span class="s">&lt;/td&gt;&#39;</span> <span class="o">%</span> <span class="n">week_number</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">formatday</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">wd</span><span class="p">)</span> <span class="ow">in</span> <span class="n">theweek</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s">&#39;&lt;tr&gt;</span><span class="si">%s%s</span><span class="s">&lt;/tr&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.group_by_day"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.group_by_day">[docs]</a>    <span class="k">def</span> <span class="nf">group_by_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">histories</span><span class="p">):</span>
+        <span class="n">field</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">history</span><span class="p">:</span> <span class="n">history</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">day</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">day</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">items</span><span class="p">))</span> <span class="k">for</span> <span class="n">day</span><span class="p">,</span> <span class="n">items</span> <span class="ow">in</span> <span class="n">groupby</span><span class="p">(</span><span class="n">histories</span><span class="p">,</span> <span class="n">field</span><span class="p">)]</span>
+        <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.day_cell"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.day_cell">[docs]</a>    <span class="k">def</span> <span class="nf">day_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cssclass</span><span class="p">,</span> <span class="n">body</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;&lt;td class=&quot;</span><span class="si">%s</span><span class="s">&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/td&gt;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cssclass</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoryCalendar.format_hline"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.HistoryCalendar.format_hline">[docs]</a>    <span class="k">def</span> <span class="nf">format_hline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">esc</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">action</span><span class="p">)</span>
+</div></div>
+<div class="viewcode-block" id="RevisionHistoryCalendar"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.RevisionHistoryCalendar">[docs]</a><span class="k">class</span> <span class="nc">RevisionHistoryCalendar</span><span class="p">(</span><span class="n">HistoryCalendar</span><span class="p">):</span>
+
+<div class="viewcode-block" id="RevisionHistoryCalendar.format_hline"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.RevisionHistoryCalendar.format_hline">[docs]</a>    <span class="k">def</span> <span class="nf">format_hline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">u&#39;&lt;span class=&quot;revision&quot;&gt;</span><span class="si">%s</span><span class="s">&lt;/span&gt;&amp;nbsp;// </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">esc</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">revision</span><span class="p">),</span>
+                <span class="n">esc</span><span class="p">(</span><span class="n">history</span><span class="o">.</span><span class="n">action</span><span class="p">))</span>
+</div></div>
+<div class="viewcode-block" id="TimelineCalendar"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendar">[docs]</a><span class="k">class</span> <span class="nc">TimelineCalendar</span><span class="p">(</span><span class="n">HistoryCalendar</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TimelineCalendar.group_by_day"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendar.group_by_day">[docs]</a>    <span class="k">def</span> <span class="nf">group_by_day</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">histories</span><span class="p">):</span>
+        <span class="n">histories</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">TimelineCalendar</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">group_by_day</span><span class="p">(</span><span class="n">histories</span><span class="p">)</span>
+        <span class="c"># keep one history per day</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">histories</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="n">added_plmobjects</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">unique_histories</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+               <span class="k">if</span> <span class="n">h</span><span class="o">.</span><span class="n">plmobject_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">added_plmobjects</span><span class="p">:</span>
+                   <span class="n">unique_histories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+                   <span class="n">added_plmobjects</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">h</span><span class="o">.</span><span class="n">plmobject_id</span><span class="p">)</span>
+            <span class="n">l</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">unique_histories</span>
+        <span class="k">return</span> <span class="n">histories</span>
+</div>
+<div class="viewcode-block" id="TimelineCalendar.format_hline"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendar.format_hline">[docs]</a>    <span class="k">def</span> <span class="nf">format_hline</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">history</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">history</span><span class="o">.</span><span class="n">title</span>
+</div></div>
+<span class="nd">@handle_errors</span>
+<div class="viewcode-block" id="history_calendar"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.history_calendar">[docs]</a><span class="k">def</span> <span class="nf">history_calendar</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">obj_revi</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">timeline</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calendar view.</span>
+
+<span class="sd">    This view displays a history of the selected object and its revisions.</span>
+
+<span class="sd">    :url: :samp:`/object/{obj_type}/{obj_ref}/{obj_revi}/history/calendar/[{year}/][{month}/]`</span>
+<span class="sd">    :url: :samp:`/user/{username}/history/calendar/[{year}/][{month}/]``</span>
+<span class="sd">    :url: :samp:`/group/{group_name}/history/calendar/[{year}/][{month}/]``</span>
+<span class="sd">    :url: :samp:`/timeline/calendar/[{year}/][{month}/]``</span>
+
+<span class="sd">    .. include:: ../../modules/views_params.txt</span>
+
+<span class="sd">    **Template:**</span>
+
+<span class="sd">    :file:`calendar.html`</span>
+
+<span class="sd">    **Context:**</span>
+
+<span class="sd">    ``RequestContext``</span>
+
+<span class="sd">    ``calendar``</span>
+<span class="sd">        the HTML calendar</span>
+
+<span class="sd">    ``year``</span>
+<span class="sd">        the given year (or the current year if not given)</span>
+
+<span class="sd">    ``month``</span>
+<span class="sd">        the given month (or the current month if not given)</span>
+
+<span class="sd">    ``current_month``, ``next_month``, ``previous_month``</span>
+<span class="sd">        :class:`.datetime.date` objects representing the current, next and previous</span>
+<span class="sd">        months (may be None if the date is 1900/01 or 9999/12).</span>
+
+<span class="sd">    ``ical_installed``</span>
+<span class="sd">        True if django-ical is installed and iCalendar file can be generated</span>
+
+<span class="sd">    ``prefix_url``</span>
+<span class="sd">        a prefix to prepend to the url to go to the next and previous monthes.</span>
+<span class="sd">        (can be ``&quot;&quot;``, ``&quot;../&quot;`` or ``&quot;../../&quot;``).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">prefix</span> <span class="o">=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">year</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="s">&quot;../&quot;</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">prefix</span> <span class="o">+=</span> <span class="s">&quot;../&quot;</span>
+
+    <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">parse_date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">timeline</span><span class="p">:</span>
+        <span class="n">hcls</span> <span class="o">=</span> <span class="n">TimelineCalendar</span>
+        <span class="n">histories</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">timeline_histories</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;object_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&quot;Timeline&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;get_all_revisions&quot;</span><span class="p">):</span>
+        <span class="c"># display history of all revisions</span>
+        <span class="n">histories</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">histories</span>
+        <span class="n">hcls</span> <span class="o">=</span> <span class="n">RevisionHistoryCalendar</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">histories</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">histories</span>
+        <span class="n">hcls</span> <span class="o">=</span> <span class="n">HistoryCalendar</span>
+    <span class="n">histories</span> <span class="o">=</span> <span class="n">histories</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date__year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">date__month</span><span class="o">=</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;date&quot;</span><span class="p">)</span>
+    <span class="n">cal</span> <span class="o">=</span> <span class="n">hcls</span><span class="p">(</span><span class="n">histories</span><span class="p">)</span><span class="o">.</span><span class="n">formatmonth</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+
+    <span class="n">current_month</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">year</span> <span class="o">==</span> <span class="n">MINYEAR</span><span class="p">:</span>
+            <span class="n">previous_month</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">previous_month</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">previous_month</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">12</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">year</span> <span class="o">==</span> <span class="n">MAXYEAR</span><span class="p">:</span>
+            <span class="n">next_month</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">next_month</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">month</span> <span class="o">==</span> <span class="mi">11</span> <span class="ow">and</span> <span class="n">year</span> <span class="o">==</span> <span class="n">MAXYEAR</span><span class="p">:</span>
+        <span class="n">next_month</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">next_month</span> <span class="o">=</span> <span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="n">month</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">day</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;current_page&#39;</span> <span class="p">:</span> <span class="s">&#39;history&#39;</span><span class="p">,</span>
+        <span class="s">&#39;calendar&#39;</span> <span class="p">:</span> <span class="n">mark_safe</span><span class="p">(</span><span class="n">cal</span><span class="p">),</span>
+        <span class="s">&#39;year&#39;</span> <span class="p">:</span> <span class="n">year</span><span class="p">,</span>
+        <span class="s">&#39;month&#39;</span> <span class="p">:</span> <span class="n">month</span><span class="p">,</span>
+        <span class="s">&#39;current_month&#39;</span> <span class="p">:</span> <span class="n">current_month</span><span class="p">,</span>
+        <span class="s">&#39;next_month&#39;</span> <span class="p">:</span> <span class="n">next_month</span><span class="p">,</span>
+        <span class="s">&#39;previous_month&#39;</span> <span class="p">:</span> <span class="n">previous_month</span><span class="p">,</span>
+        <span class="s">&#39;prefix_url&#39;</span> <span class="p">:</span> <span class="n">prefix</span><span class="p">,</span>
+        <span class="s">&#39;ical_installed&#39;</span> <span class="p">:</span> <span class="n">ICAL_INSTALLED</span><span class="p">,</span>
+        <span class="p">})</span>
+    <span class="k">return</span> <span class="n">r2r</span><span class="p">(</span><span class="s">&#39;calendar.html&#39;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+
+</div>
+<span class="n">HISTORY_TPL</span> <span class="o">=</span> <span class="s">&quot;history_cal.html&quot;</span>
+<div class="viewcode-block" id="history"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.history">[docs]</a><span class="k">def</span> <span class="nf">history</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A simple view that wraps :func:`.display_object_history`</span>
+<span class="sd">    to use the template :file:`history_cal.html`&quot;&quot;&quot;</span>
+    <span class="n">kwargs</span><span class="p">[</span><span class="s">&quot;template&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">HISTORY_TPL</span>
+    <span class="k">return</span> <span class="n">display_object_history</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<span class="k">if</span> <span class="n">ICAL_INSTALLED</span><span class="p">:</span>
+<div class="viewcode-block" id="CalendarFeed"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.CalendarFeed">[docs]</a>    <span class="k">class</span> <span class="nc">CalendarFeed</span><span class="p">(</span><span class="n">RssFeed</span><span class="p">,</span> <span class="n">ICalFeed</span><span class="p">):</span>
+
+<div class="viewcode-block" id="CalendarFeed.get_object"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.CalendarFeed.get_object">[docs]</a>        <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">obj_type</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">obj_ref</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="n">obj_revi</span><span class="o">=</span><span class="s">&quot;-&quot;</span><span class="p">):</span>
+            <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">parse_date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">CalendarFeed</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_object</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">h_month</span> <span class="o">=</span> <span class="n">month</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">h_year</span> <span class="o">=</span> <span class="n">year</span>
+            <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="CalendarFeed.items"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.CalendarFeed.items">[docs]</a>        <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">h_year</span>
+            <span class="n">month</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">h_month</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">histories</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date__year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">date__month</span><span class="o">=</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;date&quot;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="CalendarFeed.item_title"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.CalendarFeed.item_title">[docs]</a>        <span class="k">def</span> <span class="nf">item_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="p">,</span> <span class="s">&#39;is_part&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s"> // </span><span class="si">%s</span><span class="s"> // </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="p">,</span> <span class="s">&#39;username&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">) - </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">first_name</span><span class="p">,</span>
+                        <span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">last_name</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                        <span class="n">item</span><span class="o">.</span><span class="n">action</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s">u&quot;Group </span><span class="si">%s</span><span class="s"> - </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">plmobject</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">item</span><span class="o">.</span><span class="n">action</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="CalendarFeed.item_start_datetime"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.CalendarFeed.item_start_datetime">[docs]</a>        <span class="k">def</span> <span class="nf">item_start_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">date</span>
+</div></div>
+<div class="viewcode-block" id="TimelineCalendarFeed"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendarFeed">[docs]</a>    <span class="k">class</span> <span class="nc">TimelineCalendarFeed</span><span class="p">(</span><span class="n">TimelineRssFeed</span><span class="p">,</span> <span class="n">ICalFeed</span><span class="p">):</span>
+
+<div class="viewcode-block" id="TimelineCalendarFeed.get_object"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendarFeed.get_object">[docs]</a>        <span class="k">def</span> <span class="nf">get_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">month</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+            <span class="n">year</span><span class="p">,</span> <span class="n">month</span> <span class="o">=</span> <span class="n">parse_date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">)</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">h_month</span> <span class="o">=</span> <span class="n">month</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">h_year</span> <span class="o">=</span> <span class="n">year</span>
+            <span class="k">return</span> <span class="n">obj</span>
+</div>
+<div class="viewcode-block" id="TimelineCalendarFeed.items"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendarFeed.items">[docs]</a>        <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+            <span class="n">year</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">h_year</span>
+            <span class="n">month</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">h_month</span>
+            <span class="k">return</span> <span class="n">models</span><span class="o">.</span><span class="n">timeline_histories</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">date__year</span><span class="o">=</span><span class="n">year</span><span class="p">,</span> <span class="n">date__month</span><span class="o">=</span><span class="n">month</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s">&quot;date&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TimelineCalendarFeed.item_title"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendarFeed.item_title">[docs]</a>        <span class="k">def</span> <span class="nf">item_title</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">strip_tags</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="TimelineCalendarFeed.item_start_datetime"><a class="viewcode-back" href="../../../../devel/applications/calendrier/index.html#openPLM.apps.calendrier.views.TimelineCalendarFeed.item_start_datetime">[docs]</a>        <span class="k">def</span> <span class="nf">item_start_datetime</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">date</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

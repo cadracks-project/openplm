@@ -1,0 +1,240 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5. Modules (openPLM.plmapp package) &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="5.1. controllers — Controllers" href="modules/controllers.html" />
+    <link rel="prev" title="4. http_api — HTTP-API" href="http-api.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules/controllers.html" title="5.1. controllers — Controllers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="http-api.html" title="4. http_api — HTTP-API"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="http-api.html"
+                        title="previous chapter">4. <tt class="docutils literal docutils literal docutils literal"><span class="pre">http_api</span></tt> &#8212; HTTP-API</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="modules/controllers.html"
+                        title="next chapter">5.1. <tt class="docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/modules.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="modules-openplm-plmapp-package">
+<span id="modules"></span><h1>5. Modules (<tt class="xref py py-mod docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)<a class="headerlink" href="#modules-openplm-plmapp-package" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/controllers.html">5.1. <tt class="docutils literal"><span class="pre">controllers</span></tt> &#8212; Controllers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers.html#introduction">5.1.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers.html#how-to-use-this-module">5.1.2. How to use this module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers.html#how-to-add-a-controller">5.1.3. How to add a controller</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers.html#classes-and-functions">5.1.4. Classes and functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers/controllers_base.html">5.1.5. <tt class="docutils literal"><span class="pre">controllers.base</span></tt> &#8212; Base class for controllers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers/controllers_document.html">5.1.6. <tt class="docutils literal"><span class="pre">controllers.document</span></tt> &#8212; Controllers for documents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers/controllers_group.html">5.1.7. <tt class="docutils literal"><span class="pre">controllers.group</span></tt> &#8212; Controllers for groups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers/controllers_part.html">5.1.8. <tt class="docutils literal"><span class="pre">controllers.part</span></tt> &#8212; Controllers for parts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers/controllers_plmobject.html">5.1.9. <tt class="docutils literal"><span class="pre">controllers.plmobject</span></tt> &#8212; Controllers for plmobjects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/controllers/controllers_user.html">5.1.10. <tt class="docutils literal"><span class="pre">controllers.user</span></tt> &#8212; Controllers for users</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/csvimport.html">5.2. <tt class="docutils literal"><span class="pre">csvimport</span></tt> &#8212; Tools to import data from a CSV file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/decomposers.html">5.3. <tt class="docutils literal"><span class="pre">decomposers</span></tt> &#8212; Utilities to decompose a part</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/decomposers/decomposers_base.html">5.3.1. <tt class="docutils literal"><span class="pre">decomposers.base</span></tt> &#8212; Base classes for decomposers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/exceptions.html">5.4. <tt class="docutils literal"><span class="pre">exceptions</span></tt> &#8212; Exceptions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/fileformats.html">5.5. <tt class="docutils literal"><span class="pre">fileformats</span></tt> &#8212; Simple module to test if a file is a CAD file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/filehandlers.html">5.6. <tt class="docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/filehandlers/filehandlers_base.html">5.6.1. <tt class="docutils literal"><span class="pre">filehandlers.base</span></tt> &#8212; Base classes for filehandlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/filehandlers/filehandlers_odf.html">5.6.2. <tt class="docutils literal"><span class="pre">filehandlers.odf</span></tt> &#8212; Handler for odf files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/filehandlers/filehandlers_pdf.html">5.6.3. <tt class="docutils literal"><span class="pre">filehandlers.pdf</span></tt> &#8212; Handler for pdf files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/files.html">5.7. <tt class="docutils literal"><span class="pre">files</span></tt></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/files/deletable.html">5.7.1. <tt class="docutils literal"><span class="pre">files.deletable</span></tt> &#8211; Module to get files to delete</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/files/formats.html">5.7.2. <tt class="docutils literal"><span class="pre">files.formats</span></tt> &#8212; Simple module to test if a file is a CAD file</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/filters.html">5.8. filters &#8211; Rendering of text written in a wiki syntax</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/forms.html">5.9. <tt class="docutils literal"><span class="pre">forms</span></tt> &#8212; Forms used by openPLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/lifecycle.html">5.10. <tt class="docutils literal"><span class="pre">lifecycle</span></tt> &#8212; Utilities to manipulate lifecycle</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/mail.html">5.11. <tt class="docutils literal"><span class="pre">mail</span></tt> &#8212; Tools to send mails</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/models.html">5.12. <tt class="docutils literal"><span class="pre">models</span></tt> &#8212; models for openPLM</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#introduction">5.12.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#inheritance-diagrams">5.12.2. Inheritance diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#classes-and-functions">5.12.3. Classes and functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.user">5.12.4. <tt class="docutils literal"><span class="pre">models.user</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.group">5.12.5. <tt class="docutils literal"><span class="pre">models.group</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.lifecycle">5.12.6. <tt class="docutils literal"><span class="pre">models.lifecycle</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.plmobject">5.12.7. <tt class="docutils literal"><span class="pre">models.plmobject</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.part">5.12.8. <tt class="docutils literal"><span class="pre">models.part</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.document">5.12.9. <tt class="docutils literal"><span class="pre">models.document</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.history">5.12.10. <tt class="docutils literal"><span class="pre">models.history</span></tt></a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/models.html#module-openPLM.plmapp.models.link">5.12.11. <tt class="docutils literal"><span class="pre">models.link</span></tt></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/navigate.html">5.13. <tt class="docutils literal"><span class="pre">navigate</span></tt> &#8212; Tools to generate navigation&#8217;s graph</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/plmapp_tags.html">5.14. <tt class="docutils literal"><span class="pre">plmapp_tags</span></tt> &#8212; Template tags and filters used by openPLM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/references.html">5.15. <tt class="docutils literal"><span class="pre">references</span></tt> &#8212; module to generate a new reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/thumbnailers.html">5.16. <tt class="docutils literal"><span class="pre">thumbnailers</span></tt> &#8212; Utilities to generate a thumbnail from a file</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers/thumbnailers_base.html">5.16.1. <tt class="docutils literal"><span class="pre">thumbnailers.base</span></tt> &#8212; Base classes for thumbnailers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers/thumbnailers_jfif.html">5.16.2. <tt class="docutils literal"><span class="pre">thumbnailers.jfif</span></tt> &#8212; Thumbnailer for files containing a JPEG thumbnail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers/thumbnailers_magick.html">5.16.3. <tt class="docutils literal"><span class="pre">thumbnailers.magick</span></tt> &#8212; thumbnailer for image files (ImageMagick)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers/thumbnailers_odf.html">5.16.4. <tt class="docutils literal"><span class="pre">thumbnailers.odf</span></tt> &#8212; Thumbnailer for OpenDocument files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers/thumbnailers_pil.html">5.16.5. <tt class="docutils literal"><span class="pre">thumbnailers.pil</span></tt> &#8212; thumbnailer for image files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers/thumbnailers_png.html">5.16.6. <tt class="docutils literal"><span class="pre">thumbnailers.png</span></tt> &#8212; Thumbnailer for files containing a PNG thumbnail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/thumbnailers/thumbnailers_sw.html">5.16.7. <tt class="docutils literal"><span class="pre">thumbnailers.sw</span></tt> &#8212; Thumbnailer for SolidWorks files</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/utils.html">5.17. <tt class="docutils literal"><span class="pre">utils</span></tt> &#8212; Utilities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils/archive.html">5.17.1. <tt class="docutils literal"><span class="pre">archive</span></tt> &#8212; Module to stream tar and zip archives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils/importing.html">5.17.2. <tt class="docutils literal"><span class="pre">importing</span></tt> &#8212; Importing helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/utils/units.html">5.17.3. <tt class="docutils literal"><span class="pre">units</span></tt> &#8212; Units</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/views.html">5.18. <tt class="docutils literal"><span class="pre">views</span></tt> &#8212; Views</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.base">5.18.1. <tt class="docutils literal"><span class="pre">views.base</span></tt> &#8212; Functions common to all views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.ajax">5.18.2. <tt class="docutils literal"><span class="pre">views.ajax</span></tt> &#8212; Ajax views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.api">5.18.3. <tt class="docutils literal"><span class="pre">views.api</span></tt> &#8212; api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.main">5.18.4. <tt class="docutils literal"><span class="pre">views.main</span></tt> &#8212; Main views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.plmobject">5.18.5. <tt class="docutils literal"><span class="pre">views.plmobject</span></tt> &#8212; PLMObject related views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.part">5.18.6. <tt class="docutils literal"><span class="pre">views.part</span></tt> &#8212; Part related views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.document">5.18.7. <tt class="docutils literal"><span class="pre">views.document</span></tt> &#8212; Document related views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.user">5.18.8. <tt class="docutils literal"><span class="pre">views.user</span></tt> &#8212; User related views</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/views.html#module-plmapp.views.group">5.18.9. <tt class="docutils literal"><span class="pre">views.group</span></tt> &#8212; Group related views</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/widgets.html">5.19. <tt class="docutils literal"><span class="pre">widgets</span></tt> &#8212; Form widgets</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modules/controllers.html" title="5.1. controllers — Controllers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="http-api.html" title="4. http_api — HTTP-API"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

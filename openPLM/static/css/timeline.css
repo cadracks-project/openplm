@@ -1,0 +1,101 @@
+/* Timeline */
+
+
+div.timeline h3 {
+    border-radius: 4px 4px 0 0;
+    margin-bottom: 0;
+}
+
+div.timeline h3,
+div.timeline h3 > span {
+    color: white;
+    font-weight: bold;
+    font-size: 105%;
+
+}
+
+div.timeline dl {
+    line-height: 1em;
+    margin-left: 0.5em;
+    font-weight: 500;
+}
+
+div.timeline [color=""] {
+    color: #373434;
+}
+
+div.timeline dt {
+    padding: 0.3em 0;
+    padding-left: 0.5em;
+    font-size: 80%;
+    font-weight: 600;
+}
+
+.timeline .avatar {
+    float: left;
+
+}
+
+.timeline dt:hover, .timeline dt:hover + dd,
+.timeline dd:hover, .timeline dt.active
+{
+    background-color: #F3F3F1;
+}
+
+
+div.timeline dt em {
+    border-bottom: 1px dotted #bbb;
+    color: #b00;
+    font-style: normal;
+    text-decoration: none;
+}
+div.timeline dt.highlight { background-color: #ffa; } 
+div.timeline dd { 
+    font-size: 70%;
+    padding: 0 0 .75em 90px;
+    border-radius: 0 0 12px 0;
+    
+    display: list-item;
+    list-style-position: inside;
+    list-style-image: url("../img/puce.png");
+    min-height: 50px;
+}
+
+div.timeline div.details,
+div.timeline div.details > p {
+    display: inline;
+}
+
+div.timeline ul:not(.management) {
+    margin-left: 1em;
+    display: block !important;
+    width: 90%;
+}
+div.timeline ul:not(.management) li {
+    display: list-item !important;
+    line-height: 1.2em;
+    width: 30%; 
+    float:left;
+    list-style-type: square;
+    list-style-size: small;
+    margin-left: 1em;
+    margin-top: 0.5em;
+}
+
+div.timeline {
+    margin-bottom: 0.5em;
+}
+
+div.timeline dd p br {
+    clear:none !important;
+}
+
+div.timeline > div {
+    margin: 0.5em 1.2em 0.5em 1em;
+}
+
+div.timeline div.objects_inner {
+    background-color: #e4e3e1;
+    padding-bottom: 0.5em;
+}
+

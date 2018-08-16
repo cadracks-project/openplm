@@ -1,0 +1,29 @@
+{% extends "base.xhtml" %}
+{% load i18n plmapp_tags %}
+
+
+{% block title %}
+    {% if obj.is_document or obj.is_part %}
+        {{ obj.type }}-{{ obj.reference }}-{{ obj.revision }}
+    {% else %}
+        {{ obj.get_full_name }} {{ obj.username }}
+        {{ obj.name }}
+    {% endif %}
+{% endblock %}
+
+{% block page_title %}
+    BOM {{ obj.type }} // {{ obj.reference }} // {{ obj.revision }} // {{obj.name}}
+{% endblock %}
+
+{% block content %}
+    <div>
+        <p> BOM at {{date|date:"DATETIME_FORMAT"}} </p>
+    </div>
+
+    <div>
+        {% filter removetags:"a" %}
+            {% include "parts/bom_table.html" %}        
+        {% endfilter %}
+    </div>
+
+{% endblock %}

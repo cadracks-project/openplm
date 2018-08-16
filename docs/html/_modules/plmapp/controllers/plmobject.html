@@ -1,0 +1,1183 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.controllers.plmobject &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/controllers/plmobject.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.controllers.plmobject</h1><div class="highlight"><pre>
+<span class="c">###########################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.core.exceptions</span> <span class="kn">import</span> <span class="n">ObjectDoesNotExist</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">RevisionError</span><span class="p">,</span> <span class="n">PermissionError</span><span class="p">,</span>\
+    <span class="n">PromotionError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.references</span> <span class="kn">import</span> <span class="n">parse_reference_number</span><span class="p">,</span> <span class="n">validate_reference</span><span class="p">,</span> <span class="n">validate_revision</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">level_to_sign_str</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">get_controller</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers.base</span> <span class="kn">import</span> <span class="n">Controller</span>
+
+
+<div class="viewcode-block" id="PLMObjectController"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController">[docs]</a><span class="k">class</span> <span class="nc">PLMObjectController</span><span class="p">(</span><span class="n">Controller</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Object used to manage a :class:`~plmapp.models.PLMObject` and store his</span>
+<span class="sd">    modification in a history</span>
+
+<span class="sd">    :attributes:</span>
+<span class="sd">        .. attribute:: object</span>
+
+<span class="sd">            The :class:`.PLMObject` managed by the controller</span>
+<span class="sd">        .. attribute:: _user</span>
+
+<span class="sd">            :class:`~django.contrib.auth.models.User` who modifies ``object``</span>
+
+<span class="sd">    :param obj: managed object</span>
+<span class="sd">    :type obj: a subinstance of :class:`.PLMObject`</span>
+<span class="sd">    :param user: user who modifies *obj*</span>
+<span class="sd">    :type user: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">HISTORY</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">History</span>
+
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PLMObjectController.create"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{},</span> <span class="n">block_mails</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">no_index</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        This method builds a new :class:`.PLMObject` of</span>
+<span class="sd">        type *class_* and return a :class:`PLMObjectController` associated to</span>
+<span class="sd">        the created object.</span>
+
+<span class="sd">        Raises :exc:`ValueError` if *reference*, *type* or *revision* are</span>
+<span class="sd">        empty. Raises :exc:`ValueError` if *type* is not valid.</span>
+
+<span class="sd">        :param reference: reference of the objet</span>
+<span class="sd">        :param type: type of the object</span>
+<span class="sd">        :param revision: revision of the object</span>
+<span class="sd">        :param user: user who creates/owns the object</span>
+<span class="sd">        :param data: a dict&lt;key, value&gt; with informations to add to the plmobject</span>
+<span class="sd">        :rtype: :class:`PLMObjectController`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">profile</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span> <span class="ow">or</span> <span class="n">profile</span><span class="o">.</span><span class="n">is_administrator</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> is not a contributor&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Restricted account can not create a part or document.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">reference</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">type</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">revision</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Empty value not permitted for reference/type/revision&quot;</span><span class="p">)</span>
+        <span class="n">validate_reference</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+        <span class="n">validate_revision</span><span class="p">(</span><span class="n">revision</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">class_</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="nb">type</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Incorrect type&quot;</span><span class="p">)</span>
+        <span class="c"># create an object</span>
+        <span class="n">reference_number</span> <span class="o">=</span> <span class="n">parse_reference_number</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">class_</span><span class="p">)</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">class_</span><span class="p">(</span><span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">,</span>
+                     <span class="n">owner</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">creator</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">reference_number</span><span class="o">=</span><span class="n">reference_number</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">no_index</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">no_index</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">,</span> <span class="s">&quot;auto&quot;</span><span class="p">,</span> <span class="s">&quot;pfiles&quot;</span><span class="p">]:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_default_state</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">lifecycle</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">block_mails</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">block_mails</span><span class="p">()</span>
+        <span class="c"># record creation in history</span>
+        <span class="n">infos</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;type&quot;</span> <span class="p">:</span> <span class="nb">type</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span> <span class="p">:</span> <span class="n">reference</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span> <span class="p">:</span> <span class="n">revision</span><span class="p">}</span>
+        <span class="n">infos</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot; / &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s"> : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">infos</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;auto&quot;</span><span class="p">,</span> <span class="s">&quot;pfiles&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">))</span>
+        <span class="n">res</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;created&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+
+        <span class="c"># add links (bulk create)</span>
+        <span class="n">ctime</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">ctime</span>
+        <span class="n">links</span> <span class="o">=</span> <span class="p">[</span><span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="n">ctime</span><span class="o">=</span><span class="n">ctime</span><span class="p">)]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;delegator&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">delegatee</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+                    <span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SPONSOR</span><span class="p">)</span>
+            <span class="n">sponsor</span> <span class="o">=</span> <span class="n">l</span><span class="o">.</span><span class="n">delegator</span>
+            <span class="k">if</span> <span class="n">sponsor</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">:</span>
+                <span class="n">sponsor</span> <span class="o">=</span> <span class="n">user</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="n">res</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="n">sponsor</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="n">sponsor</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="k">except</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="n">sponsor</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="c"># the user can promote to the next state</span>
+        <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="n">role</span><span class="o">=</span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">ctime</span><span class="o">=</span><span class="n">ctime</span><span class="p">))</span>
+        <span class="c"># from the next state, only the sponsor can promote this object</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">nb_states</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">links</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">sponsor</span><span class="p">,</span>
+                <span class="n">role</span><span class="o">=</span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">ctime</span><span class="o">=</span><span class="n">ctime</span><span class="p">))</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">(</span><span class="n">links</span><span class="p">)</span>
+
+        <span class="n">res</span><span class="o">.</span><span class="n">_update_state_history</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PLMObjectController.create_from_form"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.create_from_form">[docs]</a>    <span class="k">def</span> <span class="nf">create_from_form</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">no_index</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Creates a :class:`PLMObjectController` from *form* and associates *user*</span>
+<span class="sd">        as the creator/owner of the PLMObject.</span>
+
+<span class="sd">        This method raises :exc:`ValueError` if *form* is invalid.</span>
+
+<span class="sd">        :param form: a django form associated to a model</span>
+<span class="sd">        :param user: user who creates/owns the object</span>
+<span class="sd">        :rtype: :class:`PLMObjectController`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;reference&quot;</span><span class="p">]</span>
+            <span class="nb">type</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">__name__</span>
+            <span class="n">rev</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;revision&quot;</span><span class="p">]</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">rev</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">,</span>
+                    <span class="n">block_mails</span><span class="p">,</span> <span class="n">no_index</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">obj</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;form is invalid&quot;</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="PLMObjectController.load"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="nb">type</span><span class="p">]</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">reference</span><span class="p">,</span>
+                <span class="n">revision</span><span class="o">=</span><span class="n">revision</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.can_approve_promotion"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_approve_promotion">[docs]</a>    <span class="k">def</span> <span class="nf">can_approve_promotion</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_represented_approvers</span><span class="p">(</span><span class="n">user</span><span class="p">))</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.get_represented_approvers"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.get_represented_approvers">[docs]</a>    <span class="k">def</span> <span class="nf">get_represented_approvers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">user</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_signer_role</span><span class="p">()</span>
+        <span class="n">delegators</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">get_delegators</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">role</span><span class="p">))</span>
+        <span class="n">delegators</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="n">delegators</span><span class="o">.</span><span class="n">difference_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_approvers</span><span class="p">())</span>
+        <span class="n">delegators</span><span class="o">.</span><span class="n">intersection_update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_current_signers</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">delegators</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.is_last_promoter"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.is_last_promoter">[docs]</a>    <span class="k">def</span> <span class="nf">is_last_promoter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_signer_role</span><span class="p">()</span>
+        <span class="n">is_signer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_permission</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+        <span class="n">represented</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_represented_approvers</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">is_signer</span> <span class="ow">and</span> <span class="n">represented</span><span class="p">:</span>
+            <span class="n">approvers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_approvers</span><span class="p">()</span>
+            <span class="n">other_signers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_signers</span><span class="p">()</span>\
+                    <span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">user__in</span><span class="o">=</span><span class="n">approvers</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">user__in</span><span class="o">=</span><span class="n">represented</span><span class="p">)</span>
+            <span class="k">return</span> <span class="ow">not</span> <span class="n">other_signers</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+    <span class="k">def</span> <span class="nf">_all_approved</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">not_approvers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_signers</span><span class="p">()</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">user__in</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_approvers</span><span class="p">())</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="n">not_approvers</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PLMObjectController.approve_promotion"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.approve_promotion">[docs]</a>    <span class="k">def</span> <span class="nf">approve_promotion</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">is_promotable</span><span class="p">():</span>
+            <span class="n">lcl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">()</span>
+            <span class="n">role</span> <span class="o">=</span> <span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">lcl</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+
+            <span class="n">represented</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_represented_approvers</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">represented</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PromotionError</span><span class="p">()</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="n">lcl</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">nxt</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">next_state</span><span class="p">)</span>
+            <span class="n">users</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">id__in</span><span class="o">=</span><span class="n">represented</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">user</span> <span class="ow">in</span> <span class="n">users</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">approvals</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">current_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">next_state</span><span class="o">=</span><span class="n">nxt</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_all_approved</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">promote</span><span class="p">(</span><span class="n">checked</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;Represented users: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="s">u&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">username</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">users</span><span class="p">)</span>
+                <span class="n">details</span> <span class="o">+=</span> <span class="s">u&quot;promoted from state: </span><span class="si">%s</span><span class="s"> to state:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">next_state</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">u&quot;promoted&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">(</span><span class="n">role</span><span class="p">,))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PromotionError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.discard_approvals"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.discard_approvals">[docs]</a>    <span class="k">def</span> <span class="nf">discard_approvals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">role</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_signer_role</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">role</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_approvals</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;Current state stays : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">u&quot;removed promotion approvals&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">(</span><span class="n">role</span><span class="p">,))</span>
+</div>
+    <span class="k">def</span> <span class="nf">_clear_approvals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">approvals</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PLMObjectController.promote"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.promote">[docs]</a>    <span class="k">def</span> <span class="nf">promote</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checked</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Promotes :attr:`object` in its lifecycle and writes its promotion in</span>
+<span class="sd">        the history</span>
+
+<span class="sd">        :raise: :exc:`.PromotionError` if :attr:`object` is not promotable</span>
+<span class="sd">        :raise: :exc:`.PermissionError` if the use can not sign :attr:`object`</span>
+<span class="sd">        :returns: a dictionary with two keys:</span>
+
+<span class="sd">            new_state</span>
+<span class="sd">                the new current :class:`.State` of the object</span>
+
+<span class="sd">            updated_revisions</span>
+<span class="sd">                a list of updated (deprecated or cancelled) revisions</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">checked</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">is_promotable</span><span class="p">():</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">state</span>
+            <span class="n">lifecycle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">lifecycle</span>
+            <span class="n">lcl</span> <span class="o">=</span> <span class="n">lifecycle</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">checked</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">lcl</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)))</span>
+            <span class="n">new_state</span> <span class="o">=</span> <span class="n">lcl</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">new_state</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;from state </span><span class="si">%(first)s</span><span class="s"> to state </span><span class="si">%(second)s</span><span class="s">&quot;</span> <span class="o">%</span> \
+                                 <span class="p">{</span><span class="s">&quot;first&quot;</span> <span class="p">:</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;second&quot;</span> <span class="p">:</span> <span class="n">new_state</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;promoted&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;sign_&quot;</span><span class="p">])</span>
+            <span class="n">updated_revisions</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">state</span> <span class="o">==</span> <span class="n">lifecycle</span><span class="o">.</span><span class="n">official_state</span><span class="p">:</span>
+               <span class="n">updated_revisions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_officialize</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_state_history</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear_approvals</span><span class="p">()</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&quot;new_state&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="s">&quot;updated_revisions&quot;</span><span class="p">:</span> <span class="n">updated_revisions</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PromotionError</span><span class="p">()</span>
+</div>
+    <span class="k">def</span> <span class="nf">_officialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Officialize the object (called by :meth:`promote`).&quot;&quot;&quot;</span>
+        <span class="c"># changes the owner to the company</span>
+        <span class="n">cie</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_owner</span><span class="p">(</span><span class="n">cie</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="n">updated_revisions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_previous_revisions</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">rev</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">:</span>
+                <span class="c"># nothing to do</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="n">rev</span><span class="o">.</span><span class="n">is_editable</span> <span class="ow">or</span> <span class="n">rev</span><span class="o">.</span><span class="n">is_official</span><span class="p">:</span>
+                <span class="n">no_index</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="s">&quot;no_index&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+                <span class="n">ctrl</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="n">rev</span><span class="o">.</span><span class="n">get_leaf_object</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_mail_blocked</span><span class="p">,</span> <span class="n">no_index</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">rev</span><span class="o">.</span><span class="n">is_editable</span><span class="p">:</span>
+                    <span class="n">ctrl</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">ctrl</span><span class="o">.</span><span class="n">_deprecate</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mail_blocked</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_pending_mails</span><span class="o">.</span><span class="n">extends</span><span class="p">(</span><span class="n">ctrl</span><span class="o">.</span><span class="n">_pending_mails</span><span class="p">)</span>
+                    <span class="k">del</span> <span class="n">ctrl</span><span class="o">.</span><span class="n">_pending_mails</span><span class="p">[:]</span>
+                <span class="n">updated_revisions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ctrl</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">updated_revisions</span>
+
+    <span class="k">def</span> <span class="nf">_update_state_history</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Updates the :class:`.StateHistory` table of the object.&quot;&quot;&quot;</span>
+        <span class="n">now</span> <span class="o">=</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="c"># ends previous StateHistory if it exists</span>
+        <span class="c"># here we do not try to see if the state has not changed since</span>
+        <span class="c"># we are sure it is not the case and it would not be a problem</span>
+        <span class="c"># if it has not changed</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">StateHistory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject__id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+            <span class="n">end_time</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">end_time</span><span class="o">=</span><span class="n">now</span><span class="p">)</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">StateHistory</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                <span class="n">start_time</span><span class="o">=</span><span class="n">now</span><span class="p">,</span> <span class="n">end_time</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
+                <span class="n">lifecycle</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_deprecate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Deprecate the object. &quot;&quot;&quot;</span>
+        <span class="n">cie</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">last_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_owner</span><span class="p">(</span><span class="n">cie</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_approvals</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_state_history</span><span class="p">()</span>
+
+<div class="viewcode-block" id="PLMObjectController.demote"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.demote">[docs]</a>    <span class="k">def</span> <span class="nf">demote</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Demotes :attr:`object` in irs lifecycle and writes irs demotion in the</span>
+<span class="sd">        history</span>
+
+<span class="sd">        :raise: :exc:`.PermissionError` if the use can not sign :attr:`object`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_proposed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PromotionError</span><span class="p">()</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">state</span>
+        <span class="n">lifecycle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">lifecycle</span>
+        <span class="n">lcl</span> <span class="o">=</span> <span class="n">lifecycle</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_state</span> <span class="o">=</span> <span class="n">lcl</span><span class="o">.</span><span class="n">previous_state</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">level_to_sign_str</span><span class="p">(</span><span class="n">lcl</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">new_state</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">new_state</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_clear_approvals</span><span class="p">()</span>
+            <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;from state </span><span class="si">%(first)s</span><span class="s"> to state </span><span class="si">%(second)s</span><span class="s">&quot;</span> <span class="o">%</span> \
+                    <span class="p">{</span><span class="s">&quot;first&quot;</span> <span class="p">:</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&quot;second&quot;</span> <span class="p">:</span> <span class="n">new_state</span><span class="p">}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;demoted&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;sign_&quot;</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_update_state_history</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="c"># FIXME raises it ?</span>
+            <span class="k">pass</span>
+</div>
+    <span class="k">def</span> <span class="nf">_save_histo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">blacklist</span><span class="o">=</span><span class="p">(),</span> <span class="n">roles</span><span class="o">=</span><span class="p">(),</span> <span class="n">users</span><span class="o">=</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Records *action* with details *details* made by :attr:`_user` in</span>
+<span class="sd">        on :attr:`object` in the histories table.</span>
+
+<span class="sd">        *blacklist*, if given, should be a list of email whose no mail should</span>
+<span class="sd">        be sent (empty by default).</span>
+
+<span class="sd">        A mail is sent to all notified users. Moreover, more roles can be</span>
+<span class="sd">        notified by settings the *roles&quot; argument.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">roles</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;notified&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">roles</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">PLMObjectController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span>
+                <span class="n">blacklist</span><span class="p">,</span> <span class="n">roles</span><span class="p">,</span> <span class="n">users</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PLMObjectController.has_permission"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.has_permission">[docs]</a>    <span class="k">def</span> <span class="nf">has_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_OWNER</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+        <span class="n">users</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DelegationLink</span><span class="o">.</span><span class="n">get_delegators</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">users</span><span class="p">:</span>
+            <span class="n">qset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user__in</span><span class="o">=</span><span class="n">users</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">qset</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_editable"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_editable">[docs]</a>    <span class="k">def</span> <span class="nf">check_editable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Raises a :exc:`.PermissionError` if :attr:`object` is not editable.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">is_editable</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;The object is not editable&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_in_group"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_in_group">[docs]</a>    <span class="k">def</span> <span class="nf">check_in_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.0.1</span>
+
+<span class="sd">        Checks that *user* belongs to the object&#39;s group.</span>
+
+<span class="sd">        Returns True if the user belongs to the group.</span>
+<span class="sd">        Otherwise, returns False if *raise_* is False or raises</span>
+<span class="sd">        a :exc:`.PermissionError` if *raise_* is True.</span>
+
+<span class="sd">        Note that it always returns True if *user* is the company.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">user_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">raise_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;The user </span><span class="si">%s</span><span class="s"> does not belong to the group.&quot;</span> <span class="o">%</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.revise"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.revise">[docs]</a>    <span class="k">def</span> <span class="nf">revise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_revision</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">        Makes a new revision: duplicates :attr:`object`. The duplicated</span>
+<span class="sd">        object&#39;s revision is *new_revision*.</span>
+
+<span class="sd">        Returns a controller of the new object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_readable</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_revision</span> <span class="ow">or</span> <span class="n">new_revision</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">revision</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RevisionError</span><span class="p">(</span><span class="s">&quot;Bad value for new_revision&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">validate_revision</span><span class="p">(</span><span class="n">new_revision</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RevisionError</span><span class="p">(</span><span class="nb">unicode</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_deprecated</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">RevisionError</span><span class="p">(</span><span class="s">&quot;Object is deprecated or cancelled.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">RevisionError</span><span class="p">(</span><span class="s">&quot;A revision already exists for </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">group</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">group</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">group</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">group</span><span class="o">.</span><span class="n">user_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid group&quot;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_modification_fields</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_creation_fields</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attr</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;reference&quot;</span><span class="p">,</span> <span class="s">&quot;type&quot;</span><span class="p">,</span> <span class="s">&quot;revision&quot;</span><span class="p">):</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="n">data</span><span class="p">[</span><span class="s">&quot;group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">group</span>
+        <span class="n">data</span><span class="p">[</span><span class="s">&quot;state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_default_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="p">)</span>
+        <span class="n">new_controller</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="n">new_revision</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;old : </span><span class="si">%s</span><span class="s">, new : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">new_controller</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">ACTION_NAME</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">new</span><span class="o">=</span><span class="n">new_controller</span><span class="o">.</span><span class="n">object</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">new_controller</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.is_revisable"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.is_revisable">[docs]</a>    <span class="k">def</span> <span class="nf">is_revisable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check_user</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns True if :attr:`object` is revisable: if :meth:`revise` can be</span>
+<span class="sd">        called safely.</span>
+
+<span class="sd">        If *check_user* is True (the default), it also checks if :attr:`_user` can</span>
+<span class="sd">        see the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c"># a cancelled or deprecated object cannot be revised.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_deprecated</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="c"># objects.get fails if a link does not exist</span>
+        <span class="c"># we can revise if any links exist</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">old</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">except</span> <span class="n">ObjectDoesNotExist</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">check_user</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_readable</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.get_previous_revisions"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.get_previous_revisions">[docs]</a>    <span class="k">def</span> <span class="nf">get_previous_revisions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">all_revisions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_revisions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">all_revisions</span><span class="p">[:</span><span class="n">all_revisions</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">plmobject_ptr</span><span class="p">)]</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.get_next_revisions"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.get_next_revisions">[docs]</a>    <span class="k">def</span> <span class="nf">get_next_revisions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">all_revisions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_revisions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">all_revisions</span><span class="p">[</span><span class="n">all_revisions</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">plmobject_ptr</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.get_all_revisions"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.get_all_revisions">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_revisions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a list of all revisions, ordered from less recent to most recent</span>
+
+<span class="sd">        :rtype: list of :class:`.PLMObject`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+            <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">))</span>
+        <span class="c"># maybe we could simply sort objects by their ctime...</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">objects</span>
+        <span class="n">rev_links</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">RevisionLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">old__in</span><span class="o">=</span><span class="n">objects</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;old&quot;</span><span class="p">,</span> <span class="s">&quot;new&quot;</span><span class="p">)</span>
+        <span class="n">id2obj</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">o</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">o</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">old</span><span class="p">,</span> <span class="n">new</span> <span class="ow">in</span> <span class="n">rev_links</span><span class="p">:</span>
+            <span class="n">old_obj</span> <span class="o">=</span> <span class="n">id2obj</span><span class="p">[</span><span class="n">old</span><span class="p">]</span>
+            <span class="n">new_obj</span> <span class="o">=</span> <span class="n">id2obj</span><span class="p">[</span><span class="n">new</span><span class="p">]</span>
+            <span class="n">objects</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">old_obj</span><span class="p">)</span>
+            <span class="n">objects</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">objects</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">new_obj</span><span class="p">),</span> <span class="n">old_obj</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">objects</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.set_owner"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.set_owner">[docs]</a>    <span class="k">def</span> <span class="nf">set_owner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_owner</span><span class="p">,</span> <span class="n">dirty</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets *new_owner* as current owner.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            This method does **NOT** check that the current user</span>
+<span class="sd">            is the owner of the object. :meth:`set_role` does that check.</span>
+
+<span class="sd">        :param new_owner: the new owner</span>
+<span class="sd">        :type new_owner: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">        :param dirty: True if set_owner should skip sanity checks and</span>
+<span class="sd">                      should not send a mail (usefull for tests, default is</span>
+<span class="sd">                      False)</span>
+<span class="sd">        :raise: :exc:`.PermissionError` if *new_owner* is not a contributor</span>
+<span class="sd">        :raise: :exc:`ValueError` if *new_owner* is the company and the</span>
+<span class="sd">                object is editable</span>
+
+<span class="sd">        .. versionchanged:: 1.0.1</span>
+
+<span class="sd">        :raise: :exc:`.PermissionError` if *new_owner* does not belong to</span>
+<span class="sd">                the object&#39;s group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">dirty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_contributor</span><span class="p">(</span><span class="n">new_owner</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="n">new_owner</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">new_owner</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_editable</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;The company cannot own an editable object.&quot;</span><span class="p">)</span>
+
+        <span class="n">links</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                <span class="n">role</span><span class="o">=</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="n">links</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">new_owner</span><span class="p">,</span>
+               <span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dirty</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">new_owner</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">owner</span> <span class="o">=</span> <span class="n">new_owner</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="c"># we do not need to write this event in a history since save() has</span>
+        <span class="c"># already done it</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.add_notified"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.add_notified">[docs]</a>    <span class="k">def</span> <span class="nf">add_notified</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_notified</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds *new_notified* to the list of users notified when :attr:`object`</span>
+<span class="sd">        changes.</span>
+
+<span class="sd">        :param new_notified: the new user who would be notified</span>
+<span class="sd">        :type new_notified: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">        :raise: :exc:`IntegrityError` if *new_notified* is already notified</span>
+<span class="sd">            when :attr:`object` changes</span>
+
+<span class="sd">        .. versionchanged:: 1.0.1</span>
+
+<span class="sd">        :raise: :exc:`.PermissionError` if *new_notified* does not belong to</span>
+<span class="sd">                the object&#39;s group.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_notified</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_notified</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="n">new_notified</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="n">new_notified</span><span class="p">)</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">new_notified</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s">&quot;notified&quot;</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;user: </span><span class="si">%s</span><span class="s"> to be notified&quot;</span> <span class="o">%</span> <span class="n">new_notified</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;added new notification right&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.add_reader"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.add_reader">[docs]</a>    <span class="k">def</span> <span class="nf">add_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_reader</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_official</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Object is not official&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_reader</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not a restricted account&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">new_reader</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="n">new_reader</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">new_reader</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">&quot;user: </span><span class="si">%s</span><span class="s"> is a reader&quot;</span> <span class="o">%</span> <span class="n">new_reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;added new reader&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_edit_signer"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_edit_signer">[docs]</a>    <span class="k">def</span> <span class="nf">check_edit_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.2</span>
+
+<span class="sd">        Checks that the current user can edit the signers of the object:</span>
+
+<span class="sd">            * He must own the object</span>
+<span class="sd">            * No user should have approved the promotion</span>
+
+<span class="sd">        :raise: :exc:`.PermissionError` if *raise_* is True and one of the</span>
+<span class="sd">                above conditions is not met</span>
+<span class="sd">        :return: True if the user can edit the signers</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="n">raise_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">approvals</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">raise_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;One user has appproved a promotion.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="n">r</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.can_edit_signer"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_edit_signer">[docs]</a>    <span class="k">def</span> <span class="nf">can_edit_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.2</span>
+
+<span class="sd">        Returns True if the user can edit signers of the object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_signer</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_signer"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_signer">[docs]</a>    <span class="k">def</span> <span class="nf">check_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.2</span>
+
+<span class="sd">        Checks that *user* can become a signer.</span>
+
+<span class="sd">        :raise: :exc:`.PermissionError` if *user* is not a contributor</span>
+<span class="sd">        :raise: :exc:`.PermissionError` if *user* is not in the object&#39;s group</span>
+<span class="sd">        :raise: :exc:`ValueError` if *role* is not a valid signer role according to</span>
+<span class="sd">                the object&#39;s lifecycle</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_contributor</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="c"># check if the role is valid</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">role</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SIGN</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid role&quot;</span><span class="p">)</span>
+        <span class="n">max_level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">nb_states</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">level</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s">r&quot;\d+&quot;</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">level</span> <span class="o">&gt;</span> <span class="n">max_level</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid role&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.add_signer"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.add_signer">[docs]</a>    <span class="k">def</span> <span class="nf">add_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_signer</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.2</span>
+
+<span class="sd">        Adds *new_signer* to the list of signer for the role *role*.</span>
+
+<span class="sd">        :raise: exceptions raised by :meth:`check_edit_signer`</span>
+<span class="sd">        :raise: exceptions raised by :meth:`check_signer`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_signer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_signer</span><span class="p">(</span><span class="n">new_signer</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+            <span class="n">user</span><span class="o">=</span><span class="n">new_signer</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;user: </span><span class="si">%s</span><span class="s"> &#39;s signature is necessary&quot;</span> <span class="o">%</span> <span class="n">new_signer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;added new </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">role</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">(</span><span class="n">role</span><span class="p">,))</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.remove_notified"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.remove_notified">[docs]</a>    <span class="k">def</span> <span class="nf">remove_notified</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">notified</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes *notified* to the list of users notified when :attr:`object`</span>
+<span class="sd">        changes.</span>
+
+<span class="sd">        :param notified: the user who would be no more notified</span>
+<span class="sd">        :type notified: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">        :raise: :exc:`ObjectDoesNotExist` if *notified* is not notified</span>
+<span class="sd">            when :attr:`object` changes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">notified</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">notified</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="s">&quot;notified&quot;</span><span class="p">)</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;user: </span><span class="si">%s</span><span class="s"> is no longer notified&quot;</span> <span class="o">%</span> <span class="n">notified</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;removed notification right&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.remove_reader"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.remove_reader">[docs]</a>    <span class="k">def</span> <span class="nf">remove_reader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reader</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Removes *reader* to the list of restricted readers when :attr:`object`</span>
+<span class="sd">        changes.</span>
+
+<span class="sd">        :param reader: the user who would be no more reader</span>
+<span class="sd">        :type reader: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">        :raise: :exc:`ObjectDoesNotExist` if *reader* is not reader</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">reader</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">)</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;user: </span><span class="si">%s</span><span class="s"> is no longer a reader&quot;</span> <span class="o">%</span> <span class="n">reader</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;removed reader&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.remove_signer"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.remove_signer">[docs]</a>    <span class="k">def</span> <span class="nf">remove_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signer</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.2</span>
+
+<span class="sd">        Removes *signer* to the list of signers for role *role*.</span>
+
+<span class="sd">        :param signer: the user who would be no more signer</span>
+<span class="sd">        :type signer: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">        :raise: :exc:`.PermissionError` if:</span>
+
+<span class="sd">            * user is not the owner</span>
+<span class="sd">            * one signer has approved the promotion</span>
+<span class="sd">            * there is only one signer</span>
+
+<span class="sd">        :raise: :exc:`ObjectDoesNotExist` if *signer* is not a signer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_signer</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">role</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SIGN</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Not a sign role&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Can not remove signer, there is only one signer.&quot;</span><span class="p">)</span>
+        <span class="n">link</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">current_objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                <span class="n">user</span><span class="o">=</span><span class="n">signer</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;user: </span><span class="si">%s</span><span class="s"> &#39;s signature is no longer necessary&quot;</span> <span class="o">%</span> <span class="n">signer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;removed </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">role</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">(</span><span class="n">role</span><span class="p">,))</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.replace_signer"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.replace_signer">[docs]</a>    <span class="k">def</span> <span class="nf">replace_signer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_signer</span><span class="p">,</span> <span class="n">new_signer</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.2</span>
+
+<span class="sd">        Sets *new_signer* as current signer instead of *old_signer* for *role*.</span>
+<span class="sd">        *role* must be a valid sign role (see :func:`.level_to_sign_str` to get a role from a</span>
+<span class="sd">        sign level (int)).</span>
+
+<span class="sd">        :param old_signer: the replaced signer</span>
+<span class="sd">        :type old_signer: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">        :param new_signer: the new signer</span>
+<span class="sd">        :type new_signer: :class:`~django.contrib.auth.models.User`</span>
+<span class="sd">        :param str role: the sign role</span>
+<span class="sd">        :raise: :exc:`.PermissionError` if *signer* is not a contributor</span>
+<span class="sd">        :raise: :exc:`.PermissionError` if *new_signer* does not belong to</span>
+<span class="sd">                the object&#39;s group.</span>
+<span class="sd">        :raise: :exc:`.ValueError` if *role* is invalid (level to high)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_edit_signer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_signer</span><span class="p">(</span><span class="n">new_signer</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+
+        <span class="c"># remove old signer</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">link</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">old_signer</span><span class="p">,</span>
+               <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Invalid old signer&quot;</span><span class="p">)</span>
+        <span class="n">link</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="c"># add new signer</span>
+        <span class="n">models</span><span class="o">.</span><span class="n">PLMObjectUserLink</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">plmobject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">,</span>
+                                                <span class="n">user</span><span class="o">=</span><span class="n">new_signer</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;user : </span><span class="si">%s</span><span class="s"> &quot;</span> <span class="o">%</span> <span class="n">old_signer</span>
+        <span class="n">details</span> <span class="o">+=</span> <span class="s">u&quot;is replaced by user : </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">new_signer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;changed </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">role</span><span class="p">,</span> <span class="n">details</span><span class="p">,</span> <span class="n">roles</span><span class="o">=</span><span class="p">(</span><span class="n">role</span><span class="p">,))</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.set_role"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.set_role">[docs]</a>    <span class="k">def</span> <span class="nf">set_role</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets role *role* (like `owner` or `notified`) for *user*</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            If *role* is :const:`.ROLE_OWNER`, the previous owner is</span>
+<span class="sd">            replaced by *user*.</span>
+
+<span class="sd">        :raise: :exc:`ValueError` if *role* is invalid</span>
+<span class="sd">        :raise: :exc:`.PermissionError` if *user* is not allowed to has role</span>
+<span class="sd">            *role*</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">user</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">_</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%(username)s</span><span class="s"> has already this role.&quot;</span><span class="p">)</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">role</span> <span class="o">==</span> <span class="s">&quot;owner&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_owner</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_NOTIFIED</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_notified</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">role</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SIGN</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_signer</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">role</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_reader</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;bad value for role&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.remove_user"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.remove_user">[docs]</a>    <span class="k">def</span> <span class="nf">remove_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_NOTIFIED</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_notified</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span> <span class="o">==</span> <span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_reader</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SIGN</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remove_signer</span><span class="p">(</span><span class="n">link</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">link</span><span class="o">.</span><span class="n">role</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Bad link&quot;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_permission"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_permission">[docs]</a>    <span class="k">def</span> <span class="nf">check_permission</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">role</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">:</span>
+            <span class="c"># the company is like a super user</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">user_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">raise_</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;action not allowed for </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PLMObjectController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">role</span><span class="p">,</span> <span class="n">raise_</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_readable"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_readable">[docs]</a>    <span class="k">def</span> <span class="nf">check_readable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns ``True`` if the user can read (is allowed to) this object.</span>
+
+<span class="sd">        Raises a :exc:`.PermissionError` if the user cannot read the object</span>
+<span class="sd">        and *raise_* is ``True`` (the default).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_official</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_deprecated</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cancelled</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">username</span> <span class="o">==</span> <span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">:</span>
+                <span class="c"># the company is like a super user</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">owner_id</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group</span><span class="o">.</span><span class="n">user_set</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+                <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not see this object.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_restricted_readable"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_restricted_readable">[docs]</a>    <span class="k">def</span> <span class="nf">check_restricted_readable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns ``True`` if the user can read (is allowed to) the restricted</span>
+<span class="sd">        data of this object.</span>
+
+<span class="sd">        Raises a :exc:`.PermissionError` if the user cannot read the object</span>
+<span class="sd">        and *raise_* is ``True`` (the default).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">is_active</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">u&quot;</span><span class="si">%s</span><span class="s">&#39;s account is inactive&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_readable</span><span class="p">(</span><span class="n">raise_</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">PLMObjectController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_READER</span><span class="p">,</span> <span class="n">raise_</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.cancel"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.cancel">[docs]</a>    <span class="k">def</span> <span class="nf">cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cancels the object:</span>
+
+<span class="sd">            * Its lifecycle becomes &quot;cancelled&quot;.</span>
+<span class="sd">            * Its owner becomes the company.</span>
+<span class="sd">            * It removes all signer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">company</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">settings</span><span class="o">.</span><span class="n">COMPANY</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lifecycle</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_cancelled_lifecycle</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_cancelled_state</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_owner</span><span class="p">(</span><span class="n">company</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">role__startswith</span><span class="o">=</span><span class="n">models</span><span class="o">.</span><span class="n">ROLE_SIGN</span><span class="p">)</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_approvals</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">with_history</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;cancelled&quot;</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">) cancelled&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">revision</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_update_state_history</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_publish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_publish">[docs]</a>    <span class="k">def</span> <span class="nf">check_publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Checks that an object can be published.</span>
+
+<span class="sd">        If *raise_* is True:</span>
+
+<span class="sd">            :raise: :exc:`.PermissionError` if the object is not official</span>
+<span class="sd">            :raise: :exc:`.PermissionError` if the user is not allowed to publish</span>
+<span class="sd">                an object (see :attr:`.UserProfile.can_publish`)</span>
+<span class="sd">            :raise: :exc:`.PermissionError` if the user does not belong to</span>
+<span class="sd">                the object&#39;s group</span>
+<span class="sd">            :raise: :exc:`.ValueError` if the object is already published</span>
+
+<span class="sd">        If *raise_* is False:</span>
+
+<span class="sd">            Returns True if all previous tests has been succesfully passed,</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_official</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Invalid state: the object is not official&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">can_publish</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You are not allowed to publish an object&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="n">raise_</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">published</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Object already published&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.can_publish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_publish">[docs]</a>    <span class="k">def</span> <span class="nf">can_publish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Returns True if the user can publish this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_publish</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.publish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.publish">[docs]</a>    <span class="k">def</span> <span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Publish the object.</span>
+
+<span class="sd">        A published object can be accessed by anonymous users.</span>
+
+<span class="sd">        :raise: all exceptions raised by :meth:`check_publish`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_publish</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">published</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">) published by </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;published&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_unpublish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_unpublish">[docs]</a>    <span class="k">def</span> <span class="nf">check_unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Checks that an object can be unpublished.</span>
+
+<span class="sd">        If *raise_* is True:</span>
+
+<span class="sd">            :raise: :exc:`.PermissionError` if the user is not allowed to unpublish</span>
+<span class="sd">                    an object (see :attr:`.UserProfile.can_publish`)</span>
+<span class="sd">            :raise: :exc:`.PermissionError` if the user does not belong to</span>
+<span class="sd">                    the object&#39;s group</span>
+<span class="sd">            :raise: :exc:`.ValueError` if the object is unpublished</span>
+
+<span class="sd">        If *raise_* is False:</span>
+
+<span class="sd">            Returns True if all previous tests has been succesfully passed,</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">can_publish</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You are not allowed to unpublish an object&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_in_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="n">raise_</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">published</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Object not published&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.can_unpublish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_unpublish">[docs]</a>    <span class="k">def</span> <span class="nf">can_unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Returns True if the user can unpublish this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_unpublish</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.unpublish"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.unpublish">[docs]</a>    <span class="k">def</span> <span class="nf">unpublish</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Unpublish the object.</span>
+
+<span class="sd">        :raise: all exceptions raised by :meth:`check_unpublish`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_unpublish</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">published</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">details</span> <span class="o">=</span> <span class="s">u&quot;</span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">//</span><span class="si">%s</span><span class="s">) unpublished by </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">get_full_name</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">username</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_save_histo</span><span class="p">(</span><span class="s">&quot;unpublished&quot;</span><span class="p">,</span> <span class="n">details</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_cancel"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">check_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Checks that an object can be cancelled.</span>
+
+<span class="sd">        If *raise_* is True:</span>
+
+<span class="sd">            :raise: :exc:`.PermissionError` if the object is not draft</span>
+<span class="sd">            :raise: :exc:`.PermissionError` if the object has related previous</span>
+<span class="sd">                    or next revision</span>
+<span class="sd">            :raise: :exc:`.PermissionError` if the user has not owner rights on</span>
+<span class="sd">                an object</span>
+
+<span class="sd">        If *raise_* is False:</span>
+
+<span class="sd">            Returns True if all previous tests has been succesfully passed,</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_draft</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;Invalid state: the object is not draft&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">,</span><span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You are not allowed to cancel this object&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_all_revisions</span><span class="p">())</span><span class="o">==</span><span class="mi">1</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;This object has more than 1 revision&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.can_cancel"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">can_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Returns True if the user can cancel this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_cancel</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.safe_cancel"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.safe_cancel">[docs]</a>    <span class="k">def</span> <span class="nf">safe_cancel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_cancel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cancel</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.check_clone"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.check_clone">[docs]</a>    <span class="k">def</span> <span class="nf">check_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raise_</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Checks that an object can be cloned.</span>
+
+<span class="sd">        If *raise_* is True:</span>
+
+<span class="sd">            :raise: :exc:`.PermissionError` if the object is not readable</span>
+<span class="sd">            :raise: :exc:`.PermissionError` if the object can not be read</span>
+<span class="sd">            :raise: :exc:`.PermissionError` if the object is not cloneable</span>
+
+<span class="sd">        If *raise_* is False:</span>
+
+<span class="sd">            Returns True if all previous tests has been succesfully passed,</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_readable</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not clone this object : you shouldn&#39;t see it.&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;You can not clone this object since you are not a contributor.&quot;</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">res</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_cloneable</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">res</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raise_</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PermissionError</span><span class="p">(</span><span class="s">&quot;This object can not be cloned&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.can_clone"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.can_clone">[docs]</a>    <span class="k">def</span> <span class="nf">can_clone</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Returns True if the user can clone this object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_clone</span><span class="p">(</span><span class="n">raise_</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PLMObjectController.clone"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">block_mails</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">no_index</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        .. versionadded:: 1.1</span>
+
+<span class="sd">        Clone this object and return the related controller.</span>
+
+<span class="sd">        :param form: the form sent from clone view</span>
+<span class="sd">        :param user: the user who is cloning the object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_clone</span><span class="p">()</span>
+        <span class="n">type_</span><span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">type</span>
+        <span class="n">ctrl_cls</span> <span class="o">=</span> <span class="n">get_controller</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">creation_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_creation_fields</span><span class="p">()</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span> <span class="p">:</span>
+                <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">creation_fields</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="n">field</span><span class="p">]</span><span class="o">=</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+            <span class="n">ref</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;reference&quot;</span><span class="p">]</span>
+            <span class="n">rev</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;revision&quot;</span><span class="p">]</span>
+            <span class="n">new_ctrl</span> <span class="o">=</span> <span class="n">ctrl_cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">type_</span> <span class="p">,</span> <span class="n">rev</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span>
+                    <span class="n">block_mails</span><span class="p">,</span> <span class="n">no_index</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_ctrl</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;form is invalid&quot;</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="PLMObjectController.histories"><a class="viewcode-back" href="../../../devel/modules/controllers/controllers_plmobject.html#plmapp.controllers.plmobject.PLMObjectController.histories">[docs]</a>    <span class="k">def</span> <span class="nf">histories</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_revisions</span><span class="p">()]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">HISTORY</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">plmobject__in</span><span class="o">=</span><span class="n">objects</span><span class="p">)</span><span class="o">.</span>\
+                <span class="n">order_by</span><span class="p">(</span><span class="s">&#39;-date&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">select_related</span><span class="p">(</span><span class="s">&quot;user&quot;</span><span class="p">,</span> <span class="s">&quot;plmobject__revision&quot;</span><span class="p">)</span>
+</pre></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

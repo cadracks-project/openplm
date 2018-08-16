@@ -1,0 +1,661 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>plmapp.views.base &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/plmapp/views/base.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for plmapp.views.base</h1><div class="highlight"><pre>
+<span class="c">#-!- coding:utf-8 -!-</span>
+
+<span class="c">############################################################################</span>
+<span class="c"># openPLM - open source PLM</span>
+<span class="c"># Copyright 2010 Philippe Joulaud, Pierre Cosquer</span>
+<span class="c">#</span>
+<span class="c"># This file is part of openPLM.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is free software: you can redistribute it and/or modify</span>
+<span class="c">#    it under the terms of the GNU General Public License as published by</span>
+<span class="c">#    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c">#    (at your option) any later version.</span>
+<span class="c">#</span>
+<span class="c">#    openPLM is distributed in the hope that it will be useful,</span>
+<span class="c">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c">#    GNU General Public License for more details.</span>
+<span class="c">#</span>
+<span class="c">#    You should have received a copy of the GNU General Public License</span>
+<span class="c">#    along with openPLM.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c">#</span>
+<span class="c"># Contact :</span>
+<span class="c">#    Philippe Joulaud : ninoo.fr@gmail.com</span>
+<span class="c">#    Pierre Cosquer : pcosquer@linobject.com</span>
+<span class="c">################################################################################</span>
+
+
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">traceback</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.core.mail</span> <span class="kn">import</span> <span class="n">mail_admins</span>
+<span class="kn">from</span> <span class="nn">django.core.paginator</span> <span class="kn">import</span> <span class="n">Paginator</span><span class="p">,</span> <span class="n">EmptyPage</span><span class="p">,</span> <span class="n">PageNotAnInteger</span>
+<span class="kn">from</span> <span class="nn">django.core.serializers.json</span> <span class="kn">import</span> <span class="n">DjangoJSONEncoder</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.decorators</span> <span class="kn">import</span> <span class="n">login_required</span>
+<span class="kn">from</span> <span class="nn">django.contrib.sites.models</span> <span class="kn">import</span> <span class="n">Site</span>
+<span class="kn">from</span> <span class="nn">django.http</span> <span class="kn">import</span> <span class="p">(</span><span class="n">HttpResponse</span><span class="p">,</span> <span class="n">HttpResponseForbidden</span><span class="p">,</span> <span class="n">Http404</span><span class="p">,</span>
+     <span class="n">HttpResponseRedirect</span><span class="p">,</span> <span class="n">HttpResponseServerError</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.shortcuts</span> <span class="kn">import</span> <span class="n">get_object_or_404</span><span class="p">,</span> <span class="n">render_to_response</span>
+<span class="kn">from</span> <span class="nn">django.template</span> <span class="kn">import</span> <span class="n">RequestContext</span>
+<span class="kn">from</span> <span class="nn">django.utils</span> <span class="kn">import</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext</span> <span class="k">as</span> <span class="n">_</span>
+
+<span class="kn">from</span> <span class="nn">openPLM</span> <span class="kn">import</span> <span class="n">get_version</span>
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">as</span> <span class="nn">models</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">get_controller</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">import</span> <span class="n">ControllerError</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.forms</span> <span class="kn">import</span> <span class="n">get_navigate_form</span><span class="p">,</span> <span class="n">SimpleSearchForm</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.navigate</span> <span class="kn">import</span> <span class="n">NavigationGraph</span><span class="p">,</span> <span class="n">OSR</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.utils</span> <span class="kn">import</span> <span class="n">can_generate_pdf</span>
+
+
+<div class="viewcode-block" id="get_obj"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_obj">[docs]</a><span class="k">def</span> <span class="nf">get_obj</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get type, reference and revision of an object and return the related controller</span>
+
+<span class="sd">    :param obj_type: :attr:`.PLMObject.type`</span>
+<span class="sd">    :type obj_type: str</span>
+<span class="sd">    :param obj_ref: :attr:`.PLMObject.reference`</span>
+<span class="sd">    :type obj_ref: str</span>
+<span class="sd">    :param obj_revi: :attr:`.PLMObject.revision`</span>
+<span class="sd">    :type obj_revi: str</span>
+<span class="sd">    :return: a :class:`PLMObjectController` or a :class:`UserController`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">controller_cls</span> <span class="o">=</span> <span class="n">get_controller</span><span class="p">(</span><span class="n">obj_type</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">controller_cls</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+
+<span class="c"># from http://www.redrobotstudios.com/blog/2009/02/18/securing-django-with-ssl/</span></div>
+<div class="viewcode-block" id="secure_required"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.secure_required">[docs]</a><span class="k">def</span> <span class="nf">secure_required</span><span class="p">(</span><span class="n">view_func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorator which makes sure URL is accessed over https.&quot;&quot;&quot;</span>
+    <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">view_func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_wrapped_view_func</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">request</span><span class="o">.</span><span class="n">is_secure</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">settings</span><span class="p">,</span> <span class="s">&#39;FORCE_HTTPS&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">):</span>
+                <span class="n">request_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">build_absolute_uri</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">get_full_path</span><span class="p">())</span>
+                <span class="n">secure_url</span> <span class="o">=</span> <span class="n">request_url</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;http://&#39;</span><span class="p">,</span> <span class="s">&#39;https://&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">secure_url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">view_func</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_wrapped_view_func</span>
+</div>
+<div class="viewcode-block" id="json_view"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.json_view">[docs]</a><span class="k">def</span> <span class="nf">json_view</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">API_VERSION</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorator which converts the result from *func* into a json response.</span>
+
+<span class="sd">    The result from *func* must be serializable by :mod:`json`</span>
+
+<span class="sd">    This decorator automatically adds a ``result`` field to the response if it</span>
+<span class="sd">    was not present. Its value is ``&#39;ok&#39;`` if no exception was raised, and else,</span>
+<span class="sd">    it is ``&#39;error&#39;``. In that case, a field ``&#39;error&#39;`` is added with a short</span>
+<span class="sd">    message describing the exception.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">func</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">))</span>
+            <span class="k">if</span> <span class="s">&#39;result&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">response</span><span class="p">[</span><span class="s">&#39;result&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;ok&#39;</span>
+        <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+            <span class="c"># Allow keyboard interrupts through for debugging.</span>
+            <span class="k">raise</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">,</span> <span class="n">e</span><span class="p">:</span>
+            <span class="c">#Mail the admins with the error</span>
+            <span class="n">exc_info</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+            <span class="n">subject</span> <span class="o">=</span> <span class="s">&#39;JSON view error: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">request</span><span class="o">.</span><span class="n">path</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">request_repr</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">request_repr</span> <span class="o">=</span> <span class="s">&#39;Request repr() unavailable&#39;</span>
+            <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;Traceback:</span><span class="se">\n</span><span class="si">%s</span><span class="se">\n\n</span><span class="s">Request:</span><span class="se">\n</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span>
+                <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">traceback</span><span class="o">.</span><span class="n">format_exception</span><span class="p">(</span><span class="o">*</span><span class="n">exc_info</span><span class="p">)),</span>
+                <span class="n">request_repr</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="n">mail_admins</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">fail_silently</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="c">#Come what may, we&#39;re returning JSON.</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s">&#39;Internal error&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;result&#39;</span> <span class="p">:</span> <span class="s">&#39;error&#39;</span><span class="p">,</span> <span class="s">&#39;error&#39;</span> <span class="p">:</span> <span class="n">msg</span><span class="p">}</span>
+        <span class="n">response</span><span class="p">[</span><span class="s">&quot;api_version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">API_VERSION</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">cls</span><span class="o">=</span><span class="n">DjangoJSONEncoder</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="n">json_data</span><span class="p">,</span> <span class="n">content_type</span><span class="o">=</span><span class="s">&#39;application/json&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">secure_required</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_obj_by_id"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_obj_by_id">[docs]</a><span class="k">def</span> <span class="nf">get_obj_by_id</span><span class="p">(</span><span class="n">obj_id</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns an adequate controller for the object identify by *obj_id*.</span>
+<span class="sd">    The returned controller is instanciate with *user* as the user</span>
+<span class="sd">    who modify the object.</span>
+
+<span class="sd">    :param obj_id: id of a :class:`.PLMObject`</span>
+<span class="sd">    :param user: a :class:`.django.contrib.auth.models.User`</span>
+<span class="sd">    :return: a subinstance of a :class:`.PLMObjectController`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">PLMObject</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">obj_id</span><span class="p">)</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">get_all_plmobjects</span><span class="p">()[</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">]</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">obj_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">get_controller</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">type</span><span class="p">)(</span><span class="n">obj</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_obj_from_form"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_obj_from_form">[docs]</a><span class="k">def</span> <span class="nf">get_obj_from_form</span><span class="p">(</span><span class="n">form</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+    <span class="sd">u&quot;&quot;&quot;</span>
+<span class="sd">    Returns an adequate controller for the object identify by form.</span>
+<span class="sd">    The returned controller is instanciate with *user* as the user</span>
+<span class="sd">    who modify the object.</span>
+
+<span class="sd">    :param form: a valid :class:`.PLMObjectForm`</span>
+<span class="sd">    :param user: a :class:`.django.contrib.auth.models.User`</span>
+<span class="sd">    :return: a subinstance of a :class:`.PLMObjectController`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">type_</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="s">&quot;User&quot;</span><span class="p">:</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;username&quot;</span><span class="p">]</span>
+        <span class="n">revision</span> <span class="o">=</span> <span class="s">&quot;-&quot;</span>
+    <span class="k">elif</span> <span class="n">type_</span> <span class="o">==</span> <span class="s">&quot;Group&quot;</span><span class="p">:</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">revision</span> <span class="o">=</span> <span class="s">&quot;-&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;reference&quot;</span><span class="p">]</span>
+        <span class="n">revision</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;revision&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="object_to_dict"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.object_to_dict">[docs]</a><span class="k">def</span> <span class="nf">object_to_dict</span><span class="p">(</span><span class="n">plmobject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dictionary representing *plmobject*. The returned dictionary</span>
+<span class="sd">    respects the format described in :ref:`http-api-object`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">plmobject</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">plmobject</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">plmobject</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                <span class="n">revision</span><span class="o">=</span><span class="n">plmobject</span><span class="o">.</span><span class="n">revision</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="n">plmobject</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="handle_errors"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.handle_errors">[docs]</a><span class="k">def</span> <span class="nf">handle_errors</span><span class="p">(</span><span class="n">func</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">undo</span><span class="o">=</span><span class="s">&quot;..&quot;</span><span class="p">,</span> <span class="n">restricted_access</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">no_cache</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decorators which ensures that the user is connected and handles exceptions</span>
+<span class="sd">    raised by a controller.</span>
+
+<span class="sd">    If an exception of type :exc:`.django.http.Http404` is raised, the exception</span>
+<span class="sd">    is re-raised.</span>
+
+<span class="sd">    If an exception of type :exc:`.ControllerError` is raised, a</span>
+<span class="sd">    :class:`.django.http.HttpResponse` is returned with an explanation message.</span>
+
+<span class="sd">    If :attr:`settings.DEBUG` is False and another exception is raised,</span>
+<span class="sd">    a :class:`.django.http.HttpResponseServerError` is returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+        <span class="nd">@functools.wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="nd">@secure_required</span>
+        <span class="nd">@login_required</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;POST&quot;</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;_undo&quot;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">HttpResponseRedirect</span><span class="p">(</span><span class="n">undo</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">restricted_access</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span><span class="o">.</span><span class="n">restricted</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">HttpResponseForbidden</span><span class="p">()</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">f</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">no_cache</span><span class="p">:</span>
+                    <span class="n">response</span><span class="p">[</span><span class="s">&#39;Pragma&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;no-cache&#39;</span>
+                    <span class="n">response</span><span class="p">[</span><span class="s">&#39;Cache-Control&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;no-cache must-revalidate proxy-revalidate&#39;</span>
+                <span class="k">return</span> <span class="n">response</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">ControllerError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="n">ctx</span> <span class="o">=</span> <span class="n">init_ctx</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;-&quot;</span><span class="p">,</span> <span class="s">&quot;-&quot;</span><span class="p">)</span>
+                <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;message&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">render_to_response</span><span class="p">(</span><span class="s">&quot;error.html&quot;</span><span class="p">,</span> <span class="n">ctx</span><span class="p">,</span> <span class="n">context_instance</span><span class="o">=</span><span class="n">RequestContext</span><span class="p">(</span><span class="n">request</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">Http404</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">except</span> <span class="ne">StandardError</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+                    <span class="k">raise</span>
+            <span class="k">return</span> <span class="n">HttpResponseServerError</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+    <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decorator</span>
+</div>
+<span class="n">_version</span> <span class="o">=</span> <span class="n">get_version</span><span class="p">()</span>
+<div class="viewcode-block" id="init_ctx"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.init_ctx">[docs]</a><span class="k">def</span> <span class="nf">init_ctx</span><span class="p">(</span><span class="n">init_type_</span><span class="p">,</span> <span class="n">init_reference</span><span class="p">,</span> <span class="n">init_revision</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initiate the context dictionnary we used to transfer parameters to html pages.</span>
+<span class="sd">    Get type, reference and revision of an object and return a dictionnary with them</span>
+<span class="sd">    plus current time, :attr:`settings.THUMBNAILS_URL` the begining of the URL to</span>
+<span class="sd">    get thumbnail of a file and :attr:`settings.LANGUAGES`.</span>
+
+<span class="sd">    Example::</span>
+
+<span class="sd">        &gt;&gt;&gt; init_ctx(&#39;BiosOs&#39;,&#39;BI-0044&#39;,&#39;1.4.3&#39;)</span>
+<span class="sd">        {&#39;THUMBNAILS_URL&#39;: &#39;/media/thumbnails&#39;,</span>
+<span class="sd">         &#39;object_reference&#39;: &#39;BI-0044&#39;,</span>
+<span class="sd">         &#39;object_revision&#39;: &#39;1.4.3&#39;,</span>
+<span class="sd">         &#39;object_type&#39;: &#39;BiosOs&#39;}</span>
+
+<span class="sd">    :param init_type_: type of the object</span>
+<span class="sd">    :type init_type_: str</span>
+<span class="sd">    :param init_reference: reference of the object</span>
+<span class="sd">    :type init_reference: str</span>
+<span class="sd">    :param init_revision: revision of the object</span>
+<span class="sd">    :type init_revision: str</span>
+<span class="sd">    :return: a dictionnary</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s">&#39;object_reference&#39;</span><span class="p">:</span> <span class="n">init_reference</span><span class="p">,</span>
+        <span class="s">&#39;object_revision&#39;</span><span class="p">:</span> <span class="n">init_revision</span><span class="p">,</span>
+        <span class="s">&#39;object_type&#39;</span><span class="p">:</span> <span class="n">init_type_</span><span class="p">,</span>
+        <span class="s">&#39;THUMBNAILS_URL&#39;</span> <span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">THUMBNAILS_URL</span><span class="p">,</span>
+        <span class="s">&#39;DOCUMENTATION_URL&#39;</span> <span class="p">:</span> <span class="n">settings</span><span class="o">.</span><span class="n">DOCUMENTATION_URL</span><span class="p">,</span>
+        <span class="s">&#39;can_generate_pdf&#39;</span> <span class="p">:</span> <span class="n">can_generate_pdf</span><span class="p">(),</span>
+        <span class="s">&#39;openPLM_version&#39;</span> <span class="p">:</span> <span class="n">_version</span><span class="p">,</span>
+        <span class="s">&#39;site&#39;</span> <span class="p">:</span> <span class="n">Site</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_current</span><span class="p">(),</span>
+        <span class="p">}</span>
+
+<span class="c">##########################################################################################</span>
+<span class="c">###   Manage html code for Search and Results function and other global parameters     ###</span>
+<span class="c">##########################################################################################</span></div>
+<div class="viewcode-block" id="update_navigation_history"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.update_navigation_history">[docs]</a><span class="k">def</span> <span class="nf">update_navigation_history</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">):</span>
+    <span class="n">old_history</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;navigation_history&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">links</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">menu_items</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s">&quot;navigate&quot;</span><span class="p">,)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span><span class="p">,</span> <span class="n">type_</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">links</span><span class="p">)</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">old_history</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">history</span><span class="p">:</span>
+        <span class="c"># move value at the end</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">7</span><span class="p">:</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">7</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">old_history</span> <span class="o">!=</span> <span class="n">history</span><span class="p">:</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;navigation_history&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">history</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</div>
+<span class="n">_SEARCH_ID</span> <span class="o">=</span> <span class="s">&quot;search_id_</span><span class="si">%s</span><span class="s">&quot;</span>
+<div class="viewcode-block" id="get_generic_data"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_generic_data">[docs]</a><span class="k">def</span> <span class="nf">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">type_</span><span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="n">revision</span><span class="o">=</span><span class="s">&#39;-&#39;</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">load_all</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get a request and return a controller, a context dictionnary with elements common to all pages</span>
+<span class="sd">    (search form, search data, search results, ...) and another dictionnary to update the</span>
+<span class="sd">    request.session dictionnary.</span>
+
+<span class="sd">    :param request: :class:`django.http.QueryDict`</span>
+<span class="sd">    :param type_: :attr:`.PLMObject.type`</span>
+<span class="sd">    :type type_: str</span>
+<span class="sd">    :param reference: :attr:`.PLMObject.reference`</span>
+<span class="sd">    :type reference: str</span>
+<span class="sd">    :param revision: :attr:`.PLMObject.revision`</span>
+<span class="sd">    :type revision: str</span>
+<span class="sd">    :return: a :class:`.PLMObjectController` or a :class:`.UserController`</span>
+<span class="sd">    :return: ctx</span>
+<span class="sd">    :type ctx: dic</span>
+<span class="sd">    :return: request.session</span>
+<span class="sd">    :type request.session: dic</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="n">init_ctx</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span>
+    <span class="c"># This case happens when we create an object (and therefore can&#39;t get a controller)</span>
+    <span class="n">save_session</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">profile</span>
+    <span class="n">restricted</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">restricted</span>
+    <span class="k">if</span> <span class="n">type_</span> <span class="o">==</span> <span class="n">reference</span> <span class="o">==</span> <span class="n">revision</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">:</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">obj_url</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">plmobject_url</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="n">get_obj</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">,</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">obj_url</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">plmobject_url</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">restricted</span><span class="p">:</span>
+            <span class="n">save_session</span> <span class="o">=</span> <span class="n">update_navigation_history</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span>
+                <span class="n">type_</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">revision</span><span class="p">)</span>
+
+    <span class="n">table</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;table&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">save_session</span> <span class="o">=</span> <span class="n">save_session</span> <span class="ow">or</span> <span class="n">table</span> <span class="o">!=</span> <span class="s">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">table</span> <span class="o">==</span> <span class="s">&quot;1&quot;</span><span class="p">:</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;as_table&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">elif</span> <span class="n">table</span> <span class="o">==</span> <span class="s">&quot;0&quot;</span><span class="p">:</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;as_table&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;as_table&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;as_table&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">restricted</span><span class="p">:</span> <span class="c"># a restricted account can not perform a search</span>
+        <span class="c"># Builds, update and treat Search form</span>
+        <span class="n">search_needed</span> <span class="o">=</span> <span class="s">&quot;results&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span> <span class="ow">or</span> <span class="n">load_all</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&quot;GET&quot;</span> <span class="ow">and</span> <span class="s">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">:</span>
+            <span class="n">search_form</span> <span class="o">=</span> <span class="n">SimpleSearchForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">auto_id</span><span class="o">=</span><span class="n">_SEARCH_ID</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;q&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;q&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;search_official&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;search_official&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">search_needed</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">save_session</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">elif</span> <span class="s">&quot;type&quot;</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">:</span>
+            <span class="n">search_form</span> <span class="o">=</span> <span class="n">SimpleSearchForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">auto_id</span><span class="o">=</span><span class="n">_SEARCH_ID</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;all&#39;</span>
+            <span class="n">search_form</span> <span class="o">=</span> <span class="n">SimpleSearchForm</span><span class="p">(</span><span class="n">auto_id</span><span class="o">=</span><span class="n">_SEARCH_ID</span><span class="p">)</span>
+            <span class="n">save_session</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">if</span> <span class="n">search</span> <span class="ow">and</span> <span class="n">search_needed</span> <span class="ow">and</span> <span class="n">search_form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">search_query</span> <span class="o">=</span> <span class="n">search_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;q&quot;</span><span class="p">]</span>
+            <span class="n">qset</span> <span class="o">=</span> <span class="n">search_form</span><span class="o">.</span><span class="n">search</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">load_all</span><span class="p">:</span>
+                <span class="n">qset</span> <span class="o">=</span> <span class="n">qset</span><span class="o">.</span><span class="n">load_all</span><span class="p">()</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;search_query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_query</span>
+            <span class="n">search_official</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;&quot;</span><span class="p">,</span> <span class="s">&quot;1&quot;</span><span class="p">][</span><span class="n">search_form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">[</span><span class="s">&quot;search_official&quot;</span><span class="p">]]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;search_official&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">search_official</span>
+            <span class="n">search_count</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;search_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qset</span><span class="o">.</span><span class="n">count</span><span class="p">()</span>
+            <span class="n">qset</span> <span class="o">=</span> <span class="n">qset</span><span class="p">[:</span><span class="mi">30</span><span class="p">]</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;results&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">qset</span>
+            <span class="n">save_session</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">qset</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;results&quot;</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="n">search_query</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;search_query&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">search_count</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;search_count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">search_official</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;search_official&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+           <span class="s">&#39;results&#39;</span> <span class="p">:</span> <span class="n">qset</span><span class="p">,</span>
+           <span class="s">&#39;search_query&#39;</span> <span class="p">:</span> <span class="n">search_query</span><span class="p">,</span>
+           <span class="s">&#39;search_count&#39;</span> <span class="p">:</span> <span class="n">search_count</span><span class="p">,</span>
+           <span class="s">&#39;search_form&#39;</span> <span class="p">:</span> <span class="n">search_form</span><span class="p">,</span>
+           <span class="s">&#39;navigation_history&#39;</span> <span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;navigation_history&quot;</span><span class="p">,</span> <span class="p">[]),</span>
+           <span class="s">&#39;ctype&#39;</span><span class="p">:</span> <span class="s">&quot;Part&quot;</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;all&quot;</span><span class="p">,</span> <span class="s">&quot;User&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">],</span>
+        <span class="p">})</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+       <span class="s">&#39;link_creation&#39;</span> <span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+       <span class="s">&#39;attach&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">False</span><span class="p">),</span>
+       <span class="s">&#39;obj&#39;</span> <span class="p">:</span> <span class="n">obj</span><span class="p">,</span>
+       <span class="s">&#39;obj_url&#39;</span><span class="p">:</span> <span class="n">obj_url</span><span class="p">,</span>
+       <span class="s">&#39;restricted&#39;</span> <span class="p">:</span> <span class="n">restricted</span><span class="p">,</span>
+       <span class="s">&#39;is_contributor&#39;</span><span class="p">:</span> <span class="n">profile</span><span class="o">.</span><span class="n">is_contributor</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;menu_items&quot;</span><span class="p">):</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&#39;object_menu&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">menu_items</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;check_permission&quot;</span><span class="p">):</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;is_owner&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_permission</span><span class="p">(</span><span class="s">&quot;owner&quot;</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s">&quot;check_readable&quot;</span><span class="p">):</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;is_readable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">readable</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">check_readable</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">restricted</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">readable</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">Http404</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;is_readable&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="c"># little hack to avoid a KeyError</span>
+    <span class="c"># see https://github.com/toastdriven/django-haystack/issues/404</span>
+    <span class="kn">from</span> <span class="nn">haystack</span> <span class="kn">import</span> <span class="n">site</span>
+    <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;results&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">searchsite</span> <span class="o">=</span> <span class="n">site</span>
+
+    <span class="k">if</span> <span class="n">save_session</span><span class="p">:</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span>
+</div>
+<span class="n">coords_rx</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;top:(\d+)px;left:(\d+)px;width:(\d+)px;height:(\d+)px;&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="get_navigate_data"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_navigate_data">[docs]</a><span class="k">def</span> <span class="nf">get_navigate_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">):</span>
+    <span class="n">obj</span><span class="p">,</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">get_generic_data</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">,</span> <span class="n">obj_ref</span><span class="p">,</span> <span class="n">obj_revi</span><span class="p">)</span>
+    <span class="n">FilterForm</span> <span class="o">=</span> <span class="n">get_navigate_form</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+    <span class="n">has_session</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">in</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">FilterForm</span><span class="o">.</span><span class="n">base_fields</span><span class="p">)</span>
+    <span class="n">initial</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">.</span><span class="n">initial</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">FilterForm</span><span class="o">.</span><span class="n">base_fields</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s">&#39;POST&#39;</span> <span class="ow">and</span> <span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">FilterForm</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">POST</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">has_session</span><span class="p">:</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">doc_parts</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+        <span class="n">initial</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">)</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">FilterForm</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">FilterForm</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">form</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">initial</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">cleaned_data</span>
+    <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="n">OSR</span><span class="p">]:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">object</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;results&quot;</span><span class="p">,</span> <span class="p">[])]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">NavigationGraph</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">results</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s">&quot;update&quot;</span><span class="p">]:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s">&quot;doc_parts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s">&quot;doc_parts&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;#&quot;</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">o</span><span class="o">.</span><span class="n">isnumeric</span><span class="p">()]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">options</span><span class="p">[</span><span class="s">&quot;doc_parts&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">doc_parts</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">))</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">set_options</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">graph</span><span class="o">.</span><span class="n">create_edges</span><span class="p">()</span>
+    <span class="n">map_string</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">render</span><span class="p">()</span>
+    <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">edges</span><span class="p">[</span><span class="s">&quot;width&quot;</span><span class="p">],</span> <span class="n">edges</span><span class="p">[</span><span class="s">&quot;height&quot;</span><span class="p">]</span>
+    <span class="n">past</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">time</span> <span class="ow">and</span> <span class="n">timezone</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">graph</span><span class="o">.</span><span class="n">time</span> <span class="o">&gt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">minutes</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+        <span class="s">&#39;filter_object_form&#39;</span><span class="p">:</span> <span class="n">form</span><span class="p">,</span>
+        <span class="s">&#39;map_areas&#39;</span><span class="p">:</span> <span class="n">map_string</span><span class="p">,</span>
+        <span class="s">&#39;img_width&#39;</span> <span class="p">:</span> <span class="n">width</span><span class="p">,</span>
+        <span class="s">&#39;img_height&#39;</span> <span class="p">:</span> <span class="n">height</span><span class="p">,</span>
+        <span class="s">&#39;navigate_bool&#39;</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span>
+        <span class="s">&#39;edges&#39;</span> <span class="p">:</span> <span class="n">edges</span><span class="p">,</span>
+        <span class="s">&#39;past&#39;</span> <span class="p">:</span> <span class="n">past</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">ctx</span>
+</div>
+<span class="n">_creation_views</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="viewcode-block" id="register_creation_view"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.register_creation_view">[docs]</a><span class="k">def</span> <span class="nf">register_creation_view</span><span class="p">(</span><span class="n">type_</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Register a creation view for *type_* (a subclass of :class:`.PLMObject`).</span>
+
+<span class="sd">    Most of the applications does not need to call this function which is</span>
+<span class="sd">    available for special cases which cannot be handled by :func:`.create_object`.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        You must ensure that the module that calls this function has been imported.</span>
+<span class="sd">        For example, you can import it in your :file:`urls.py` file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_creation_views</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span> <span class="o">=</span> <span class="n">view</span>
+</div>
+<div class="viewcode-block" id="get_creation_view"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_creation_view">[docs]</a><span class="k">def</span> <span class="nf">get_creation_view</span><span class="p">(</span><span class="n">type_</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a registed view for *type_* (a subclass of :class:`.PLMObject`)</span>
+<span class="sd">    or None if no views are registered.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">_creation_views</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="get_id_card_data"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_id_card_data">[docs]</a><span class="k">def</span> <span class="nf">get_id_card_data</span><span class="p">(</span><span class="n">doc_ids</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get informations to display in the id-cards of all Document which id is in doc_ids</span>
+
+<span class="sd">    :param doc_ids: list of Document ids to treat</span>
+
+<span class="sd">    :return: a dictionary which contains the following data</span>
+
+<span class="sd">        * ``thumbnails``</span>
+<span class="sd">            list of tuple (document,thumbnail)</span>
+
+<span class="sd">        * ``num_files``</span>
+<span class="sd">            list of tuple (document, number of file)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{</span> <span class="s">&quot;thumbnails&quot;</span> <span class="p">:</span> <span class="p">{},</span> <span class="s">&quot;num_files&quot;</span> <span class="p">:</span> <span class="p">{}</span> <span class="p">}</span>
+    <span class="k">if</span> <span class="n">doc_ids</span><span class="p">:</span>
+        <span class="n">thumbnails</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">document__in</span><span class="o">=</span><span class="n">doc_ids</span><span class="p">,</span> <span class="n">thumbnail__isnull</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">exclude</span><span class="p">(</span><span class="n">thumbnail</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;thumbnails&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">thumbnails</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="s">&quot;thumbnail&quot;</span><span class="p">))</span>
+        <span class="n">num_files</span> <span class="o">=</span> <span class="nb">dict</span><span class="o">.</span><span class="n">fromkeys</span><span class="p">(</span><span class="n">doc_ids</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">DocumentFile</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deprecated</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+            <span class="n">document__in</span><span class="o">=</span><span class="n">doc_ids</span><span class="p">)</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+            <span class="n">num_files</span><span class="p">[</span><span class="n">doc_id</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;num_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">num_files</span>
+    <span class="k">return</span> <span class="n">ctx</span>
+
+</div>
+<div class="viewcode-block" id="get_pagination"><a class="viewcode-back" href="../../../devel/modules/views.html#plmapp.views.base.get_pagination">[docs]</a><span class="k">def</span> <span class="nf">get_pagination</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">object_list</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a dictionary with pagination data.</span>
+
+<span class="sd">    Called in view which returns a template where object id cards are displayed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ctx</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">sort</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;sort&quot;</span><span class="p">,</span> <span class="s">&quot;children&quot;</span> <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;topassembly&quot;</span> <span class="k">else</span> <span class="s">&quot;recently-added&quot;</span><span class="p">)</span>
+    <span class="n">ctime</span> <span class="o">=</span> <span class="s">&quot;date_joined&quot;</span> <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;user&quot;</span> <span class="k">else</span> <span class="s">&quot;ctime&quot;</span>
+    <span class="k">if</span> <span class="n">sort</span> <span class="o">==</span> <span class="s">&quot;name&quot;</span> <span class="p">:</span>
+        <span class="n">sort_critera</span> <span class="o">=</span> <span class="s">&quot;username&quot;</span> <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;user&quot;</span> <span class="k">else</span> <span class="s">&quot;name&quot;</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;part&quot;</span><span class="p">,</span> <span class="s">&quot;topassembly&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">sort</span> <span class="o">==</span> <span class="s">&quot;children&quot;</span><span class="p">:</span>
+        <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">with_children_counts</span><span class="p">()</span>
+        <span class="n">sort_critera</span> <span class="o">=</span> <span class="s">&quot;-num_children,reference,revision&quot;</span>
+    <span class="k">elif</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&quot;part&quot;</span> <span class="ow">and</span> <span class="n">sort</span> <span class="o">==</span> <span class="s">&quot;most-used&quot;</span><span class="p">:</span>
+        <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">with_parents_counts</span><span class="p">()</span>
+        <span class="n">sort_critera</span> <span class="o">=</span> <span class="s">&quot;-num_parents,reference,revision&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sort_critera</span> <span class="o">=</span> <span class="s">&quot;-</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ctime</span>
+    <span class="n">object_list</span> <span class="o">=</span> <span class="n">object_list</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="o">*</span><span class="n">sort_critera</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;,&quot;</span><span class="p">))</span>
+
+    <span class="n">paginator</span> <span class="o">=</span> <span class="n">Paginator</span><span class="p">(</span><span class="n">object_list</span><span class="p">,</span> <span class="mi">24</span><span class="p">)</span> <span class="c"># Show 24 objects per page</span>
+
+    <span class="n">page</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;page&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">PageNotAnInteger</span><span class="p">:</span>
+        <span class="c"># If page is not an integer, deliver first page.</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">page</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">except</span> <span class="n">EmptyPage</span><span class="p">:</span>
+        <span class="c"># If page is out of range (e.g. 9999), deliver last page of results.</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">page</span><span class="p">(</span><span class="n">paginator</span><span class="o">.</span><span class="n">num_pages</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;thumbnails&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">ctx</span><span class="p">[</span><span class="s">&quot;num_files&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">type</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&quot;object&quot;</span><span class="p">,</span> <span class="s">&quot;document&quot;</span><span class="p">):</span>
+         <span class="n">ids</span> <span class="o">=</span> <span class="n">objects</span><span class="o">.</span><span class="n">object_list</span><span class="o">.</span><span class="n">values_list</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+         <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">get_id_card_data</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
+         <span class="s">&quot;objects&quot;</span><span class="p">:</span> <span class="n">objects</span><span class="p">,</span>
+         <span class="s">&quot;sort&quot;</span><span class="p">:</span> <span class="n">sort</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="k">return</span> <span class="n">ctx</span>
+</pre></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

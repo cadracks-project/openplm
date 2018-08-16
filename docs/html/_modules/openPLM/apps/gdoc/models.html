@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>openPLM.apps.gdoc.models &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/_modules/openPLM/apps/gdoc/models.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for openPLM.apps.gdoc.models</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">oauth2client.django_orm</span> <span class="kn">import</span> <span class="n">Storage</span>
+<span class="kn">from</span> <span class="nn">oauth2client.django_orm</span> <span class="kn">import</span> <span class="n">FlowField</span>
+<span class="kn">from</span> <span class="nn">oauth2client.django_orm</span> <span class="kn">import</span> <span class="n">CredentialsField</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth.models</span> <span class="kn">import</span> <span class="n">User</span>
+
+<span class="kn">from</span> <span class="nn">south.modelsinspector</span> <span class="kn">import</span> <span class="n">add_introspection_rules</span>
+
+<span class="kn">import</span> <span class="nn">openPLM.plmapp.exceptions</span> <span class="kn">as</span> <span class="nn">exc</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">DocumentController</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.apps.gdoc.gutils</span> <span class="kn">import</span> <span class="n">get_gclient</span>
+
+
+<span class="k">class</span> <span class="nc">FlowModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FlowModel"><a class="viewcode-back" href="../../../../devel/applications/gdoc/models.html#openPLM.apps.gdoc.models.FlowModel">[docs]</a><span class="sd">    Short live model used by OAuth2 authentication process.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">flow</span> <span class="o">=</span> <span class="n">FlowField</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">CredentialsModel</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span></div>
+<div class="viewcode-block" id="CredentialsModel"><a class="viewcode-back" href="../../../../devel/applications/gdoc/models.html#openPLM.apps.gdoc.models.CredentialsModel">[docs]</a><span class="sd">    Model that stores an OAuth2 credential.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">credential</span> <span class="o">=</span> <span class="n">CredentialsField</span><span class="p">()</span>
+
+<span class="n">add_introspection_rules</span><span class="p">([],</span> <span class="p">[</span><span class="s">&quot;^oauth2client\.django_orm\.CredentialsField&quot;</span><span class="p">])</span>
+<span class="n">add_introspection_rules</span><span class="p">([],</span> <span class="p">[</span><span class="s">&quot;^oauth2client\.django_orm\.FlowField&quot;</span><span class="p">])</span></div>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">CredentialsModel</span><span class="p">)</span>
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">FlowModel</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">GoogleDocument</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GoogleDocument"><a class="viewcode-back" href="../../../../devel/applications/gdoc/models.html#openPLM.apps.gdoc.models.GoogleDocument">[docs]</a>    <span class="n">ACCEPT_FILES</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="n">resource_id</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">GoogleDocument</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">attributes</span> <span class="o">+</span> <span class="p">[</span><span class="s">&quot;resource_id&quot;</span><span class="p">]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_creation_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="c"># remove the &quot;name&quot; field</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">GoogleDocument</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">get_creation_fields</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">excluded_creation_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">GoogleDocument</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">excluded_creation_fields</span><span class="p">()</span> <span class="o">+</span> \
+                <span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&#39;resource_id&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">is_promotable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c"># a GoogleDocument has no files, so we do not checks</span>
+        <span class="c"># if it has a locked file</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_promotable</span><span class="p">()</span>
+
+<span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">GoogleDocument</span><span class="p">)</span>
+</div>
+<span class="k">class</span> <span class="nc">InvalidCredentialException</span><span class="p">(</span><span class="ne">StandardError</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+<span class="k">class</span> <span class="nc">GoogleDocumentController</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">):</span>
+
+    <span class="n">__slots__</span> <span class="o">=</span> <span class="n">DocumentController</span><span class="o">.</span><span class="n">__slots__</span> <span class="o">+</span> <span class="p">(</span><span class="s">&quot;client&quot;</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">init_gclient</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">storage</span> <span class="o">=</span> <span class="n">Storage</span><span class="p">(</span><span class="n">CredentialsModel</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_user</span><span class="p">,</span> <span class="s">&#39;credential&#39;</span><span class="p">)</span>
+        <span class="n">credential</span> <span class="o">=</span> <span class="n">storage</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">credential</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="n">credential</span><span class="o">.</span><span class="n">invalid</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">InvalidCredentialException</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="n">get_gclient</span><span class="p">(</span><span class="n">credential</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">revise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_revision</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">rev</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GoogleDocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">revise</span><span class="p">(</span><span class="n">new_revision</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c"># try to copy the document in google docs</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;client&quot;</span><span class="p">):</span>
+            <span class="c"># TODO errors</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">init_gclient</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">InvalidCredentialException</span><span class="p">:</span>
+                <span class="k">return</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_resource_by_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_id</span><span class="p">)</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">copy_resource</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s">&quot; - &quot;</span> <span class="o">+</span> <span class="n">new_revision</span><span class="p">)</span>
+        <span class="n">rev</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">resource_id</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">resource_id</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">rev</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">LockError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">unlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">UnlockErrot</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">add_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">update_attributes</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">AddFileError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">delete_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">exc</span><span class="o">.</span><span class="n">DeleteFileError</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">GoogleDocumentController</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c"># try to copy the document in google docs</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&quot;client&quot;</span><span class="p">):</span>
+            <span class="c"># TODO errors</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">init_gclient</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">InvalidCredentialException</span><span class="p">:</span>
+                <span class="k">return</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">get_resource_by_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">resource_id</span><span class="p">)</span>
+        <span class="n">copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">copy_resource</span><span class="p">(</span><span class="n">entry</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">resource_id</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">resource_id</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">c</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">c</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

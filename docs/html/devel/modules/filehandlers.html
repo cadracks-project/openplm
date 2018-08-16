@@ -1,0 +1,197 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>5.6. filehandlers — Utilities to retrieve informations from a file &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="5. Modules (openPLM.plmapp package)" href="../modules.html" />
+    <link rel="next" title="5.6.1. filehandlers.base — Base classes for filehandlers" href="filehandlers/filehandlers_base.html" />
+    <link rel="prev" title="5.5. fileformats — Simple module to test if a file is a CAD file" href="fileformats.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="filehandlers/filehandlers_base.html" title="5.6.1. filehandlers.base — Base classes for filehandlers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fileformats.html" title="5.5. fileformats — Simple module to test if a file is a CAD file"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" accesskey="U">5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fileformats.html"
+                        title="previous chapter">5.5. <tt class="docutils literal docutils literal docutils literal"><span class="pre">fileformats</span></tt> &#8212; Simple module to test if a file is a CAD file</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="filehandlers/filehandlers_base.html"
+                        title="next chapter">5.6.1. <tt class="docutils literal"><span class="pre">filehandlers.base</span></tt> &#8212; Base classes for filehandlers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../_sources/devel/modules/filehandlers.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/modules/filehandlers.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-plmapp.filehandlers">
+<span id="filehandlers-utilities-to-retrieve-informations-from-a-file"></span><h1>5.6. <tt class="xref py py-mod docutils literal"><span class="pre">filehandlers</span></tt> &#8212; Utilities to retrieve informations from a file<a class="headerlink" href="#module-plmapp.filehandlers" title="Permalink to this headline">¶</a></h1>
+<p>This module contains utilities to retrieve informations from a file.</p>
+<p>Its main purpose is to be used by <a class="reference internal" href="controllers/controllers_document.html#plmapp.controllers.document.DocumentController.handle_added_file" title="plmapp.controllers.document.DocumentController.handle_added_file"><tt class="xref py py-meth docutils literal"><span class="pre">DocumentController.handle_added_file()</span></tt></a>.</p>
+<p>For example, if you have a model called <em>PDFDocument</em> with an attribute called
+<em>nb_pages</em>, you can update this attribute when a file is uploaded:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.filehandlers</span> <span class="kn">import</span> <span class="n">HandlersManager</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.models</span> <span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">openPLM.plmapp.controllers</span> <span class="kn">import</span> <span class="n">DocumentController</span>
+
+<span class="c"># our model</span>
+<span class="k">class</span> <span class="nc">PDFDocument</span><span class="p">(</span><span class="n">Document</span><span class="p">):</span>
+    <span class="n">nb_pages</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">PositiveIntegerField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c"># its controller</span>
+<span class="k">class</span> <span class="nc">PDFDocumentController</span><span class="p">(</span><span class="n">DocumentController</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">handle_added_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">doc_file</span><span class="p">):</span>
+        <span class="c"># check if if it is a pdf file</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s">&quot;.pdf&quot;</span><span class="p">:</span>
+            <span class="c"># get an handler for a pdf files</span>
+            <span class="n">handler_cls</span> <span class="o">=</span> <span class="n">HandlersManager</span><span class="o">.</span><span class="n">get_best_handler</span><span class="p">(</span><span class="s">&quot;.pdf&quot;</span><span class="p">)</span>
+            <span class="c"># instanciate thi handler (it parses the file)</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="n">handler_cls</span><span class="p">(</span><span class="n">doc_file</span><span class="o">.</span><span class="n">file</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">doc_file</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">handler</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+                <span class="c"># the handler has successfully parsed the file, so we can</span>
+                <span class="c"># set the attribute *nb_page*</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nb_pages</span> <span class="o">=</span> <span class="n">handler</span><span class="o">.</span><span class="n">nb_pages</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="filehandlers/filehandlers_base.html">5.6.1. <tt class="docutils literal"><span class="pre">filehandlers.base</span></tt> &#8212; Base classes for filehandlers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filehandlers/filehandlers_odf.html">5.6.2. <tt class="docutils literal"><span class="pre">filehandlers.odf</span></tt> &#8212; Handler for odf files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="filehandlers/filehandlers_pdf.html">5.6.3. <tt class="docutils literal"><span class="pre">filehandlers.pdf</span></tt> &#8212; Handler for pdf files</a></li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="filehandlers/filehandlers_base.html" title="5.6.1. filehandlers.base — Base classes for filehandlers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fileformats.html" title="5.5. fileformats — Simple module to test if a file is a CAD file"
+             >previous</a> |</li>
+        <li><a href="../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../modules.html" >5. Modules (<tt class="docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal docutils literal"><span class="pre">openPLM.plmapp</span></tt> package)</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,227 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>3. Cookbook &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../index.html" />
+    <link rel="up" title="6. Developer documentation" href="index.html" />
+    <link rel="next" title="4. http_api — HTTP-API" href="http-api.html" />
+    <link rel="prev" title="2.2. How to add a model (django application)" href="ht_3_add_models2.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="http-api.html" title="4. http_api — HTTP-API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ht_3_add_models2.html" title="2.2. How to add a model (django application)"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">3. Cookbook</a><ul>
+<li><a class="reference internal" href="#models">3.1. Models</a><ul>
+<li><a class="reference internal" href="#non-editable-model">3.1.1. Non editable model</a></li>
+<li><a class="reference internal" href="#condition-on-promotion">3.1.2. Condition on promotion</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#controllers">3.2. Controllers</a><ul>
+<li><a class="reference internal" href="#creation-of-a-part-using-a-controller">3.2.1. Creation of a part using a controller</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tests">3.3. Tests</a></li>
+<li><a class="reference internal" href="#others">3.4. Others</a><ul>
+<li><a class="reference internal" href="#get-next-state-of-a-plmobject">3.4.1. Get next state of a PLMObject</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ht_3_add_models2.html"
+                        title="previous chapter">2.2. How to add a model (django application)</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="http-api.html"
+                        title="next chapter">4. <tt class="docutils literal"><span class="pre">http_api</span></tt> &#8212; HTTP-API</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/devel/cookbook.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/cookbook.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="cookbook">
+<span id="id1"></span><h1>3. Cookbook<a class="headerlink" href="#cookbook" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="models">
+<span id="cookbook-models"></span><h2>3.1. Models<a class="headerlink" href="#models" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="non-editable-model">
+<h3>3.1.1. Non editable model<a class="headerlink" href="#non-editable-model" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">Part</span><span class="p">):</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">excluded_modification_fields</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cls</span><span class="p">()</span><span class="o">.</span><span class="n">attributes</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="condition-on-promotion">
+<h3>3.1.2. Condition on promotion<a class="headerlink" href="#condition-on-promotion" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyModel</span><span class="p">(</span><span class="n">Part</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">is_promotable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">condition_is_respected</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">is_promotable</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="controllers">
+<span id="cookbook-controllers"></span><h2>3.2. Controllers<a class="headerlink" href="#controllers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="creation-of-a-part-using-a-controller">
+<h3>3.2.1. Creation of a part using a controller<a class="headerlink" href="#creation-of-a-part-using-a-controller" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ctrl</span> <span class="o">=</span> <span class="n">PartController</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Part_00011&quot;</span><span class="p">,</span> <span class="s">&quot;Part&quot;</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="p">{</span><span class="s">&quot;group&quot;</span><span class="p">:</span><span class="n">group</span><span class="p">})</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="tests">
+<span id="cookbook-tests"></span><h2>3.3. Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="others">
+<span id="cookbook-others"></span><h2>3.4. Others<a class="headerlink" href="#others" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="get-next-state-of-a-plmobject">
+<h3>3.4.1. Get next state of a PLMObject<a class="headerlink" href="#get-next-state-of-a-plmobject" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lcs</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">lifecycle</span><span class="o">.</span><span class="n">to_states_list</span><span class="p">()</span>
+<span class="n">next_state</span> <span class="o">=</span> <span class="n">lcs</span><span class="o">.</span><span class="n">next_state</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition-see-also admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="modules/lifecycle.html#plmapp.lifecycle.LifecycleList.next_state" title="plmapp.lifecycle.LifecycleList.next_state"><tt class="xref py py-meth docutils literal"><span class="pre">LifecycleList.next_state()</span></tt></a></p>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="http-api.html" title="4. http_api — HTTP-API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ht_3_add_models2.html" title="2.2. How to add a model (django application)"
+             >previous</a> |</li>
+        <li><a href="../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="index.html" >6. Developer documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

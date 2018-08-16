@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.6.3. webdav.views — views for webdav &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.6. webdav – WebDAV" href="index.html" />
+    <link rel="next" title="6.6.4. webdav.webdav_handler — Handler of webdav request" href="webdav_handler.html" />
+    <link rel="prev" title="6.6.2. webdav.backends.openplm — OpenPLM Backend" href="backends_openplm.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="webdav_handler.html" title="6.6.4. webdav.webdav_handler — Handler of webdav request"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="backends_openplm.html" title="6.6.2. webdav.backends.openplm — OpenPLM Backend"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.6. webdav &#8211; WebDAV</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="backends_openplm.html"
+                        title="previous chapter">6.6.2. <tt class="docutils literal docutils literal docutils literal"><span class="pre">webdav.backends.openplm</span></tt> &#8212; OpenPLM Backend</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="webdav_handler.html"
+                        title="next chapter">6.6.4. <tt class="docutils literal"><span class="pre">webdav.webdav_handler</span></tt> &#8212; Handler of webdav request</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/webdav/views.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/webdav/views.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-openPLM.apps.webdav.views">
+<span id="webdav-views-views-for-webdav"></span><h1>6.6.3. <tt class="xref py py-mod docutils literal"><span class="pre">webdav.views</span></tt> &#8212; views for webdav<a class="headerlink" href="#module-openPLM.apps.webdav.views" title="Permalink to this headline">¶</a></h1>
+<p>openPLM.webdav application
+Copyright 2012 LinObject</p>
+<dl class="docutils">
+<dt>Modified version of webdav/views.py from:</dt>
+<dd>django-webdav is a small WebDAV implementation for Django.
+Copyright 2012 Peter Gebauer</dd>
+</dl>
+<p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+<dl class="function">
+<dt id="openPLM.apps.webdav.views.not_found">
+<tt class="descclassname">openPLM.apps.webdav.views.</tt><tt class="descname">not_found</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/views.html#not_found"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.views.not_found" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.webdav.views.basic_auth">
+<tt class="descclassname">openPLM.apps.webdav.views.</tt><tt class="descname">basic_auth</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/views.html#basic_auth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.views.basic_auth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authenticates the user with a basic http authentication
+and returns the user.
+Returns None if the user can not be authenticated.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="openPLM.apps.webdav.views.openplm_webdav">
+<tt class="descclassname">openPLM.apps.webdav.views.</tt><tt class="descname">openplm_webdav</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/webdav/views.html#openplm_webdav"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.webdav.views.openplm_webdav" title="Permalink to this definition">¶</a></dt>
+<dd><p>View that handles all webdav requests.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="webdav_handler.html" title="6.6.4. webdav.webdav_handler — Handler of webdav request"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="backends_openplm.html" title="6.6.2. webdav.backends.openplm — OpenPLM Backend"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.6. webdav &#8211; WebDAV</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

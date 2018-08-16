@@ -1,0 +1,195 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6.3.9. document3D.mesh — models for openPLM &mdash; openPLM 2.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '2.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+    <link rel="top" title="openPLM 2.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="6.3. Document3D" href="index.html" />
+    <link rel="next" title="6.4. gdoc – Google Document Application" href="../gdoc/index.html" />
+    <link rel="prev" title="6.3.8. document3D.generateComposition — models for openPLM" href="generateComposition.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../gdoc/index.html" title="6.4. gdoc – Google Document Application"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="generateComposition.html" title="6.3.8. document3D.generateComposition — models for openPLM"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/logo_openplm.png" alt="Logo"/>
+            </a></p>
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="generateComposition.html"
+                        title="previous chapter">6.3.8. <tt class="docutils literal docutils literal docutils literal"><span class="pre">document3D.generateComposition</span></tt> &#8212; models for openPLM</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../gdoc/index.html"
+                        title="next chapter">6.4. gdoc &#8211; Google Document Application</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../../../_sources/devel/applications/document3D/mesh.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+<div id='langselector'>
+    <h3>Languages</h3>
+    <ul>
+
+    
+
+
+    
+    <li><a href="/docs/2.0.1/fr/devel/applications/document3D/mesh.html">Français</a></li>
+    
+
+
+</ul>
+</div>
+
+<div id="extlinks">
+    <h3>External links</h3>
+    <a href="http://openplm.org/trac/wiki">Wiki OpenPLM</a>
+    <br/>
+    <a href="http://openplm.org/trac/discussion/forum/1">Forum</a>
+    <br/>
+    <a href="http://openplm.org/trac/downloads">Download</a>
+</div>
+
+<div id="prevversions">
+    <h3>Previous versions</h3>
+    <a href="http://openplm.org/docs/1.2/index.html">1.2</a>
+    <br/>
+    <a href="http://openplm.org/docs/1.1/index.html">1.1</a>
+</div>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="document3d-mesh-models-for-openplm">
+<h1>6.3.9. <tt class="xref py py-mod docutils literal"><span class="pre">document3D.mesh</span></tt> &#8212; models for openPLM<a class="headerlink" href="#document3d-mesh-models-for-openplm" title="Permalink to this headline">¶</a></h1>
+<p>Habla sobre los modelos</p>
+<span class="target" id="module-openPLM.apps.document3D.mesh"></span><dl class="class">
+<dt id="openPLM.apps.document3D.mesh.GeometryWriter">
+<em class="property">class </em><tt class="descclassname">openPLM.apps.document3D.mesh.</tt><tt class="descname">GeometryWriter</tt><big>(</big><em>shape</em>, <em>quality_factor</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/mesh.html#GeometryWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.mesh.GeometryWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Tool to convert an OpenCascade shape into a javascript file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Model attributes:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body"></td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.mesh.GeometryWriter.shape">
+<tt class="descname">shape</tt><a class="headerlink" href="#openPLM.apps.document3D.mesh.GeometryWriter.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="STP_converter_WebGL.html#openPLM.apps.document3D.STP_converter_WebGL.SimpleShape" title="openPLM.apps.document3D.STP_converter_WebGL.SimpleShape"><tt class="xref py py-class docutils literal"><span class="pre">SimpleShape</span></tt></a> that contains the geometry</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="openPLM.apps.document3D.mesh.GeometryWriter.quality_factor">
+<tt class="descname">quality_factor</tt><a class="headerlink" href="#openPLM.apps.document3D.mesh.GeometryWriter.quality_factor" title="Permalink to this definition">¶</a></dt>
+<dd><p>quality of applied to the geometry</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="openPLM.apps.document3D.mesh.GeometryWriter.write_geometries">
+<tt class="descname">write_geometries</tt><big>(</big><em>identifier</em>, <em>filename</em>, <em>pov_filename</em><big>)</big><a class="reference internal" href="../../../_modules/openPLM/apps/document3D/mesh.html#GeometryWriter.write_geometries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#openPLM.apps.document3D.mesh.GeometryWriter.write_geometries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the geometry to <em>filename</em> (javascript) * and <em>pov_filename</em> (POVRay)
+<em>identifier</em> is the name of the generated variable describing the whole geometry.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../gdoc/index.html" title="6.4. gdoc – Google Document Application"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="generateComposition.html" title="6.3.8. document3D.generateComposition — models for openPLM"
+             >previous</a> |</li>
+        <li><a href="../../../index.html">openPLM 2.0.1 documentation</a> &raquo;</li>
+          <li><a href="../../index.html" >6. Developer documentation</a> &raquo;</li>
+          <li><a href="../../applications.html" >6. Applications</a> &raquo;</li>
+          <li><a href="index.html" >6.3. Document3D</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010-2013, LinObject.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

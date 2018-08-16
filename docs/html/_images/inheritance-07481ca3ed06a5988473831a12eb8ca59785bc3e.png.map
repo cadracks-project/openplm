@@ -1,0 +1,15 @@
+<map id="inheritance716d133fab" name="inheritance716d133fab">
+<area shape="rect" id="node1" href="#openPLM.plmapp.models.plmobject.PLMObjectQuerySet" title="PLMObjectQuerySet" alt="" coords="126,285,263,311"/>
+<area shape="rect" id="node31" href="#openPLM.plmapp.models.part.PartQuerySet" title="PartQuerySet" alt="" coords="325,285,423,311"/>
+<area shape="rect" id="node13" href="#openPLM.plmapp.models.part.AbstractPart" title="AbstractPart" alt="" coords="513,145,607,170"/>
+<area shape="rect" id="node23" href="#openPLM.plmapp.models.document.PrivateFile" title="PrivateFile" alt="" coords="335,145,414,170"/>
+<area shape="rect" id="node25" href="#openPLM.plmapp.models.document.DocumentFile" title="DocumentFile" alt="" coords="324,191,425,217"/>
+<area shape="rect" id="node27" href="#openPLM.plmapp.models.plmobject.AbstractPLMObject" title="AbstractPLMObject" alt="" coords="309,238,439,264"/>
+<area shape="rect" id="node7" href="#openPLM.plmapp.models.document.Document" title="Document" alt="" coords="681,226,762,252"/>
+<area shape="rect" id="node8" href="#openPLM.plmapp.models.plmobject.PLMObject" title="PLMObject" alt="" coords="519,226,601,252"/>
+<area shape="rect" id="node18" href="#openPLM.plmapp.models.part.Part" title="Part" alt="" coords="688,168,754,194"/>
+<area shape="rect" id="node10" href="#openPLM.plmapp.models.document.DocumentStorage" title="DocumentStorage" alt="" coords="310,51,438,77"/>
+<area shape="rect" id="node15" href="#openPLM.plmapp.models.plmobject.PLMObjectManager" title="PLMObjectManager" alt="" coords="128,4,261,30"/>
+<area shape="rect" id="node21" href="#openPLM.plmapp.models.part.PartManager" title="PartManager" alt="" coords="327,4,421,30"/>
+<area shape="rect" id="node29" href="#openPLM.plmapp.models.part.TopAssemblyManager" title="TopAssemblyManager" alt="" coords="486,4,634,30"/>
+</map>
