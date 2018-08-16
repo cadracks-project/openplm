@@ -1,36 +1,37 @@
+# coding: utf-8
+
+r"""OpenPLM Workbench commands definition"""
+
 # OpenPLM module
 # (c) 2013 LinObject SAS
-#
 
-#***************************************************************************
-#*   (c) LinObject SAS (contact@linobject.com) 2013                        *
-#*                                                                         *
-#*   This file is part of the OpenPLM plugin for FreeCAD.                  *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU General Public License (GPL)            *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this plugin; if not, write to the Free Software    *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#*   LinObject SAS 2013                                                    *
-#***************************************************************************/
+# ***************************************************************************
+# *   (c) LinObject SAS (contact@linobject.com) 2013                        *
+# *                                                                         *
+# *   This file is part of the OpenPLM plugin for FreeCAD.                  *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU General Public License (GPL)            *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this plugin; if not, write to the Free Software    *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# *   LinObject SAS 2013                                                    *
+# ***************************************************************************/
 
 # Authors
 # Pierre Cosquer <pcosquer@linobject.com>
 # Alejandro Galech <agalech@linobject.com>
-
-
 
 import os
 import shutil
@@ -39,7 +40,6 @@ import urllib
 import webbrowser
 import tempfile
 
-
 # poster makes it possible to send http request with files
 # sudo easy_install poster
 from poster.encode import multipart_encode, MultipartParam
@@ -47,30 +47,48 @@ import poster.streaminghttp as shttp
 
 import urllib2
 
+from PySide import QtGui, QtCore
 
-import PyQt4.QtGui as qt
-from PyQt4 import QtCore
-
-import FreeCAD, FreeCADGui
+import FreeCAD as App
+import FreeCADGui as Gui
 import Part
 
 connect = QtCore.QObject.connect
 
+
 def main_window():
-    app = qt.qApp
+    r"""Retrieve the main window"""
+    app = QtGui.qApp
     for x in app.topLevelWidgets():
-        if type(x) == qt.QMainWindow:
+        if type(x) == QtGui.QMainWindow:
             return x
 
+
 def save(gdoc):
-    FreeCADGui.runCommand("Std_Save")
+    r"""Save
+
+    Parameters
+    ----------
+    gdoc : -
+
+    """
+    Gui.runCommand("Std_Save")
     gdoc.Label = os.path.splitext(os.path.basename(gdoc.FileName))[0] or gdoc.Label
 
+
 def close(gdoc):
-    FreeCADGui.runCommand("Std_CloseActiveWindow")
-    gdoc2 = FreeCAD.ActiveDocument
+    r"""Close
+
+    Parameters
+    ----------
+    gdoc : -
+
+    """
+    Gui.runCommand("Std_CloseActiveWindow")
+    gdoc2 = App.ActiveDocument
     if gdoc == gdoc2:
-        FreeCAD.closeDocument(gdoc.Name)
+        App.closeDocument(gdoc.Name)
+
 
 class OpenPLMPluginInstance(object):
 
@@ -107,11 +125,11 @@ class OpenPLMPluginInstance(object):
 
     def disable_menuitems(self):
         self.connected = False
-        FreeCADGui.updateGui()
+        Gui.updateGui()
 
     def enable_menuitems(self):
         self.connected = True
-        FreeCADGui.updateGui()
+        Gui.updateGui()
 
     def login(self, username, password):
         """
@@ -140,14 +158,16 @@ class OpenPLMPluginInstance(object):
         else:
             doc = res["object"]
             # create a new doc
-            rep = os.path.join(self.PLUGIN_DIR, doc["type"], doc["reference"],
+            rep = os.path.join(self.PLUGIN_DIR,
+                               doc["type"],
+                               doc["reference"],
                                doc["revision"])
             try:
                 os.makedirs(rep, 0700)
             except os.error:
                 # directory already exists, just ignores the exception
                 pass
-            gdoc = FreeCAD.ActiveDocument
+            gdoc = App.ActiveDocument
             filename = filename.decode("utf8")
             path = os.path.join(rep, filename)
             fileName, fileExtension = os.path.splitext(filename)
@@ -167,8 +187,10 @@ class OpenPLMPluginInstance(object):
             self.add_managed_file(doc, doc_file, path)
             self.load_file(doc, doc_file["id"], path, gdoc)
             if not unlock:
-                self.get_data("api/object/%s/lock/%s/" % (doc["id"], doc_file["id"]))
-                self.get_data("api/object/%s/lock/%s/" % (doc["id"], doc_step_file["id"]))
+                self.get_data("api/object/%s/lock/%s/" % (doc["id"],
+                                                          doc_file["id"]))
+                self.get_data("api/object/%s/lock/%s/" % (doc["id"],
+                                                          doc_step_file["id"]))
             else:
                 self.send_thumbnail(gdoc)
                 self.forget(gdoc)
@@ -298,7 +320,7 @@ class OpenPLMPluginInstance(object):
         return files
 
     def forget(self, gdoc=None, delete=True, close_doc=False):
-        gdoc = gdoc or FreeCAD.ActiveDocument
+        gdoc = gdoc or App.ActiveDocument
         if gdoc and gdoc in self.documents:
             doc = self.documents[gdoc]["openplm_doc"]
             doc_file_id = self.documents[gdoc]["openplm_file_id"]
@@ -333,7 +355,7 @@ class OpenPLMPluginInstance(object):
 
     def load_file(self, doc, doc_file_id, path, gdoc=None):
         try:
-            document = gdoc or FreeCAD.openDocument(path.encode("utf-8"))
+            document = gdoc or App.openDocument(path.encode("utf-8"))
         except IOError:
             show_error("Can not load %s" % path, self.window)
             return
@@ -392,7 +414,7 @@ class OpenPLMPluginInstance(object):
     def send_thumbnail(self, gdoc):
         doc = self.documents[gdoc]["openplm_doc"]
         doc_file_id = self.documents[gdoc]["openplm_file_id"]
-        view = FreeCADGui.ActiveDocument.ActiveView
+        view = Gui.ActiveDocument.ActiveView
         f = tempfile.NamedTemporaryFile(suffix=".png")
         view.saveImage(f.name)
         datagen, headers = multipart_encode({"filename": open(f.name, "rb")})
@@ -451,27 +473,31 @@ class OpenPLMPluginInstance(object):
 
 PLUGIN = OpenPLMPluginInstance()
 
+
 def show_error(message, parent):
-    dialog = qt.QMessageBox()
+    dialog = QtGui.QMessageBox()
     dialog.setText(message)
     dialog.setWindowTitle("Error")
-    dialog.setIcon(qt.QMessageBox.Warning)
+    dialog.setIcon(QtGui.QMessageBox.Warning)
     dialog.exec_()
 
+
 BANNER_PATH = os.path.join(os.path.dirname(__file__), "banner_openplm.png")
-class Dialog(qt.QDialog):
+
+
+class Dialog(QtGui.QDialog):
 
     TITLE = "..."
     ACTION_NAME = "..."
 
     def __init__(self):
-        qt.QDialog.__init__(self)
+        QtGui.QDialog.__init__(self)
         self.instance = PLUGIN
         self.setWindowTitle(self.TITLE)
-        box = qt.QVBoxLayout()
-        self.vbox = qt.QVBoxLayout()
-        banner = qt.QLabel()
-        picture = qt.QPixmap(BANNER_PATH)
+        box = QtGui.QVBoxLayout()
+        self.vbox = QtGui.QVBoxLayout()
+        banner = QtGui.QLabel()
+        picture = QtGui.QPixmap(BANNER_PATH)
         banner.setPixmap(picture)
         box.addWidget(banner)
         box.addLayout(self.vbox)
@@ -482,39 +508,39 @@ class Dialog(qt.QDialog):
 
     def get_value(self, entry, field=None):
         value = None
-        if isinstance(entry, qt.QLineEdit):
+        if isinstance(entry, QtGui.QLineEdit):
             value = unicode(entry.text()).encode("utf-8")
-        elif isinstance(entry, qt.QComboBox):
+        elif isinstance(entry, QtGui.QComboBox):
             if not field:
                 value = unicode(entry.currentText()).encode("utf-8")
             else:
                 value = field["choices"][entry.currentIndex()][0]
-        elif isinstance(entry, qt.QCheckBox):
+        elif isinstance(entry, QtGui.QCheckBox):
             value = entry.isChecked()
         return value
 
     def set_value(self, entry, value, field=None):
-        if isinstance(entry, qt.QLineEdit):
+        if isinstance(entry, QtGui.QLineEdit):
             if isinstance(value, str):
                 value = value.decode("utf-8")
             entry.setText(value or '')
-        elif isinstance(entry, qt.QComboBox):
+        elif isinstance(entry, QtGui.QComboBox):
             choices = [c[0] for c in field["choices"]]
             if isinstance(value, str):
                 value = value.decode("utf-8")
             entry.setCurrentIndex(choices.index(value or ''))
-        elif isinstance(entry, qt.QCheckBox):
+        elif isinstance(entry, QtGui.QCheckBox):
             entry.setChecked(value)
 
     def field_to_widget(self, field):
         widget = None
         attributes = {}
         if field["type"] in ("text", "int", "decimal", "float"):
-            widget = qt.QLineEdit()
+            widget = QtGui.QLineEdit()
         elif field["type"] == "boolean":
-            widget = qt.QCheckBox()
+            widget = QtGui.QCheckBox()
         elif field["type"] == "choice":
-            widget = qt.QComboBox()
+            widget = QtGui.QComboBox()
             choices = field["choices"]
             if [u'', u'---------'] not in choices:
                 choices = ([u'', u'---------'],) + tuple(choices)
@@ -531,26 +557,27 @@ class Dialog(qt.QDialog):
     def update_ui(self):
         pass
 
+
 class LoginDialog(Dialog):
     TITLE = 'Login'
 
     def update_ui(self):
-        table = qt.QGridLayout()
-        label = qt.QLabel(self)
+        table = QtGui.QGridLayout()
+        label = QtGui.QLabel(self)
         label.setText('Username:')
         table.addWidget(label, 0, 0)
-        label = qt.QLabel(self)
+        label = QtGui.QLabel(self)
         label.setText('Password:')
         table.addWidget(label, 1, 0)
-        self.user_entry = qt.QLineEdit(self)
+        self.user_entry = QtGui.QLineEdit(self)
         table.addWidget(self.user_entry, 0, 1)
-        self.pw_entry = qt.QLineEdit()
-        self.pw_entry.setEchoMode(qt.QLineEdit.Password)
+        self.pw_entry = QtGui.QLineEdit()
+        self.pw_entry.setEchoMode(QtGui.QLineEdit.Password)
         table.addWidget(self.pw_entry, 1, 1)
 
         self.vbox.addLayout(table)
-        buttons = qt.QDialogButtonBox.Ok | qt.QDialogButtonBox.Cancel
-        buttons_box = qt.QDialogButtonBox(buttons, parent=self)
+        buttons = QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+        buttons_box = QtGui.QDialogButtonBox(buttons, parent=self)
         connect(buttons_box, QtCore.SIGNAL("accepted()"), self.login)
         connect(buttons_box, QtCore.SIGNAL("rejected()"), self.reject)
 
@@ -562,9 +589,10 @@ class LoginDialog(Dialog):
         try:
             PLUGIN.login(username, password)
             self.accept()
-        except ValueError, e:
+        except ValueError as e:
             self.user_entry.setFocus()
             show_error("Can not login: %s" % str(e), self)
+
 
 class ConfigureDialog(Dialog):
 
@@ -572,17 +600,17 @@ class ConfigureDialog(Dialog):
 
     def update_ui(self):
 
-        table = qt.QGridLayout()
-        label = qt.QLabel()
+        table = QtGui.QGridLayout()
+        label = QtGui.QLabel()
         label.setText("OpenPLM server's location:")
-        self.url_entry = qt.QLineEdit()
+        self.url_entry = QtGui.QLineEdit()
         self.url_entry.setText(PLUGIN.SERVER)
         table.addWidget(label, 0, 0)
         table.addWidget(self.url_entry, 0, 1)
 
         self.vbox.addLayout(table)
-        buttons = qt.QDialogButtonBox.Ok | qt.QDialogButtonBox.Cancel
-        buttons_box = qt.QDialogButtonBox(buttons, parent=self)
+        buttons = QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+        buttons_box = QtGui.QDialogButtonBox(buttons, parent=self)
         connect(buttons_box, QtCore.SIGNAL("accepted()"), self.action_cb)
         connect(buttons_box, QtCore.SIGNAL("rejected()"), self.reject)
         self.vbox.addWidget(buttons_box)
@@ -591,6 +619,7 @@ class ConfigureDialog(Dialog):
         self.accept()
         url = self.get_value(self.url_entry, None)
         PLUGIN.set_server(url)
+
 
 class SearchDialog(Dialog):
 
@@ -607,43 +636,43 @@ class SearchDialog(Dialog):
         docs = PLUGIN.get_data(self.TYPES_URL)
         self.types = docs["types"]
 
-        table = qt.QGridLayout()
+        table = QtGui.QGridLayout()
         self.vbox.addLayout(table)
-        self.type_entry = qt.QComboBox()
+        self.type_entry = QtGui.QComboBox()
         self.type_entry.addItems(self.types)
         self.type_entry.setCurrentIndex(self.types.index(self.TYPE))
         connect(self.type_entry, QtCore.SIGNAL("activated(const QString&)"),
                 self.type_entry_activate_cb)
-        self.name_entry = qt.QLineEdit()
-        self.rev_entry = qt.QLineEdit()
+        self.name_entry = QtGui.QLineEdit()
+        self.rev_entry = QtGui.QLineEdit()
         self.fields = [("type", self.type_entry),
                       ]
         for i, (text, entry) in enumerate(self.fields):
-            label = qt.QLabel()
+            label = QtGui.QLabel()
             label.setText(text.capitalize()+":")
             table.addWidget(label, i, 0)
             table.addWidget(entry, i, 1)
 
-        self.advanced_table = qt.QGridLayout()
+        self.advanced_table = QtGui.QGridLayout()
         self.advanced_fields = []
         self.vbox.addLayout(self.advanced_table)
         self.display_fields(self.TYPE)
 
-        search_button = qt.QPushButton("Search")
+        search_button = QtGui.QPushButton("Search")
         connect(search_button, QtCore.SIGNAL("clicked()"), self.search)
         self.vbox.addWidget(search_button)
 
-        self.results_box = qt.QVBoxLayout()
+        self.results_box = QtGui.QVBoxLayout()
         self.vbox.addLayout(self.results_box)
 
-        self.tree = qt.QTreeWidget()
+        self.tree = QtGui.QTreeWidget()
         self.tree.setColumnCount(1)
         self.tree.setHeaderLabel("Results")
         self.results_box.addWidget(self.tree)
         connect(self.tree, QtCore.SIGNAL("itemExpanded(QTreeWidgetItem *)"),
                                          self.expand)
 
-        self.action_button = qt.QPushButton(self.ACTION_NAME)
+        self.action_button = QtGui.QPushButton(self.ACTION_NAME)
         connect(self.action_button, QtCore.SIGNAL("clicked()"), self.action_cb)
         self.results_box.addWidget(self.action_button)
 
@@ -664,7 +693,7 @@ class SearchDialog(Dialog):
         self.advanced_fields = []
         for i, field in enumerate(fields):
             text = field["label"]
-            label = qt.QLabel()
+            label = QtGui.QLabel()
             label.setText(text.capitalize()+":")
             self.advanced_table.addWidget(label, i, 0)
             widget = self.field_to_widget(field)
@@ -692,10 +721,10 @@ class SearchDialog(Dialog):
         res["files"] = files
         item.removeChild(item.child(0))
         for f in files:
-            node = qt.QTreeWidgetItem([f["filename"]])
+            node = QtGui.QTreeWidgetItem([f["filename"]])
             item.addChild(node)
         if not files:
-            node = qt.QTreeWidgetItem(["No file attached to document"])
+            node = QtGui.QTreeWidgetItem(["No file attached to document"])
             item.addChild(node)
 
     def display_results(self, results):
@@ -704,9 +733,9 @@ class SearchDialog(Dialog):
         self.tree.reset()
         for i, res in enumerate(results):
             text = "%(reference)s|%(type)s|%(revision)s : %(name)s" % res
-            node = qt.QTreeWidgetItem([text])
+            node = QtGui.QTreeWidgetItem([text])
             if self.EXPAND_FILES:
-                child = qt.QTreeWidgetItem(["..."])
+                child = QtGui.QTreeWidgetItem(["..."])
                 node.addChild(child)
             node.setExpanded(False)
             self.tree.insertTopLevelItem(i, node)
@@ -728,6 +757,7 @@ class SearchDialog(Dialog):
     def do_action(self, doc, doc_file):
         print doc, doc_file
 
+
 class CheckOutDialog(SearchDialog):
     TITLE = "Check-out..."
     ACTION_NAME = "Check-out"
@@ -735,6 +765,7 @@ class CheckOutDialog(SearchDialog):
     def do_action(self, doc, doc_file):
         PLUGIN.check_out(doc, doc_file)
         self.accept()
+
 
 class DownloadDialog(SearchDialog):
     TITLE = "Download..."
@@ -745,6 +776,7 @@ class DownloadDialog(SearchDialog):
     def do_action(self, doc, doc_file):
         PLUGIN.download(doc, doc_file)
         self.accept()
+
 
 class CheckInDialog(Dialog):
 
@@ -760,20 +792,21 @@ class CheckInDialog(Dialog):
         text = "%s|%s|%s" % (self.doc["reference"], self.doc["revision"],
                                        self.doc["type"])
 
-        label = qt.QLabel(text)
+        label = QtGui.QLabel(text)
         self.vbox.addWidget(label)
-        self.unlock_button = qt.QCheckBox('Unlock ?')
+        self.unlock_button = QtGui.QCheckBox('Unlock ?')
         self.vbox.addWidget(self.unlock_button)
 
-        button = qt.QPushButton(self.ACTION_NAME)
+        button = QtGui.QPushButton(self.ACTION_NAME)
         connect(button, QtCore.SIGNAL("clicked()"), self.action_cb)
         self.vbox.addWidget(button)
 
     def action_cb(self):
-        doc = FreeCAD.ActiveDocument
+        doc = App.ActiveDocument
         unlock = self.get_value(self.unlock_button, None)
         PLUGIN.check_in(doc, unlock)
         self.accept()
+
 
 class ReviseDialog(Dialog):
 
@@ -788,33 +821,34 @@ class ReviseDialog(Dialog):
         Dialog.__init__(self)
 
     def update_ui(self):
-        hbox = qt.QHBoxLayout()
+        hbox = QtGui.QHBoxLayout()
         text = "%s|" % self.doc["reference"]
-        label = qt.QLabel(text)
+        label = QtGui.QLabel(text)
         hbox.addWidget(label)
-        self.revision_entry = qt.QLineEdit()
+        self.revision_entry = QtGui.QLineEdit()
         self.revision_entry.setText(self.revision)
         hbox.addWidget(self.revision_entry)
         text = "|%s" % self.doc["type"]
-        label = qt.QLabel(text)
+        label = QtGui.QLabel(text)
         hbox.addWidget(label)
         self.vbox.addLayout(hbox)
-        self.unlock_button = qt.QCheckBox('Unlock ?')
+        self.unlock_button = QtGui.QCheckBox('Unlock ?')
         self.vbox.addWidget(self.unlock_button)
         text = "Warning: old revision file will be automatically unlocked!"
-        label = qt.QLabel(text)
+        label = QtGui.QLabel(text)
         self.vbox.addWidget(label)
 
-        button = qt.QPushButton(self.ACTION_NAME)
+        button = QtGui.QPushButton(self.ACTION_NAME)
         connect(button, QtCore.SIGNAL("clicked()"), self.action_cb)
         self.vbox.addWidget(button)
 
     def action_cb(self):
-        doc = FreeCAD.ActiveDocument
+        doc = App.ActiveDocument
         self.gdoc = PLUGIN.revise(doc,
-                          self.get_value(self.revision_entry, None),
-                          self.get_value(self.unlock_button, None))
+                                  self.get_value(self.revision_entry, None),
+                                  self.get_value(self.unlock_button, None))
         self.accept()
+
 
 class AttachToPartDialog(SearchDialog):
     TITLE = "Attach to part"
@@ -839,6 +873,7 @@ class AttachToPartDialog(SearchDialog):
         doc = self.nodes[node]
         self.do_action(doc)
 
+
 class CreateDialog(SearchDialog):
 
     TITLE = "Create a document..."
@@ -851,9 +886,9 @@ class CreateDialog(SearchDialog):
         docs = PLUGIN.get_data(self.TYPES_URL)
         self.types = docs["types"]
 
-        table = qt.QGridLayout()
+        table = QtGui.QGridLayout()
         self.vbox.addLayout(table)
-        self.type_entry = qt.QComboBox()
+        self.type_entry = QtGui.QComboBox()
         self.type_entry.addItems(self.types)
         self.type_entry.setCurrentIndex(self.types.index(self.TYPE))
         connect(self.type_entry, QtCore.SIGNAL("activated(const QString&)"),
@@ -861,29 +896,29 @@ class CreateDialog(SearchDialog):
         self.fields = [("type", self.type_entry),
                       ]
         for i, (text, entry) in enumerate(self.fields):
-            label = qt.QLabel()
+            label = QtGui.QLabel()
             label.setText(text.capitalize()+":")
             table.addWidget(label, i, 0)
             table.addWidget(entry, i, 1)
 
-        self.advanced_table = qt.QGridLayout()
+        self.advanced_table = QtGui.QGridLayout()
         self.advanced_fields = []
         self.vbox.addLayout(self.advanced_table)
         self.display_fields(self.TYPE)
 
-        hbox = qt.QHBoxLayout()
-        label = qt.QLabel()
+        hbox = QtGui.QHBoxLayout()
+        label = QtGui.QLabel()
         label.setText("Filename:")
         hbox.addWidget(label)
-        self.filename_entry = qt.QLineEdit()
+        self.filename_entry = QtGui.QLineEdit()
         hbox.addWidget(self.filename_entry)
-        doc = FreeCAD.ActiveDocument
+        doc = App.ActiveDocument
         self.filename_entry.setText(os.path.basename(doc.FileName) or "x.fcstd")
         self.vbox.addLayout(hbox)
-        self.unlock_button = qt.QCheckBox('Unlock ?')
+        self.unlock_button = QtGui.QCheckBox('Unlock ?')
         self.vbox.addWidget(self.unlock_button)
 
-        self.action_button = qt.QPushButton(self.ACTION_NAME)
+        self.action_button = QtGui.QPushButton(self.ACTION_NAME)
         connect(self.action_button, QtCore.SIGNAL("clicked()"), self.action_cb)
         self.vbox.addWidget(self.action_button)
 
@@ -904,7 +939,7 @@ class CreateDialog(SearchDialog):
         self.advanced_fields = []
         for i, field in enumerate(fields):
             text = field["label"]
-            label = qt.QLabel()
+            label = QtGui.QLabel()
             label.setText(text.capitalize()+":")
             self.advanced_table.addWidget(label, i, 0)
             widget = self.field_to_widget(field)
@@ -942,7 +977,8 @@ class OpenPLMLogin:
     def GetResources(self):
         return {'MenuText': 'Login', 'ToolTip': 'Login'}
 
-FreeCADGui.addCommand('OpenPLM_Login', OpenPLMLogin())
+Gui.addCommand('OpenPLM_Login', OpenPLMLogin())
+
 
 class OpenPLMConfigure:
 
@@ -953,7 +989,8 @@ class OpenPLMConfigure:
     def GetResources(self):
         return {'Pixmap' : 'preferences-system', 'MenuText': 'Configure', 'ToolTip': 'Configure'}
 
-FreeCADGui.addCommand('OpenPLM_Configure', OpenPLMConfigure())
+Gui.addCommand('OpenPLM_Configure', OpenPLMConfigure())
+
 
 class OpenPLMCheckOut:
 
@@ -967,7 +1004,7 @@ class OpenPLMCheckOut:
     def IsActive(self):
         return PLUGIN.connected
 
-FreeCADGui.addCommand('OpenPLM_CheckOut', OpenPLMCheckOut())
+Gui.addCommand('OpenPLM_CheckOut', OpenPLMCheckOut())
 
 
 class OpenPLMDownload:
@@ -982,7 +1019,8 @@ class OpenPLMDownload:
     def IsActive(self):
         return PLUGIN.connected
 
-FreeCADGui.addCommand('OpenPLM_Download', OpenPLMDownload())
+Gui.addCommand('OpenPLM_Download', OpenPLMDownload())
+
 
 class OpenPLMForget:
 
@@ -994,14 +1032,15 @@ class OpenPLMForget:
                 'ToolTip': 'Forget and delete current file'}
 
     def IsActive(self):
-        return PLUGIN.connected and FreeCAD.ActiveDocument in PLUGIN.documents
+        return PLUGIN.connected and App.ActiveDocument in PLUGIN.documents
 
-FreeCADGui.addCommand('OpenPLM_Forget', OpenPLMForget())
+Gui.addCommand('OpenPLM_Forget', OpenPLMForget())
+
 
 class OpenPLMCheckIn:
 
     def Activated(self):
-        gdoc = FreeCAD.ActiveDocument
+        gdoc = App.ActiveDocument
         if gdoc and gdoc in PLUGIN.documents:
             doc = PLUGIN.documents[gdoc]["openplm_doc"]
             doc_file_id = PLUGIN.documents[gdoc]["openplm_file_id"]
@@ -1021,14 +1060,15 @@ class OpenPLMCheckIn:
         return {'MenuText': 'Check-in', 'ToolTip': 'Check-in'}
 
     def IsActive(self):
-        return PLUGIN.connected and FreeCAD.ActiveDocument in PLUGIN.documents
+        return PLUGIN.connected and App.ActiveDocument in PLUGIN.documents
 
-FreeCADGui.addCommand('OpenPLM_CheckIn', OpenPLMCheckIn())
+Gui.addCommand('OpenPLM_CheckIn', OpenPLMCheckIn())
+
 
 class OpenPLMRevise:
 
     def Activated(self):
-        gdoc = FreeCAD.ActiveDocument
+        gdoc = App.ActiveDocument
         if gdoc and gdoc in PLUGIN.documents:
             doc = PLUGIN.documents[gdoc]["openplm_doc"]
             doc_file_id = PLUGIN.documents[gdoc]["openplm_file_id"]
@@ -1055,14 +1095,15 @@ class OpenPLMRevise:
         return {'MenuText': 'Revise', 'ToolTip': 'Revise'}
 
     def IsActive(self):
-        return PLUGIN.connected and FreeCAD.ActiveDocument in PLUGIN.documents
+        return PLUGIN.connected and App.ActiveDocument in PLUGIN.documents
 
-FreeCADGui.addCommand('OpenPLM_Revise', OpenPLMRevise())
+Gui.addCommand('OpenPLM_Revise', OpenPLMRevise())
+
 
 class OpenPLMAttach:
 
     def Activated(self):
-        gdoc = FreeCAD.ActiveDocument
+        gdoc = App.ActiveDocument
         if gdoc and gdoc in PLUGIN.documents:
             doc = PLUGIN.documents[gdoc]["openplm_doc"]
             dialog = AttachToPartDialog(doc)
@@ -1076,14 +1117,15 @@ class OpenPLMAttach:
                 'ToolTip': 'Attach to a part'}
 
     def IsActive(self):
-        return PLUGIN.connected and FreeCAD.ActiveDocument in PLUGIN.documents
+        return PLUGIN.connected and App.ActiveDocument in PLUGIN.documents
 
-FreeCADGui.addCommand('OpenPLM_AttachToPart', OpenPLMAttach())
+Gui.addCommand('OpenPLM_AttachToPart', OpenPLMAttach())
+
 
 class OpenPLMCreate:
 
     def Activated(self):
-        gdoc = FreeCAD.ActiveDocument
+        gdoc = App.ActiveDocument
         win = main_window()
         if not gdoc:
             show_error("Need an opened file to create a document", win)
@@ -1101,10 +1143,11 @@ class OpenPLMCreate:
                 'ToolTip': 'Create a document'}
 
     def IsActive(self):
-        doc = FreeCAD.ActiveDocument
+        doc = App.ActiveDocument
         return PLUGIN.connected and doc and doc not in PLUGIN.documents
 
-FreeCADGui.addCommand('OpenPLM_Create', OpenPLMCreate())
+Gui.addCommand('OpenPLM_Create', OpenPLMCreate())
+
 
 def build_menu():
     win = main_window()
@@ -1112,8 +1155,9 @@ def build_menu():
     menu = mb.addMenu("OpenPLM")
     for cls in (OpenPLMLogin, OpenPLMCheckOut):
         cmd = cls()
-        action = qt.QAction(cmd.GetResources()["MenuText"], None)
-        QtCore.QObject.connect(action, QtCore.SIGNAL("triggered"), cmd.Activated)
+        action = QtGui.QAction(cmd.GetResources()["MenuText"], None)
+        QtCore.QObject.connect(action,
+                               QtCore.SIGNAL("triggered"),
+                               cmd.Activated)
         menu.addAction(action)
     menu.show()
-
