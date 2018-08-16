@@ -34,6 +34,7 @@ r"""OpenPLM Workbench commands definition"""
 # Alejandro Galech <agalech@linobject.com>
 
 import os
+from os.path import join, dirname
 import shutil
 import json
 import urllib
@@ -501,8 +502,8 @@ class Dialog(QtGui.QDialog):
         banner.setPixmap(picture)
         box.addWidget(banner)
         box.addLayout(self.vbox)
-        box.setMargin(0)
-        self.vbox.setMargin(12)
+        box.setContentsMargins(0, 0, 0, 0)
+        self.vbox.setContentsMargins(12, 12, 12, 12)
         self.setLayout(box)
         self.update_ui()
 
@@ -975,7 +976,10 @@ class OpenPLMLogin:
         dialog.exec_()
 
     def GetResources(self):
-        return {'MenuText': 'Login', 'ToolTip': 'Login'}
+        icon = join(dirname(__file__), "icons", "login.png")
+        return {'Pixmap': icon,
+                'MenuText': 'Login',
+                'ToolTip': 'Login'}
 
 Gui.addCommand('OpenPLM_Login', OpenPLMLogin())
 
@@ -987,7 +991,9 @@ class OpenPLMConfigure:
         dialog.exec_()
 
     def GetResources(self):
-        return {'Pixmap' : 'preferences-system', 'MenuText': 'Configure', 'ToolTip': 'Configure'}
+        return {'Pixmap' : 'preferences-system',
+                'MenuText': 'Configure',
+                'ToolTip': 'Configure'}
 
 Gui.addCommand('OpenPLM_Configure', OpenPLMConfigure())
 
@@ -999,7 +1005,10 @@ class OpenPLMCheckOut:
         dialog.exec_()
 
     def GetResources(self):
-        return {'MenuText': 'Check-out', 'ToolTip': 'Check-out'}
+        icon = join(dirname(__file__), "icons", "checkout.png")
+        return {'Pixmap': icon,
+                'MenuText': 'Check-out',
+                'ToolTip': 'Check-out'}
 
     def IsActive(self):
         return PLUGIN.connected
@@ -1014,7 +1023,10 @@ class OpenPLMDownload:
         dialog.exec_()
 
     def GetResources(self):
-        return {'MenuText': 'Download', 'ToolTip': 'Download'}
+        icon = join(dirname(__file__), "icons", "download.png")
+        return {'Pixmap': icon,
+                'MenuText': 'Download',
+                'ToolTip': 'Download'}
 
     def IsActive(self):
         return PLUGIN.connected
@@ -1028,7 +1040,9 @@ class OpenPLMForget:
         PLUGIN.forget(close_doc=True)
 
     def GetResources(self):
-        return {'MenuText': 'Forget current file',
+        icon = join(dirname(__file__), "icons", "forget.png")
+        return {'Pixmap': icon,
+                'MenuText': 'Forget current file',
                 'ToolTip': 'Forget and delete current file'}
 
     def IsActive(self):
@@ -1057,7 +1071,10 @@ class OpenPLMCheckIn:
             show_error("Document not stored in OpenPLM", win)
 
     def GetResources(self):
-        return {'MenuText': 'Check-in', 'ToolTip': 'Check-in'}
+        icon = join(dirname(__file__), "icons", "checkin.png")
+        return {'Pixmap': icon,
+                'MenuText': 'Check-in',
+                'ToolTip': 'Check-in'}
 
     def IsActive(self):
         return PLUGIN.connected and App.ActiveDocument in PLUGIN.documents
@@ -1092,7 +1109,10 @@ class OpenPLMRevise:
             show_error("Document not stored in OpenPLM", win)
 
     def GetResources(self):
-        return {'MenuText': 'Revise', 'ToolTip': 'Revise'}
+        icon = join(dirname(__file__), "icons", "revise.png")
+        return {'Pixmap': icon,
+                'MenuText': 'Revise',
+                'ToolTip': 'Revise'}
 
     def IsActive(self):
         return PLUGIN.connected and App.ActiveDocument in PLUGIN.documents
@@ -1113,7 +1133,9 @@ class OpenPLMAttach:
             show_error("Document not stored in OpenPLM", win)
 
     def GetResources(self):
-        return {'MenuText': 'Attach to a part',
+        icon = join(dirname(__file__), "icons", "attach.png")
+        return {'Pixmap': icon,
+                'MenuText': 'Attach to a part',
                 'ToolTip': 'Attach to a part'}
 
     def IsActive(self):
@@ -1139,7 +1161,8 @@ class OpenPLMCreate:
             close(gdoc)
 
     def GetResources(self):
-        return {'Pixmap' : 'document-new', 'MenuText': 'Create a Document',
+        return {'Pixmap' : 'document-new',
+                'MenuText': 'Create a Document',
                 'ToolTip': 'Create a document'}
 
     def IsActive(self):

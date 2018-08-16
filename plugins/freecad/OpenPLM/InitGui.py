@@ -30,8 +30,6 @@ r"""OpenPLM FreeCAD Workbench"""
 
 import os
 
-import openplm
-
 # Authors
 # Pierre Cosquer <pcosquer@linobject.com>
 # Alejandro Galech <agalech@linobject.com>
@@ -53,41 +51,73 @@ Gui.addIconPath(draftpath)
 
 class OpenPLMWorkbench(Workbench):
     r"""the OpenPLM Workbench"""
-    Icon = "logo_small.png"
+
+    # The workbench name as it appears in the workbenches list
     MenuText = "OpenPLM"
     ToolTip = "The OpenPLM module"
+    user_app_data = App.getUserAppDataDir()
+    # Msg("User app data dir : %s\n" % user_app_data)
+    Icon = user_app_data + "Mod/OpenPLM/logo_small.png"
 
     def Initialize(self):
         self.initialized = False
         Log('Loading OpenPLM GUI...\n')
-
+        import openplm
         openplm.PLUGIN.workbench = self
-        self.cmdList = ["OpenPLM_Login", "Separator"]
-        self.appendMenu("OpenPLM", self.cmdList)
 
-        self.cmdList2 = ["OpenPLM_CheckOut",
-                         "OpenPLM_Download",
-                         "OpenPLM_Forget",
-                         "OpenPLM_CheckIn",
-                         "OpenPLM_Revise",
-                         "OpenPLM_AttachToPart",
-                         "OpenPLM_Create"]
-        self.appendMenu("OpenPLM", self.cmdList2)
+        from openplm import OpenPLMLogin, OpenPLMCheckOut, OpenPLMDownload, \
+            OpenPLMForget, OpenPLMCheckIn, OpenPLMRevise, OpenPLMAttach, \
+            OpenPLMCreate, OpenPLMConfigure
 
-        self.cmdList3 = ["Separator", "OpenPLM_Configure"]
-        self.appendMenu("OpenPLM", self.cmdList3)
+        commands = {"OpenPLM_Login": OpenPLMLogin(),
+                    "OpenPLM_CheckOut": OpenPLMCheckOut(),
+                    "OpenPLM_Download": OpenPLMDownload(),
+                    "OpenPLM_Forget": OpenPLMForget(),
+                    "OpenPLM_CheckIn": OpenPLMCheckIn(),
+                    "OpenPLM_Revise": OpenPLMRevise(),
+                    "OpenPLM_AttachToPart": OpenPLMAttach(),
+                    "OpenPLM_Create": OpenPLMCreate(),
+                    "OpenPLM_Configure": OpenPLMConfigure()}
 
-        self.initialized = True
+        # for k, v in commands.items():
+        #    FreeCADGui.addCommand(k, v)
+
+        # creates a new toolbar with your commands
+        self.appendToolbar("OpenPLM commands toolbar", commands.keys())
+
+        # creates a new menu
+        self.appendMenu("OpenPLM", commands.keys())
+
+        # self.cmdList = ["OpenPLM_Login", "Separator"]
+        #
+        # self.appendMenu("OpenPLM", self.cmdList)
+        #
+        # self.cmdList2 = ["OpenPLM_CheckOut",
+        #                  "OpenPLM_Download",
+        #                  "OpenPLM_Forget",
+        #                  "OpenPLM_CheckIn",
+        #                  "OpenPLM_Revise",
+        #                  "OpenPLM_AttachToPart",
+        #                  "OpenPLM_Create"]
+        # self.appendMenu("OpenPLM", self.cmdList2)
+        #
+        # self.cmdList3 = ["Separator", "OpenPLM_Configure"]
+        # self.appendMenu("OpenPLM", self.cmdList3)
+
+        # self.initialized = True
 
     def Activated(self):
-        pass
+        r"""code which should be computed when a user
+        switches to this workbench"""
+        Msg("OpenPLM workbench activated\n")
 
     def Deactivated(self):
-        pass
+        r"""code which should be computed when this workbench is deactivated"""
+        Msg("OpenPLM workbench activated\n")
 
     def GetClassName(self):
         return "Gui::PythonWorkbench"
 
 
-Gui.addWorkbench(OpenPLMWorkbench)
-Gui.activateWorkbench("OpenPLMWorkbench")
+Gui.addWorkbench(OpenPLMWorkbench())
+# Gui.activateWorkbench("OpenPLMWorkbench")
