@@ -535,7 +535,13 @@ class Dialog(QtGui.QDialog):
                 value = value.decode("utf-8")
             entry.setCurrentIndex(choices.index(value or ''))
         elif isinstance(entry, QtGui.QCheckBox):
-            entry.setChecked(value)
+            # -- gf
+            if value is None:
+                entry.setChecked(False)
+            else:
+                entry.setChecked(value)
+            # --
+            # entry.setChecked(value)
 
     def field_to_widget(self, field):
         widget = None
