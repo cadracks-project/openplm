@@ -57,6 +57,10 @@ import Part
 connect = QtCore.QObject.connect
 
 
+def debug(msg):
+    App.Console.PrintMessage("%s\n" % msg)
+
+
 def main_window():
     r"""Retrieve the main window"""
     app = QtGui.qApp
@@ -143,7 +147,7 @@ class OpenPLMPluginInstance(object):
         data = dict(username=self.username, password=self.password)
         res = self.get_data("api/login/", data)
         if res["result"] == "ok":
-            #self._action_group2.set_sensitive(True)
+            # self._action_group2.set_sensitive(True)
             self.load_managed_files()
             self.enable_menuitems()
         else:
@@ -172,17 +176,22 @@ class OpenPLMPluginInstance(object):
             filename = filename.decode("utf8")
             path = os.path.join(rep, filename)
             fileName, fileExtension = os.path.splitext(filename)
-            path_stp=os.path.join(rep, (fileName+".stp")).encode("utf-8")
-            #create temporal file stp
+            path_stp = os.path.join(rep, (fileName+".stp")).encode("utf-8")
+            # create temporal file stp
             Part.export(gdoc.Objects, path_stp)
-            gdoc.FileName = path
-            save(gdoc)
 
-            #upload stp and freecad object
-            doc_step_file=self.upload_file(doc, path_stp)
+            # -- gf : tried commenting these lines but openPLM needs a file
+            #         for transfer
+            # gdoc.FileName = path  # ActiveDocument file name is read-only !
+            App.ActiveDocument.saveAs(path)
+            # save(gdoc)
+            # --
+
+            # upload stp and freecad object
+            doc_step_file = self.upload_file(doc, path_stp)
             doc_file = self.upload_file(doc, path.encode("utf-8"))
 
-            #remove temporal file stp
+            # remove temporal file stp
             os.remove(path_stp)
 
             self.add_managed_file(doc, doc_file, path)
@@ -454,8 +463,13 @@ class OpenPLMPluginInstance(object):
 
             self.forget(gdoc, close_doc=False)
             path = os.path.join(rep, name)
-            gdoc.FileName = path
-            save(gdoc)
+
+            # -- gf
+            # gdoc.FileName = path
+            # save(gdoc)
+            App.ActiveDocument.saveAs(path)
+            # --
+
             self.load_file(new_doc, doc_file["id"], path, gdoc)
             self.add_managed_file(new_doc, doc_file, path)
             self.check_in(gdoc, unlock, False)
@@ -599,8 +613,10 @@ class LoginDialog(Dialog):
         password = self.pw_entry.text()
         try:
             PLUGIN.login(username, password)
+            # accept() : QDialog method
+            # Hides the modal dialog and sets the result code to Accepted
             self.accept()
-        except ValueError as e:
+        except ValueError as e:  # the result of the request is not ok
             self.user_entry.setFocus()
             show_error("Can not login: %s" % str(e), self)
 
@@ -680,8 +696,9 @@ class SearchDialog(Dialog):
         self.tree.setColumnCount(1)
         self.tree.setHeaderLabel("Results")
         self.results_box.addWidget(self.tree)
-        connect(self.tree, QtCore.SIGNAL("itemExpanded(QTreeWidgetItem *)"),
-                                         self.expand)
+        connect(self.tree,
+                QtCore.SIGNAL("itemExpanded(QTreeWidgetItem *)"),
+                self.expand)
 
         self.action_button = QtGui.QPushButton(self.ACTION_NAME)
         connect(self.action_button, QtCore.SIGNAL("clicked()"), self.action_cb)
@@ -691,7 +708,9 @@ class SearchDialog(Dialog):
         self.display_fields(typename)
 
     def display_fields(self, typename):
+        debug("display_fields request : %s" % ("api/search_fields/%s/" % typename))
         fields = self.instance.get_data("api/search_fields/%s/" % typename)["fields"]
+        debug("fields : %s" % str(fields))
         temp = {}
         for field, entry in self.advanced_fields:
             temp[field["name"]] = self.get_value(entry, field)
@@ -763,6 +782,8 @@ class SearchDialog(Dialog):
             if value:
                 data[field["name"]] = value
         get = urllib.urlencode(data)
+        debug("get_data() called with : %s" % ("api/search/%s?%s" % (self.SEARCH_SUFFIX, get)))
+        debug("Response is : %s" % (PLUGIN.get_data("api/search/%s?%s" % (self.SEARCH_SUFFIX, get))))
         self.display_results(PLUGIN.get_data("api/search/%s?%s" % (self.SEARCH_SUFFIX, get))["objects"])
 
     def do_action(self, doc, doc_file):

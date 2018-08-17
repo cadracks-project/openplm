@@ -1,7 +1,11 @@
+Toolbar items in a more logical order (login not at the end when it is the first thing to do!)
 Tutos openPLM
 Test FreeCAD openPLM WB connection with an instance (URL of VM!)
   ******** Test login -> OK
   -> Continuer à debugger les commandes du WB
+      DEV MODE FOR DJANGO SERVER  -> easier debug
+          Prod vs Dev paths in manuel (commented part) of Dockerfile
+      Traces dans openPLM.py
 
 Dockerfile
 ----------
