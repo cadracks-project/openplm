@@ -206,8 +206,9 @@ class OpenPLMPluginInstance(object):
                 message = e.reason if hasattr(e, "reason") else ""
                 if not isinstance(message, basestring):
                     message = str(e)
-                show_error(u"Can not open '%s':>\n\t%s" % \
-                           (url, unicode(message, "utf-8")), self.window)
+                show_error(u"Can not open '%s':>\n\t%s" % (url,
+                                                           unicode(message, "utf-8")),
+                           self.window)
             if reraise:
                 raise
             else:
@@ -234,7 +235,9 @@ class OpenPLMPluginInstance(object):
     def download(self, doc, doc_file):
 
         f = self.opener.open(self.SERVER + "file/%s/" % doc_file["id"])
-        rep = os.path.join(self.PLUGIN_DIR, doc["type"], doc["reference"],
+        rep = os.path.join(self.PLUGIN_DIR,
+                           doc["type"],
+                           doc["reference"],
                            doc["revision"])
         try:
             os.makedirs(rep, 0700)
@@ -253,7 +256,8 @@ class OpenPLMPluginInstance(object):
         res = self.get_data("api/object/%s/attach_to_part/%s/" % (doc["id"], part_id))
         if res["result"] == "ok":
             url = self.SERVER + "object/%s/%s/%s/parts" % (doc["type"],
-                    doc["reference"], doc["revision"])
+                                                           doc["reference"],
+                                                           doc["revision"])
             webbrowser.open_new_tab(url)
         else:
             show_error("Can not attach\n%s" % res.get('error', ''), self.window)
@@ -332,7 +336,7 @@ class OpenPLMPluginInstance(object):
             if not  data["documents"][str(doc["id"])]["files"]:
                 del data["documents"][str(doc["id"])]
             self.save_conf(data)
-            #on va unlocker
+            # on va unlocker
             self.get_data("api/object/%s/unlock/%s/" % (doc["id"], doc_file_id))
             url= "api/object/%s/files/all/" % doc["id"]
             res = PLUGIN.get_data(url)
@@ -342,7 +346,7 @@ class OpenPLMPluginInstance(object):
             if doc_step:
                 self.get_data("api/object/%s/unlock/%s/" % (doc["id"], doc_step[0]["id"]))
 
-            #end unlocker
+            # end unlocker
             path = path.encode("utf-8")
 
             if delete and os.path.exists(path):
